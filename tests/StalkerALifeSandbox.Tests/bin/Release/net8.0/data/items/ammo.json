@@ -1,0 +1,6 @@
+[
+    { "id": "ammo_9x18",     "name": "9x18mm (20 rnds)",          "baseValue": 120.0,   "category": "Ammo",        "isArtifactOrSpecimen": false },
+    { "id": "ammo_545x39",   "name": "5.45x39mm (30 rnds)",       "baseValue": 180.0,   "category": "Ammo",        "isArtifactOrSpecimen": false },
+    { "id": "ammo_762x54",   "name": "7.62x54mm (10 rnds)",       "baseValue": 220.0,   "category": "Ammo",        "isArtifactOrSpecimen": false },
+    { "id": "ammo_12x70",    "name": "12x70mm Buckshot (8 rnds)", "baseValue": 100.0,   "category": "Ammo",        "isArtifactOrSpecimen": false }
+]

@@ -1,0 +1,149 @@
+[
+  {
+    "id": "helm_helm_ach7",
+    "name": "Helm Ach7",
+    "baseValue": 2055.0,
+    "category": "Helmet",
+    "gammaId": "helm_ach7"
+  },
+  {
+    "id": "helm_helm_ach7ex",
+    "name": "Helm Ach7Ex",
+    "baseValue": 2625.0,
+    "category": "Helmet",
+    "gammaId": "helm_ach7ex"
+  },
+  {
+    "id": "helm_helm_bandana",
+    "name": "Helm Bandana",
+    "baseValue": 800.0,
+    "category": "Helmet",
+    "gammaId": "helm_bandana"
+  },
+  {
+    "id": "helm_helm_battle",
+    "name": "Helm Battle",
+    "baseValue": 4128.0,
+    "category": "Helmet",
+    "gammaId": "helm_battle"
+  },
+  {
+    "id": "helm_helm_cloth_mask",
+    "name": "Helm Cloth Mask",
+    "baseValue": 800.0,
+    "category": "Helmet",
+    "gammaId": "helm_cloth_mask"
+  },
+  {
+    "id": "helm_helm_exo",
+    "name": "Helm Exo",
+    "baseValue": 4578.0,
+    "category": "Helmet",
+    "gammaId": "helm_exo"
+  },
+  {
+    "id": "helm_helm_hardhat",
+    "name": "Helm Hardhat",
+    "baseValue": 1596.0,
+    "category": "Helmet",
+    "gammaId": "helm_hardhat"
+  },
+  {
+    "id": "helm_helm_hardhat_snag",
+    "name": "Helm Hardhat Snag",
+    "baseValue": 2373.0,
+    "category": "Helmet",
+    "gammaId": "helm_hardhat_snag"
+  },
+  {
+    "id": "helm_helm_m40",
+    "name": "Helm M40",
+    "baseValue": 2388.0,
+    "category": "Helmet",
+    "gammaId": "helm_m40"
+  },
+  {
+    "id": "helm_helm_m50",
+    "name": "Helm M50",
+    "baseValue": 3105.0,
+    "category": "Helmet",
+    "gammaId": "helm_m50"
+  },
+  {
+    "id": "helm_helm_metro",
+    "name": "Helm Metro",
+    "baseValue": 5016.0,
+    "category": "Helmet",
+    "gammaId": "helm_metro"
+  },
+  {
+    "id": "helm_helm_ppm88",
+    "name": "Helm Ppm88",
+    "baseValue": 2775.0,
+    "category": "Helmet",
+    "gammaId": "helm_ppm88"
+  },
+  {
+    "id": "helm_helm_protective",
+    "name": "Helm Protective",
+    "baseValue": 2658.0,
+    "category": "Helmet",
+    "gammaId": "helm_protective"
+  },
+  {
+    "id": "helm_helm_ranger",
+    "name": "Helm Ranger",
+    "baseValue": 3645.0,
+    "category": "Helmet",
+    "gammaId": "helm_ranger"
+  },
+  {
+    "id": "helm_helm_resp",
+    "name": "Helm Resp",
+    "baseValue": 800.0,
+    "category": "Helmet",
+    "gammaId": "helm_resp"
+  },
+  {
+    "id": "helm_helm_respirator",
+    "name": "Helm Respirator",
+    "baseValue": 918.0,
+    "category": "Helmet",
+    "gammaId": "helm_respirator"
+  },
+  {
+    "id": "helm_helm_respirator_gp5",
+    "name": "Helm Respirator Gp5",
+    "baseValue": 1518.0,
+    "category": "Helmet",
+    "gammaId": "helm_respirator_gp5"
+  },
+  {
+    "id": "helm_helm_respirator_old",
+    "name": "Helm Respirator Old",
+    "baseValue": 1068.0,
+    "category": "Helmet",
+    "gammaId": "helm_respirator_old"
+  },
+  {
+    "id": "helm_helm_rp_bala",
+    "name": "Helm Rp Bala",
+    "baseValue": 800.0,
+    "category": "Helmet",
+    "gammaId": "helm_rp_bala"
+  },
+  {
+    "id": "helm_helm_spartan",
+    "name": "Helm Spartan",
+    "baseValue": 5550.0,
+    "category": "Helmet",
+    "gammaId": "helm_spartan"
+  },
+  {
+    "id": "helm_helm_tactic",
+    "name": "Helm Tactic",
+    "baseValue": 3366.0,
+    "category": "Helmet",
+    "gammaId": "helm_tactic"
+  }
+]

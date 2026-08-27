@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ypa7JzgKk8ywYoIBHkHzUArpRN3+uhwxOzI9KhOExsyQMeYBAp4bSWZqz6nVJDZB2G7lvqASlrQsqd5OrSH0sw==",
+  "success": true,
+  "projectFilePath": "/home/alvaromendes/Documents/project01/StalkerALifeSandbox.csproj",
+  "expectedPackageFiles": [
+    "/home/alvaromendes/.nuget/packages/system.text.json/8.0.5/system.text.json.8.0.5.nupkg.sha512"
+  ],
+  "logs": []
+}

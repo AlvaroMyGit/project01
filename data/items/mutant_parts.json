@@ -1,0 +1,9 @@
+[
+    { "id": "trophy_bloodsucker_jaw", "name": "Bloodsucker Jaw",  "baseValue": 5000.0,  "category": "Trophy",      "isArtifactOrSpecimen": true },
+    { "id": "trophy_controller_brain","name": "Controller Brain", "baseValue": 8000.0,  "category": "Trophy",      "isArtifactOrSpecimen": true },
+    { "id": "trophy_chimera_claw",    "name": "Chimera Claw",     "baseValue": 12000.0, "category": "Trophy",      "isArtifactOrSpecimen": true },
+    { "id": "trophy_giant_eye",       "name": "Pseudogiant Eye",  "baseValue": 15000.0, "category": "Trophy",      "isArtifactOrSpecimen": true },
+    { "id": "pelt_dog",               "name": "Dog Hide",         "baseValue": 300.0,   "category": "Pelt",        "isArtifactOrSpecimen": false, "radResist": 0.02 },
+    { "id": "pelt_boar",              "name": "Boar Hide",        "baseValue": 600.0,   "category": "Pelt",        "isArtifactOrSpecimen": false, "radResist": 0.05 },
+    { "id": "pelt_flesh",             "name": "Flesh Hide",       "baseValue": 450.0,   "category": "Pelt",        "isArtifactOrSpecimen": false, "radResist": 0.03 }
+]

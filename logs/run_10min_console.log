@@ -1,0 +1,127 @@
+[WebVisualizerServer] WebSocket server started on ws://localhost:8080/
+[Economy] 28 macro traders online; convoys from southern border
+[Time] TimeFactor=3.0x (override via STALKER_TIME_FACTOR)
+[22:18:48] [INIT] Debug logging enabled → logs/sim_20260812_221848.log
+[22:18:48] [INIT] Snapshot interval=30s
+[Debug] Initial population: 1502 stalkers, 984 mutants
+[Simulation] ZoneDirector loop started (10 Hz / 1 Hz / 0.1 Hz)
+[Debug] Auto-stop scheduled in 600s (STALKER_RUN_DURATION_SEC)
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5050
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/alvaromendes/Documents/project01
+[22:19:19] [SNAPSHOT] real=0.5min game=D0 00:00 alive S=829 M=700 corpses=1029 emission=Dormant desperate=0 interval deaths=673 combats=957 spawns=2486 ranks=[Rookie:829] leaders: Serhiy[Rookie/Patrol:], Ivan[Rookie/Patrol:], Serhiy[Rookie/Patrol:], Mykola[Rookie/Patrol:], Mikhail[Rookie/ExploreLab:]
+[22:19:32] [SPAWN] Trickle +5 stalkers, +0 mutants
+[22:19:35] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:19:38] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:19:49] [SNAPSHOT] real=1.0min game=D0 00:02 alive S=466 M=531 corpses=1568 emission=Dormant desperate=0 interval deaths=368 combats=539 spawns=7 ranks=[Rookie:466] leaders: Mykola[Rookie/ExploreLab:], Serhiy[Rookie/Patrol:], Ivan[Rookie/Patrol:], Serhiy[Rookie/Patrol:], Mykola[Rookie/Patrol:]
+[22:19:52] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:19:59] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:20:17] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:20:20] [SNAPSHOT] real=1.5min game=D0 00:03 alive S=312 M=460 corpses=1796 emission=Dormant desperate=0 interval deaths=154 combats=228 spawns=3 ranks=[Rookie:312] leaders: Serhiy[Rookie/Patrol:], Ivan[Rookie/Patrol:], Serhiy[Rookie/Patrol:], Mykola[Rookie/Patrol:], Mikhail[Rookie/ExploreLab:]
+[22:20:25] [SPAWN] Trickle +2 stalkers, +0 mutants
+[22:20:38] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:20:43] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:20:51] [SNAPSHOT] real=2.0min game=D0 00:05 alive S=228 M=423 corpses=1921 emission=Dormant desperate=0 interval deaths=88 combats=125 spawns=4 ranks=[Rookie:228] leaders: Viktor[Rookie/ExploreLab:], Nikolai[Rookie/Patrol:], Serhiy[Rookie/Patrol:], Ivan[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:]
+[22:21:10] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:21:13] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:21:21] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:21:22] [SNAPSHOT] real=2.6min game=D0 00:06 alive S=207 M=408 corpses=1960 emission=Dormant desperate=0 interval deaths=23 combats=39 spawns=3 ranks=[Rookie:207] leaders: Damir[Rookie/Patrol:], Pavel[Rookie/Patrol:], Viktor[Rookie/ExploreLab:], Nikolai[Rookie/Patrol:], Serhiy[Rookie/ExploreLab:]
+[22:21:24] [SPAWN] Trickle +4 stalkers, +0 mutants
+[22:21:32] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:21:46] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:21:53] [SNAPSHOT] real=3.1min game=D0 00:08 alive S=199 M=399 corpses=1983 emission=Dormant desperate=0 interval deaths=14 combats=23 spawns=6 ranks=[Rookie:199] leaders: Serhiy[Rookie/Patrol:], Viktor[Rookie/Patrol:], Damir[Rookie/Patrol:], Alexei[Rookie/Patrol:], Pavel[Rookie/Patrol:]
+[22:21:55] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:22:19] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:22:22] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:22:24] [SNAPSHOT] real=3.6min game=D0 00:09 alive S=187 M=395 corpses=2002 emission=Dormant desperate=0 interval deaths=14 combats=19 spawns=3 ranks=[Rookie:187] leaders: Igor[Rookie/Patrol:], Serhiy[Rookie/Patrol:], Damir[Rookie/ExploreLab:], Alexei[Rookie/Patrol:], Pavel[Rookie/Patrol:]
+[22:22:28] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:22:30] [SPAWN] Trickle +4 stalkers, +0 mutants
+[22:22:51] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:22:55] [SNAPSHOT] real=4.1min game=D0 00:11 alive S=176 M=385 corpses=2029 emission=Dormant desperate=0 interval deaths=16 combats=27 spawns=6 ranks=[Rookie:176] leaders: Vasyl[Rookie/ExploreLab:], Oleksiy[Rookie/Patrol:], Damir[Rookie/Patrol:], Damir[Rookie/ExploreLab:], Alexei[Rookie/ExploreLab:]
+[22:23:01] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:23:07] [SPAWN] Trickle +4 stalkers, +0 mutants
+[22:23:18] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:23:26] [SNAPSHOT] real=4.6min game=D0 00:13 alive S=168 M=378 corpses=2050 emission=Dormant desperate=0 interval deaths=13 combats=21 spawns=6 ranks=[Rookie:168] leaders: Vasyl[Rookie/ExploreLab:], Damir[Rookie/ExploreLab:], Viktor[Rookie/ExploreLab:], Viktor[Rookie/ExploreLab:], Alexei[Rookie/ExploreLab:]
+[22:23:27] [SPAWN] Trickle +4 stalkers, +0 mutants
+[22:23:30] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:23:43] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:23:57] [SNAPSHOT] real=5.1min game=D0 00:14 alive S=162 M=376 corpses=2064 emission=Dormant desperate=0 interval deaths=11 combats=14 spawns=6 ranks=[Rookie:162] leaders: Nikolai[Rookie/Patrol:], Mikhail[Rookie/Patrol:], Vasyl[Rookie/ExploreLab:], Damir[Rookie/ExploreLab:], Viktor[Rookie/ExploreLab:]
+[22:24:04] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:24:06] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:24:12] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:24:15] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:24:16] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:24:22] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:24:27] [SNAPSHOT] real=5.6min game=D0 00:16 alive S=157 M=373 corpses=2078 emission=Dormant desperate=0 interval deaths=9 combats=14 spawns=6 ranks=[Rookie:157] leaders: Nikolai[Rookie/Patrol:], Vasyl[Rookie/ExploreLab:], Yuriy[Rookie/Patrol:], Viktor[Rookie/Patrol:], Damir[Rookie/ExploreLab:]
+[22:24:30] [SPAWN] Trickle +5 stalkers, +0 mutants
+[22:24:58] [SNAPSHOT] real=6.2min game=D0 00:17 alive S=152 M=368 corpses=2093 emission=Dormant desperate=0 interval deaths=10 combats=15 spawns=5 ranks=[Rookie:152] leaders: Nikolai[Rookie/Patrol:], Vasyl[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:], Yuriy[Rookie/Patrol:], Damir[Rookie/ExploreLab:]
+[22:25:02] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:25:11] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:25:13] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:25:16] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:25:24] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:25:29] [SNAPSHOT] real=6.7min game=D0 00:19 alive S=150 M=364 corpses=2104 emission=Dormant desperate=0 interval deaths=4 combats=11 spawns=5 ranks=[Rookie:150] leaders: Andrei[Rookie/Patrol:], Igor[Rookie/Patrol:], Nikolai[Rookie/ExploreLab:], Vasyl[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:]
+[22:25:42] [SPAWN] Trickle +5 stalkers, +0 mutants
+[22:25:59] [SNAPSHOT] real=7.2min game=D0 00:20 alive S=151 M=363 corpses=2109 emission=Dormant desperate=0 interval deaths=4 combats=5 spawns=5 ranks=[Rookie:151] leaders: Igor[Rookie/Patrol:], Nikolai[Rookie/ExploreLab:], Vasyl[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:]
+[22:26:06] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:26:23] [SPAWN] Trickle +3 stalkers, +0 mutants
+[22:26:30] [SNAPSHOT] real=7.7min game=D0 00:22 alive S=153 M=358 corpses=2116 emission=Dormant desperate=0 interval deaths=2 combats=7 spawns=4 ranks=[Rookie:153] leaders: Serhiy[Rookie/Patrol:], Igor[Rookie/ExploreLab:], Nikolai[Rookie/ExploreLab:], Vasyl[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:]
+[22:26:39] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:26:40] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:26:43] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:26:44] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:27:00] [SNAPSHOT] real=8.2min game=D0 00:23 alive S=148 M=359 corpses=2124 emission=Dormant desperate=0 interval deaths=6 combats=8 spawns=4 ranks=[Rookie:148] leaders: Igor[Rookie/ExploreLab:], Nikolai[Rookie/ExploreLab:], Vasyl[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:]
+[22:27:10] [SPAWN] Trickle +0 stalkers, +1 mutants
+[22:27:16] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:27:31] [SNAPSHOT] real=8.7min game=D0 00:25 alive S=132 M=355 corpses=2146 emission=Dormant desperate=0 interval deaths=17 combats=22 spawns=2 ranks=[Rookie:132] leaders: Igor[Rookie/ExploreLab:], Nikolai[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:]
+[22:27:32] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:27:44] [SPAWN] Trickle +1 stalkers, +0 mutants
+[22:28:02] [SNAPSHOT] real=9.2min game=D0 00:26 alive S=127 M=352 corpses=2156 emission=Dormant desperate=0 interval deaths=7 combats=10 spawns=2 ranks=[Rookie:127] leaders: Nikolai[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:], Serhiy[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:], Damir[Rookie/ExploreLab:]
+[22:28:33] [SNAPSHOT] real=9.7min game=D0 00:28 alive S=119 M=352 corpses=2164 emission=Dormant desperate=0 interval deaths=8 combats=8 spawns=0 ranks=[Rookie:119] leaders: Nikolai[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:], Yuriy[Rookie/ExploreLab:], Damir[Rookie/ExploreLab:], Rustam[Rookie/Patrol:]
+[22:28:47] [SPAWN] Trickle +0 stalkers, +1 mutants
+[Debug] Run duration reached — flushing report and exiting.
+[22:28:48] [REPORT] ========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 10.0 min | Game time: D0 00:29 | TimeFactor=3.0
+Population: stalkers 115 alive (peak 829, min 119) | mutants 350 alive
+Spawns: +1560 stalkers, +1004 mutants (51 trickle batches)
+Combat encounters: 2099 total
+  vs mutant: W=654 L=1018 | mutants killed=654
+  vs stalker: W=228 L=199
+Stalker casualties: 1445 total
+  gunfire=427 mutant=1018 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 0 | Corpses reported: 1522
+Emission storms: 0 | Last phase: Dormant
+GOAP replans (1Hz): 131225
+KillTracker total: 2099
+Deaths per real minute: 144.5
+Combats per real minute: 209.9
+Rank distribution (alive):
+  Rookie: 115
+===================================================
+
+========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 10.0 min | Game time: D0 00:29 | TimeFactor=3.0
+Population: stalkers 115 alive (peak 829, min 119) | mutants 350 alive
+Spawns: +1560 stalkers, +1004 mutants (51 trickle batches)
+Combat encounters: 2099 total
+  vs mutant: W=654 L=1018 | mutants killed=654
+  vs stalker: W=228 L=199
+Stalker casualties: 1445 total
+  gunfire=427 mutant=1018 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 0 | Corpses reported: 1522
+Emission storms: 0 | Last phase: Dormant
+GOAP replans (1Hz): 131225
+KillTracker total: 2099
+Deaths per real minute: 144.5
+Combats per real minute: 209.9
+Rank distribution (alive):
+  Rookie: 115
+===================================================
+

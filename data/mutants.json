@@ -1,0 +1,19 @@
+[
+  { "Species": "Tushkano", "Name": "Tushkano", "IsNocturnal": false, "IsSubterranean": true, "TrophyId": "trophy_tushkano" },
+  { "Species": "Rat", "Name": "Rat", "IsNocturnal": true, "IsSubterranean": true, "TrophyId": "trophy_rat" },
+  { "Species": "Flesh", "Name": "Flesh", "IsNocturnal": false, "IsSubterranean": false, "TrophyId": "trophy_flesh_eye" },
+  { "Species": "Boar", "Name": "Boar", "IsNocturnal": false, "IsSubterranean": false, "TrophyId": "trophy_boar_leg" },
+  { "Species": "Dog", "Name": "Dog", "IsNocturnal": false, "IsSubterranean": false, "TrophyId": "trophy_dog_tail" },
+  { "Species": "BlindDog", "Name": "Blind Dog", "IsNocturnal": false, "IsSubterranean": false, "TrophyId": "trophy_blinddog_tail" },
+  { "Species": "Pseudodog", "Name": "Pseudodog", "IsNocturnal": true, "IsSubterranean": false, "TrophyId": "trophy_pseudodog_tail" },
+  { "Species": "Snork", "Name": "Snork", "IsNocturnal": true, "IsSubterranean": true, "TrophyId": "trophy_snork_foot" },
+  { "Species": "Bloodsucker", "Name": "Bloodsucker", "IsNocturnal": true, "IsSubterranean": true, "CanCloak": true, "TrophyId": "trophy_bloodsucker_jaw" },
+  { "Species": "PsyDog", "Name": "Psy Dog", "IsNocturnal": true, "IsSubterranean": false, "HasPsyAura": true, "TrophyId": "trophy_psydog_hide" },
+  { "Species": "Controller", "Name": "Controller", "IsNocturnal": true, "IsSubterranean": true, "HasPsyAura": true, "TrophyId": "trophy_controller_brain" },
+  { "Species": "Burer", "Name": "Burer", "IsNocturnal": true, "IsSubterranean": true, "TrophyId": "trophy_burer_hand" },
+  { "Species": "Poltergeist", "Name": "Poltergeist", "IsNocturnal": true, "IsSubterranean": true, "TrophyId": "trophy_poltergeist_eye" },
+  { "Species": "Fracture", "Name": "Fracture", "IsNocturnal": true, "IsSubterranean": false, "TrophyId": "trophy_fracture_hand" },
+  { "Species": "Lurker", "Name": "Lurker", "IsNocturnal": true, "IsSubterranean": false, "TrophyId": "trophy_lurker_hide" },
+  { "Species": "Chimera", "Name": "Chimera", "IsNocturnal": true, "IsSubterranean": false, "TrophyId": "trophy_chimera_claw" },
+  { "Species": "Pseudogiant", "Name": "Pseudogiant", "IsNocturnal": false, "IsSubterranean": true, "TrophyId": "trophy_giant_eye" }
+]

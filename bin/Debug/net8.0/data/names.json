@@ -1,0 +1,11 @@
+{
+  "FirstNames": {
+    "Ukrainian": [ "Mykola", "Bohdan", "Taras", "Vasyl", "Dmytro", "Oleksiy", "Ivan", "Serhiy", "Andriy", "Yuriy" ],
+    "Russian": [ "Alexei", "Dmitri", "Sergei", "Pavel", "Nikolai", "Viktor", "Mikhail", "Andrei", "Igor", "Oleg" ],
+    "CIS": [ "Giorgi", "Rustam", "Alibek", "Armen", "Lasha", "Damir", "Timur", "Bakhyt", "Zura", "Nodar" ],
+    "WesternOutsider": [ "Marcus", "Jake", "Heinrich", "Pierre", "Karl", "Connor", "Lars", "Tobias", "Frank", "Sean" ]
+  },
+  "Surnames": [ "Kovalenko", "Shevchenko", "Melnyk", "Petrenko", "Bondarenko", "Popov", "Ivanov", "Sokolov", "Petrov", "Volkov" ],
+  "Callsigns": [ "Ghost", "Phantom", "Shadow", "Razor", "Viper", "Jackal", "Wolf", "Scar", "Bone", "Stitch", "Mole", "Crow", "Badger", "Fox", "Raven", "Spark", "Bullet", "Ash" ],
+  "UnderworldAliases": [ "The Nail", "Two-Fingers", "Broken Nose", "Knuckle", "The Butcher", "Stitches", "Lucky", "Ugly", "One-Eye", "Whisper", "The Rat" ]
+}

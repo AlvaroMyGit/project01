@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>S.T.A.L.K.E.R. Anomaly GAMMA Database — Items, Weapons & Crafting</title>
+    <meta name="description" content="Browse and search the complete S.T.A.L.K.E.R. Anomaly GAMMA item database. Find weapons, armor, consumables, artifacts, and more with detailed stats and crafting recipes.">
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="canonical" href="https://stalker-gamma-db.com/">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="S.T.A.L.K.E.R. Anomaly Database">
+    <meta property="og:url" content="https://stalker-gamma-db.com/">
+    <meta property="og:title" content="S.T.A.L.K.E.R. Anomaly GAMMA Database — Items, Weapons & Crafting">
+    <meta property="og:description" content="Browse and search the complete S.T.A.L.K.E.R. Anomaly GAMMA item database. Find weapons, armor, consumables, artifacts, and more.">
+    <meta property="og:image" content="https://stalker-gamma-db.com/img/og_logo.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="S.T.A.L.K.E.R. Anomaly GAMMA Database">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "S.T.A.L.K.E.R. Anomaly Database",
+        "alternateName": ["Stalker GAMMA Database", "GAMMA DB"],
+        "url": "https://stalker-gamma-db.com/",
+        "description": "Browse and search the complete S.T.A.L.K.E.R. Anomaly GAMMA item database. Find weapons, armor, consumables, artifacts, and more with detailed stats and crafting recipes."
+    }
+    </script>
+
+  <script type="module" crossorigin src="/assets/index-C3m1sKla.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/_plugin-vue_export-helper-CxFM8nvH.js">
+  <link rel="modulepreload" crossorigin href="/assets/constants-BI-JVhqD.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-CVDRIzun.css">
+</head>
+<body>
+<div id="app-preloader">
+    <div class="preloader-card">
+        <img src="img/logo.png" alt="S.T.A.L.K.E.R. Anomaly" class="preloader-logo">
+        <p class="preloader-title">DATABASE</p>
+        <div class="loading-spinner loading-spinner-sm"></div>
+        <span class="preloader-text">Loading…</span>
+    </div>
+    <span class="preloader-footer">&copy; 2026 Created by sw, with data by SaloEater.</span>
+</div>
+<div id="app"></div>
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "88ebbf3055c14f338effc09fae8b9a2b"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>

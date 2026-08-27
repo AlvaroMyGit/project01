@@ -1,0 +1,1263 @@
+[
+  {
+    "id": "out_army_nosorog_outfit",
+    "name": "Army Nosorog Outfit",
+    "baseValue": 19629.899999999998,
+    "category": "Armor",
+    "gammaId": "army_nosorog_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_bandit_exo_outfit",
+    "name": "Bandit Exo Outfit",
+    "baseValue": 23385.75,
+    "category": "Armor",
+    "gammaId": "bandit_exo_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_bandit_exolight_outfit",
+    "name": "Bandit Exolight Outfit",
+    "baseValue": 13100.4,
+    "category": "Armor",
+    "gammaId": "bandit_exolight_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_cs_exo_outfit",
+    "name": "Cs Exo Outfit",
+    "baseValue": 23715.75,
+    "category": "Armor",
+    "gammaId": "cs_exo_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_exolight_outfit",
+    "name": "Cs Exolight Outfit",
+    "baseValue": 15484.5,
+    "category": "Armor",
+    "gammaId": "cs_exolight_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_heavy_outfit",
+    "name": "Cs Heavy Outfit",
+    "baseValue": 11239.949999999999,
+    "category": "Armor",
+    "gammaId": "cs_heavy_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_scientific_outfit_good",
+    "name": "Cs Scientific Outfit Good",
+    "baseValue": 19404.0,
+    "category": "Armor",
+    "gammaId": "cs_scientific_outfit_good",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_stalker_proto_exo_outfit",
+    "name": "Cs Stalker Proto Exo Outfit",
+    "baseValue": 25855.2,
+    "category": "Armor",
+    "gammaId": "cs_stalker_proto_exo_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_dolg_exo_outfit",
+    "name": "Dolg Exo Outfit",
+    "baseValue": 26130.0,
+    "category": "Armor",
+    "gammaId": "dolg_exo_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_exolight_outfit",
+    "name": "Dolg Exolight Outfit",
+    "baseValue": 12700.65,
+    "category": "Armor",
+    "gammaId": "dolg_exolight_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_heavy_outfit",
+    "name": "Dolg Heavy Outfit",
+    "baseValue": 11575.949999999999,
+    "category": "Armor",
+    "gammaId": "dolg_heavy_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_heavy_proto_exo_outfit",
+    "name": "Dolg Heavy Proto Exo Outfit",
+    "baseValue": 26487.0,
+    "category": "Armor",
+    "gammaId": "dolg_heavy_proto_exo_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_heavy_redline_outfit",
+    "name": "Dolg Heavy Redline Outfit",
+    "baseValue": 15434.699999999999,
+    "category": "Armor",
+    "gammaId": "dolg_heavy_redline_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_nosorog_outfit",
+    "name": "Dolg Nosorog Outfit",
+    "baseValue": 28487.85,
+    "category": "Armor",
+    "gammaId": "dolg_nosorog_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_pantsir_outfit",
+    "name": "Dolg Pantsir Outfit",
+    "baseValue": 11711.699999999999,
+    "category": "Armor",
+    "gammaId": "dolg_pantsir_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_proto_exo_outfit",
+    "name": "Dolg Proto Exo Outfit",
+    "baseValue": 22685.7,
+    "category": "Armor",
+    "gammaId": "dolg_proto_exo_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_specops_red_outfit",
+    "name": "Dolg Specops Red Outfit",
+    "baseValue": 18545.7,
+    "category": "Armor",
+    "gammaId": "dolg_specops_red_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_ecolog_exo_outfit",
+    "name": "Ecolog Exo Outfit",
+    "baseValue": 28829.7,
+    "category": "Armor",
+    "gammaId": "ecolog_exo_outfit",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_ecolog_proto_exo_outfit",
+    "name": "Ecolog Proto Exo Outfit",
+    "baseValue": 30901.5,
+    "category": "Armor",
+    "gammaId": "ecolog_proto_exo_outfit",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_exo_dolg_outfit",
+    "name": "Exo Dolg Outfit",
+    "baseValue": 12078.0,
+    "category": "Armor",
+    "gammaId": "exo_dolg_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_exo_dolg_red_outfit",
+    "name": "Exo Dolg Red Outfit",
+    "baseValue": 17399.25,
+    "category": "Armor",
+    "gammaId": "exo_dolg_red_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_exo_dolg_urban_outfit",
+    "name": "Exo Dolg Urban Outfit",
+    "baseValue": 14762.55,
+    "category": "Armor",
+    "gammaId": "exo_dolg_urban_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_exo_dolg_wood_outfit",
+    "name": "Exo Dolg Wood Outfit",
+    "baseValue": 17316.6,
+    "category": "Armor",
+    "gammaId": "exo_dolg_wood_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_exo_merc_grass_outfit",
+    "name": "Exo Merc Grass Outfit",
+    "baseValue": 13255.199999999999,
+    "category": "Armor",
+    "gammaId": "exo_merc_grass_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_exo_merc_urban_outfit",
+    "name": "Exo Merc Urban Outfit",
+    "baseValue": 13180.8,
+    "category": "Armor",
+    "gammaId": "exo_merc_urban_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_exo_merc_wood_outfit",
+    "name": "Exo Merc Wood Outfit",
+    "baseValue": 15721.5,
+    "category": "Armor",
+    "gammaId": "exo_merc_wood_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_exo_outfit",
+    "name": "Exo Outfit",
+    "baseValue": 26404.05,
+    "category": "Armor",
+    "gammaId": "exo_outfit"
+  },
+  {
+    "id": "out_exo_wood_outfit",
+    "name": "Exo Wood Outfit",
+    "baseValue": 11801.699999999999,
+    "category": "Armor",
+    "gammaId": "exo_wood_outfit"
+  },
+  {
+    "id": "out_exolight_outfit",
+    "name": "Exolight Outfit",
+    "baseValue": 16447.05,
+    "category": "Armor",
+    "gammaId": "exolight_outfit"
+  },
+  {
+    "id": "out_freedom_exo_vineleaf_outfit",
+    "name": "Freedom Exo Vineleaf Outfit",
+    "baseValue": 16130.4,
+    "category": "Armor",
+    "gammaId": "freedom_exo_vineleaf_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_freedom_nosorog_outfit",
+    "name": "Freedom Nosorog Outfit",
+    "baseValue": 26187.75,
+    "category": "Armor",
+    "gammaId": "freedom_nosorog_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_greh_exo_outfit",
+    "name": "Greh Exo Outfit",
+    "baseValue": 27594.149999999998,
+    "category": "Armor",
+    "gammaId": "greh_exo_outfit",
+    "factionPatch": "Sin"
+  },
+  {
+    "id": "out_greh_trenchcoat_outfit",
+    "name": "Greh Trenchcoat Outfit",
+    "baseValue": 18270.75,
+    "category": "Armor",
+    "gammaId": "greh_trenchcoat_outfit",
+    "factionPatch": "Sin"
+  },
+  {
+    "id": "out_hybrid_outfit",
+    "name": "Hybrid Outfit",
+    "baseValue": 19619.25,
+    "category": "Armor",
+    "gammaId": "hybrid_outfit"
+  },
+  {
+    "id": "out_isg_exo_outfit",
+    "name": "Isg Exo Outfit",
+    "baseValue": 21645.0,
+    "category": "Armor",
+    "gammaId": "isg_exo_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_isg_exolight_outfit",
+    "name": "Isg Exolight Outfit",
+    "baseValue": 11137.5,
+    "category": "Armor",
+    "gammaId": "isg_exolight_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_isg_nosorog_outfit",
+    "name": "Isg Nosorog Outfit",
+    "baseValue": 23236.35,
+    "category": "Armor",
+    "gammaId": "isg_nosorog_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_isg_proto_exo_outfit",
+    "name": "Isg Proto Exo Outfit",
+    "baseValue": 26526.149999999998,
+    "category": "Armor",
+    "gammaId": "isg_proto_exo_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_light_dolg_outfit",
+    "name": "Light Dolg Outfit",
+    "baseValue": 16362.0,
+    "category": "Armor",
+    "gammaId": "light_dolg_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_light_freedom_outfit",
+    "name": "Light Freedom Outfit",
+    "baseValue": 14691.6,
+    "category": "Armor",
+    "gammaId": "light_freedom_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_light_isg_outfit",
+    "name": "Light Isg Outfit",
+    "baseValue": 13977.6,
+    "category": "Armor",
+    "gammaId": "light_isg_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_light_loner_outfit",
+    "name": "Light Loner Outfit",
+    "baseValue": 20142.75,
+    "category": "Armor",
+    "gammaId": "light_loner_outfit"
+  },
+  {
+    "id": "out_light_merc_outfit",
+    "name": "Light Merc Outfit",
+    "baseValue": 15247.5,
+    "category": "Armor",
+    "gammaId": "light_merc_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_light_monolit_outfit",
+    "name": "Light Monolit Outfit",
+    "baseValue": 15200.4,
+    "category": "Armor",
+    "gammaId": "light_monolit_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_light_voen_outfit",
+    "name": "Light Voen Outfit",
+    "baseValue": 11836.199999999999,
+    "category": "Armor",
+    "gammaId": "light_voen_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_merc_ace_outfit",
+    "name": "Merc Ace Outfit",
+    "baseValue": 22348.8,
+    "category": "Armor",
+    "gammaId": "merc_ace_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_combat_scientific_outfit",
+    "name": "Merc Combat Scientific Outfit",
+    "baseValue": 19514.25,
+    "category": "Armor",
+    "gammaId": "merc_combat_scientific_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_exo_outfit",
+    "name": "Merc Exo Outfit",
+    "baseValue": 17891.1,
+    "category": "Armor",
+    "gammaId": "merc_exo_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_exolight_outfit",
+    "name": "Merc Exolight Outfit",
+    "baseValue": 11581.949999999999,
+    "category": "Armor",
+    "gammaId": "merc_exolight_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_nighthunter_outfit",
+    "name": "Merc Nighthunter Outfit",
+    "baseValue": 10979.1,
+    "category": "Armor",
+    "gammaId": "merc_nighthunter_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_nosorog_outfit",
+    "name": "Merc Nosorog Outfit",
+    "baseValue": 24014.25,
+    "category": "Armor",
+    "gammaId": "merc_nosorog_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_military_bandit_outfit",
+    "name": "Military Bandit Outfit",
+    "baseValue": 12214.8,
+    "category": "Armor",
+    "gammaId": "military_bandit_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_military_exo_outfit",
+    "name": "Military Exo Outfit",
+    "baseValue": 18489.0,
+    "category": "Armor",
+    "gammaId": "military_exo_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_military_exolight_outfit",
+    "name": "Military Exolight Outfit",
+    "baseValue": 8045.4,
+    "category": "Armor",
+    "gammaId": "military_exolight_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_military_freedom_outfit",
+    "name": "Military Freedom Outfit",
+    "baseValue": 11227.5,
+    "category": "Armor",
+    "gammaId": "military_freedom_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_military_merc_outfit",
+    "name": "Military Merc Outfit",
+    "baseValue": 11123.85,
+    "category": "Armor",
+    "gammaId": "military_merc_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_military_monolit_outfit",
+    "name": "Military Monolit Outfit",
+    "baseValue": 11146.5,
+    "category": "Armor",
+    "gammaId": "military_monolit_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_military_outfit",
+    "name": "Military Outfit",
+    "baseValue": 7582.349999999999,
+    "category": "Armor",
+    "gammaId": "military_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_military_proto_exo_outfit",
+    "name": "Military Proto Exo Outfit",
+    "baseValue": 19849.5,
+    "category": "Armor",
+    "gammaId": "military_proto_exo_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_military_sky_outfit",
+    "name": "Military Sky Outfit",
+    "baseValue": 10817.1,
+    "category": "Armor",
+    "gammaId": "military_sky_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_monolith_exo_outfit",
+    "name": "Monolith Exo Outfit",
+    "baseValue": 23454.899999999998,
+    "category": "Armor",
+    "gammaId": "monolith_exo_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_monolith_exolight_outfit",
+    "name": "Monolith Exolight Outfit",
+    "baseValue": 11736.9,
+    "category": "Armor",
+    "gammaId": "monolith_exolight_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_monolith_nosorog_outfit",
+    "name": "Monolith Nosorog Outfit",
+    "baseValue": 25511.85,
+    "category": "Armor",
+    "gammaId": "monolith_nosorog_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_monolith_proto_exo_outfit",
+    "name": "Monolith Proto Exo Outfit",
+    "baseValue": 28604.25,
+    "category": "Armor",
+    "gammaId": "monolith_proto_exo_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_monolith_trenchcoat_outfit",
+    "name": "Monolith Trenchcoat Outfit",
+    "baseValue": 17109.3,
+    "category": "Armor",
+    "gammaId": "monolith_trenchcoat_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_renegade_exo_outfit",
+    "name": "Renegade Exo Outfit",
+    "baseValue": 15341.849999999999,
+    "category": "Armor",
+    "gammaId": "renegade_exo_outfit",
+    "factionPatch": "Renegade"
+  },
+  {
+    "id": "out_stalker_proto_exo_outfit",
+    "name": "Stalker Proto Exo Outfit",
+    "baseValue": 33713.85,
+    "category": "Armor",
+    "gammaId": "stalker_proto_exo_outfit"
+  },
+  {
+    "id": "out_svoboda_exo_outfit",
+    "name": "Svoboda Exo Outfit",
+    "baseValue": 24059.25,
+    "category": "Armor",
+    "gammaId": "svoboda_exo_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_svoboda_exolight_outfit",
+    "name": "Svoboda Exolight Outfit",
+    "baseValue": 11819.699999999999,
+    "category": "Armor",
+    "gammaId": "svoboda_exolight_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_svoboda_light_proto_exo_outfit",
+    "name": "Svoboda Light Proto Exo Outfit",
+    "baseValue": 30109.8,
+    "category": "Armor",
+    "gammaId": "svoboda_light_proto_exo_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_army_outfit",
+    "name": "Army Outfit",
+    "baseValue": 1225.05,
+    "category": "Armor",
+    "gammaId": "army_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_bandit_nbc_outfit",
+    "name": "Bandit Nbc Outfit",
+    "baseValue": 13645.8,
+    "category": "Armor",
+    "gammaId": "bandit_nbc_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_bandit_novice_outfit",
+    "name": "Bandit Novice Outfit",
+    "baseValue": 1059.75,
+    "category": "Armor",
+    "gammaId": "bandit_novice_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_bandit_novice_outfit_alt",
+    "name": "Bandit Novice Outfit Alt",
+    "baseValue": 968.6999999999999,
+    "category": "Armor",
+    "gammaId": "bandit_novice_outfit_alt",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_banditmerc_outfit",
+    "name": "Banditmerc Outfit",
+    "baseValue": 5263.05,
+    "category": "Armor",
+    "gammaId": "banditmerc_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_cs_light_novice_outfit",
+    "name": "Cs Light Novice Outfit",
+    "baseValue": 4658.7,
+    "category": "Armor",
+    "gammaId": "cs_light_novice_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_light_outfit",
+    "name": "Cs Light Outfit",
+    "baseValue": 6022.2,
+    "category": "Armor",
+    "gammaId": "cs_light_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_nbc_outfit",
+    "name": "Cs Nbc Outfit",
+    "baseValue": 10169.699999999999,
+    "category": "Armor",
+    "gammaId": "cs_nbc_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_novice_outfit",
+    "name": "Cs Novice Outfit",
+    "baseValue": 980.0999999999999,
+    "category": "Armor",
+    "gammaId": "cs_novice_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_dolg_novice_outfit",
+    "name": "Dolg Novice Outfit",
+    "baseValue": 1124.1,
+    "category": "Armor",
+    "gammaId": "dolg_novice_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_red_outfit",
+    "name": "Dolg Red Outfit",
+    "baseValue": 6878.25,
+    "category": "Armor",
+    "gammaId": "dolg_red_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_ghillie_outfit",
+    "name": "Ghillie Outfit",
+    "baseValue": 10065.0,
+    "category": "Armor",
+    "gammaId": "ghillie_outfit"
+  },
+  {
+    "id": "out_isg_lcs_camo_outfit",
+    "name": "Isg Lcs Camo Outfit",
+    "baseValue": 8008.5,
+    "category": "Armor",
+    "gammaId": "isg_lcs_camo_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_merc_fighter_outfit",
+    "name": "Merc Fighter Outfit",
+    "baseValue": 6580.8,
+    "category": "Armor",
+    "gammaId": "merc_fighter_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_scout_outfit",
+    "name": "Merc Scout Outfit",
+    "baseValue": 7140.0,
+    "category": "Armor",
+    "gammaId": "merc_scout_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_wolven_outfit",
+    "name": "Merc Wolven Outfit",
+    "baseValue": 11674.949999999999,
+    "category": "Armor",
+    "gammaId": "merc_wolven_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_monolith_nbc_outfit",
+    "name": "Monolith Nbc Outfit",
+    "baseValue": 12263.4,
+    "category": "Armor",
+    "gammaId": "monolith_nbc_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_nbc_dolg_outfit",
+    "name": "Nbc Dolg Outfit",
+    "baseValue": 7749.299999999999,
+    "category": "Armor",
+    "gammaId": "nbc_dolg_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_nbc_freedom_outfit",
+    "name": "Nbc Freedom Outfit",
+    "baseValue": 12717.0,
+    "category": "Armor",
+    "gammaId": "nbc_freedom_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_nbc_merc_outfit",
+    "name": "Nbc Merc Outfit",
+    "baseValue": 7198.05,
+    "category": "Armor",
+    "gammaId": "nbc_merc_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_nbc_outfit",
+    "name": "Nbc Outfit",
+    "baseValue": 13468.35,
+    "category": "Armor",
+    "gammaId": "nbc_outfit"
+  },
+  {
+    "id": "out_novice_outfit",
+    "name": "Novice Outfit",
+    "baseValue": 1093.5,
+    "category": "Armor",
+    "gammaId": "novice_outfit"
+  },
+  {
+    "id": "out_novice_outfit_camo",
+    "name": "Novice Outfit Camo",
+    "baseValue": 1764.8999999999999,
+    "category": "Armor",
+    "gammaId": "novice_outfit_camo"
+  },
+  {
+    "id": "out_novice_outfit_tourist",
+    "name": "Novice Outfit Tourist",
+    "baseValue": 2117.4,
+    "category": "Armor",
+    "gammaId": "novice_outfit_tourist"
+  },
+  {
+    "id": "out_redline_novice_outfit",
+    "name": "Redline Novice Outfit",
+    "baseValue": 1898.3999999999999,
+    "category": "Armor",
+    "gammaId": "redline_novice_outfit"
+  },
+  {
+    "id": "out_stalker_autumn_outfit",
+    "name": "Stalker Autumn Outfit",
+    "baseValue": 8313.0,
+    "category": "Armor",
+    "gammaId": "stalker_autumn_outfit"
+  },
+  {
+    "id": "out_stalker_outfit",
+    "name": "Stalker Outfit",
+    "baseValue": 8989.949999999999,
+    "category": "Armor",
+    "gammaId": "stalker_outfit"
+  },
+  {
+    "id": "out_stalker_predator_outfit",
+    "name": "Stalker Predator Outfit",
+    "baseValue": 11698.5,
+    "category": "Armor",
+    "gammaId": "stalker_predator_outfit"
+  },
+  {
+    "id": "out_stalker_salamander_outfit",
+    "name": "Stalker Salamander Outfit",
+    "baseValue": 9317.25,
+    "category": "Armor",
+    "gammaId": "stalker_salamander_outfit"
+  },
+  {
+    "id": "out_svoboda_novice_outfit",
+    "name": "Svoboda Novice Outfit",
+    "baseValue": 987.15,
+    "category": "Armor",
+    "gammaId": "svoboda_novice_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_travel_outfit",
+    "name": "Travel Outfit",
+    "baseValue": 14446.05,
+    "category": "Armor",
+    "gammaId": "travel_outfit"
+  },
+  {
+    "id": "out_trenchcoat_freedom_brown_outfit",
+    "name": "Trenchcoat Freedom Brown Outfit",
+    "baseValue": 4656.599999999999,
+    "category": "Armor",
+    "gammaId": "trenchcoat_freedom_brown_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_trenchcoat_green_outfit",
+    "name": "Trenchcoat Green Outfit",
+    "baseValue": 6544.2,
+    "category": "Armor",
+    "gammaId": "trenchcoat_green_outfit"
+  },
+  {
+    "id": "out_trenchcoat_outfit",
+    "name": "Trenchcoat Outfit",
+    "baseValue": 3134.25,
+    "category": "Armor",
+    "gammaId": "trenchcoat_outfit"
+  },
+  {
+    "id": "out_bandit_ps5_outfit",
+    "name": "Bandit Ps5 Outfit",
+    "baseValue": 10970.699999999999,
+    "category": "Armor",
+    "gammaId": "bandit_ps5_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_bandit_scientific_dark_outfit",
+    "name": "Bandit Scientific Dark Outfit",
+    "baseValue": 14913.15,
+    "category": "Armor",
+    "gammaId": "bandit_scientific_dark_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_bandit_scientific_outfit",
+    "name": "Bandit Scientific Outfit",
+    "baseValue": 16828.5,
+    "category": "Armor",
+    "gammaId": "bandit_scientific_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_bandit_sun_outfit",
+    "name": "Bandit Sun Outfit",
+    "baseValue": 11856.9,
+    "category": "Armor",
+    "gammaId": "bandit_sun_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_cs_medium_outfit",
+    "name": "Cs Medium Outfit",
+    "baseValue": 4893.45,
+    "category": "Armor",
+    "gammaId": "cs_medium_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_scientific_outfit",
+    "name": "Cs Scientific Outfit",
+    "baseValue": 14362.5,
+    "category": "Armor",
+    "gammaId": "cs_scientific_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_cs_stalker_outfit",
+    "name": "Cs Stalker Outfit",
+    "baseValue": 8354.1,
+    "category": "Armor",
+    "gammaId": "cs_stalker_outfit",
+    "factionPatch": "Clear Sky"
+  },
+  {
+    "id": "out_dolg_outfit",
+    "name": "Dolg Outfit",
+    "baseValue": 8304.6,
+    "category": "Armor",
+    "gammaId": "dolg_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_scientific_outfit",
+    "name": "Dolg Scientific Outfit",
+    "baseValue": 14964.449999999999,
+    "category": "Armor",
+    "gammaId": "dolg_scientific_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_scientific_red_outfit",
+    "name": "Dolg Scientific Red Outfit",
+    "baseValue": 14917.5,
+    "category": "Armor",
+    "gammaId": "dolg_scientific_red_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_scientific_wood_outfit",
+    "name": "Dolg Scientific Wood Outfit",
+    "baseValue": 17935.8,
+    "category": "Armor",
+    "gammaId": "dolg_scientific_wood_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_scout_outfit",
+    "name": "Dolg Scout Outfit",
+    "baseValue": 11307.6,
+    "category": "Armor",
+    "gammaId": "dolg_scout_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_dolg_voin_outfit",
+    "name": "Dolg Voin Outfit",
+    "baseValue": 8609.25,
+    "category": "Armor",
+    "gammaId": "dolg_voin_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_ecolog_guard_outfit",
+    "name": "Ecolog Guard Outfit",
+    "baseValue": 10642.8,
+    "category": "Armor",
+    "gammaId": "ecolog_guard_outfit",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_ecolog_outfit_blue",
+    "name": "Ecolog Outfit Blue",
+    "baseValue": 20552.55,
+    "category": "Armor",
+    "gammaId": "ecolog_outfit_blue",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_ecolog_outfit_green",
+    "name": "Ecolog Outfit Green",
+    "baseValue": 20961.6,
+    "category": "Armor",
+    "gammaId": "ecolog_outfit_green",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_ecolog_outfit_orange",
+    "name": "Ecolog Outfit Orange",
+    "baseValue": 22705.35,
+    "category": "Armor",
+    "gammaId": "ecolog_outfit_orange",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_ecolog_outfit_red",
+    "name": "Ecolog Outfit Red",
+    "baseValue": 20552.55,
+    "category": "Armor",
+    "gammaId": "ecolog_outfit_red",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_ecolog_outfit_white",
+    "name": "Ecolog Outfit White",
+    "baseValue": 20552.55,
+    "category": "Armor",
+    "gammaId": "ecolog_outfit_white",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_ecolog_outfit_yello",
+    "name": "Ecolog Outfit Yello",
+    "baseValue": 20552.55,
+    "category": "Armor",
+    "gammaId": "ecolog_outfit_yello",
+    "factionPatch": "Ecologist"
+  },
+  {
+    "id": "out_greh_armored_camo_outfit",
+    "name": "Greh Armored Camo Outfit",
+    "baseValue": 12589.8,
+    "category": "Armor",
+    "gammaId": "greh_armored_camo_outfit",
+    "factionPatch": "Sin"
+  },
+  {
+    "id": "out_greh_armored_outfit",
+    "name": "Greh Armored Outfit",
+    "baseValue": 9846.3,
+    "category": "Armor",
+    "gammaId": "greh_armored_outfit",
+    "factionPatch": "Sin"
+  },
+  {
+    "id": "out_greh_ps5_outfit",
+    "name": "Greh Ps5 Outfit",
+    "baseValue": 8899.199999999999,
+    "category": "Armor",
+    "gammaId": "greh_ps5_outfit",
+    "factionPatch": "Sin"
+  },
+  {
+    "id": "out_isg_camo_outfit",
+    "name": "Isg Camo Outfit",
+    "baseValue": 7477.049999999999,
+    "category": "Armor",
+    "gammaId": "isg_camo_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_isg_lcs_outfit",
+    "name": "Isg Lcs Outfit",
+    "baseValue": 6508.95,
+    "category": "Armor",
+    "gammaId": "isg_lcs_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_isg_lcs_urban_outfit",
+    "name": "Isg Lcs Urban Outfit",
+    "baseValue": 6914.849999999999,
+    "category": "Armor",
+    "gammaId": "isg_lcs_urban_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_isg_outfit",
+    "name": "Isg Outfit",
+    "baseValue": 12492.449999999999,
+    "category": "Armor",
+    "gammaId": "isg_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_isg_scientific_outfit",
+    "name": "Isg Scientific Outfit",
+    "baseValue": 13138.65,
+    "category": "Armor",
+    "gammaId": "isg_scientific_outfit",
+    "factionPatch": "UNISG"
+  },
+  {
+    "id": "out_merc_coyote_outfit",
+    "name": "Merc Coyote Outfit",
+    "baseValue": 9437.25,
+    "category": "Armor",
+    "gammaId": "merc_coyote_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_jackal_outfit",
+    "name": "Merc Jackal Outfit",
+    "baseValue": 8792.25,
+    "category": "Armor",
+    "gammaId": "merc_jackal_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_outfit",
+    "name": "Merc Outfit",
+    "baseValue": 6847.349999999999,
+    "category": "Armor",
+    "gammaId": "merc_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_scientific_armored_outfit",
+    "name": "Merc Scientific Armored Outfit",
+    "baseValue": 15812.849999999999,
+    "category": "Armor",
+    "gammaId": "merc_scientific_armored_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_scientific_outfit",
+    "name": "Merc Scientific Outfit",
+    "baseValue": 13893.75,
+    "category": "Armor",
+    "gammaId": "merc_scientific_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_sun_outfit",
+    "name": "Merc Sun Outfit",
+    "baseValue": 8092.349999999999,
+    "category": "Armor",
+    "gammaId": "merc_sun_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_merc_sunset_outfit",
+    "name": "Merc Sunset Outfit",
+    "baseValue": 7158.45,
+    "category": "Armor",
+    "gammaId": "merc_sunset_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_monolith_outfit",
+    "name": "Monolith Outfit",
+    "baseValue": 10848.449999999999,
+    "category": "Armor",
+    "gammaId": "monolith_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_monolith_scientific_light_outfit",
+    "name": "Monolith Scientific Light Outfit",
+    "baseValue": 14469.0,
+    "category": "Armor",
+    "gammaId": "monolith_scientific_light_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_monolith_scientific_outfit",
+    "name": "Monolith Scientific Outfit",
+    "baseValue": 13788.3,
+    "category": "Armor",
+    "gammaId": "monolith_scientific_outfit",
+    "factionPatch": "Monolith"
+  },
+  {
+    "id": "out_nomad_outfit",
+    "name": "Nomad Outfit",
+    "baseValue": 15017.099999999999,
+    "category": "Armor",
+    "gammaId": "nomad_outfit"
+  },
+  {
+    "id": "out_renegade_scientific_outfit",
+    "name": "Renegade Scientific Outfit",
+    "baseValue": 11790.0,
+    "category": "Armor",
+    "gammaId": "renegade_scientific_outfit",
+    "factionPatch": "Renegade"
+  },
+  {
+    "id": "out_renegademerc_outfit",
+    "name": "Renegademerc Outfit",
+    "baseValue": 4963.2,
+    "category": "Armor",
+    "gammaId": "renegademerc_outfit",
+    "factionPatch": "Renegade"
+  },
+  {
+    "id": "out_scientific_outfit",
+    "name": "Scientific Outfit",
+    "baseValue": 17518.5,
+    "category": "Armor",
+    "gammaId": "scientific_outfit"
+  },
+  {
+    "id": "out_specops_bandit_outfit",
+    "name": "Specops Bandit Outfit",
+    "baseValue": 10874.699999999999,
+    "category": "Armor",
+    "gammaId": "specops_bandit_outfit",
+    "factionPatch": "Bandit"
+  },
+  {
+    "id": "out_specops_dolg_outfit",
+    "name": "Specops Dolg Outfit",
+    "baseValue": 6906.45,
+    "category": "Armor",
+    "gammaId": "specops_dolg_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_specops_merc_outfit",
+    "name": "Specops Merc Outfit",
+    "baseValue": 12807.6,
+    "category": "Armor",
+    "gammaId": "specops_merc_outfit",
+    "factionPatch": "Mercenary"
+  },
+  {
+    "id": "out_specops_outfit",
+    "name": "Specops Outfit",
+    "baseValue": 6664.65,
+    "category": "Armor",
+    "gammaId": "specops_outfit",
+    "factionPatch": "Military"
+  },
+  {
+    "id": "out_stalker_bear_outfit",
+    "name": "Stalker Bear Outfit",
+    "baseValue": 11311.65,
+    "category": "Armor",
+    "gammaId": "stalker_bear_outfit"
+  },
+  {
+    "id": "out_stalker_drought_outfit",
+    "name": "Stalker Drought Outfit",
+    "baseValue": 12002.25,
+    "category": "Armor",
+    "gammaId": "stalker_drought_outfit"
+  },
+  {
+    "id": "out_stalker_graphite_outfit",
+    "name": "Stalker Graphite Outfit",
+    "baseValue": 12002.25,
+    "category": "Armor",
+    "gammaId": "stalker_graphite_outfit"
+  },
+  {
+    "id": "out_stalker_tigerstripe_outfit",
+    "name": "Stalker Tigerstripe Outfit",
+    "baseValue": 11585.55,
+    "category": "Armor",
+    "gammaId": "stalker_tigerstripe_outfit"
+  },
+  {
+    "id": "out_svoboda_heavy_outfit",
+    "name": "Svoboda Heavy Outfit",
+    "baseValue": 9664.05,
+    "category": "Armor",
+    "gammaId": "svoboda_heavy_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_svoboda_heavy_outfit_2",
+    "name": "Svoboda Heavy Outfit 2",
+    "baseValue": 7675.2,
+    "category": "Armor",
+    "gammaId": "svoboda_heavy_outfit_2",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_svoboda_light_outfit",
+    "name": "Svoboda Light Outfit",
+    "baseValue": 8009.849999999999,
+    "category": "Armor",
+    "gammaId": "svoboda_light_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_svoboda_scientific_outfit",
+    "name": "Svoboda Scientific Outfit",
+    "baseValue": 14033.25,
+    "category": "Armor",
+    "gammaId": "svoboda_scientific_outfit",
+    "factionPatch": "Freedom"
+  },
+  {
+    "id": "out_trenchcoat_brown_outfit",
+    "name": "Trenchcoat Brown Outfit",
+    "baseValue": 7819.95,
+    "category": "Armor",
+    "gammaId": "trenchcoat_brown_outfit"
+  },
+  {
+    "id": "out_trenchcoat_dolg_brown_outfit",
+    "name": "Trenchcoat Dolg Brown Outfit",
+    "baseValue": 8337.9,
+    "category": "Armor",
+    "gammaId": "trenchcoat_dolg_brown_outfit",
+    "factionPatch": "Duty"
+  },
+  {
+    "id": "out_wastelander_outfit",
+    "name": "Wastelander Outfit",
+    "baseValue": 15249.449999999999,
+    "category": "Armor",
+    "gammaId": "wastelander_outfit"
+  }
+]

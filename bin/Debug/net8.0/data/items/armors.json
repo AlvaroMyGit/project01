@@ -1,0 +1,9 @@
+[
+    { "id": "arm_leather",   "name": "Leather Jacket",       "baseValue": 800.0,   "category": "Armor", "gammaId": "trenchcoat_outfit" },
+    { "id": "arm_stalker",   "name": "Stalker Suit",         "baseValue": 3500.0,  "category": "Armor", "gammaId": "stalker_outfit" },
+    { "id": "arm_bandit",    "name": "Bandit Jacket",        "baseValue": 1500.0,  "category": "Armor", "gammaId": "bandit_novice_outfit", "factionPatch": "Bandit" },
+    { "id": "arm_duty",      "name": "Duty Exoskeleton Mk.I","baseValue": 22000.0, "category": "Armor", "gammaId": "dolg_heavy_outfit", "factionPatch": "Duty" },
+    { "id": "arm_freedom",   "name": "Freedom Stalker Suit", "baseValue": 8000.0,  "category": "Armor", "gammaId": "light_freedom_outfit", "factionPatch": "Freedom" },
+    { "id": "arm_seva",      "name": "SEVA Scientific Suit", "baseValue": 18000.0, "category": "Armor", "gammaId": "ecolog_outfit_orange", "factionPatch": "Ecologist" },
+    { "id": "arm_exo",       "name": "Exoskeleton Mk.II",    "baseValue": 55000.0, "category": "Armor", "gammaId": "stalker_proto_exo_outfit" }
+]

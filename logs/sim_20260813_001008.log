@@ -1,0 +1,729 @@
+[00:10:08] [INIT] Debug logging enabled → logs/sim_20260813_001008.log
+[00:10:08] [INIT] Snapshot interval=30s
+[00:10:08] [INIT] Initial population: 6 stalkers, 0 mutants (not counted as trickle spawns)
+[00:10:09] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1492 M=999)
+[00:10:09] [TASK] Barkeep → ShareDrink (goal=Patrol)
+[00:10:09] [TASK] Cold → ShareDrink (goal=Patrol)
+[00:10:09] [TASK] Sidorovich → ShareDrink (goal=Patrol)
+[00:10:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1490 M=998)
+[00:10:11] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1488 M=996)
+[00:10:12] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1486 M=995)
+[00:10:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1484 M=994)
+[00:10:13] [TASK] Oleksiy → TradeRun (goal=Patrol)
+[00:10:13] [GOAL] Oleksiy achieved Patrol
+[00:10:14] [TASK] Igor → TradeRun (goal=Patrol)
+[00:10:14] [GOAL] Igor achieved Patrol
+[00:10:14] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1482 M=992)
+[00:10:15] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1480 M=991)
+[00:10:16] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1478 M=989)
+[00:10:16] [TASK] Oleksiy → ShareDrink (goal=Patrol)
+[00:10:16] [TASK] Igor → ShareDrink (goal=Patrol)
+[00:10:17] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1476 M=988)
+[00:10:17] [TASK] Dmitri → TradeRun (goal=Patrol)
+[00:10:17] [GOAL] Dmitri achieved Patrol
+[00:10:18] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1474 M=987)
+[00:10:19] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1472 M=985)
+[00:10:20] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1470 M=984)
+[00:10:21] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1468 M=982)
+[00:10:22] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1465 M=981)
+[00:10:22] [TASK] Dmitri → ShareDrink (goal=Patrol)
+[00:10:23] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:10:23] [GOAL] Nodar achieved Patrol
+[00:10:23] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1463 M=980)
+[00:10:24] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1461 M=978)
+[00:10:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1459 M=977)
+[00:10:26] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:10:26] [GOAL] Nodar achieved Patrol
+[00:10:26] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1457 M=976)
+[00:10:27] [TASK] Sergei → TradeRun (goal=Patrol)
+[00:10:27] [GOAL] Sergei achieved Patrol
+[00:10:27] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1455 M=974)
+[00:10:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1453 M=973)
+[00:10:29] [TASK] Nodar → ShareDrink (goal=Patrol)
+[00:10:29] [TASK] Nodar → ShareDrink (goal=Patrol)
+[00:10:29] [TASK] Sergei → ShareDrink (goal=Patrol)
+[00:10:30] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1451 M=971)
+[00:10:31] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1449 M=970)
+[00:10:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1447 M=969)
+[00:10:33] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1445 M=967)
+[00:10:34] [TASK] Vasyl → TradeRun (goal=Patrol)
+[00:10:34] [GOAL] Vasyl achieved Patrol
+[00:10:34] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1443 M=966)
+[00:10:35] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1441 M=964)
+[00:10:36] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1438 M=963)
+[00:10:38] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1436 M=962)
+[00:10:38] [SNAPSHOT] real=0.5min game=D0 00:01 alive S=62 M=38 corpses=72 emission=Dormant nextIn=69gmin desperate=0 hungry=0 interval deaths=2 combats=2 tasks=16 trickleSpawns=0 ranks=[Rookie:62] goals=[Idle:20,Patrol::13] leaders: Oleksiy[Rookie/Patrol:], Igor[Rookie/Patrol:], Pavel[Rookie/Idle], Alexei[Rookie/Patrol:], Frank[Rookie/Idle]
+[00:10:38] [TASK] Alexei → TradeRun (goal=Patrol)
+[00:10:38] [GOAL] Alexei achieved Patrol
+[00:10:39] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1434 M=960)
+[00:10:40] [TASK] Bohdan → TradeRun (goal=Patrol)
+[00:10:40] [GOAL] Bohdan achieved Patrol
+[00:10:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1432 M=959)
+[00:10:40] [TASK] Armen → TradeRun (goal=Patrol)
+[00:10:40] [GOAL] Armen achieved Patrol
+[00:10:41] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1430 M=957)
+[00:10:41] [TASK] Alexei → ShareDrink (goal=Patrol)
+[00:10:41] [TASK] Armen → ShareDrink (goal=Patrol)
+[00:10:41] [TASK] Vasyl → ShareDrink (goal=Patrol)
+[00:10:42] [TASK] Bohdan → ShareDrink (goal=Patrol)
+[00:10:42] [TASK] Igor → ShareDrink (goal=Patrol)
+[00:10:42] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1428 M=956)
+[00:10:43] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:10:43] [GOAL] Nodar achieved Patrol
+[00:10:44] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1426 M=955)
+[00:10:45] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1424 M=953)
+[00:10:45] [TASK] Oleksiy → TradeRun (goal=Patrol)
+[00:10:45] [GOAL] Oleksiy achieved Patrol
+[00:10:45] [TASK] Dmitri → TradeRun (goal=Patrol)
+[00:10:45] [GOAL] Dmitri achieved Patrol
+[00:10:46] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1422 M=952)
+[00:10:47] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1420 M=951)
+[00:10:48] [TASK] Oleksiy → ShareDrink (goal=Patrol)
+[00:10:48] [TASK] Nodar → ShareDrink (goal=Patrol)
+[00:10:48] [TASK] Dmitri → ShareDrink (goal=Patrol)
+[00:10:48] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1418 M=949)
+[00:10:49] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:10:49] [GOAL] Nodar achieved Patrol
+[00:10:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1416 M=948)
+[00:10:51] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1414 M=946)
+[00:10:52] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1411 M=945)
+[00:10:53] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1409 M=944)
+[00:10:54] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1407 M=942)
+[00:10:55] [TASK] Nodar → ShareDrink (goal=Patrol)
+[00:10:55] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1405 M=941)
+[00:10:57] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1403 M=939)
+[00:10:58] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1401 M=938)
+[00:10:58] [TASK] Taras → TradeRun (goal=Patrol)
+[00:10:58] [GOAL] Taras achieved Patrol
+[00:10:59] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1399 M=937)
+[00:10:59] [TASK] Bakhyt → TradeRun (goal=Patrol)
+[00:10:59] [GOAL] Bakhyt achieved Patrol
+[00:11:00] [TASK] Andriy → TradeRun (goal=Patrol)
+[00:11:00] [GOAL] Andriy achieved Patrol
+[00:11:00] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1397 M=935)
+[00:11:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1395 M=934)
+[00:11:02] [TASK] Taras → ShareDrink (goal=Patrol)
+[00:11:02] [TASK] Mikhail → ShareDrink (goal=Patrol)
+[00:11:02] [TASK] Bakhyt → ShareDrink (goal=Patrol)
+[00:11:02] [TASK] Andriy → ShareDrink (goal=Patrol)
+[00:11:02] [TASK] Viktor → TradeRun (goal=Patrol)
+[00:11:02] [GOAL] Viktor achieved Patrol
+[00:11:03] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1393 M=932)
+[00:11:04] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1391 M=931)
+[00:11:05] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1389 M=930)
+[00:11:06] [TASK] Viktor → ShareDrink (goal=Patrol)
+[00:11:06] [TASK] Serhiy → ShareDrink (goal=Patrol)
+[00:11:06] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1387 M=928)
+[00:11:08] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1385 M=927)
+[00:11:09] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1382 M=926)
+[00:11:09] [SNAPSHOT] real=1.0min game=D0 00:02 alive S=108 M=67 corpses=87 emission=Dormant nextIn=68gmin desperate=0 hungry=0 interval deaths=8 combats=15 tasks=26 trickleSpawns=0 ranks=[Rookie:108] goals=[Idle:39,Patrol::21] leaders: Bohdan[Rookie/Patrol:], Viktor[Rookie/Idle], Dmytro[Rookie/Idle], Dmitri[Rookie/Patrol:], Serhiy[Rookie/Idle]
+[00:11:10] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1380 M=924)
+[00:11:12] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1378 M=923)
+[00:11:13] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1376 M=921)
+[00:11:14] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1374 M=920)
+[00:11:15] [TASK] Bohdan → TradeRun (goal=Patrol)
+[00:11:15] [GOAL] Bohdan achieved Patrol
+[00:11:15] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1372 M=919)
+[00:11:17] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1370 M=917)
+[00:11:18] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1368 M=916)
+[00:11:19] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1366 M=914)
+[00:11:20] [TASK] Sergei → TradeRun (goal=Patrol)
+[00:11:20] [GOAL] Sergei achieved Patrol
+[00:11:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1364 M=913)
+[00:11:22] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1362 M=912)
+[00:11:23] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1360 M=910)
+[00:11:24] [TASK] Ivan → TradeRun (goal=Patrol)
+[00:11:24] [GOAL] Ivan achieved Patrol
+[00:11:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1358 M=909)
+[00:11:26] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1355 M=907)
+[00:11:27] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1353 M=906)
+[00:11:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1351 M=905)
+[00:11:30] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1349 M=903)
+[00:11:30] [TASK] Igor → RestAtBase (goal=Patrol)
+[00:11:30] [GOAL] Igor achieved Patrol
+[00:11:31] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1347 M=902)
+[00:11:33] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1345 M=901)
+[00:11:33] [TASK] Oleg → TradeRun (goal=Patrol)
+[00:11:33] [GOAL] Oleg achieved Patrol
+[00:11:34] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1343 M=899)
+[00:11:35] [TASK] Igor → RestAtBase (goal=Patrol)
+[00:11:35] [GOAL] Igor achieved Patrol
+[00:11:35] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1341 M=898)
+[00:11:36] [TASK] Sidorovich → RestAtBase (goal=Patrol)
+[00:11:36] [GOAL] Sidorovich achieved Patrol
+[00:11:37] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1339 M=896)
+[00:11:38] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1337 M=895)
+[00:11:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1335 M=894)
+[00:11:40] [SNAPSHOT] real=1.5min game=D0 00:03 alive S=132 M=93 corpses=116 emission=Dormant nextIn=67gmin desperate=0 hungry=0 interval deaths=23 combats=29 tasks=7 trickleSpawns=0 ranks=[Rookie:132] goals=[Idle:51,Patrol::22] leaders: Sergei[Rookie/Patrol:], Yuriy[Rookie/Patrol:], Serhiy[Rookie/Idle], Sergei[Rookie/Patrol:], Viktor[Rookie/Patrol:]
+[00:11:40] [TASK] Oleg → ShareDrink (goal=Patrol)
+[00:11:41] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1333 M=892)
+[00:11:42] [TASK] Viktor → TradeRun (goal=Patrol)
+[00:11:42] [GOAL] Viktor achieved Patrol
+[00:11:42] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1331 M=891)
+[00:11:44] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1328 M=889)
+[00:11:44] [TASK] Sergei → TradeRun (goal=Patrol)
+[00:11:44] [GOAL] Sergei achieved Patrol
+[00:11:45] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1326 M=888)
+[00:11:47] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1324 M=887)
+[00:11:48] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1322 M=885)
+[00:11:49] [TASK] Serhiy → TradeRun (goal=Patrol)
+[00:11:49] [GOAL] Serhiy achieved Patrol
+[00:11:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1320 M=884)
+[00:11:51] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1318 M=882)
+[00:11:52] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1316 M=881)
+[00:11:54] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1314 M=880)
+[00:11:54] [TASK] Armen → RestAtBase (goal=Patrol)
+[00:11:54] [GOAL] Armen achieved Patrol
+[00:11:55] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1312 M=878)
+[00:11:57] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1310 M=877)
+[00:11:57] [TASK] Bakhyt → TradeRun (goal=Patrol)
+[00:11:57] [GOAL] Bakhyt achieved Patrol
+[00:11:58] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1308 M=876)
+[00:11:58] [TASK] Andriy → TradeRun (goal=Patrol)
+[00:11:58] [GOAL] Andriy achieved Patrol
+[00:12:00] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1306 M=874)
+[00:12:00] [TASK] Ivan → TradeRun (goal=Patrol)
+[00:12:00] [GOAL] Ivan achieved Patrol
+[00:12:00] [TASK] Vasyl → RestAtBase (goal=Patrol)
+[00:12:00] [GOAL] Vasyl achieved Patrol
+[00:12:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1304 M=873)
+[00:12:03] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1302 M=871)
+[00:12:04] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1299 M=870)
+[00:12:05] [TASK] Viktor → TradeRun (goal=Patrol)
+[00:12:05] [GOAL] Viktor achieved Patrol
+[00:12:05] [TASK] Andriy → TradeRun (goal=Patrol)
+[00:12:05] [GOAL] Andriy achieved Patrol
+[00:12:06] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1297 M=869)
+[00:12:07] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1295 M=867)
+[00:12:09] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1293 M=866)
+[00:12:09] [TASK] Andriy → ShareDrink (goal=Patrol)
+[00:12:09] [TASK] Andriy → ShareDrink (goal=Patrol)
+[00:12:09] [TASK] Vasyl → ShareDrink (goal=Patrol)
+[00:12:10] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1291 M=864)
+[00:12:10] [SNAPSHOT] real=2.0min game=D0 00:04 alive S=153 M=113 corpses=149 emission=Dormant nextIn=66gmin desperate=0 hungry=0 interval deaths=23 combats=33 tasks=14 trickleSpawns=0 ranks=[Rookie:153] goals=[Idle:69,Patrol::18,Traveling:1] leaders: Oleksiy[Rookie/Idle], Mikhail[Rookie/Idle], Serhiy[Rookie/Idle], Vasyl[Rookie/Patrol:], Giorgi[Rookie/Idle]
+[00:12:12] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1289 M=863)
+[00:12:12] [TASK] Alibek → TradeRun (goal=Patrol)
+[00:12:12] [GOAL] Alibek achieved Patrol
+[00:12:12] [TASK] Taras → TradeRun (goal=Patrol)
+[00:12:12] [GOAL] Taras achieved Patrol
+[00:12:13] [TASK] Sergei → TradeRun (goal=Patrol)
+[00:12:13] [GOAL] Sergei achieved Patrol
+[00:12:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1287 M=862)
+[00:12:15] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1285 M=860)
+[00:12:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1283 M=859)
+[00:12:17] [TASK] Nikolai → TradeRun (goal=Patrol)
+[00:12:17] [GOAL] Nikolai achieved Patrol
+[00:12:18] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1281 M=857)
+[00:12:19] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1279 M=856)
+[00:12:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1277 M=855)
+[00:12:23] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1275 M=853)
+[00:12:24] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1272 M=852)
+[00:12:25] [TASK] Nikolai → ShareDrink (goal=Patrol)
+[00:12:26] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1270 M=851)
+[00:12:26] [TASK] Ivan → TradeRun (goal=Patrol)
+[00:12:26] [GOAL] Ivan achieved Patrol
+[00:12:27] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1268 M=849)
+[00:12:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1266 M=848)
+[00:12:31] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1264 M=846)
+[00:12:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1262 M=845)
+[00:12:33] [TASK] Oleksiy → TradeRun (goal=Patrol)
+[00:12:33] [GOAL] Oleksiy achieved Patrol
+[00:12:34] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1260 M=844)
+[00:12:34] [TASK] Viktor → TradeRun (goal=Patrol)
+[00:12:34] [GOAL] Viktor achieved Patrol
+[00:12:35] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1258 M=842)
+[00:12:36] [TASK] Cold → RestAtBase (goal=Patrol)
+[00:12:36] [GOAL] Cold achieved Patrol
+[00:12:36] [TASK] Dmitri → TradeRun (goal=Patrol)
+[00:12:36] [GOAL] Dmitri achieved Patrol
+[00:12:37] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1256 M=841)
+[00:12:38] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1254 M=839)
+[00:12:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1252 M=838)
+[00:12:40] [TASK] Andriy → TradeRun (goal=Patrol)
+[00:12:40] [GOAL] Andriy achieved Patrol
+[00:12:42] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1250 M=837)
+[00:12:42] [SNAPSHOT] real=2.6min game=D0 00:05 alive S=167 M=122 corpses=194 emission=Dormant nextIn=65gmin desperate=0 hungry=0 interval deaths=27 combats=45 tasks=11 trickleSpawns=0 ranks=[Rookie:167] goals=[Idle:79,Patrol::16] leaders: Andriy[Rookie/Idle], Mikhail[Rookie/Idle], Sean[Rookie/Idle], Mykola[Rookie/Idle], Oleksiy[Rookie/Idle]
+[00:12:42] [TASK] Viktor → ShareDrink (goal=Patrol)
+[00:12:43] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1248 M=835)
+[00:12:44] [TASK] Taras → RestAtBase (goal=Patrol)
+[00:12:44] [GOAL] Taras achieved Patrol
+[00:12:45] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1245 M=834)
+[00:12:46] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1243 M=832)
+[00:12:48] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1241 M=831)
+[00:12:48] [TASK] Nikolai → TradeRun (goal=Patrol)
+[00:12:48] [GOAL] Nikolai achieved Patrol
+[00:12:50] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1239 M=830)
+[00:12:51] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1237 M=828)
+[00:12:52] [TASK] Oleksiy → RestAtBase (goal=Patrol)
+[00:12:52] [GOAL] Oleksiy achieved Patrol
+[00:12:53] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1235 M=827)
+[00:12:53] [TASK] Yuriy → TradeRun (goal=Patrol)
+[00:12:53] [GOAL] Yuriy achieved Patrol
+[00:12:54] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1233 M=826)
+[00:12:55] [TASK] Yuriy → ShareDrink (goal=Patrol)
+[00:12:55] [TASK] Nikolai → ShareDrink (goal=Patrol)
+[00:12:55] [TASK] Andriy → ShareDrink (goal=Patrol)
+[00:12:56] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1231 M=824)
+[00:12:58] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1229 M=823)
+[00:12:59] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1227 M=821)
+[00:13:00] [TASK] Oleg → TradeRun (goal=Patrol)
+[00:13:00] [GOAL] Oleg achieved Patrol
+[00:13:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1225 M=820)
+[00:13:01] [TASK] Taras → TradeRun (goal=Patrol)
+[00:13:01] [GOAL] Taras achieved Patrol
+[00:13:02] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1223 M=819)
+[00:13:03] [TASK] Nodar → RestAtBase (goal=Patrol)
+[00:13:03] [GOAL] Nodar achieved Patrol
+[00:13:03] [TASK] Nodar → RestAtBase (goal=Patrol)
+[00:13:03] [GOAL] Nodar achieved Patrol
+[00:13:04] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1221 M=817)
+[00:13:06] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1219 M=816)
+[00:13:07] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1216 M=814)
+[00:13:09] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1214 M=813)
+[00:13:10] [TASK] Oleksiy → TradeRun (goal=Patrol)
+[00:13:10] [GOAL] Oleksiy achieved Patrol
+[00:13:11] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1212 M=812)
+[00:13:12] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1210 M=810)
+[00:13:12] [SNAPSHOT] real=3.1min game=D0 00:06 alive S=181 M=136 corpses=233 emission=Dormant nextIn=64gmin desperate=0 hungry=0 interval deaths=26 combats=39 tasks=13 trickleSpawns=0 ranks=[Rookie:181] goals=[Idle:84,Patrol::17] leaders: Andriy[Rookie/Idle], Ivan[Rookie/Idle], Andriy[Rookie/Patrol:], Mikhail[Rookie/Patrol:], Jake[Rookie/Idle]
+[00:13:13] [TASK] Yuriy → ShareDrink (goal=Patrol)
+[00:13:13] [TASK] Mikhail → ShareDrink (goal=Patrol)
+[00:13:13] [TASK] Oleksiy → ShareDrink (goal=Patrol)
+[00:13:14] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1208 M=809)
+[00:13:15] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1206 M=807)
+[00:13:16] [TASK] Andriy → TradeRun (goal=Patrol)
+[00:13:16] [GOAL] Andriy achieved Patrol
+[00:13:17] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1204 M=806)
+[00:13:19] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1202 M=805)
+[00:13:19] [TASK] Bakhyt → TradeRun (goal=Patrol)
+[00:13:19] [GOAL] Bakhyt achieved Patrol
+[00:13:20] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1200 M=803)
+[00:13:21] [TASK] Bakhyt → TradeRun (goal=Patrol)
+[00:13:21] [GOAL] Bakhyt achieved Patrol
+[00:13:22] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1198 M=802)
+[00:13:23] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1196 M=801)
+[00:13:24] [TASK] Oleksiy → RestAtBase (goal=Patrol)
+[00:13:24] [GOAL] Oleksiy achieved Patrol
+[00:13:25] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1194 M=799)
+[00:13:26] [TASK] Bakhyt → ShareDrink (goal=Patrol)
+[00:13:26] [TASK] Bakhyt → ShareDrink (goal=Patrol)
+[00:13:27] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1192 M=798)
+[00:13:27] [TASK] Serhiy → RestAtBase (goal=Patrol)
+[00:13:27] [GOAL] Serhiy achieved Patrol
+[00:13:28] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1189 M=796)
+[00:13:29] [TASK] Nikolai → TradeRun (goal=Patrol)
+[00:13:29] [GOAL] Nikolai achieved Patrol
+[00:13:30] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1187 M=795)
+[00:13:31] [TASK] Vasyl → TradeRun (goal=Patrol)
+[00:13:31] [GOAL] Vasyl achieved Patrol
+[00:13:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1185 M=794)
+[00:13:34] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1183 M=792)
+[00:13:35] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1181 M=791)
+[00:13:35] [TASK] Nikolai → ShareDrink (goal=Patrol)
+[00:13:36] [TASK] Vasyl → ShareDrink (goal=Patrol)
+[00:13:36] [TASK] Sergei → TradeRun (goal=Patrol)
+[00:13:36] [GOAL] Sergei achieved Patrol
+[00:13:37] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1179 M=789)
+[00:13:37] [TASK] Viktor → RestAtBase (goal=Patrol)
+[00:13:37] [GOAL] Viktor achieved Patrol
+[00:13:39] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1177 M=788)
+[00:13:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1175 M=787)
+[00:13:42] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1173 M=785)
+[00:13:44] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1171 M=784)
+[00:13:44] [SNAPSHOT] real=3.6min game=D0 00:07 alive S=197 M=147 corpses=271 emission=Dormant nextIn=63gmin desperate=0 hungry=0 interval deaths=23 combats=38 tasks=16 trickleSpawns=0 ranks=[Rookie:197] goals=[Idle:95,Patrol::17] leaders: Bohdan[Rookie/Idle], Oleg[Rookie/Patrol:], Mikhail[Rookie/Patrol:], Andriy[Rookie/Idle], Serhiy[Rookie/Idle]
+[00:13:44] [TASK] Nikolai → RestAtBase (goal=Patrol)
+[00:13:44] [GOAL] Nikolai achieved Patrol
+[00:13:44] [TASK] Sergei → ShareDrink (goal=Patrol)
+[00:13:44] [TASK] Mikhail → TradeRun (goal=Patrol)
+[00:13:44] [GOAL] Mikhail achieved Patrol
+[00:13:45] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1169 M=782)
+[00:13:46] [TASK] Bakhyt → RestAtBase (goal=Patrol)
+[00:13:46] [GOAL] Bakhyt achieved Patrol
+[00:13:47] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1167 M=781)
+[00:13:48] [TASK] Oleg → TradeRun (goal=Patrol)
+[00:13:48] [GOAL] Oleg achieved Patrol
+[00:13:48] [TASK] Taras → TradeRun (goal=Patrol)
+[00:13:48] [GOAL] Taras achieved Patrol
+[00:13:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1165 M=780)
+[00:13:50] [TASK] Oleg → TradeRun (goal=Patrol)
+[00:13:50] [GOAL] Oleg achieved Patrol
+[00:13:51] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1162 M=778)
+[00:13:52] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1160 M=777)
+[00:13:53] [TASK] Dmitri → TradeRun (goal=Patrol)
+[00:13:53] [GOAL] Dmitri achieved Patrol
+[00:13:54] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1158 M=776)
+[00:13:56] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1156 M=774)
+[00:13:58] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1154 M=773)
+[00:13:58] [TASK] Oleg → ShareDrink (goal=Patrol)
+[00:13:58] [TASK] Dmitri → ShareDrink (goal=Patrol)
+[00:14:00] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1152 M=771)
+[00:14:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1150 M=770)
+[00:14:03] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1148 M=769)
+[00:14:05] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1146 M=767)
+[00:14:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1144 M=766)
+[00:14:09] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1142 M=764)
+[00:14:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1140 M=763)
+[00:14:11] [TASK] Bohdan → RestAtBase (goal=Patrol)
+[00:14:11] [GOAL] Bohdan achieved Patrol
+[00:14:12] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1138 M=762)
+[00:14:14] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1136 M=760)
+[00:14:14] [SNAPSHOT] real=4.1min game=D0 00:08 alive S=217 M=161 corpses=296 emission=Dormant nextIn=62gmin desperate=0 hungry=0 interval deaths=15 combats=25 tasks=11 trickleSpawns=0 ranks=[Rookie:217] goals=[Idle:111,Patrol::13] leaders: Dmytro[Rookie/Idle], Mykola[Rookie/Idle], Jake[Rookie/Idle], Dmitri[Rookie/Patrol:], Bohdan[Rookie/Idle]
+[00:14:16] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1133 M=759)
+[00:14:16] [TASK] Andriy → RestAtBase (goal=Patrol)
+[00:14:16] [GOAL] Andriy achieved Patrol
+[00:14:18] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1131 M=757)
+[00:14:20] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1129 M=756)
+[00:14:22] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1127 M=755)
+[00:14:22] [TASK] Dmitri → TradeRun (goal=Patrol)
+[00:14:22] [GOAL] Dmitri achieved Patrol
+[00:14:23] [TASK] Andriy → ShareDrink (goal=Patrol)
+[00:14:23] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1125 M=753)
+[00:14:24] [TASK] Andriy → RestAtBase (goal=Patrol)
+[00:14:24] [GOAL] Andriy achieved Patrol
+[00:14:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1123 M=752)
+[00:14:25] [TASK] Armen → TradeRun (goal=Patrol)
+[00:14:25] [GOAL] Armen achieved Patrol
+[00:14:27] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1121 M=751)
+[00:14:29] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1119 M=749)
+[00:14:31] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1117 M=748)
+[00:14:33] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1115 M=746)
+[00:14:33] [TASK] Dmytro → TradeRun (goal=Patrol)
+[00:14:33] [GOAL] Dmytro achieved Patrol
+[00:14:35] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1113 M=745)
+[00:14:36] [TASK] Nikolai → TradeRun (goal=Patrol)
+[00:14:36] [GOAL] Nikolai achieved Patrol
+[00:14:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1111 M=744)
+[00:14:38] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1109 M=742)
+[00:14:38] [TASK] Andriy → RestAtBase (goal=Patrol)
+[00:14:38] [GOAL] Andriy achieved Patrol
+[00:14:40] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1106 M=741)
+[00:14:40] [TASK] Oleg → TradeRun (goal=Patrol)
+[00:14:40] [GOAL] Oleg achieved Patrol
+[00:14:40] [TASK] Giorgi → TradeRun (goal=Patrol)
+[00:14:40] [GOAL] Giorgi achieved Patrol
+[00:14:42] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1104 M=739)
+[00:14:44] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1102 M=738)
+[00:14:44] [TASK] Vasyl → TradeRun (goal=Patrol)
+[00:14:44] [GOAL] Vasyl achieved Patrol
+[00:14:46] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1100 M=737)
+[00:14:46] [SNAPSHOT] real=4.6min game=D0 00:09 alive S=229 M=166 corpses=338 emission=Dormant nextIn=61gmin desperate=0 hungry=0 interval deaths=24 combats=42 tasks=11 trickleSpawns=0 ranks=[Rookie:229] goals=[Idle:120,Patrol::11] leaders: Igor[Rookie/Idle], Oleg[Rookie/Idle], Mikhail[Rookie/Idle], Giorgi[Rookie/Idle], Dmytro[Rookie/Idle]
+[00:14:48] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1098 M=735)
+[00:14:48] [TASK] Nikolai → ShareDrink (goal=Patrol)
+[00:14:48] [TASK] Pavel → ShareDrink (goal=Patrol)
+[00:14:50] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1096 M=734)
+[00:14:52] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1094 M=732)
+[00:14:53] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1092 M=731)
+[00:14:54] [TASK] Connor → TradeRun (goal=Patrol)
+[00:14:54] [GOAL] Connor achieved Patrol
+[00:14:55] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1090 M=730)
+[00:14:57] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1088 M=728)
+[00:14:58] [TASK] Oleksiy → RestAtBase (goal=Patrol)
+[00:14:58] [GOAL] Oleksiy achieved Patrol
+[00:14:59] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1086 M=727)
+[00:15:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1084 M=726)
+[00:15:03] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1082 M=724)
+[00:15:05] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1079 M=723)
+[00:15:07] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1077 M=721)
+[00:15:07] [TASK] Vasyl → RestAtBase (goal=Patrol)
+[00:15:07] [GOAL] Vasyl achieved Patrol
+[00:15:08] [TASK] Sergei → RestAtBase (goal=Patrol)
+[00:15:08] [GOAL] Sergei achieved Patrol
+[00:15:08] [TASK] Bohdan → TradeRun (goal=Patrol)
+[00:15:08] [GOAL] Bohdan achieved Patrol
+[00:15:09] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1075 M=720)
+[00:15:10] [TASK] Viktor → TradeRun (goal=Patrol)
+[00:15:10] [GOAL] Viktor achieved Patrol
+[00:15:11] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1073 M=719)
+[00:15:13] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1071 M=717)
+[00:15:14] [TASK] Yuriy → RestAtBase (goal=Patrol)
+[00:15:14] [GOAL] Yuriy achieved Patrol
+[00:15:15] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1069 M=716)
+[00:15:16] [TASK] Sergei → ShareDrink (goal=Patrol)
+[00:15:17] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1067 M=714)
+[00:15:17] [SNAPSHOT] real=5.1min game=D0 00:10 alive S=240 M=178 corpses=371 emission=Dormant nextIn=60gmin desperate=0 hungry=0 interval deaths=22 combats=33 tasks=10 trickleSpawns=0 ranks=[Rookie:240] goals=[Idle:127,Patrol::9] leaders: Igor[Rookie/Idle], Oleg[Rookie/Idle], Mikhail[Rookie/Idle], Giorgi[Rookie/Idle], Dmytro[Rookie/Idle]
+[00:15:19] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1065 M=713)
+[00:15:19] [TASK] Dmytro → TradeRun (goal=Patrol)
+[00:15:19] [GOAL] Dmytro achieved Patrol
+[00:15:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1063 M=712)
+[00:15:22] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1061 M=710)
+[00:15:24] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1059 M=709)
+[00:15:26] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1057 M=707)
+[00:15:28] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1055 M=706)
+[00:15:29] [TASK] Dmytro → ShareDrink (goal=Patrol)
+[00:15:30] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1053 M=705)
+[00:15:32] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1050 M=703)
+[00:15:33] [TASK] Oleg → RestAtBase (goal=Patrol)
+[00:15:33] [GOAL] Oleg achieved Patrol
+[00:15:34] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1048 M=702)
+[00:15:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1046 M=701)
+[00:15:38] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1044 M=699)
+[00:15:39] [TASK] Igor → ShareDrink (goal=Patrol)
+[00:15:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1042 M=698)
+[00:15:42] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1040 M=696)
+[00:15:44] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1038 M=695)
+[00:15:46] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1036 M=694)
+[00:15:48] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1034 M=692)
+[00:15:48] [SNAPSHOT] real=5.7min game=D0 00:11 alive S=251 M=177 corpses=416 emission=Dormant nextIn=60gmin desperate=0 hungry=0 interval deaths=22 combats=45 tasks=4 trickleSpawns=0 ranks=[Rookie:251] goals=[Idle:134,Patrol::11] leaders: Yuriy[Rookie/Idle], Jake[Rookie/Idle], Igor[Rookie/Patrol:], Igor[Rookie/Idle], Taras[Rookie/Idle]
+[00:15:49] [TASK] Dmytro → ShareDrink (goal=Patrol)
+[00:15:50] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1032 M=691)
+[00:15:52] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1030 M=689)
+[00:15:53] [TASK] Dmitri → RestAtBase (goal=Patrol)
+[00:15:53] [GOAL] Dmitri achieved Patrol
+[00:15:54] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1028 M=688)
+[00:15:56] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1026 M=687)
+[00:15:58] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1023 M=685)
+[00:15:59] [TASK] Bakhyt → PatrolWilds [dark_valley] (goal=Patrol)
+[00:15:59] [GOAL] Bakhyt achieved Patrol
+[00:16:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1021 M=684)
+[00:16:03] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1019 M=682)
+[00:16:05] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1017 M=681)
+[00:16:05] [TASK] Bakhyt → TradeRun (goal=Patrol)
+[00:16:05] [GOAL] Bakhyt achieved Patrol
+[00:16:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1015 M=680)
+[00:16:09] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1013 M=678)
+[00:16:11] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1011 M=677)
+[00:16:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1009 M=676)
+[00:16:15] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1007 M=674)
+[00:16:17] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1005 M=673)
+[00:16:19] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1003 M=671)
+[00:16:19] [SNAPSHOT] real=6.2min game=D0 00:11 alive S=265 M=183 corpses=448 emission=Dormant nextIn=59gmin desperate=0 hungry=0 interval deaths=17 combats=32 tasks=4 trickleSpawns=0 ranks=[Rookie:265] goals=[Idle:140,Patrol::12] leaders: Frank[Rookie/Idle], Taras[Rookie/Idle], Marcus[Rookie/Idle], Yuriy[Rookie/Idle], Yuriy[Rookie/Idle]
+[00:16:20] [TASK] Bakhyt → ShareDrink (goal=Patrol)
+[00:16:20] [TASK] Taras → ShareDrink (goal=Patrol)
+[00:16:20] [TASK] Nikolai → TradeRun (goal=Patrol)
+[00:16:20] [GOAL] Nikolai achieved Patrol
+[00:16:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1001 M=670)
+[00:16:24] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=999 M=669)
+[00:16:24] [RANK] Andrei Petrov 'Ash' → Trainee
+[00:16:26] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=996 M=667)
+[00:16:28] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=994 M=666)
+[00:16:30] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=992 M=664)
+[00:16:30] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:16:30] [GOAL] Nodar achieved Patrol
+[00:16:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=990 M=663)
+[00:16:34] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=988 M=662)
+[00:16:36] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=986 M=660)
+[00:16:38] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=984 M=659)
+[00:16:40] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=982 M=657)
+[00:16:41] [TASK] Taras → TradeRun (goal=Patrol)
+[00:16:41] [GOAL] Taras achieved Patrol
+[00:16:42] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=980 M=656)
+[00:16:45] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=978 M=655)
+[00:16:46] [RANK] Oleksiy Kovalenko 'Spark' → Trainee
+[00:16:47] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=976 M=653)
+[00:16:47] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:16:47] [GOAL] Nodar achieved Patrol
+[00:16:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=974 M=652)
+[00:16:51] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=972 M=651)
+[00:16:51] [SNAPSHOT] real=6.7min game=D0 00:12 alive S=271 M=179 corpses=497 emission=Dormant nextIn=58gmin desperate=0 hungry=0 interval deaths=25 combats=49 tasks=6 trickleSpawns=0 ranks=[Rookie:269,Trainee:2] goals=[Idle:143,Patrol::13] leaders: Taras[Rookie/Idle], Marcus[Rookie/Idle], Yuriy[Rookie/Idle], Oleksiy[Rookie/Idle], Nodar[Rookie/Idle]
+[00:16:51] [TASK] Armen → TradeRun (goal=Patrol)
+[00:16:51] [GOAL] Armen achieved Patrol
+[00:16:51] [TASK] Taras → ShareDrink (goal=Patrol)
+[00:16:53] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=970 M=649)
+[00:16:53] [TASK] Yuriy → TradeRun (goal=Patrol)
+[00:16:53] [GOAL] Yuriy achieved Patrol
+[00:16:55] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=967 M=648)
+[00:16:57] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=965 M=646)
+[00:16:59] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=963 M=645)
+[00:17:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=961 M=644)
+[00:17:04] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=959 M=642)
+[00:17:06] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=957 M=641)
+[00:17:08] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=955 M=639)
+[00:17:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=953 M=638)
+[00:17:12] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=951 M=637)
+[00:17:12] [TASK] Mikhail → TradeRun (goal=Patrol)
+[00:17:12] [GOAL] Mikhail achieved Patrol
+[00:17:14] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=949 M=635)
+[00:17:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=947 M=634)
+[00:17:17] [TASK] Andrei → ShareDrink (goal=Patrol)
+[00:17:19] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=945 M=632)
+[00:17:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=943 M=631)
+[00:17:23] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=940 M=630)
+[00:17:23] [SNAPSHOT] real=7.3min game=D0 00:13 alive S=288 M=183 corpses=529 emission=Dormant nextIn=57gmin desperate=0 hungry=0 interval deaths=15 combats=32 tasks=5 trickleSpawns=0 ranks=[Rookie:286,Trainee:2] goals=[Idle:151,Patrol::12] leaders: Bohdan[Rookie/Idle], Andrei[Rookie/Patrol:], Ivan[Rookie/Idle], Taras[Rookie/Idle], Marcus[Rookie/Idle]
+[00:17:25] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=938 M=628)
+[00:17:26] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:17:26] [GOAL] Nodar achieved Patrol
+[00:17:26] [TASK] Andrei → TradeRun (goal=Patrol)
+[00:17:26] [GOAL] Andrei achieved Patrol
+[00:17:27] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=936 M=627)
+[00:17:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=934 M=626)
+[00:17:32] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=932 M=624)
+[00:17:34] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=930 M=623)
+[00:17:36] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=928 M=621)
+[00:17:36] [TASK] Andrei → TradeRun (goal=Patrol)
+[00:17:36] [GOAL] Andrei achieved Patrol
+[00:17:38] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=926 M=620)
+[00:17:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=924 M=619)
+[00:17:41] [TASK] Dmytro → ShareDrink (goal=Patrol)
+[00:17:41] [TASK] Taras → ShareDrink (goal=Patrol)
+[00:17:43] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=922 M=617)
+[00:17:45] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=920 M=616)
+[00:17:45] [TASK] Bakhyt → RestAtBase (goal=Patrol)
+[00:17:45] [GOAL] Bakhyt achieved Patrol
+[00:17:47] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=918 M=614)
+[00:17:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=916 M=613)
+[00:17:52] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=913 M=612)
+[00:17:54] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=911 M=610)
+[00:17:54] [SNAPSHOT] real=7.8min game=D0 00:14 alive S=297 M=188 corpses=564 emission=Dormant nextIn=57gmin desperate=0 hungry=0 interval deaths=20 combats=35 tasks=6 trickleSpawns=0 ranks=[Rookie:295,Trainee:2] goals=[Idle:161,Patrol::8] leaders: Dmitri[Rookie/Idle], Yuriy[Rookie/Idle], Dmytro[Rookie/Patrol:], Serhiy[Rookie/Idle], Taras[Rookie/Patrol:]
+[00:17:56] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=909 M=609)
+[00:17:58] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=907 M=607)
+[00:18:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=905 M=606)
+[00:18:03] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=903 M=605)
+[00:18:05] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=901 M=603)
+[00:18:06] [TASK] Oleksiy → ShareDrink (goal=Patrol)
+[00:18:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=899 M=602)
+[00:18:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=897 M=601)
+[00:18:12] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=895 M=599)
+[00:18:14] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=893 M=598)
+[00:18:14] [TASK] Alexei → TradeRun (goal=Patrol)
+[00:18:14] [GOAL] Alexei achieved Patrol
+[00:18:16] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=891 M=596)
+[00:18:17] [TASK] Pavel → TradeRun (goal=Patrol)
+[00:18:17] [GOAL] Pavel achieved Patrol
+[00:18:18] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=889 M=595)
+[00:18:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=887 M=594)
+[00:18:23] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=884 M=592)
+[00:18:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=882 M=591)
+[00:18:25] [SNAPSHOT] real=8.3min game=D0 00:14 alive S=290 M=190 corpses=617 emission=Dormant nextIn=56gmin desperate=0 hungry=0 interval deaths=36 combats=53 tasks=3 trickleSpawns=0 ranks=[Rookie:288,Trainee:2] goals=[Idle:153,Patrol::12,Traveling:1] leaders: Dmitri[Rookie/Idle], Yuriy[Rookie/Idle], Dmytro[Rookie/Traveling], Serhiy[Rookie/Idle], Taras[Rookie/Patrol:]
+[00:18:25] [TASK] Dmytro → TradeRun (goal=Patrol)
+[00:18:25] [GOAL] Dmytro achieved Patrol
+[00:18:27] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=880 M=589)
+[00:18:28] [TASK] Pavel → ShareDrink (goal=Patrol)
+[00:18:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=878 M=588)
+[00:18:30] [TASK] Sergei → TradeRun (goal=Patrol)
+[00:18:30] [GOAL] Sergei achieved Patrol
+[00:18:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=876 M=587)
+[00:18:34] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=874 M=585)
+[00:18:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=872 M=584)
+[00:18:36] [TASK] Igor → TradeRun (goal=Patrol)
+[00:18:36] [GOAL] Igor achieved Patrol
+[00:18:38] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=870 M=582)
+[00:18:41] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=868 M=581)
+[00:18:43] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=866 M=580)
+[00:18:45] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=864 M=578)
+[00:18:46] [TASK] Taras → TradeRun (goal=Patrol)
+[00:18:46] [GOAL] Taras achieved Patrol
+[00:18:48] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=862 M=577)
+[00:18:49] [TASK] Nikolai → ShareDrink (goal=Patrol)
+[00:18:50] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=860 M=576)
+[00:18:50] [TASK] Nodar → ExploreLab (goal=Patrol)
+[00:18:50] [GOAL] Nodar achieved Patrol
+[00:18:50] [TASK] Andriy → ShareDrink (goal=Patrol)
+[00:18:50] [TASK] Taras → ShareDrink (goal=Patrol)
+[00:18:50] [TASK] Nodar → PatrolWilds [agroprom] (goal=Patrol)
+[00:18:50] [GOAL] Nodar achieved Patrol
+[00:18:51] [TASK] Nodar → PatrolWilds [agroprom] (goal=Patrol)
+[00:18:51] [GOAL] Nodar achieved Patrol
+[00:18:53] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=857 M=574)
+[00:18:55] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=855 M=573)
+[00:18:55] [SNAPSHOT] real=8.8min game=D0 00:15 alive S=304 M=201 corpses=637 emission=Dormant nextIn=55gmin desperate=0 hungry=0 interval deaths=13 combats=20 tasks=11 trickleSpawns=0 ranks=[Rookie:302,Trainee:2] goals=[Idle:159,Patrol::13,Traveling:1] leaders: Dmitri[Rookie/Idle], Yuriy[Rookie/Idle], Dmytro[Rookie/Traveling], Serhiy[Rookie/Idle], Taras[Rookie/Patrol:]
+[00:18:56] [TASK] Nodar → TradeRun (goal=Patrol)
+[00:18:56] [GOAL] Nodar achieved Patrol
+[00:18:57] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=853 M=571)
+[00:19:00] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=851 M=570)
+[00:19:00] [TASK] Igor → RestAtBase (goal=Patrol)
+[00:19:00] [GOAL] Igor achieved Patrol
+[00:19:02] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=849 M=569)
+[00:19:04] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=847 M=567)
+[00:19:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=845 M=566)
+[00:19:09] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=843 M=564)
+[00:19:11] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=841 M=563)
+[00:19:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=839 M=562)
+[00:19:14] [TASK] Oleg → TradeRun (goal=Patrol)
+[00:19:14] [GOAL] Oleg achieved Patrol
+[00:19:16] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=837 M=560)
+[00:19:18] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=835 M=559)
+[00:19:20] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=833 M=557)
+[00:19:22] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=830 M=556)
+[00:19:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=828 M=555)
+[00:19:27] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=826 M=553)
+[00:19:27] [SNAPSHOT] real=9.3min game=D0 00:16 alive S=306 M=206 corpses=679 emission=Dormant nextIn=55gmin desperate=0 hungry=0 interval deaths=27 combats=42 tasks=3 trickleSpawns=0 ranks=[Rookie:304,Trainee:2] goals=[Idle:158,Patrol::11] leaders: Dmitri[Rookie/Idle], Yuriy[Rookie/Idle], Dmytro[Rookie/Idle], Serhiy[Rookie/Idle], Taras[Rookie/Patrol:]
+[00:19:27] [TASK] Andrei → RestAtBase (goal=Patrol)
+[00:19:27] [GOAL] Andrei achieved Patrol
+[00:19:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=824 M=552)
+[00:19:29] [TASK] Dmytro → RestAtBase (goal=Patrol)
+[00:19:29] [GOAL] Dmytro achieved Patrol
+[00:19:31] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=822 M=551)
+[00:19:34] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=820 M=549)
+[00:19:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=818 M=548)
+[00:19:37] [TASK] Zura → TradeRun (goal=Patrol)
+[00:19:37] [GOAL] Zura achieved Patrol
+[00:19:38] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=816 M=546)
+[00:19:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=814 M=545)
+[00:19:41] [TASK] Serhiy → ShareDrink (goal=Patrol)
+[00:19:43] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=812 M=544)
+[00:19:45] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=810 M=542)
+[00:19:47] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=808 M=541)
+[00:19:47] [TASK] Armen → TradeRun (goal=Patrol)
+[00:19:47] [GOAL] Armen achieved Patrol
+[00:19:49] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=806 M=539)
+[00:19:52] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=804 M=538)
+[00:19:54] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=801 M=537)
+[00:19:56] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=799 M=535)
+[00:19:59] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=797 M=534)
+[00:19:59] [SNAPSHOT] real=9.9min game=D0 00:16 alive S=309 M=211 corpses=719 emission=Dormant nextIn=54gmin desperate=0 hungry=0 interval deaths=26 combats=40 tasks=5 trickleSpawns=0 ranks=[Rookie:307,Trainee:2] goals=[Idle:165,Patrol::7] leaders: Pavel[Rookie/Idle], Lars[Rookie/Idle], Ivan[Rookie/Idle], Dmytro[Rookie/Idle], Alexei[Rookie/Idle]
+[00:20:01] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=795 M=532)
+[00:20:01] [TASK] Andriy → TradeRun (goal=Patrol)
+[00:20:01] [GOAL] Andriy achieved Patrol
+[00:20:03] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=793 M=531)
+[00:20:06] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=791 M=530)
+[00:20:08] [REPORT] ========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 10.0 min | Game time: D0 00:17 | TimeFactor=3.0
+Population: stalkers 313 alive (peak 309, min 62) | mutants 211 alive
+Initial spawn: 6 stalkers, 0 mutants
+Trickle respawn: +0 stalkers, +0 mutants (0 batches)
+Combat encounters: 655 total
+  vs mutant: W=259 L=278 | mutants killed=259
+  vs stalker: W=61 L=57
+Stalker casualties: 396 total
+  gunfire=118 mutant=278 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 2 | Corpses reported: 405
+GOAP tasks completed: 183 | Goals achieved: 121
+GOAP replans (1Hz): 67158
+Emission storms: 0 | Last phase: Dormant
+KillTracker total: 655
+Deaths per real minute (overall): 39.6
+Combats per real minute (overall): 65.5
+Startup window (0-2 min): 55 deaths, 77 combats (28 deaths/min)
+Steady state (after 2 min): 341 deaths, 578 combats (42.6 deaths/min, 72.2 combats/min)
+Rank distribution (alive):
+  Rookie: 311
+  Trainee: 2
+Top survivors by kills:
+  Oleksiy Kovalenko 'Spark' (Trainee) K=6 XP=220
+  Taras Petrenko 'The Nail' (Rookie) K=5 XP=170
+  Dmytro Shevchenko 'Jackal' (Rookie) K=4 XP=80
+  Andrei Petrenko 'Badger' (Rookie) K=4 XP=160
+  Andrei Petrov 'Ash' (Trainee) K=4 XP=200
+===================================================
+
+========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 10.0 min | Game time: D0 00:17 | TimeFactor=3.0
+Population: stalkers 313 alive (peak 309, min 62) | mutants 211 alive
+Initial spawn: 6 stalkers, 0 mutants
+Trickle respawn: +0 stalkers, +0 mutants (0 batches)
+Combat encounters: 655 total
+  vs mutant: W=259 L=278 | mutants killed=259
+  vs stalker: W=61 L=57
+Stalker casualties: 396 total
+  gunfire=118 mutant=278 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 2 | Corpses reported: 405
+GOAP tasks completed: 183 | Goals achieved: 121
+GOAP replans (1Hz): 67158
+Emission storms: 0 | Last phase: Dormant
+KillTracker total: 655
+Deaths per real minute (overall): 39.6
+Combats per real minute (overall): 65.5
+Startup window (0-2 min): 55 deaths, 77 combats (28 deaths/min)
+Steady state (after 2 min): 341 deaths, 578 combats (42.6 deaths/min, 72.2 combats/min)
+Rank distribution (alive):
+  Rookie: 311
+  Trainee: 2
+Top survivors by kills:
+  Oleksiy Kovalenko 'Spark' (Trainee) K=6 XP=220
+  Taras Petrenko 'The Nail' (Rookie) K=5 XP=170
+  Dmytro Shevchenko 'Jackal' (Rookie) K=4 XP=80
+  Andrei Petrenko 'Badger' (Rookie) K=4 XP=160
+  Andrei Petrov 'Ash' (Trainee) K=4 XP=200
+===================================================
+

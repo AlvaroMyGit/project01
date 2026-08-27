@@ -1,0 +1,995 @@
+[14:17:44] [INIT] Debug logging enabled → logs/sim_20260813_141744.log
+[14:17:44] [INIT] Snapshot interval=30s
+[14:17:44] [INIT] Initial population: 6 stalkers, 0 mutants (not counted as trickle spawns)
+[14:17:44] [MISSION] Beard accepted ScoutPoi @ Zaton (210 RU)
+[14:17:44] [TASK] Beard → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:44] [GOAL] Beard achieved AcceptMission
+[14:17:45] [MISSION] Lukash accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:17:45] [TASK] Lukash → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:45] [GOAL] Lukash achieved AcceptMission
+[14:17:45] [MISSION] Professor accepted ScoutPoi @ Yantar (236 RU)
+[14:17:45] [TASK] Professor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:45] [GOAL] Professor achieved AcceptMission
+[14:17:45] [MISSION] Barkeep accepted ScoutPoi @ Rostok (160 RU)
+[14:17:45] [TASK] Barkeep → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:45] [GOAL] Barkeep achieved AcceptMission
+[14:17:45] [MISSION] Cold accepted ScoutPoi @ Great Swamps (164 RU)
+[14:17:45] [TASK] Cold → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:45] [GOAL] Cold achieved AcceptMission
+[14:17:45] [MISSION] Sidorovich accepted ScoutPoi @ Cordon (160 RU)
+[14:17:45] [TASK] Sidorovich → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:45] [GOAL] Sidorovich achieved AcceptMission
+[14:17:47] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1492 M=999)
+[14:17:48] [MISSION] Alexei accepted ScoutPoi @ Deserted Hospital (236 RU)
+[14:17:48] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:48] [GOAL] Alexei achieved AcceptMission
+[14:17:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1490 M=998)
+[14:17:49] [MISSION] Vasyl accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:17:49] [TASK] Vasyl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:49] [GOAL] Vasyl achieved AcceptMission
+[14:17:50] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1488 M=996)
+[14:17:51] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1486 M=995)
+[14:17:51] [MISSION] Dmytro accepted ScoutPoi @ Deserted Hospital (236 RU)
+[14:17:51] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:51] [GOAL] Dmytro achieved AcceptMission
+[14:17:52] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1484 M=994)
+[14:17:52] [MISSION] Taras accepted ScoutPoi @ Zalissya (164 RU)
+[14:17:52] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:52] [GOAL] Taras achieved AcceptMission
+[14:17:54] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1482 M=992)
+[14:17:54] [MISSION] Mikhail accepted ScoutPoi @ Zaton (210 RU)
+[14:17:54] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:54] [GOAL] Mikhail achieved AcceptMission
+[14:17:55] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1480 M=991)
+[14:17:55] [MISSION] Dmitri accepted ScoutPoi @ Zaton (210 RU)
+[14:17:55] [TASK] Dmitri → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:55] [GOAL] Dmitri achieved AcceptMission
+[14:17:56] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1478 M=989)
+[14:17:57] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1476 M=988)
+[14:17:58] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1474 M=987)
+[14:17:58] [MISSION] Mikhail accepted ScoutPoi @ Chistogalovka (200 RU)
+[14:17:58] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:17:58] [GOAL] Mikhail achieved AcceptMission
+[14:17:59] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1472 M=985)
+[14:18:00] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1470 M=984)
+[14:18:01] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1468 M=982)
+[14:18:02] [MISSION] Yuriy accepted ScoutPoi @ Meadow (160 RU)
+[14:18:02] [TASK] Yuriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:02] [GOAL] Yuriy achieved AcceptMission
+[14:18:02] [GEAR] Beard looted [wpn_ak74, out_monolith_exolight_outfit, helm_helm_battle] via combat
+[14:18:03] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1465 M=981)
+[14:18:03] [MISSION] Oleg accepted ScoutPoi @ Agroprom (164 RU)
+[14:18:03] [TASK] Oleg → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:03] [GOAL] Oleg achieved AcceptMission
+[14:18:03] [MISSION] Serhiy accepted ScoutPoi @ Wild Territory (196 RU)
+[14:18:03] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:03] [GOAL] Serhiy achieved AcceptMission
+[14:18:04] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1463 M=980)
+[14:18:04] [MISSION] Andrei accepted ScoutPoi @ Great Swamps (164 RU)
+[14:18:04] [TASK] Andrei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:04] [GOAL] Andrei achieved AcceptMission
+[14:18:05] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1461 M=978)
+[14:18:05] [MISSION] Bohdan accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:18:05] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:05] [GOAL] Bohdan achieved AcceptMission
+[14:18:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1459 M=977)
+[14:18:07] [MISSION] Marcus accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:18:07] [TASK] Marcus → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:07] [GOAL] Marcus achieved AcceptMission
+[14:18:08] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1457 M=976)
+[14:18:08] [MISSION] Bakhyt accepted ScoutPoi @ Jupiter (Pripyat Industrial) (190 RU)
+[14:18:08] [TASK] Bakhyt → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:08] [GOAL] Bakhyt achieved AcceptMission
+[14:18:09] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1455 M=974)
+[14:18:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1453 M=973)
+[14:18:10] [MISSION] Damir accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:18:10] [TASK] Damir → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:10] [GOAL] Damir achieved AcceptMission
+[14:18:11] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1451 M=971)
+[14:18:11] [MISSION] Pierre accepted ScoutPoi @ Zaton (210 RU)
+[14:18:11] [TASK] Pierre → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:11] [GOAL] Pierre achieved AcceptMission
+[14:18:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1449 M=970)
+[14:18:13] [MISSION] Dmytro accepted ScoutPoi @ Red Forest (236 RU)
+[14:18:13] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:13] [GOAL] Dmytro achieved AcceptMission
+[14:18:14] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1447 M=969)
+[14:18:15] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1445 M=967)
+[14:18:15] [SNAPSHOT] real=0.5min game=D0 00:02 alive S=48 M=33 corpses=94 lootable=6 gammaGear out=25 helm=40 avgRU=850 leaderGoals trade=0 mission=17 emission=Dormant nextIn=72gmin desperate=0 hungry=0 interval deaths=7 combats=7 tasks=23 gearLoot=1 gearBuy=0 missions=23 corpseDespawn=0 trickleSpawns=0 ranks=[Rookie:48] goals=[CompleteMission::16,Idle:6,AcceptMission::1] leaders: Damir[Rookie/CompleteMission:], Dmitri[Rookie/Idle], Dmitri[Rookie/Idle], Bakhyt[Rookie/CompleteMission:], Marcus[Rookie/CompleteMission:]
+[14:18:15] [MISSION] Mykola accepted ScoutPoi @ Dark Valley (176 RU)
+[14:18:15] [TASK] Mykola → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:15] [GOAL] Mykola achieved AcceptMission
+[14:18:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1443 M=966)
+[14:18:17] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1441 M=964)
+[14:18:18] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1438 M=963)
+[14:18:18] [MISSION] Oleksiy accepted ScoutPoi @ Meadow (160 RU)
+[14:18:18] [TASK] Oleksiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:18] [GOAL] Oleksiy achieved AcceptMission
+[14:18:18] [MISSION] Igor accepted ScoutPoi @ Chernobyl Town (160 RU)
+[14:18:18] [TASK] Igor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:18] [GOAL] Igor achieved AcceptMission
+[14:18:20] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1436 M=962)
+[14:18:20] [MISSION] Rustam accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:18:20] [TASK] Rustam → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:20] [GOAL] Rustam achieved AcceptMission
+[14:18:21] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1434 M=960)
+[14:18:21] [MISSION] Serhiy accepted ScoutPoi @ Wild Territory (196 RU)
+[14:18:21] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:21] [GOAL] Serhiy achieved AcceptMission
+[14:18:21] [MISSION] Andrei accepted ScoutPoi @ Meadow (160 RU)
+[14:18:21] [TASK] Andrei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:21] [GOAL] Andrei achieved AcceptMission
+[14:18:22] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1432 M=959)
+[14:18:23] [MISSION] Yuriy accepted ScoutPoi @ Zaton (210 RU)
+[14:18:23] [TASK] Yuriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:23] [GOAL] Yuriy achieved AcceptMission
+[14:18:23] [GEAR] Bakhyt looted [wpn_ak74, out_military_monolit_outfit, helm_helm_tactic] via combat
+[14:18:24] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1430 M=957)
+[14:18:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1428 M=956)
+[14:18:25] [MISSION] Mikhail accepted ScoutPoi @ Jupiter (Pripyat Industrial) (190 RU)
+[14:18:25] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:25] [GOAL] Mikhail achieved AcceptMission
+[14:18:26] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1426 M=955)
+[14:18:26] [MISSION] Bohdan accepted ScoutPoi @ Rostok (160 RU)
+[14:18:26] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:26] [GOAL] Bohdan achieved AcceptMission
+[14:18:27] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1424 M=953)
+[14:18:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1422 M=952)
+[14:18:29] [MISSION] Armen accepted ScoutPoi @ Wild Territory (196 RU)
+[14:18:29] [TASK] Armen → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:29] [GOAL] Armen achieved AcceptMission
+[14:18:30] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1420 M=951)
+[14:18:31] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1418 M=949)
+[14:18:31] [GEAR] Dmytro looted [wpn_ak74] via combat
+[14:18:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1416 M=948)
+[14:18:32] [MISSION] Viktor accepted ScoutPoi @ Limansk (200 RU)
+[14:18:32] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:32] [GOAL] Viktor achieved AcceptMission
+[14:18:33] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1414 M=946)
+[14:18:34] [MISSION] Taras accepted ScoutPoi @ Great Swamps (164 RU)
+[14:18:34] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:34] [GOAL] Taras achieved AcceptMission
+[14:18:35] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1411 M=945)
+[14:18:35] [MISSION] Ivan accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:18:35] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:35] [GOAL] Ivan achieved AcceptMission
+[14:18:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1409 M=944)
+[14:18:36] [TASK] Oleksiy → TradeRun [poi_macro_1] (goal=VisitTrader)
+[14:18:36] [GOAL] Oleksiy achieved VisitTrader
+[14:18:36] [MISSION] Oleksiy accepted ScoutPoi @ Meadow (160 RU)
+[14:18:36] [TASK] Oleksiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:36] [GOAL] Oleksiy achieved AcceptMission
+[14:18:37] [GEAR] Barkeep looted [wpn_aksu, wpn_fort12, arm_freedom] via combat
+[14:18:37] [MISSION] Karl accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:18:37] [TASK] Karl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:37] [GOAL] Karl achieved AcceptMission
+[14:18:38] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1407 M=942)
+[14:18:38] [MISSION] Lasha accepted ScoutPoi @ Buriakivka Waste Site (160 RU)
+[14:18:38] [TASK] Lasha → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:38] [GOAL] Lasha achieved AcceptMission
+[14:18:39] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1405 M=941)
+[14:18:39] [MISSION] Oleg accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:18:39] [TASK] Oleg → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:39] [GOAL] Oleg achieved AcceptMission
+[14:18:40] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1403 M=939)
+[14:18:41] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1401 M=938)
+[14:18:41] [MISSION] Yuriy accepted ScoutPoi @ Dark Valley (176 RU)
+[14:18:41] [TASK] Yuriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:41] [GOAL] Yuriy achieved AcceptMission
+[14:18:43] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1399 M=937)
+[14:18:44] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1397 M=935)
+[14:18:44] [MISSION] Ivan accepted ScoutPoi @ Cordon (160 RU)
+[14:18:44] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:44] [GOAL] Ivan achieved AcceptMission
+[14:18:45] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1395 M=934)
+[14:18:45] [SNAPSHOT] real=1.0min game=D0 00:04 alive S=84 M=60 corpses=114 lootable=19 gammaGear out=45 helm=73 avgRU=850 leaderGoals trade=0 mission=27 emission=Dormant nextIn=70gmin desperate=0 hungry=0 interval deaths=14 combats=20 tasks=20 gearLoot=3 gearBuy=0 missions=19 corpseDespawn=0 trickleSpawns=0 ranks=[Rookie:84] goals=[CompleteMission::26,Idle:16,AcceptMission::1] leaders: Mykola[Rookie/AcceptMission:], Ivan[Rookie/CompleteMission:], Sergei[Rookie/Idle], Oleg[Rookie/CompleteMission:], Lasha[Rookie/CompleteMission:]
+[14:18:45] [MISSION] Mykola accepted ScoutPoi @ Garbage (164 RU)
+[14:18:45] [TASK] Mykola → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:45] [GOAL] Mykola achieved AcceptMission
+[14:18:47] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1393 M=932)
+[14:18:47] [MISSION] Alexei accepted ScoutPoi @ Red Forest (236 RU)
+[14:18:47] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:47] [GOAL] Alexei achieved AcceptMission
+[14:18:48] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1391 M=931)
+[14:18:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1389 M=930)
+[14:18:49] [MISSION] Andrei accepted ScoutPoi @ Zaton (210 RU)
+[14:18:49] [TASK] Andrei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:49] [GOAL] Andrei achieved AcceptMission
+[14:18:51] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1387 M=928)
+[14:18:52] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1385 M=927)
+[14:18:52] [MISSION] Bakhyt accepted ScoutPoi @ Garbage (164 RU)
+[14:18:52] [TASK] Bakhyt → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:52] [GOAL] Bakhyt achieved AcceptMission
+[14:18:54] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1382 M=926)
+[14:18:54] [MISSION] Oleksiy accepted ScoutPoi @ Garbage (164 RU)
+[14:18:54] [TASK] Oleksiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:54] [GOAL] Oleksiy achieved AcceptMission
+[14:18:54] [MISSION] Nodar accepted ScoutPoi @ Dark Valley (176 RU)
+[14:18:54] [TASK] Nodar → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:54] [GOAL] Nodar achieved AcceptMission
+[14:18:55] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1380 M=924)
+[14:18:55] [MISSION] Viktor accepted ScoutPoi @ Rostok (160 RU)
+[14:18:55] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:55] [GOAL] Viktor achieved AcceptMission
+[14:18:57] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1378 M=923)
+[14:18:57] [MISSION] Mykola accepted ScoutPoi @ Dead City (Chernobyl-2 Settlement) (236 RU)
+[14:18:57] [TASK] Mykola → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:57] [GOAL] Mykola achieved AcceptMission
+[14:18:58] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1376 M=921)
+[14:18:58] [MISSION] Dmytro accepted ScoutPoi @ Dark Valley (176 RU)
+[14:18:58] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:58] [GOAL] Dmytro achieved AcceptMission
+[14:18:59] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1374 M=920)
+[14:18:59] [MISSION] Alexei accepted ScoutPoi @ Limansk (200 RU)
+[14:18:59] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:18:59] [GOAL] Alexei achieved AcceptMission
+[14:19:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1372 M=919)
+[14:19:01] [MISSION] Sergei accepted ScoutPoi @ Deserted Hospital (236 RU)
+[14:19:01] [TASK] Sergei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:01] [GOAL] Sergei achieved AcceptMission
+[14:19:02] [GEAR] Yuriy looted [wpn_pm] via combat
+[14:19:02] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1370 M=917)
+[14:19:02] [MISSION] Pavel accepted ScoutPoi @ Yantar (236 RU)
+[14:19:02] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:02] [GOAL] Pavel achieved AcceptMission
+[14:19:03] [MISSION] Professor arrived for ScoutPoi @ Ruined Garage (travel=1127m, work=323s game)
+[14:19:04] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1368 M=916)
+[14:19:04] [MISSION] Alibek accepted ScoutPoi @ Great Swamps (164 RU)
+[14:19:04] [TASK] Alibek → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:04] [GOAL] Alibek achieved AcceptMission
+[14:19:05] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1366 M=914)
+[14:19:05] [MISSION] Viktor accepted ScoutPoi @ Garbage (164 RU)
+[14:19:05] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:05] [GOAL] Viktor achieved AcceptMission
+[14:19:05] [MISSION] Ivan accepted ScoutPoi @ Great Swamps (164 RU)
+[14:19:05] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:05] [GOAL] Ivan achieved AcceptMission
+[14:19:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1364 M=913)
+[14:19:08] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1362 M=912)
+[14:19:08] [MISSION] Alexei accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:19:08] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:08] [GOAL] Alexei achieved AcceptMission
+[14:19:09] [MISSION] Pavel accepted ScoutPoi @ Rostok (160 RU)
+[14:19:09] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:09] [GOAL] Pavel achieved AcceptMission
+[14:19:10] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1360 M=910)
+[14:19:10] [MISSION] Serhiy accepted ScoutPoi @ Chistogalovka (200 RU)
+[14:19:10] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:10] [GOAL] Serhiy achieved AcceptMission
+[14:19:11] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1358 M=909)
+[14:19:11] [MISSION] Yuriy accepted ScoutPoi @ Meadow (160 RU)
+[14:19:11] [TASK] Yuriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:11] [GOAL] Yuriy achieved AcceptMission
+[14:19:13] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1355 M=907)
+[14:19:13] [MISSION] Mikhail accepted ScoutPoi @ Zaton (210 RU)
+[14:19:13] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:13] [GOAL] Mikhail achieved AcceptMission
+[14:19:14] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1353 M=906)
+[14:19:14] [MISSION] Pavel accepted ScoutPoi @ Limansk (200 RU)
+[14:19:14] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:14] [GOAL] Pavel achieved AcceptMission
+[14:19:16] [GEAR] Oleksiy looted [wpn_aksu, out_stalker_drought_outfit, helm_helm_ach7] via combat
+[14:19:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1351 M=905)
+[14:19:16] [SNAPSHOT] real=1.5min game=D0 00:05 alive S=105 M=78 corpses=148 lootable=41 gammaGear out=56 helm=89 avgRU=850 leaderGoals trade=0 mission=37 emission=Dormant nextIn=68gmin desperate=0 hungry=0 interval deaths=23 combats=34 tasks=21 gearLoot=2 gearBuy=0 missions=21 corpseDespawn=0 trickleSpawns=0 ranks=[Rookie:105] goals=[CompleteMission::36,Idle:19,AcceptMission::1] leaders: Ivan[Rookie/AcceptMission:], Pavel[Rookie/CompleteMission:], Lars[Rookie/Idle], Mikhail[Rookie/CompleteMission:], Yuriy[Rookie/CompleteMission:]
+[14:19:16] [MISSION] Ivan accepted ScoutPoi @ Limansk (200 RU)
+[14:19:16] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:16] [GOAL] Ivan achieved AcceptMission
+[14:19:17] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1349 M=903)
+[14:19:17] [MISSION] Taras accepted ScoutPoi @ Limansk (200 RU)
+[14:19:17] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:17] [GOAL] Taras achieved AcceptMission
+[14:19:19] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1347 M=902)
+[14:19:19] [MISSION] Pavel accepted ScoutPoi @ Dark Valley (176 RU)
+[14:19:19] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:19] [GOAL] Pavel achieved AcceptMission
+[14:19:19] [MISSION] Serhiy arrived for ScoutPoi @ Mutant Den #1 near Chernobyl Town (travel=990m, work=301s game)
+[14:19:20] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1345 M=901)
+[14:19:20] [MISSION] Pavel accepted ScoutPoi @ Buriakivka Waste Site (160 RU)
+[14:19:20] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:20] [GOAL] Pavel achieved AcceptMission
+[14:19:21] [GEAR] Pavel looted [wpn_ak74, wpn_fort12, out_military_monolit_outfit, helm_helm_tactic] via combat
+[14:19:22] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1343 M=899)
+[14:19:22] [MISSION] Dmytro accepted ScoutPoi @ Agroprom (164 RU)
+[14:19:22] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:22] [GOAL] Dmytro achieved AcceptMission
+[14:19:23] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1341 M=898)
+[14:19:24] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1339 M=896)
+[14:19:24] [MISSION] Viktor accepted ScoutPoi @ Cordon (160 RU)
+[14:19:24] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:24] [GOAL] Viktor achieved AcceptMission
+[14:19:26] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1337 M=895)
+[14:19:26] [MISSION] Pavel accepted ScoutPoi @ Deserted Hospital (236 RU)
+[14:19:26] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:26] [GOAL] Pavel achieved AcceptMission
+[14:19:27] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1335 M=894)
+[14:19:27] [MISSION] Igor accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:19:27] [TASK] Igor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:27] [GOAL] Igor achieved AcceptMission
+[14:19:27] [TASK] Igor → TradeRun [poi_macro_8] (goal=VisitTrader)
+[14:19:27] [GOAL] Igor achieved VisitTrader
+[14:19:28] [MISSION] Igor accepted ScoutPoi @ Zalissya (164 RU)
+[14:19:28] [TASK] Igor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:28] [GOAL] Igor achieved AcceptMission
+[14:19:28] [GEAR] Nodar looted [wpn_aksu, out_stalker_autumn_outfit] via combat
+[14:19:28] [GEAR] Ivan looted [wpn_ak74, out_stalker_drought_outfit, helm_hardhat] via combat
+[14:19:29] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1333 M=892)
+[14:19:29] [MISSION] Viktor accepted ScoutPoi @ Zaton (210 RU)
+[14:19:29] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:29] [GOAL] Viktor achieved AcceptMission
+[14:19:30] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1331 M=891)
+[14:19:30] [MISSION] Dmytro accepted ScoutPoi @ Great Swamps (164 RU)
+[14:19:30] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:30] [GOAL] Dmytro achieved AcceptMission
+[14:19:32] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1328 M=889)
+[14:19:32] [MISSION] Pavel accepted ScoutPoi @ Chistogalovka (200 RU)
+[14:19:32] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:32] [GOAL] Pavel achieved AcceptMission
+[14:19:33] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1326 M=888)
+[14:19:33] [MISSION] Nikolai accepted ScoutPoi @ Rostok (160 RU)
+[14:19:33] [TASK] Nikolai → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:33] [GOAL] Nikolai achieved AcceptMission
+[14:19:35] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1324 M=887)
+[14:19:36] [GEAR] Mikhail looted [wpn_ak74, out_stalker_proto_exo_outfit, helm_helm_ranger] via combat
+[14:19:36] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1322 M=885)
+[14:19:36] [MISSION] Pavel accepted ScoutPoi @ Buriakivka Waste Site (160 RU)
+[14:19:36] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:36] [GOAL] Pavel achieved AcceptMission
+[14:19:37] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1320 M=884)
+[14:19:38] [MISSION] Vasyl accepted ScoutPoi @ Garbage (164 RU)
+[14:19:38] [TASK] Vasyl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:38] [GOAL] Vasyl achieved AcceptMission
+[14:19:39] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1318 M=882)
+[14:19:39] [GEAR] Vasyl looted [wpn_aksu, out_stalker_autumn_outfit, helm_helm_respirator_gp5] via combat
+[14:19:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1316 M=881)
+[14:19:40] [MISSION] Oleg accepted ScoutPoi @ Kopachi (200 RU)
+[14:19:40] [TASK] Oleg → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:40] [GOAL] Oleg achieved AcceptMission
+[14:19:42] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1314 M=880)
+[14:19:42] [MISSION] Ivan accepted ScoutPoi @ Dark Valley (176 RU)
+[14:19:42] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:42] [GOAL] Ivan achieved AcceptMission
+[14:19:42] [MISSION] Serhiy arrived for ScoutPoi @ Mutant Den #1 near Chernobyl Town (travel=990m, work=301s game)
+[14:19:42] [GEAR] Viktor looted [out_banditmerc_outfit] via combat
+[14:19:43] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1312 M=878)
+[14:19:43] [TASK] Yuriy → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Yuriy objective done ScoutPoi @ Makeshift Watchtower → return to Meadow
+[14:19:43] [TASK] Yuriy → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Yuriy objective done ScoutPoi @ Loot Crate (Cordon-Zalissya) → return to Dark Valley
+[14:19:43] [TASK] Viktor → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Viktor objective done ScoutPoi @ Hidden Shack → return to Limansk
+[14:19:43] [TASK] Bohdan → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Bohdan objective done ScoutPoi @ Derelict Stash → return to Rostok
+[14:19:43] [TASK] Serhiy → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Serhiy objective done ScoutPoi @ Mutant Den #1 near Chernobyl Town → return to Wild Territory
+[14:19:43] [TASK] Mikhail → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Mikhail objective done ScoutPoi @ Burnt Lean-to → return to Chistogalovka
+[14:19:43] [TASK] Mikhail → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Mikhail objective done ScoutPoi @ Windswept Pillbox → return to Zaton
+[14:19:43] [TASK] Karl → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Karl objective done ScoutPoi @ Derelict Lean-to → return to Truck Cemetery
+[14:19:43] [TASK] Lukash → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Lukash objective done ScoutPoi @ Sunken Watchtower → return to Army Warehouses
+[14:19:43] [TASK] Cold → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:43] [MISSION] Cold objective done ScoutPoi @ Sunken Pillbox → return to Great Swamps
+[14:19:44] [TASK] Nikolai → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Nikolai objective done ScoutPoi @ Derelict Stash → return to Rostok
+[14:19:44] [TASK] Pavel → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Pavel objective done ScoutPoi @ Burnt Lean-to → return to Chistogalovka
+[14:19:44] [TASK] Ivan → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Ivan objective done ScoutPoi @ Loot Crate (Cordon-Zalissya) → return to Dark Valley
+[14:19:44] [TASK] Oleg → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Oleg objective done ScoutPoi @ Derelict Watchtower → return to Kopachi
+[14:19:44] [TASK] Vasyl → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Vasyl objective done ScoutPoi @ Flooded Hut → return to Garbage
+[14:19:44] [TASK] Pavel → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Pavel objective done ScoutPoi @ Burnt Cabin → return to Buriakivka Waste Site
+[14:19:44] [TASK] Dmytro → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Dmytro objective done ScoutPoi @ Sunken Pillbox → return to Great Swamps
+[14:19:44] [TASK] Viktor → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Viktor objective done ScoutPoi @ Windswept Pillbox → return to Zaton
+[14:19:44] [TASK] Igor → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Igor objective done ScoutPoi @ Derelict Lean-to → return to Truck Cemetery
+[14:19:44] [TASK] Pavel → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Pavel objective done ScoutPoi @ Windswept Cabin → return to Deserted Hospital
+[14:19:44] [TASK] Viktor → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Viktor objective done ScoutPoi @ Ruined Pillbox → return to Cordon
+[14:19:44] [TASK] Dmytro → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Dmytro objective done ScoutPoi @ Makeshift Bus → return to Agroprom
+[14:19:44] [TASK] Pavel → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Pavel objective done ScoutPoi @ Burnt Cabin → return to Buriakivka Waste Site
+[14:19:44] [TASK] Pavel → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Pavel objective done ScoutPoi @ Loot Crate (Cordon-Zalissya) → return to Dark Valley
+[14:19:44] [TASK] Taras → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Taras objective done ScoutPoi @ Hidden Shack → return to Limansk
+[14:19:44] [TASK] Ivan → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Ivan objective done ScoutPoi @ Hidden Shack → return to Limansk
+[14:19:44] [TASK] Pavel → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Pavel objective done ScoutPoi @ Hidden Shack → return to Limansk
+[14:19:44] [TASK] Mikhail → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Mikhail objective done ScoutPoi @ Windswept Pillbox → return to Zaton
+[14:19:44] [TASK] Yuriy → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Yuriy objective done ScoutPoi @ Makeshift Watchtower → return to Meadow
+[14:19:44] [TASK] Alexei → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Alexei objective done ScoutPoi @ Sunken Watchtower → return to Army Warehouses
+[14:19:44] [TASK] Viktor → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Viktor objective done ScoutPoi @ Flooded Hut → return to Garbage
+[14:19:44] [TASK] Pavel → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Pavel objective done ScoutPoi @ Ruined Garage → return to Yantar
+[14:19:44] [TASK] Sergei → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Sergei objective done ScoutPoi @ Windswept Cabin → return to Deserted Hospital
+[14:19:44] [TASK] Mykola → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Mykola objective done ScoutPoi @ Main Road Junction → return to Dead City (Chernobyl-2 Settlement)
+[14:19:44] [TASK] Nodar → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Nodar objective done ScoutPoi @ Loot Crate (Cordon-Zalissya) → return to Dark Valley
+[14:19:44] [TASK] Andrei → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Andrei objective done ScoutPoi @ Windswept Pillbox → return to Zaton
+[14:19:44] [TASK] Alexei → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Alexei objective done ScoutPoi @ Burnt Camp → return to Red Forest
+[14:19:44] [TASK] Ivan → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Ivan objective done ScoutPoi @ Ruined Pillbox → return to Cordon
+[14:19:44] [TASK] Lasha → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Lasha objective done ScoutPoi @ Burnt Cabin → return to Buriakivka Waste Site
+[14:19:44] [TASK] Marcus → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Marcus objective done ScoutPoi @ Sunken Watchtower → return to Army Warehouses
+[14:19:44] [TASK] Bohdan → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Bohdan objective done ScoutPoi @ Sunken Watchtower → return to Army Warehouses
+[14:19:44] [TASK] Oleg → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Oleg objective done ScoutPoi @ Makeshift Bus → return to Agroprom
+[14:19:44] [TASK] Serhiy → FulfillMission [ScoutPoi] (goal=CompleteMission)
+[14:19:44] [MISSION] Serhiy objective done ScoutPoi @ Mutant Den #1 near Chernobyl Town → return to Wild Territory
+[14:19:44] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1310 M=877)
+[14:19:45] [TASK] Nikolai → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Nikolai turned in ScoutPoi @ Rostok (+160 RU)
+[14:19:45] [GOAL] Nikolai achieved CompleteMission
+[14:19:45] [TASK] Pavel → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Pavel turned in ScoutPoi @ Chistogalovka (+200 RU)
+[14:19:45] [GOAL] Pavel achieved CompleteMission
+[14:19:45] [MISSION] Vasyl accepted ScoutPoi @ Dark Valley (176 RU)
+[14:19:45] [TASK] Vasyl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Vasyl achieved AcceptMission
+[14:19:45] [TASK] Ivan → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Ivan turned in ScoutPoi @ Dark Valley (+176 RU)
+[14:19:45] [GOAL] Ivan achieved CompleteMission
+[14:19:45] [TASK] Oleg → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Oleg turned in ScoutPoi @ Kopachi (+200 RU)
+[14:19:45] [GOAL] Oleg achieved CompleteMission
+[14:19:45] [TASK] Vasyl → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Vasyl turned in ScoutPoi @ Garbage (+164 RU)
+[14:19:45] [GOAL] Vasyl achieved CompleteMission
+[14:19:45] [TASK] Pavel → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Pavel turned in ScoutPoi @ Buriakivka Waste Site (+160 RU)
+[14:19:45] [GOAL] Pavel achieved CompleteMission
+[14:19:45] [TASK] Dmytro → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Dmytro turned in ScoutPoi @ Great Swamps (+164 RU)
+[14:19:45] [GOAL] Dmytro achieved CompleteMission
+[14:19:45] [TASK] Viktor → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Viktor turned in ScoutPoi @ Zaton (+210 RU)
+[14:19:45] [GOAL] Viktor achieved CompleteMission
+[14:19:45] [TASK] Igor → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Igor turned in ScoutPoi @ Truck Cemetery (+176 RU)
+[14:19:45] [GOAL] Igor achieved CompleteMission
+[14:19:45] [TASK] Pavel → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Pavel turned in ScoutPoi @ Deserted Hospital (+236 RU)
+[14:19:45] [GOAL] Pavel achieved CompleteMission
+[14:19:45] [TASK] Viktor → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Viktor turned in ScoutPoi @ Cordon (+160 RU)
+[14:19:45] [GOAL] Viktor achieved CompleteMission
+[14:19:45] [TASK] Dmytro → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Dmytro turned in ScoutPoi @ Agroprom (+164 RU)
+[14:19:45] [GOAL] Dmytro achieved CompleteMission
+[14:19:45] [TASK] Pavel → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Pavel turned in ScoutPoi @ Buriakivka Waste Site (+160 RU)
+[14:19:45] [GOAL] Pavel achieved CompleteMission
+[14:19:45] [TASK] Taras → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Taras turned in ScoutPoi @ Limansk (+200 RU)
+[14:19:45] [GOAL] Taras achieved CompleteMission
+[14:19:45] [TASK] Ivan → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Ivan turned in ScoutPoi @ Limansk (+200 RU)
+[14:19:45] [GOAL] Ivan achieved CompleteMission
+[14:19:45] [TASK] Pavel → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Pavel turned in ScoutPoi @ Limansk (+200 RU)
+[14:19:45] [GOAL] Pavel achieved CompleteMission
+[14:19:45] [TASK] Mikhail → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Mikhail turned in ScoutPoi @ Zaton (+210 RU)
+[14:19:45] [GOAL] Mikhail achieved CompleteMission
+[14:19:45] [TASK] Yuriy → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Yuriy turned in ScoutPoi @ Meadow (+160 RU)
+[14:19:45] [GOAL] Yuriy achieved CompleteMission
+[14:19:45] [TASK] Alexei → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Alexei turned in ScoutPoi @ Army Warehouses (+160 RU)
+[14:19:45] [GOAL] Alexei achieved CompleteMission
+[14:19:45] [TASK] Viktor → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Viktor turned in ScoutPoi @ Garbage (+164 RU)
+[14:19:45] [GOAL] Viktor achieved CompleteMission
+[14:19:45] [TASK] Sergei → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Sergei turned in ScoutPoi @ Deserted Hospital (+236 RU)
+[14:19:45] [GOAL] Sergei achieved CompleteMission
+[14:19:45] [TASK] Mykola → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Mykola turned in ScoutPoi @ Dead City (Chernobyl-2 Settlement) (+236 RU)
+[14:19:45] [GOAL] Mykola achieved CompleteMission
+[14:19:45] [TASK] Andrei → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Andrei turned in ScoutPoi @ Zaton (+210 RU)
+[14:19:45] [GOAL] Andrei achieved CompleteMission
+[14:19:45] [TASK] Alexei → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Alexei turned in ScoutPoi @ Red Forest (+236 RU)
+[14:19:45] [GOAL] Alexei achieved CompleteMission
+[14:19:45] [TASK] Ivan → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Ivan turned in ScoutPoi @ Cordon (+160 RU)
+[14:19:45] [GOAL] Ivan achieved CompleteMission
+[14:19:45] [TASK] Lasha → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Lasha turned in ScoutPoi @ Buriakivka Waste Site (+160 RU)
+[14:19:45] [GOAL] Lasha achieved CompleteMission
+[14:19:45] [TASK] Marcus → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Marcus turned in ScoutPoi @ Army Warehouses (+160 RU)
+[14:19:45] [GOAL] Marcus achieved CompleteMission
+[14:19:45] [TASK] Bohdan → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Bohdan turned in ScoutPoi @ Army Warehouses (+160 RU)
+[14:19:45] [GOAL] Bohdan achieved CompleteMission
+[14:19:45] [TASK] Oleg → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Oleg turned in ScoutPoi @ Agroprom (+164 RU)
+[14:19:45] [GOAL] Oleg achieved CompleteMission
+[14:19:45] [TASK] Yuriy → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Yuriy turned in ScoutPoi @ Meadow (+160 RU)
+[14:19:45] [GOAL] Yuriy achieved CompleteMission
+[14:19:45] [TASK] Viktor → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Viktor turned in ScoutPoi @ Limansk (+200 RU)
+[14:19:45] [GOAL] Viktor achieved CompleteMission
+[14:19:45] [TASK] Bohdan → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Bohdan turned in ScoutPoi @ Rostok (+160 RU)
+[14:19:45] [GOAL] Bohdan achieved CompleteMission
+[14:19:45] [TASK] Mikhail → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Mikhail turned in ScoutPoi @ Chistogalovka (+200 RU)
+[14:19:45] [GOAL] Mikhail achieved CompleteMission
+[14:19:45] [TASK] Mikhail → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Mikhail turned in ScoutPoi @ Zaton (+210 RU)
+[14:19:45] [GOAL] Mikhail achieved CompleteMission
+[14:19:45] [TASK] Karl → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Karl turned in ScoutPoi @ Truck Cemetery (+176 RU)
+[14:19:45] [GOAL] Karl achieved CompleteMission
+[14:19:45] [TASK] Lukash → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Lukash turned in ScoutPoi @ Army Warehouses (+160 RU)
+[14:19:45] [GOAL] Lukash achieved CompleteMission
+[14:19:45] [TASK] Cold → TurnInMission [ScoutPoi] (goal=CompleteMission)
+[14:19:45] [MISSION] Cold turned in ScoutPoi @ Great Swamps (+164 RU)
+[14:19:45] [GOAL] Cold achieved CompleteMission
+[14:19:45] [MISSION] Nikolai accepted ScoutPoi @ Rostok (160 RU)
+[14:19:45] [TASK] Nikolai → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Nikolai achieved AcceptMission
+[14:19:45] [MISSION] Pavel accepted ScoutPoi @ Chistogalovka (200 RU)
+[14:19:45] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Pavel achieved AcceptMission
+[14:19:45] [MISSION] Ivan accepted ScoutPoi @ Dark Valley (176 RU)
+[14:19:45] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Ivan achieved AcceptMission
+[14:19:45] [MISSION] Oleg accepted ScoutPoi @ Kopachi (200 RU)
+[14:19:45] [TASK] Oleg → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Oleg achieved AcceptMission
+[14:19:45] [MISSION] Vasyl accepted ScoutPoi @ Garbage (164 RU)
+[14:19:45] [TASK] Vasyl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Vasyl achieved AcceptMission
+[14:19:45] [MISSION] Pavel accepted ScoutPoi @ Buriakivka Waste Site (160 RU)
+[14:19:45] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Pavel achieved AcceptMission
+[14:19:45] [MISSION] Dmytro accepted ScoutPoi @ Great Swamps (164 RU)
+[14:19:45] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Dmytro achieved AcceptMission
+[14:19:45] [MISSION] Viktor accepted ScoutPoi @ Zaton (210 RU)
+[14:19:45] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Viktor achieved AcceptMission
+[14:19:45] [MISSION] Igor accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:19:45] [TASK] Igor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Igor achieved AcceptMission
+[14:19:45] [MISSION] Pavel accepted ScoutPoi @ Deserted Hospital (236 RU)
+[14:19:45] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Pavel achieved AcceptMission
+[14:19:45] [MISSION] Viktor accepted ScoutPoi @ Cordon (160 RU)
+[14:19:45] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Viktor achieved AcceptMission
+[14:19:45] [MISSION] Dmytro accepted ScoutPoi @ Agroprom (164 RU)
+[14:19:45] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Dmytro achieved AcceptMission
+[14:19:45] [MISSION] Pavel accepted ScoutPoi @ Buriakivka Waste Site (160 RU)
+[14:19:45] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Pavel achieved AcceptMission
+[14:19:45] [MISSION] Taras accepted ScoutPoi @ Limansk (200 RU)
+[14:19:45] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Taras achieved AcceptMission
+[14:19:45] [MISSION] Ivan accepted ScoutPoi @ Limansk (200 RU)
+[14:19:45] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Ivan achieved AcceptMission
+[14:19:45] [MISSION] Pavel accepted ScoutPoi @ Limansk (200 RU)
+[14:19:45] [TASK] Pavel → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Pavel achieved AcceptMission
+[14:19:45] [MISSION] Mikhail accepted ScoutPoi @ Zaton (210 RU)
+[14:19:45] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Mikhail achieved AcceptMission
+[14:19:45] [MISSION] Yuriy accepted ScoutPoi @ Meadow (160 RU)
+[14:19:45] [TASK] Yuriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Yuriy achieved AcceptMission
+[14:19:45] [MISSION] Alexei accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:19:45] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Alexei achieved AcceptMission
+[14:19:45] [MISSION] Viktor accepted ScoutPoi @ Garbage (164 RU)
+[14:19:45] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Viktor achieved AcceptMission
+[14:19:45] [MISSION] Sergei accepted ScoutPoi @ Deserted Hospital (236 RU)
+[14:19:45] [TASK] Sergei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Sergei achieved AcceptMission
+[14:19:45] [MISSION] Mykola accepted ScoutPoi @ Dead City (Chernobyl-2 Settlement) (236 RU)
+[14:19:45] [TASK] Mykola → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Mykola achieved AcceptMission
+[14:19:45] [MISSION] Andrei accepted ScoutPoi @ Zaton (210 RU)
+[14:19:45] [TASK] Andrei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Andrei achieved AcceptMission
+[14:19:45] [MISSION] Alexei accepted ScoutPoi @ Red Forest (236 RU)
+[14:19:45] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Alexei achieved AcceptMission
+[14:19:45] [MISSION] Ivan accepted ScoutPoi @ Cordon (160 RU)
+[14:19:45] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:45] [GOAL] Ivan achieved AcceptMission
+[14:19:46] [MISSION] Lasha accepted ScoutPoi @ Buriakivka Waste Site (160 RU)
+[14:19:46] [TASK] Lasha → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Lasha achieved AcceptMission
+[14:19:46] [MISSION] Marcus accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:19:46] [TASK] Marcus → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Marcus achieved AcceptMission
+[14:19:46] [MISSION] Bohdan accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:19:46] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Bohdan achieved AcceptMission
+[14:19:46] [MISSION] Oleg accepted ScoutPoi @ Agroprom (164 RU)
+[14:19:46] [TASK] Oleg → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Oleg achieved AcceptMission
+[14:19:46] [MISSION] Yuriy accepted ScoutPoi @ Meadow (160 RU)
+[14:19:46] [TASK] Yuriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Yuriy achieved AcceptMission
+[14:19:46] [MISSION] Viktor accepted ScoutPoi @ Limansk (200 RU)
+[14:19:46] [TASK] Viktor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Viktor achieved AcceptMission
+[14:19:46] [MISSION] Bohdan accepted ScoutPoi @ Rostok (160 RU)
+[14:19:46] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Bohdan achieved AcceptMission
+[14:19:46] [MISSION] Mikhail accepted ScoutPoi @ Chistogalovka (200 RU)
+[14:19:46] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Mikhail achieved AcceptMission
+[14:19:46] [MISSION] Mikhail accepted ScoutPoi @ Zaton (210 RU)
+[14:19:46] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Mikhail achieved AcceptMission
+[14:19:46] [MISSION] Karl accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:19:46] [TASK] Karl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Karl achieved AcceptMission
+[14:19:46] [MISSION] Lukash accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:19:46] [TASK] Lukash → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Lukash achieved AcceptMission
+[14:19:46] [MISSION] Cold accepted ScoutPoi @ Great Swamps (164 RU)
+[14:19:46] [TASK] Cold → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:46] [GOAL] Cold achieved AcceptMission
+[14:19:54] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1308 M=876)
+[14:19:54] [SNAPSHOT] real=2.2min game=D0 00:07 alive S=121 M=99 corpses=183 lootable=63 gammaGear out=68 helm=106 avgRU=902 leaderGoals trade=0 mission=34 emission=Dormant nextIn=66gmin desperate=0 hungry=0 interval deaths=27 combats=35 tasks=136 gearLoot=6 gearBuy=0 missions=92 corpseDespawn=0 trickleSpawns=0 ranks=[Rookie:121] goals=[CompleteMission::33,Idle:25,Traveling:4,AcceptMission::1] leaders: Alexei[Rookie/Idle], Nikolai[Rookie/CompleteMission:], Pavel[Rookie/CompleteMission:], Andriy[Rookie/AcceptMission:], Vasyl[Rookie/CompleteMission:]
+[14:19:54] [MISSION] Andriy accepted ScoutPoi @ Great Swamps (164 RU)
+[14:19:54] [TASK] Andriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:54] [GOAL] Andriy achieved AcceptMission
+[14:19:54] [GEAR] Viktor looted [wpn_ak74, helm_hardhat] via combat
+[14:19:56] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1306 M=874)
+[14:19:56] [GEAR] Mikhail looted [wpn_fn2000, out_exolight_outfit, helm_helm_ranger] via combat
+[14:19:57] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1304 M=873)
+[14:19:57] [MISSION] Mikhail accepted ScoutPoi @ Great Swamps (164 RU)
+[14:19:57] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:57] [GOAL] Mikhail achieved AcceptMission
+[14:19:57] [MISSION] Oleg accepted ScoutPoi @ Agroprom (164 RU)
+[14:19:57] [TASK] Oleg → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:57] [GOAL] Oleg achieved AcceptMission
+[14:19:59] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1302 M=871)
+[14:19:59] [MISSION] Vasyl accepted ScoutPoi @ Meadow (160 RU)
+[14:19:59] [TASK] Vasyl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:19:59] [GOAL] Vasyl achieved AcceptMission
+[14:20:01] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1299 M=870)
+[14:20:01] [MISSION] Igor accepted ScoutPoi @ Great Swamps (164 RU)
+[14:20:01] [TASK] Igor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:01] [GOAL] Igor achieved AcceptMission
+[14:20:02] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1297 M=869)
+[14:20:02] [MISSION] Bohdan accepted ScoutPoi @ Yantar (236 RU)
+[14:20:02] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:02] [GOAL] Bohdan achieved AcceptMission
+[14:20:04] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1295 M=867)
+[14:20:04] [MISSION] Serhiy accepted ScoutPoi @ Chistogalovka (200 RU)
+[14:20:04] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:04] [GOAL] Serhiy achieved AcceptMission
+[14:20:05] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1293 M=866)
+[14:20:05] [MISSION] Nikolai accepted ScoutPoi @ Agroprom (164 RU)
+[14:20:05] [TASK] Nikolai → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:05] [GOAL] Nikolai achieved AcceptMission
+[14:20:07] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1291 M=864)
+[14:20:08] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1289 M=863)
+[14:20:08] [MISSION] Serhiy accepted ScoutPoi @ Cordon (160 RU)
+[14:20:08] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:08] [GOAL] Serhiy achieved AcceptMission
+[14:20:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1287 M=862)
+[14:20:11] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1285 M=860)
+[14:20:11] [MISSION] Nikolai accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:20:11] [TASK] Nikolai → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:11] [GOAL] Nikolai achieved AcceptMission
+[14:20:12] [MISSION] Sergei accepted ScoutPoi @ Garbage (164 RU)
+[14:20:12] [TASK] Sergei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:12] [GOAL] Sergei achieved AcceptMission
+[14:20:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1283 M=859)
+[14:20:13] [MISSION] Alexei accepted ScoutPoi @ Agroprom (164 RU)
+[14:20:13] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:13] [GOAL] Alexei achieved AcceptMission
+[14:20:14] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1281 M=857)
+[14:20:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1279 M=856)
+[14:20:16] [MISSION] Bohdan accepted ScoutPoi @ Garbage (164 RU)
+[14:20:16] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:16] [GOAL] Bohdan achieved AcceptMission
+[14:20:17] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1277 M=855)
+[14:20:18] [GEAR] Andriy looted [wpn_aksu, out_stalker_drought_outfit, helm_helm_ach7] via combat
+[14:20:19] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1275 M=853)
+[14:20:19] [MISSION] Taras accepted ScoutPoi @ Meadow (160 RU)
+[14:20:19] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:19] [GOAL] Taras achieved AcceptMission
+[14:20:19] [MISSION] Oleksiy accepted ScoutPoi @ Generators (236 RU)
+[14:20:19] [TASK] Oleksiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:19] [GOAL] Oleksiy achieved AcceptMission
+[14:20:20] [GEAR] Ivan looted [arm_exo, helm_helm_exo] via combat
+[14:20:21] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1272 M=852)
+[14:20:22] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1270 M=851)
+[14:20:23] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1268 M=849)
+[14:20:23] [MISSION] Ivan accepted ScoutPoi @ Great Swamps (164 RU)
+[14:20:23] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:23] [GOAL] Ivan achieved AcceptMission
+[14:20:24] [GEAR] Serhiy looted [wpn_pm] via combat
+[14:20:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1266 M=848)
+[14:20:25] [SNAPSHOT] real=2.7min game=D0 00:09 alive S=127 M=112 corpses=234 lootable=97 gammaGear out=67 helm=111 avgRU=878 leaderGoals trade=0 mission=36 emission=Dormant nextIn=65gmin desperate=0 hungry=0 interval deaths=36 combats=51 tasks=16 gearLoot=5 gearBuy=0 missions=16 corpseDespawn=0 trickleSpawns=0 ranks=[Rookie:127] goals=[CompleteMission::35,Idle:29,Traveling:2,AcceptMission::1] leaders: Alexei[Rookie/Idle], Nikolai[Rookie/CompleteMission:], Pavel[Rookie/CompleteMission:], Taras[Rookie/AcceptMission:], Ivan[Rookie/CompleteMission:]
+[14:20:25] [MISSION] Taras accepted ScoutPoi @ Chistogalovka (200 RU)
+[14:20:25] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:25] [GOAL] Taras achieved AcceptMission
+[14:20:26] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1264 M=846)
+[14:20:26] [MISSION] Mikhail accepted ScoutPoi @ Rostok (160 RU)
+[14:20:26] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:26] [GOAL] Mikhail achieved AcceptMission
+[14:20:28] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1262 M=845)
+[14:20:28] [MISSION] Mikhail accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:20:28] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:28] [GOAL] Mikhail achieved AcceptMission
+[14:20:30] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1260 M=844)
+[14:20:31] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1258 M=842)
+[14:20:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1256 M=841)
+[14:20:32] [MISSION] Jake accepted ScoutPoi @ Wild Territory (196 RU)
+[14:20:32] [TASK] Jake → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:32] [GOAL] Jake achieved AcceptMission
+[14:20:34] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1254 M=839)
+[14:20:34] [MISSION] Yuriy accepted ScoutPoi @ Cordon (160 RU)
+[14:20:34] [TASK] Yuriy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:34] [GOAL] Yuriy achieved AcceptMission
+[14:20:35] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1252 M=838)
+[14:20:36] [RANK] Taras Kovalenko 'Wolf' → Trainee
+[14:20:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1250 M=837)
+[14:20:37] [MISSION] Oleksiy accepted ScoutPoi @ Great Swamps (164 RU)
+[14:20:37] [TASK] Oleksiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:37] [GOAL] Oleksiy achieved AcceptMission
+[14:20:38] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1248 M=835)
+[14:20:40] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1245 M=834)
+[14:20:40] [MISSION] Lars accepted ScoutPoi @ Meadow (160 RU)
+[14:20:40] [TASK] Lars → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:40] [GOAL] Lars achieved AcceptMission
+[14:20:41] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1243 M=832)
+[14:20:41] [MISSION] Alexei accepted ScoutPoi @ Garbage (164 RU)
+[14:20:41] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:41] [GOAL] Alexei achieved AcceptMission
+[14:20:43] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1241 M=831)
+[14:20:43] [MISSION] Ivan accepted ScoutPoi @ Deserted Hospital (236 RU)
+[14:20:43] [TASK] Ivan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:43] [GOAL] Ivan achieved AcceptMission
+[14:20:45] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1239 M=830)
+[14:20:45] [MISSION] Andrei accepted ScoutPoi @ Chernobyl Town (160 RU)
+[14:20:45] [TASK] Andrei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:45] [GOAL] Andrei achieved AcceptMission
+[14:20:45] [GEAR] Bohdan looted [wpn_ak74, wpn_fort12, helm_helm_respirator_gp5] via combat
+[14:20:46] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1237 M=828)
+[14:20:48] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1235 M=827)
+[14:20:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1233 M=826)
+[14:20:51] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1231 M=824)
+[14:20:51] [MISSION] Bohdan accepted ScoutPoi @ Garbage (164 RU)
+[14:20:51] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:51] [GOAL] Bohdan achieved AcceptMission
+[14:20:52] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1229 M=823)
+[14:20:54] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1227 M=821)
+[14:20:54] [MISSION] Alexei accepted ScoutPoi @ Radar (Brain Scorcher) (236 RU)
+[14:20:54] [TASK] Alexei → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:54] [GOAL] Alexei achieved AcceptMission
+[14:20:55] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1225 M=820)
+[14:20:55] [SNAPSHOT] real=3.2min game=D0 00:10 alive S=149 M=124 corpses=269 lootable=116 gammaGear out=79 helm=129 avgRU=868 leaderGoals trade=0 mission=43 emission=Dormant nextIn=63gmin desperate=0 hungry=0 interval deaths=19 combats=35 tasks=12 gearLoot=1 gearBuy=0 missions=12 corpseDespawn=0 trickleSpawns=0 ranks=[Rookie:148,Trainee:1] goals=[CompleteMission::42,Idle:39,AcceptMission::1] leaders: Serhiy[Rookie/AcceptMission:], Alexei[Rookie/CompleteMission:], Giorgi[Rookie/Idle], Bohdan[Rookie/CompleteMission:], Alexei[Rookie/Idle]
+[14:20:55] [MISSION] Serhiy accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:20:55] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:55] [GOAL] Serhiy achieved AcceptMission
+[14:20:57] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1223 M=819)
+[14:20:57] [MISSION] Mikhail accepted ScoutPoi @ Limansk (200 RU)
+[14:20:57] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:20:57] [GOAL] Mikhail achieved AcceptMission
+[14:20:59] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1221 M=817)
+[14:21:00] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1219 M=816)
+[14:21:00] [MISSION] Serhiy accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:21:00] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:00] [GOAL] Serhiy achieved AcceptMission
+[14:21:01] [GEAR] Andrei looted [wpn_ak74] via combat
+[14:21:02] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1216 M=814)
+[14:21:03] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1214 M=813)
+[14:21:03] [MISSION] Zura accepted ScoutPoi @ Cordon (160 RU)
+[14:21:03] [TASK] Zura → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:03] [GOAL] Zura achieved AcceptMission
+[14:21:03] [TASK] Oleg → TradeRun [poi_macro_8] (goal=VisitTrader)
+[14:21:03] [GOAL] Oleg achieved VisitTrader
+[14:21:04] [MISSION] Oleg accepted ScoutPoi @ Dark Valley (176 RU)
+[14:21:04] [TASK] Oleg → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:04] [GOAL] Oleg achieved AcceptMission
+[14:21:05] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1212 M=812)
+[14:21:05] [MISSION] Rustam accepted ScoutPoi @ Wild Territory (196 RU)
+[14:21:05] [TASK] Rustam → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:05] [GOAL] Rustam achieved AcceptMission
+[14:21:06] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1210 M=810)
+[14:21:06] [MISSION] Lars accepted ScoutPoi @ Garbage (164 RU)
+[14:21:06] [TASK] Lars → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:06] [GOAL] Lars achieved AcceptMission
+[14:21:08] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1208 M=809)
+[14:21:08] [MISSION] Igor accepted ScoutPoi @ Zalissya (164 RU)
+[14:21:08] [TASK] Igor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:08] [GOAL] Igor achieved AcceptMission
+[14:21:09] [RANK] Igor Sokolov 'Shadow' → Trainee
+[14:21:10] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1206 M=807)
+[14:21:10] [MISSION] Connor accepted ScoutPoi @ Yantar (236 RU)
+[14:21:10] [TASK] Connor → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:10] [GOAL] Connor achieved AcceptMission
+[14:21:11] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1204 M=806)
+[14:21:11] [MISSION] Damir accepted ScoutPoi @ Rostok (160 RU)
+[14:21:11] [TASK] Damir → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:11] [GOAL] Damir achieved AcceptMission
+[14:21:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1202 M=805)
+[14:21:13] [MISSION] Dmytro accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:21:13] [TASK] Dmytro → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:13] [GOAL] Dmytro achieved AcceptMission
+[14:21:14] [GEAR] Taras looted [wpn_fort12, wpn_fort12, helm_hardhat] via combat
+[14:21:14] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1200 M=803)
+[14:21:14] [MISSION] Taras accepted ScoutPoi @ Zalissya (164 RU)
+[14:21:14] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:14] [GOAL] Taras achieved AcceptMission
+[14:21:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1198 M=802)
+[14:21:18] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1196 M=801)
+[14:21:18] [MISSION] Bohdan accepted ScoutPoi @ Wild Territory (196 RU)
+[14:21:18] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:18] [GOAL] Bohdan achieved AcceptMission
+[14:21:18] [GEAR] Yuriy looted [wpn_ak74, wpn_fort12, arm_duty, helm_hardhat] via combat
+[14:21:19] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1194 M=799)
+[14:21:19] [MISSION] Mikhail accepted ScoutPoi @ Jupiter (Pripyat Industrial) (190 RU)
+[14:21:19] [TASK] Mikhail → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:19] [GOAL] Mikhail achieved AcceptMission
+[14:21:20] [RANK] Dmytro Petrov 'Ghost' → Trainee
+[14:21:20] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1192 M=798)
+[14:21:20] [MISSION] Taras accepted ScoutPoi @ Chernobyl Town (160 RU)
+[14:21:20] [TASK] Taras → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:20] [GOAL] Taras achieved AcceptMission
+[14:21:21] [RANK] Alexei Bondarenko 'Ash' → Trainee
+[14:21:22] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1189 M=796)
+[14:21:22] [MISSION] Bohdan accepted ScoutPoi @ Generators (236 RU)
+[14:21:22] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:22] [GOAL] Bohdan achieved AcceptMission
+[14:21:23] [MISSION] Serhiy accepted ScoutPoi @ Buriakivka Waste Site (160 RU)
+[14:21:23] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:23] [GOAL] Serhiy achieved AcceptMission
+[14:21:24] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1187 M=795)
+[14:21:24] [MISSION] Nikolai accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:21:24] [TASK] Nikolai → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:24] [GOAL] Nikolai achieved AcceptMission
+[14:21:24] [MISSION] Lasha accepted ScoutPoi @ Rostok (160 RU)
+[14:21:24] [TASK] Lasha → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:24] [GOAL] Lasha achieved AcceptMission
+[14:21:26] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1185 M=794)
+[14:21:26] [SNAPSHOT] real=3.7min game=D0 00:12 alive S=163 M=140 corpses=305 lootable=141 gammaGear out=79 helm=144 avgRU=863 leaderGoals trade=0 mission=52 emission=Dormant nextIn=61gmin desperate=1 hungry=0 interval deaths=26 combats=36 tasks=20 gearLoot=3 gearBuy=0 missions=19 corpseDespawn=0 trickleSpawns=0 ranks=[Rookie:159,Trainee:4] goals=[CompleteMission::52,Idle:41] leaders: Taras[Rookie/CompleteMission:], Mikhail[Rookie/CompleteMission:], Bohdan[Rookie/CompleteMission:], Nikolai[Rookie/Idle], Taras[Rookie/CompleteMission:]
+[14:21:27] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1183 M=792)
+[14:21:27] [CORPSE] Despawned 1 bodies (lifetime=1)
+[14:21:27] [MISSION] Vasyl accepted ScoutPoi @ Cordon (160 RU)
+[14:21:27] [TASK] Vasyl → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:27] [GOAL] Vasyl achieved AcceptMission
+[14:21:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1181 M=791)
+[14:21:29] [MISSION] Pierre accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:21:29] [TASK] Pierre → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:29] [GOAL] Pierre achieved AcceptMission
+[14:21:31] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1179 M=789)
+[14:21:31] [MISSION] Serhiy accepted ScoutPoi @ Limansk (200 RU)
+[14:21:31] [TASK] Serhiy → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:31] [GOAL] Serhiy achieved AcceptMission
+[14:21:33] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1177 M=788)
+[14:21:33] [MISSION] Alibek accepted ScoutPoi @ Limansk (200 RU)
+[14:21:33] [TASK] Alibek → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:33] [GOAL] Alibek achieved AcceptMission
+[14:21:33] [MISSION] Mykola accepted ScoutPoi @ Great Swamps (164 RU)
+[14:21:33] [TASK] Mykola → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:33] [GOAL] Mykola achieved AcceptMission
+[14:21:35] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1175 M=787)
+[14:21:36] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1173 M=785)
+[14:21:36] [MISSION] Alibek accepted ScoutPoi @ Great Swamps (164 RU)
+[14:21:36] [TASK] Alibek → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:36] [GOAL] Alibek achieved AcceptMission
+[14:21:37] [GEAR] Zura looted [wpn_aksu] via combat
+[14:21:38] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1171 M=784)
+[14:21:38] [MISSION] Lars accepted ScoutPoi @ Truck Cemetery (176 RU)
+[14:21:38] [TASK] Lars → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:38] [GOAL] Lars achieved AcceptMission
+[14:21:40] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1169 M=782)
+[14:21:40] [MISSION] Bohdan accepted ScoutPoi @ Army Warehouses (160 RU)
+[14:21:40] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:40] [GOAL] Bohdan achieved AcceptMission
+[14:21:41] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1167 M=781)
+[14:21:43] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1165 M=780)
+[14:21:43] [MISSION] Bohdan accepted ScoutPoi @ Zalissya (164 RU)
+[14:21:43] [TASK] Bohdan → AcceptMission [ScoutPoi] (goal=AcceptMission)
+[14:21:43] [GOAL] Bohdan achieved AcceptMission
+[14:21:43] [GEAR] Bohdan looted [helm_helm_protective] via combat
+[14:21:44] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1162 M=778)
+[14:21:44] [CORPSE] Despawned 4 bodies (lifetime=5)
+[14:21:44] [REPORT] ========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 4.0 min | Game time: D0 00:13 | TimeFactor=5.0
+Population: stalkers 173 alive (peak 163, min 48) | mutants 149 alive
+Initial spawn: 6 stalkers, 0 mutants
+Trickle respawn: +0 stalkers, +0 mutants (0 batches)
+Combat encounters: 238 total
+  vs mutant: W=73 L=104 | mutants killed=73
+  vs stalker: W=33 L=28
+Stalker casualties: 165 total
+  gunfire=61 mutant=104 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 4 | Corpses reported: 151 | Despawned: 5
+Gear loot events: 23 (54 items) | Trader gear buys: 0 (0 items)
+Missions: accepted=174 completed=37
+GAMMA gear (alive): outfits=84 helmets=154 avgGold=860 RU
+GOAP tasks completed: 257 | Goals achieved: 214
+GOAP replans (1Hz): 16528
+Emission storms: 0 | Last phase: Dormant
+KillTracker total: 238
+Deaths per real minute (overall): 41.2
+Combats per real minute (overall): 59.5
+Startup window (0-2 min): 69 deaths, 93 combats (34 deaths/min)
+Steady state (after 2 min): 96 deaths, 145 combats (48.0 deaths/min, 72.5 combats/min)
+Rank distribution (alive):
+  Rookie: 170
+  Trainee: 3
+Top survivors by kills:
+  Serhiy Kovalenko 'Wolf' (Rookie) K=4 XP=40
+  Taras Kovalenko 'Raven' (Rookie) K=4 XP=160
+  Alexei Petrenko 'Shadow' (Rookie) K=4 XP=160
+  Viktor Melnyk 'Ghost' (Rookie) K=3 XP=150
+  Serhiy Bondarenko 'Jackal' (Rookie) K=3 XP=150
+===================================================
+
+========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 4.0 min | Game time: D0 00:13 | TimeFactor=5.0
+Population: stalkers 173 alive (peak 163, min 48) | mutants 149 alive
+Initial spawn: 6 stalkers, 0 mutants
+Trickle respawn: +0 stalkers, +0 mutants (0 batches)
+Combat encounters: 238 total
+  vs mutant: W=73 L=104 | mutants killed=73
+  vs stalker: W=33 L=28
+Stalker casualties: 165 total
+  gunfire=61 mutant=104 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 4 | Corpses reported: 151 | Despawned: 5
+Gear loot events: 23 (54 items) | Trader gear buys: 0 (0 items)
+Missions: accepted=174 completed=37
+GAMMA gear (alive): outfits=84 helmets=154 avgGold=860 RU
+GOAP tasks completed: 257 | Goals achieved: 214
+GOAP replans (1Hz): 16528
+Emission storms: 0 | Last phase: Dormant
+KillTracker total: 238
+Deaths per real minute (overall): 41.2
+Combats per real minute (overall): 59.5
+Startup window (0-2 min): 69 deaths, 93 combats (34 deaths/min)
+Steady state (after 2 min): 96 deaths, 145 combats (48.0 deaths/min, 72.5 combats/min)
+Rank distribution (alive):
+  Rookie: 170
+  Trainee: 3
+Top survivors by kills:
+  Serhiy Kovalenko 'Wolf' (Rookie) K=4 XP=40
+  Taras Kovalenko 'Raven' (Rookie) K=4 XP=160
+  Alexei Petrenko 'Shadow' (Rookie) K=4 XP=160
+  Viktor Melnyk 'Ghost' (Rookie) K=3 XP=150
+  Serhiy Bondarenko 'Jackal' (Rookie) K=3 XP=150
+===================================================
+

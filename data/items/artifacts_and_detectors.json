@@ -1,0 +1,12 @@
+[
+    { "id": "art_fireball",  "name": "Fireball",      "baseValue": 12000.0, "category": "Artifact", "isArtifactOrSpecimen": true, "gammaId": "af_fireball" },
+    { "id": "art_gravi",     "name": "Gravi",         "baseValue": 9500.0,  "category": "Artifact", "isArtifactOrSpecimen": true, "gammaId": "af_gravi" },
+    { "id": "art_soul",      "name": "Soul",          "baseValue": 8000.0,  "category": "Artifact", "isArtifactOrSpecimen": true, "gammaId": "af_soul" },
+    { "id": "art_jellyfish", "name": "Jellyfish",     "baseValue": 22000.0, "category": "Artifact", "isArtifactOrSpecimen": true, "gammaId": "af_medusa" },
+    { "id": "art_nightstar", "name": "Nightstar",     "baseValue": 45000.0, "category": "Artifact", "isArtifactOrSpecimen": true, "gammaId": "af_night_star" },
+    { "id": "art_compass",   "name": "Compass",       "baseValue": 75000.0, "category": "Artifact", "isArtifactOrSpecimen": true, "gammaId": "af_compass" },
+    { "id": "det_echo",      "name": "Echo Detector", "baseValue": 1500.0,  "category": "Detector", "isArtifactOrSpecimen": false },
+    { "id": "det_bear",      "name": "Bear Detector", "baseValue": 4000.0,  "category": "Detector", "isArtifactOrSpecimen": false },
+    { "id": "det_veles",     "name": "Veles Detector","baseValue": 12000.0, "category": "Detector", "isArtifactOrSpecimen": false },
+    { "id": "det_sva",       "name": "SVA-5 Detector","baseValue": 35000.0, "category": "Detector", "isArtifactOrSpecimen": false }
+]

@@ -1,0 +1,7 @@
+[
+    { "id": "helm_bandana",  "name": "Bandana",              "baseValue": 50.0,    "category": "Helmet", "gammaId": "helm_bandana" },
+    { "id": "helm_hardhat",  "name": "Hard Hat",             "baseValue": 200.0,   "category": "Helmet", "gammaId": "helm_hardhat" },
+    { "id": "helm_tactic",   "name": "Tactical Helmet",      "baseValue": 1200.0,  "category": "Helmet", "gammaId": "helm_battle" },
+    { "id": "helm_gas",      "name": "GP-5 Gas Mask",        "baseValue": 800.0,   "category": "Helmet", "gammaId": "helm_m50" },
+    { "id": "helm_exo",      "name": "Exo Helmet",           "baseValue": 8000.0,  "category": "Helmet", "gammaId": "helm_exo" }
+]

@@ -1,0 +1,56 @@
+{
+    "DeathReport": [
+        "Found {victimName} dead near {locationName}. Looked like a {mutantType} got him.",
+        "Stumbled on a corpse. Tag says {victimName}. Shot to hell near {locationName}.",
+        "PDA ping — {victimName} ({victimFaction}) KIA in {locationName}. Cause: {killerName}."
+    ],
+    "MutantWarning": [
+        "Careful out there, spotted a {mutantType} pack roaming {locationName}.",
+        "Don't go near {locationName}, {mutantType} activity is high right now.",
+        "{senderName}: {mutantType} contact in {locationName}! Stay sharp!"
+    ],
+    "CombatAlert": [
+        "{senderName}: Contact! Hostiles in {locationName}!",
+        "Taking fire near {locationName}! Need backup!",
+        "Something's wrong in {locationName} — shots fired!"
+    ],
+    "General": [
+        "Anyone in {locationName} want to trade? I'm looking for {weaponName}.",
+        "This is {senderName}, just made it to {locationName}. Safe for now.",
+        "{senderName} checking in from {locationName}. Zone's quiet... for now."
+    ],
+    "TreasonReport": [
+        "TREASON — {traitorFaction} stalker {traitorId} gunned down squad mate {victimId} near {locationName}.",
+        "Witness saw {traitorId} kill an ally in {locationName}. Trust no one wearing {traitorFaction} patches.",
+        "Squad betrayal reported in {locationName}. {traitorId} turned on {victimId}."
+    ],
+    "DisguiseBlown": [
+        "DISGUISE BLOWN — {trueFaction} infiltrator caught wearing {disguiseFaction} gear near {locationName}.",
+        "Spotted a fake {disguiseFaction} suit in {locationName}. Real faction: {trueFaction}.",
+        "Infiltrator exposed at {locationName}! Not one of ours — {trueFaction} spy."
+    ],
+    "BlowoutWarning": [
+        "EMISSION INCOMING — {secondsRemaining}s to shelter. Get to {locationName} or deeper!",
+        "Blowout warning! {secondsRemaining} seconds. Macro bases and underground labs are safe.",
+        "Sky's turning red. Emission hits in {secondsRemaining}s — move!"
+    ],
+    "EmissionActive": [
+        "EMISSION ACTIVE — {phaseName} phase. Stay underground or at a macro base!",
+        "Blowout in progress ({phaseName}). Do NOT surface until aftermath clears.",
+        "Peak emission! If you're outside {locationName}, you're already dead."
+    ],
+    "TradeChatter": [
+        "{senderName} heading to {locationName} to offload {weaponName}.",
+        "Anyone selling ammo near {locationName}? — {senderName}"
+    ],
+    "MissionAccept": [
+        "{senderName} posted a {missionType} job for {stalkerName}: {targetName}. Pay: {reward} RU.",
+        "Contract taken — {stalkerName} accepted {missionType} run to {targetName} from {locationName}.",
+        "PDA update: {stalkerName} signed on for {missionType} near {targetName}. Reward {reward} RU."
+    ],
+    "MissionComplete": [
+        "{stalkerName} finished the run to {targetName}. {issuerName} paid {reward} RU.",
+        "Job done — {stalkerName} reported back from {locationName}. Credits incoming.",
+        "Mission complete: {stalkerName} at {targetName}. {reward} RU transferred."
+    ]
+}

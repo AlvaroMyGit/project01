@@ -1,0 +1,14 @@
+{
+  "SlangGreetings": {
+    "Ukrainian": [ "Zdorovenki buli!", "Privit, stalkers.", "Glory to the Zone." ],
+    "Russian": [ "Zdarova, bratva.", "Privet.", "How's the hunt?" ],
+    "CIS": [ "Salam.", "Greetings.", "Peace be upon you." ],
+    "WesternOutsider": [ "Hey folks.", "What's up.", "Radio check." ]
+  },
+  "SlangAlerts": {
+    "Ukrainian": [ "Mutants ahead, berezhis!", "Danger, watch your step." ],
+    "Russian": [ "Shuher! Hostiles.", "Keep your eyes peeled, blyat." ],
+    "CIS": [ "Caution, bad area.", "Movement spotted." ],
+    "WesternOutsider": [ "Contact!", "We got company.", "Heads up." ]
+  }
+}

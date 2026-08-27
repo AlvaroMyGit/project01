@@ -1,0 +1,4 @@
+[
+    { "id": "plate_ceramic", "name": "Ceramic Armor Plate",  "baseValue": 2000.0,  "category": "BeltPlate", "gammaId": "af_plates", "ballisticMod": 0.15 },
+    { "id": "plate_titan",   "name": "Titanium Armor Plate", "baseValue": 6000.0,  "category": "BeltPlate", "gammaId": "af_plates_up", "ballisticMod": 0.30 }
+]

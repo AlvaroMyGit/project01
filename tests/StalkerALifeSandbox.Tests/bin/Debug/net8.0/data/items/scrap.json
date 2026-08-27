@@ -1,0 +1,5 @@
+[
+    { "id": "scrap_metal",   "name": "Metal Scrap",               "baseValue": 50.0,    "category": "Scrap",       "isArtifactOrSpecimen": false },
+    { "id": "scrap_wire",    "name": "Wiring Bundle",             "baseValue": 80.0,    "category": "Scrap",       "isArtifactOrSpecimen": false },
+    { "id": "scrap_kevlar",  "name": "Kevlar Strips",             "baseValue": 200.0,   "category": "Scrap",       "isArtifactOrSpecimen": false }
+]

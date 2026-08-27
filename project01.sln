@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StalkerALifeSandbox", "StalkerALifeSandbox.csproj", "{DB2CDC7B-F275-4CCF-9A64-31D91ABA26B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2DA223FD-F35E-41B7-BD77-FC7C6518F06E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StalkerALifeSandbox.Tests", "tests\StalkerALifeSandbox.Tests\StalkerALifeSandbox.Tests.csproj", "{A5AE7DE7-468A-4ED2-B25C-EEC093DC9C4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB2CDC7B-F275-4CCF-9A64-31D91ABA26B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB2CDC7B-F275-4CCF-9A64-31D91ABA26B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB2CDC7B-F275-4CCF-9A64-31D91ABA26B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB2CDC7B-F275-4CCF-9A64-31D91ABA26B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5AE7DE7-468A-4ED2-B25C-EEC093DC9C4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5AE7DE7-468A-4ED2-B25C-EEC093DC9C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5AE7DE7-468A-4ED2-B25C-EEC093DC9C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5AE7DE7-468A-4ED2-B25C-EEC093DC9C4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A5AE7DE7-468A-4ED2-B25C-EEC093DC9C4D} = {2DA223FD-F35E-41B7-BD77-FC7C6518F06E}
+	EndGlobalSection
+EndGlobal

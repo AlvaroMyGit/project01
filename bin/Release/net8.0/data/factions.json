@@ -1,0 +1,86 @@
+[
+    {
+        "id": "Loner",
+        "displayName": "Loner Stalkers",
+        "latitudeRange": [0.0, 0.25],
+        "defaultGearTier": 1,
+        "demographicWeights": { "Ukrainian": 0.55, "Russian": 0.30, "CIS": 0.10, "Western": 0.05 }
+    },
+    {
+        "id": "Bandit",
+        "displayName": "Bandits",
+        "latitudeRange": [0.0, 0.25],
+        "defaultGearTier": 1,
+        "demographicWeights": { "Ukrainian": 0.40, "Russian": 0.40, "CIS": 0.15, "Western": 0.05 }
+    },
+    {
+        "id": "Clear Sky",
+        "displayName": "Clear Sky",
+        "latitudeRange": [0.0, 0.30],
+        "defaultGearTier": 2,
+        "demographicWeights": { "Ukrainian": 0.50, "Russian": 0.30, "CIS": 0.15, "Western": 0.05 }
+    },
+    {
+        "id": "Renegade",
+        "displayName": "Renegades",
+        "latitudeRange": [0.0, 0.30],
+        "defaultGearTier": 1,
+        "demographicWeights": { "Ukrainian": 0.45, "Russian": 0.35, "CIS": 0.15, "Western": 0.05 }
+    },
+    {
+        "id": "Duty",
+        "displayName": "Duty Paramilitary",
+        "latitudeRange": [0.25, 0.60],
+        "defaultGearTier": 3,
+        "demographicWeights": { "Ukrainian": 0.35, "Russian": 0.50, "CIS": 0.15, "Western": 0.00 }
+    },
+    {
+        "id": "Freedom",
+        "displayName": "Freedom",
+        "latitudeRange": [0.25, 0.60],
+        "defaultGearTier": 2,
+        "demographicWeights": { "Ukrainian": 0.45, "Russian": 0.30, "CIS": 0.15, "Western": 0.10 }
+    },
+    {
+        "id": "Ecologist",
+        "displayName": "Ecologists",
+        "latitudeRange": [0.25, 0.60],
+        "defaultGearTier": 2,
+        "demographicWeights": { "Ukrainian": 0.30, "Russian": 0.25, "CIS": 0.10, "Western": 0.35 }
+    },
+    {
+        "id": "Military",
+        "displayName": "Ukrainian Military",
+        "latitudeRange": [0.25, 0.60],
+        "defaultGearTier": 3,
+        "demographicWeights": { "Ukrainian": 0.20, "Russian": 0.60, "CIS": 0.20, "Western": 0.00 }
+    },
+    {
+        "id": "Mercenary",
+        "displayName": "Mercenaries",
+        "latitudeRange": [0.60, 0.85],
+        "defaultGearTier": 4,
+        "demographicWeights": { "Ukrainian": 0.10, "Russian": 0.20, "CIS": 0.10, "Western": 0.60 }
+    },
+    {
+        "id": "UNISG",
+        "displayName": "UNISG",
+        "latitudeRange": [0.60, 0.85],
+        "defaultGearTier": 5,
+        "demographicWeights": { "Ukrainian": 0.05, "Russian": 0.05, "CIS": 0.05, "Western": 0.85 }
+    },
+    {
+        "id": "Monolith",
+        "displayName": "Monolith",
+        "latitudeRange": [0.85, 1.00],
+        "defaultGearTier": 4,
+        "demographicWeights": { "Ukrainian": 0.50, "Russian": 0.40, "CIS": 0.10, "Western": 0.00 }
+    },
+    {
+        "id": "Sin",
+        "displayName": "Sin",
+        "latitudeRange": [0.85, 1.00],
+        "defaultGearTier": 3,
+        "demographicWeights": { "Ukrainian": 0.50, "Russian": 0.35, "CIS": 0.15, "Western": 0.00 }
+    }
+]

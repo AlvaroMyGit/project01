@@ -1,0 +1,262 @@
+[WebVisualizerServer] WebSocket server started on ws://localhost:8080/
+[Economy] 28 macro traders online; convoys from southern border
+[Time] TimeFactor=3.0x (override via STALKER_TIME_FACTOR)
+[Population] Staggered inbound: 1494 stalkers + 1000 mutants over 12 real min (~2.1 stalkers/sec)
+[23:13:58] [INIT] Debug logging enabled → logs/sim_20260812_231358.log
+[23:13:58] [INIT] Snapshot interval=30s
+[23:13:58] [INIT] Initial population: 6 stalkers, 0 mutants (not counted as trickle spawns)
+[Debug] Seed at t=0: 6 faction leaders; inbound 1494 stalkers + 1000 mutants over 12 min
+[Simulation] ZoneDirector loop started (10 Hz / 1 Hz / 0.1 Hz)
+[Debug] Auto-stop scheduled in 180s (STALKER_RUN_DURATION_SEC)
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5050
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/alvaromendes/Documents/project01
+[23:13:59] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1492 M=999)
+[23:14:00] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1490 M=998)
+[23:14:01] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1488 M=996)
+[23:14:02] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1486 M=995)
+[23:14:03] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1484 M=994)
+[23:14:04] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1482 M=992)
+[23:14:05] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1480 M=991)
+[23:14:06] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1478 M=989)
+[23:14:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1476 M=988)
+[23:14:08] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1474 M=987)
+[23:14:09] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1472 M=985)
+[23:14:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1470 M=984)
+[23:14:11] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1468 M=982)
+[23:14:12] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1465 M=981)
+[23:14:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1463 M=980)
+[23:14:14] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1461 M=978)
+[23:14:15] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1459 M=977)
+[23:14:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1457 M=976)
+[23:14:17] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1455 M=974)
+[23:14:18] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1453 M=973)
+[23:14:19] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1451 M=971)
+[23:14:20] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1449 M=970)
+[23:14:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1447 M=969)
+[23:14:22] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1445 M=967)
+[23:14:23] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1443 M=966)
+[23:14:24] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1441 M=964)
+[23:14:25] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1438 M=963)
+[23:14:26] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1436 M=962)
+[23:14:27] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1434 M=960)
+[23:14:28] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1432 M=959)
+[23:14:29] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1430 M=957)
+[23:14:29] [SNAPSHOT] real=0.5min game=D0 00:01 alive S=66 M=43 corpses=78 emission=Dormant nextIn=110gmin desperate=0 hungry=0 interval deaths=4 combats=4 trickleSpawns=0 ranks=[Rookie:66] goals=[Patrol::35] leaders: Andriy[Rookie/Patrol:], Oleksiy[Rookie/Patrol:], Vasyl[Rookie/Patrol:], Andrei[Rookie/Patrol:], Taras[Rookie/Patrol:]
+[23:14:30] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1428 M=956)
+[23:14:31] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1426 M=955)
+[23:14:32] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1424 M=953)
+[23:14:33] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1422 M=952)
+[23:14:34] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1420 M=951)
+[23:14:35] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1418 M=949)
+[23:14:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1416 M=948)
+[23:14:37] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1414 M=946)
+[23:14:38] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1411 M=945)
+[23:14:39] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1409 M=944)
+[23:14:40] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1407 M=942)
+[23:14:41] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1405 M=941)
+[23:14:42] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1403 M=939)
+[23:14:43] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1401 M=938)
+[23:14:44] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1399 M=937)
+[23:14:45] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1397 M=935)
+[23:14:46] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1395 M=934)
+[23:14:47] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1393 M=932)
+[23:14:48] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1391 M=931)
+[23:14:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1389 M=930)
+[23:14:50] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1387 M=928)
+[23:14:51] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1385 M=927)
+[23:14:52] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1382 M=926)
+[23:14:53] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1380 M=924)
+[23:14:54] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1378 M=923)
+[23:14:55] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1376 M=921)
+[23:14:56] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1374 M=920)
+[23:14:57] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1372 M=919)
+[23:14:58] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1370 M=917)
+[23:14:59] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1368 M=916)
+[23:14:59] [SNAPSHOT] real=1.0min game=D0 00:03 alive S=102 M=75 corpses=113 emission=Dormant nextIn=108gmin desperate=0 hungry=0 interval deaths=26 combats=35 trickleSpawns=0 ranks=[Rookie:102] goals=[Patrol::43,ExploreLab::12] leaders: Mikhail[Rookie/Patrol:], Mikhail[Rookie/Patrol:], Andrei[Rookie/ExploreLab:], Viktor[Rookie/ExploreLab:], Connor[Rookie/Patrol:]
+[23:15:00] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1366 M=914)
+[23:15:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1364 M=913)
+[23:15:02] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1362 M=912)
+[23:15:03] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1360 M=910)
+[23:15:04] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1358 M=909)
+[23:15:05] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1355 M=907)
+[23:15:06] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1353 M=906)
+[23:15:07] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1351 M=905)
+[23:15:08] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1349 M=903)
+[23:15:09] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1347 M=902)
+[23:15:10] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1345 M=901)
+[23:15:11] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1343 M=899)
+[23:15:12] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1341 M=898)
+[23:15:13] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1339 M=896)
+[23:15:14] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1337 M=895)
+[23:15:15] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1335 M=894)
+[23:15:16] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1333 M=892)
+[23:15:17] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1331 M=891)
+[23:15:18] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1328 M=889)
+[23:15:19] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1326 M=888)
+[23:15:20] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1324 M=887)
+[23:15:21] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1322 M=885)
+[23:15:22] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1320 M=884)
+[23:15:23] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1318 M=882)
+[23:15:24] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1316 M=881)
+[23:15:25] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1314 M=880)
+[23:15:26] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1312 M=878)
+[23:15:27] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1310 M=877)
+[23:15:28] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1308 M=876)
+[23:15:29] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1306 M=874)
+[23:15:29] [SNAPSHOT] real=1.5min game=D0 00:04 alive S=124 M=101 corpses=169 emission=Dormant nextIn=107gmin desperate=0 hungry=0 interval deaths=40 combats=56 trickleSpawns=0 ranks=[Rookie:124] goals=[Patrol::43,ExploreLab::21] leaders: Mikhail[Rookie/Patrol:], Mikhail[Rookie/Patrol:], Andrei[Rookie/ExploreLab:], Vasyl[Rookie/Patrol:], Andriy[Rookie/Patrol:]
+[23:15:30] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1304 M=873)
+[23:15:31] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1302 M=871)
+[23:15:32] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1299 M=870)
+[23:15:33] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1297 M=869)
+[23:15:34] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1295 M=867)
+[23:15:35] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1293 M=866)
+[23:15:36] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1291 M=864)
+[23:15:37] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1289 M=863)
+[23:15:38] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1287 M=862)
+[23:15:39] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1285 M=860)
+[23:15:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1283 M=859)
+[23:15:41] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1281 M=857)
+[23:15:42] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1279 M=856)
+[23:15:43] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1277 M=855)
+[23:15:44] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1275 M=853)
+[23:15:45] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1272 M=852)
+[23:15:46] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1270 M=851)
+[23:15:47] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1268 M=849)
+[23:15:48] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1266 M=848)
+[23:15:49] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1264 M=846)
+[23:15:50] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1262 M=845)
+[23:15:51] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1260 M=844)
+[23:15:52] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1258 M=842)
+[23:15:53] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1256 M=841)
+[23:15:54] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1254 M=839)
+[23:15:55] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1252 M=838)
+[23:15:56] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1250 M=837)
+[23:15:57] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1248 M=835)
+[23:15:58] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1245 M=834)
+[23:15:59] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1243 M=832)
+[23:15:59] [SNAPSHOT] real=2.0min game=D0 00:06 alive S=147 M=122 corpses=230 emission=Dormant nextIn=105gmin desperate=0 hungry=0 interval deaths=40 combats=61 trickleSpawns=0 ranks=[Rookie:147] goals=[ExploreLab::44,Patrol::38] leaders: Mikhail[Rookie/Patrol:], Andrei[Rookie/ExploreLab:], Vasyl[Rookie/Patrol:], Taras[Rookie/Patrol:], Alexei[Rookie/ExploreLab:]
+[23:16:00] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1241 M=831)
+[23:16:01] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1239 M=830)
+[23:16:02] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1237 M=828)
+[23:16:03] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1235 M=827)
+[23:16:04] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1233 M=826)
+[23:16:05] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1231 M=824)
+[23:16:06] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1229 M=823)
+[23:16:07] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1227 M=821)
+[23:16:08] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1225 M=820)
+[23:16:09] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1223 M=819)
+[23:16:10] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1221 M=817)
+[23:16:11] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1219 M=816)
+[23:16:12] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1216 M=814)
+[23:16:13] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1214 M=813)
+[23:16:14] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1212 M=812)
+[23:16:15] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1210 M=810)
+[23:16:16] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1208 M=809)
+[23:16:17] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1206 M=807)
+[23:16:18] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1204 M=806)
+[23:16:19] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1202 M=805)
+[23:16:20] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1200 M=803)
+[23:16:21] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1198 M=802)
+[23:16:22] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1196 M=801)
+[23:16:23] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1194 M=799)
+[23:16:24] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1192 M=798)
+[23:16:25] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1189 M=796)
+[23:16:26] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1187 M=795)
+[23:16:27] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1185 M=794)
+[23:16:28] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1183 M=792)
+[23:16:29] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1181 M=791)
+[23:16:29] [SNAPSHOT] real=2.5min game=D0 00:07 alive S=169 M=145 corpses=288 emission=Dormant nextIn=104gmin desperate=0 hungry=0 interval deaths=40 combats=58 trickleSpawns=0 ranks=[Rookie:169] goals=[ExploreLab::55,Patrol::39] leaders: Viktor[Rookie/Patrol:], Mikhail[Rookie/Patrol:], Ivan[Rookie/Patrol:], Ivan[Rookie/Patrol:], Mykola[Rookie/Patrol:]
+[23:16:30] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1179 M=789)
+[23:16:31] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1177 M=788)
+[23:16:32] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1175 M=787)
+[23:16:33] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1173 M=785)
+[23:16:34] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1171 M=784)
+[23:16:35] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1169 M=782)
+[23:16:36] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1167 M=781)
+[23:16:37] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1165 M=780)
+[23:16:38] [INBOUND] Initial +3 stalkers, +2 mutants (remaining S=1162 M=778)
+[23:16:39] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1160 M=777)
+[23:16:40] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1158 M=776)
+[23:16:41] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1156 M=774)
+[23:16:42] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1154 M=773)
+[23:16:43] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1152 M=771)
+[23:16:44] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1150 M=770)
+[23:16:45] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1148 M=769)
+[23:16:46] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1146 M=767)
+[23:16:47] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1144 M=766)
+[23:16:48] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1142 M=764)
+[23:16:49] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1140 M=763)
+[23:16:50] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1138 M=762)
+[23:16:51] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1136 M=760)
+[23:16:52] [INBOUND] Initial +3 stalkers, +1 mutants (remaining S=1133 M=759)
+[23:16:53] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1131 M=757)
+[23:16:54] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1129 M=756)
+[23:16:55] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1127 M=755)
+[23:16:56] [INBOUND] Initial +2 stalkers, +2 mutants (remaining S=1125 M=753)
+[23:16:57] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1123 M=752)
+[23:16:58] [INBOUND] Initial +2 stalkers, +1 mutants (remaining S=1121 M=751)
+[Debug] Run duration reached — flushing report and exiting.
+[23:16:58] [REPORT] ========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 3.0 min | Game time: D0 00:09 | TimeFactor=3.0
+Population: stalkers 165 alive (peak 169, min 66) | mutants 165 alive
+Initial spawn: 6 stalkers, 0 mutants
+Trickle respawn: +0 stalkers, +0 mutants (0 batches)
+Combat encounters: 298 total
+  vs mutant: W=84 L=151 | mutants killed=84
+  vs stalker: W=26 L=37
+Stalker casualties: 214 total
+  gunfire=63 mutant=151 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 0 | Corpses reported: 221
+Emission storms: 0 | Last phase: Dormant
+GOAP replans (1Hz): 20936
+KillTracker total: 298
+Deaths per real minute (overall): 71.3
+Combats per real minute (overall): 99.3
+Startup window (0-2 min): 107 deaths, 153 combats (54 deaths/min)
+Steady state (after 2 min): 107 deaths, 145 combats (107.0 deaths/min, 145.0 combats/min)
+Rank distribution (alive):
+  Rookie: 165
+Top survivors by kills:
+  Igor Shevchenko 'Ash' (Rookie) K=6 XP=300
+  Taras Shevchenko 'Ghost' (Rookie) K=3 XP=75
+  Sergei Bondarenko 'Scar' (Rookie) K=2 XP=50
+  Andrei Sokolov 'Badger' (Rookie) K=2 XP=50
+  Andrei Bondarenko 'Bone' (Rookie) K=2 XP=100
+===================================================
+
+========== SIMULATION DEBUG FINAL REPORT ==========
+Real runtime: 3.0 min | Game time: D0 00:09 | TimeFactor=3.0
+Population: stalkers 165 alive (peak 169, min 66) | mutants 165 alive
+Initial spawn: 6 stalkers, 0 mutants
+Trickle respawn: +0 stalkers, +0 mutants (0 batches)
+Combat encounters: 298 total
+  vs mutant: W=84 L=151 | mutants killed=84
+  vs stalker: W=26 L=37
+Stalker casualties: 214 total
+  gunfire=63 mutant=151 emission=0 betrayal=0 zombified=0
+Mutant emission deaths: 0
+Rank promotions: 0 | Corpses reported: 221
+Emission storms: 0 | Last phase: Dormant
+GOAP replans (1Hz): 20936
+KillTracker total: 298
+Deaths per real minute (overall): 71.3
+Combats per real minute (overall): 99.3
+Startup window (0-2 min): 107 deaths, 153 combats (54 deaths/min)
+Steady state (after 2 min): 107 deaths, 145 combats (107.0 deaths/min, 145.0 combats/min)
+Rank distribution (alive):
+  Rookie: 165
+Top survivors by kills:
+  Igor Shevchenko 'Ash' (Rookie) K=6 XP=300
+  Taras Shevchenko 'Ghost' (Rookie) K=3 XP=75
+  Sergei Bondarenko 'Scar' (Rookie) K=2 XP=50
+  Andrei Sokolov 'Badger' (Rookie) K=2 XP=50
+  Andrei Bondarenko 'Bone' (Rookie) K=2 XP=100
+===================================================
+

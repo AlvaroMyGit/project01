@@ -1,0 +1,971 @@
+{
+  "_comment": "Coordinates are normalised (0.0\u20131.0) projections of real Chernobyl Exclusion Zone geography.",
+  "_projection": {
+    "lonMin": 29.84,
+    "lonMax": 30.23,
+    "latMin": 51.1,
+    "latMax": 51.42,
+    "note": "X=0 is western border (Buriakivka), X=1 is eastern border (Chernobyl Town area). Y=0 is northern border (CNPP), Y=1 is southern Ditiatky checkpoint."
+  },
+  "Regions": [
+    {
+      "Name": "Cordon",
+      "Id": "cordon",
+      "Type": "Surface",
+      "_realAnchor": "Ditiatky checkpoint area \u2014 51.1065N, 29.9328E",
+      "X": 0.5,
+      "Y": 0.85,
+      "ThreatLevel": 0.12,
+      "Radius": 0.08,
+      "Factions": [
+        "Loner",
+        "Military"
+      ],
+      "POIs": [
+        "Ditiatky Checkpoint",
+        "Rookie Village",
+        "Southern Watchtower",
+        "Vehicle Graveyard",
+        "Old Bridge",
+        "Fox's Ruined House",
+        "Smuggler's Tunnel",
+        "Northern Checkpoint",
+        "Abandoned Farmstead",
+        "Cordon Swamp Edge"
+      ],
+      "Connections": [
+        "swamps",
+        "garbage",
+        "zalissya",
+        "meadow"
+      ]
+    },
+    {
+      "Name": "Great Swamps",
+      "Id": "swamps",
+      "Type": "Surface",
+      "_realAnchor": "Western wetlands near Buriakivka \u2014 51.20N, 29.87E",
+      "X": 0.2,
+      "Y": 0.8,
+      "ThreatLevel": 0.1,
+      "Radius": 0.09,
+      "Factions": [
+        "ClearSky",
+        "Renegade"
+      ],
+      "POIs": [
+        "Clear Sky Base",
+        "Pump Station",
+        "Burnt Farmstead",
+        "Old Church",
+        "Machine Yard",
+        "Fishing Hamlet",
+        "Hidden Camp",
+        "Tuzla Tunnel",
+        "Northern Outpost"
+      ],
+      "Connections": [
+        "cordon",
+        "agroprom",
+        "buriakivka"
+      ]
+    },
+    {
+      "Name": "Meadow",
+      "Id": "meadow",
+      "Type": "Surface",
+      "_realAnchor": "Open fields east of Ditiatky \u2014 51.13N, 30.00E",
+      "X": 0.65,
+      "Y": 0.85,
+      "ThreatLevel": 0.14,
+      "Radius": 0.07,
+      "Factions": [
+        "Loner",
+        "Military"
+      ],
+      "POIs": [
+        "Farmstead Ruins",
+        "Meadow Camp",
+        "Southern Trail",
+        "Fallow Field"
+      ],
+      "Connections": [
+        "cordon",
+        "garbage",
+        "zalissya"
+      ]
+    },
+    {
+      "Name": "Zalissya",
+      "Id": "zalissya",
+      "Type": "Surface",
+      "_realAnchor": "Village of Zalissya \u2014 51.258N, 30.150E",
+      "X": 0.7,
+      "Y": 0.75,
+      "ThreatLevel": 0.18,
+      "Radius": 0.07,
+      "Factions": [
+        "Loner",
+        "Bandit"
+      ],
+      "POIs": [
+        "Zalissya Village Square",
+        "Abandoned School",
+        "Riverside Dock",
+        "Collapsed Church",
+        "Overgrown Farmyard"
+      ],
+      "Connections": [
+        "cordon",
+        "meadow",
+        "chernobyl_town",
+        "garbage"
+      ]
+    },
+    {
+      "Name": "Buriakivka Waste Site",
+      "Id": "buriakivka",
+      "Type": "Surface",
+      "_realAnchor": "Buriakivka radioactive waste repository \u2014 51.332N, 29.849E",
+      "X": 0.02,
+      "Y": 0.34,
+      "ThreatLevel": 0.55,
+      "Radius": 0.07,
+      "Factions": [
+        "Ecologist",
+        "Renegade"
+      ],
+      "POIs": [
+        "Waste Repository Entrance",
+        "Decontamination Station",
+        "Radioactive Trenches",
+        "Guard Post Ruins",
+        "Contaminated Pond"
+      ],
+      "Connections": [
+        "swamps",
+        "duga"
+      ]
+    },
+    {
+      "Name": "Garbage",
+      "Id": "garbage",
+      "Type": "Surface",
+      "_realAnchor": "Industrial transition zone, south of Chernobyl \u2014 51.22N, 30.03E",
+      "X": 0.5,
+      "Y": 0.6,
+      "ThreatLevel": 0.25,
+      "Radius": 0.09,
+      "Factions": [
+        "Bandit",
+        "Loner"
+      ],
+      "POIs": [
+        "Flea Market",
+        "Vehicle Depot",
+        "Train Hangar",
+        "Duty Checkpoint",
+        "Radioactive Ponds",
+        "Agroprom Junction",
+        "Dark Valley Transition"
+      ],
+      "Connections": [
+        "cordon",
+        "meadow",
+        "zalissya",
+        "agroprom",
+        "rostok",
+        "truck_cemetery"
+      ]
+    },
+    {
+      "Name": "Agroprom",
+      "Id": "agroprom",
+      "Type": "Surface",
+      "_realAnchor": "Agroprom collective farm ruins \u2014 51.26N, 29.95E",
+      "X": 0.25,
+      "Y": 0.6,
+      "ThreatLevel": 0.3,
+      "Radius": 0.09,
+      "Factions": [
+        "Military",
+        "Loner"
+      ],
+      "POIs": [
+        "Military Research Base",
+        "Farm Institute Ruins",
+        "Swamp Edge",
+        "Bedrock Field",
+        "Factory Outpost",
+        "Central Complex",
+        "Tunnel Entrance",
+        "Cooling Lake"
+      ],
+      "Connections": [
+        "swamps",
+        "garbage",
+        "yantar",
+        "agroprom_underground"
+      ]
+    },
+    {
+      "Name": "Agroprom Underground",
+      "Id": "agroprom_underground",
+      "Type": "UndergroundLab",
+      "X": 0.25,
+      "Y": 0.6,
+      "ThreatLevel": 0.52,
+      "Radius": 0.04,
+      "Factions": [
+        "Mutants",
+        "Bandit"
+      ],
+      "POIs": [
+        "Strelok's Hideout",
+        "Mutant Lair",
+        "Pump Room",
+        "Spiral Staircase"
+      ],
+      "Connections": [
+        "agroprom"
+      ]
+    },
+    {
+      "Name": "Chernobyl Town",
+      "Id": "chernobyl_town",
+      "Type": "Surface",
+      "_realAnchor": "City of Chernobyl administrative hub \u2014 51.275N, 30.222E",
+      "X": 0.85,
+      "Y": 0.65,
+      "ThreatLevel": 0.28,
+      "Radius": 0.08,
+      "Factions": [
+        "Military",
+        "Duty",
+        "Loner"
+      ],
+      "POIs": [
+        "Administration Building",
+        "Hotel Polissya",
+        "Lenin Statue Square",
+        "River Pier",
+        "Chernobyl Fire Station",
+        "Checkpoint Dytyatky Road",
+        "Church of the Transfiguration",
+        "Market Ruins"
+      ],
+      "Connections": [
+        "zalissya",
+        "garbage",
+        "dark_valley"
+      ]
+    },
+    {
+      "Name": "Dark Valley",
+      "Id": "dark_valley",
+      "Type": "Surface",
+      "_realAnchor": "Eastern industrial valley \u2014 51.30N, 30.18E",
+      "X": 0.75,
+      "Y": 0.55,
+      "ThreatLevel": 0.35,
+      "Radius": 0.09,
+      "Factions": [
+        "Bandit",
+        "Loner"
+      ],
+      "POIs": [
+        "Bandit Base",
+        "Abandoned Factory",
+        "Pig Farm Ruins",
+        "Rusty Gas Station",
+        "Bandit Checkpoint",
+        "Toxic Swamp",
+        "Broken Bridge"
+      ],
+      "Connections": [
+        "chernobyl_town",
+        "truck_cemetery",
+        "x18_lab"
+      ]
+    },
+    {
+      "Name": "Lab X-18",
+      "Id": "x18_lab",
+      "Type": "UndergroundLab",
+      "X": 0.75,
+      "Y": 0.55,
+      "ThreatLevel": 0.62,
+      "Radius": 0.04,
+      "Factions": [
+        "Mutants",
+        "Monolith"
+      ],
+      "POIs": [
+        "Experiment Area",
+        "Docs Room",
+        "Lower Level",
+        "Giant Specimen Room"
+      ],
+      "Connections": [
+        "dark_valley"
+      ]
+    },
+    {
+      "Name": "Duga Radar",
+      "Id": "duga",
+      "Type": "Surface",
+      "_realAnchor": "DUGA-3 OTH radar array (Chernobyl-2) \u2014 51.308N, 29.898E",
+      "X": 0.15,
+      "Y": 0.44,
+      "ThreatLevel": 0.6,
+      "Radius": 0.08,
+      "Factions": [
+        "Mercenary",
+        "Monolith"
+      ],
+      "POIs": [
+        "Radar Array Main Structure",
+        "Transmitter Station",
+        "Officer Barracks",
+        "Underground Bunker Entrance",
+        "Derelict Sports Hall",
+        "Children's Camp Cover (Dezinformatsiya)",
+        "Antenna Field"
+      ],
+      "Connections": [
+        "buriakivka",
+        "yantar",
+        "military",
+        "red_forest"
+      ]
+    },
+    {
+      "Name": "Rostok",
+      "Id": "rostok",
+      "Type": "Surface",
+      "_realAnchor": "Industrial factory complex \u2014 51.30N, 30.07E",
+      "X": 0.5,
+      "Y": 0.45,
+      "ThreatLevel": 0.22,
+      "Radius": 0.07,
+      "Factions": [
+        "Duty",
+        "Loner"
+      ],
+      "POIs": [
+        "100 Rads Bar",
+        "Arena",
+        "Duty Headquarters",
+        "Checkpoint South",
+        "Checkpoint North",
+        "Duty Barracks"
+      ],
+      "Connections": [
+        "garbage",
+        "wild_territory",
+        "truck_cemetery",
+        "military"
+      ]
+    },
+    {
+      "Name": "Truck Cemetery",
+      "Id": "truck_cemetery",
+      "Type": "Surface",
+      "_realAnchor": "Vehicle graveyard NE of Chernobyl \u2014 51.31N, 30.14E",
+      "X": 0.75,
+      "Y": 0.4,
+      "ThreatLevel": 0.48,
+      "Radius": 0.09,
+      "Factions": [
+        "Bandit",
+        "Loner"
+      ],
+      "POIs": [
+        "Helicopter Wreck",
+        "Fire Station Ruins",
+        "Main Road Junction",
+        "Vehicle Stack Field",
+        "Mutant Valley"
+      ],
+      "Connections": [
+        "dark_valley",
+        "rostok",
+        "military"
+      ]
+    },
+    {
+      "Name": "Wild Territory",
+      "Id": "wild_territory",
+      "Type": "Surface",
+      "_realAnchor": "Open wilderness west of Rostok \u2014 51.30N, 29.98E",
+      "X": 0.4,
+      "Y": 0.45,
+      "ThreatLevel": 0.45,
+      "Radius": 0.08,
+      "Factions": [
+        "Mercenary",
+        "Loner",
+        "Bandit"
+      ],
+      "POIs": [
+        "Construction Site",
+        "Downed Chopper",
+        "Train Yard",
+        "Mercenary Outpost",
+        "Sniping Tower",
+        "Electro Tunnel"
+      ],
+      "Connections": [
+        "rostok",
+        "yantar",
+        "dead_city"
+      ]
+    },
+    {
+      "Name": "Yantar",
+      "Id": "yantar",
+      "Type": "Surface",
+      "_realAnchor": "Chemical plant area south of Duga \u2014 51.29N, 29.94E",
+      "X": 0.25,
+      "Y": 0.45,
+      "ThreatLevel": 0.5,
+      "Radius": 0.08,
+      "Factions": [
+        "Ecologist",
+        "Loner"
+      ],
+      "POIs": [
+        "Ecologist Mobile Lab",
+        "Chemical Factory Ruins",
+        "Zombie Swamps",
+        "Helicopter Crash Site",
+        "Cooling Pool"
+      ],
+      "Connections": [
+        "agroprom",
+        "wild_territory",
+        "duga",
+        "dead_city",
+        "x16_lab"
+      ]
+    },
+    {
+      "Name": "Lab X-16",
+      "Id": "x16_lab",
+      "Type": "UndergroundLab",
+      "X": 0.25,
+      "Y": 0.45,
+      "ThreatLevel": 0.72,
+      "Radius": 0.04,
+      "Factions": [
+        "Mutants"
+      ],
+      "POIs": [
+        "Miracle Machine",
+        "Sewers",
+        "Elevator Shaft",
+        "Control Room"
+      ],
+      "Connections": [
+        "yantar"
+      ]
+    },
+    {
+      "Name": "Dead City (Chernobyl-2 Settlement)",
+      "Id": "dead_city",
+      "Type": "Surface",
+      "_realAnchor": "Duga residential settlement \u2014 51.31N, 29.91E",
+      "X": 0.25,
+      "Y": 0.36,
+      "ThreatLevel": 0.6,
+      "Radius": 0.07,
+      "Factions": [
+        "Mercenary",
+        "Bandit"
+      ],
+      "POIs": [
+        "Mercenary Base",
+        "Lenin Square Ruins",
+        "Sports Center",
+        "Abandoned School",
+        "Apartment Blocks",
+        "Duga Staff Housing"
+      ],
+      "Connections": [
+        "yantar",
+        "wild_territory",
+        "military",
+        "limansk"
+      ]
+    },
+    {
+      "Name": "Army Warehouses",
+      "Id": "military",
+      "Type": "Surface",
+      "_realAnchor": "Military depot north of Duga \u2014 51.33N, 30.01E",
+      "X": 0.55,
+      "Y": 0.36,
+      "ThreatLevel": 0.55,
+      "Radius": 0.09,
+      "Factions": [
+        "Freedom",
+        "Mercenary"
+      ],
+      "POIs": [
+        "Freedom Base",
+        "Bloodsucker Village",
+        "Barrier Checkpoint",
+        "Mercenary Outpost",
+        "Ruined Farmstead",
+        "Helipad"
+      ],
+      "Connections": [
+        "rostok",
+        "truck_cemetery",
+        "dead_city",
+        "duga",
+        "radar",
+        "red_forest"
+      ]
+    },
+    {
+      "Name": "Chistogalovka",
+      "Id": "chistogalovka",
+      "Type": "Surface",
+      "_realAnchor": "Village of Chistogalovka \u2014 51.351N, 29.982E",
+      "X": 0.36,
+      "Y": 0.25,
+      "ThreatLevel": 0.7,
+      "Radius": 0.06,
+      "Factions": [
+        "Monolith",
+        "Mutants"
+      ],
+      "POIs": [
+        "Abandoned Village Core",
+        "Overgrown Cottages",
+        "Radiation Hotspot",
+        "Partially Collapsed Barn",
+        "Village Well (Poisoned)"
+      ],
+      "Connections": [
+        "military",
+        "red_forest",
+        "kopachi"
+      ]
+    },
+    {
+      "Name": "Red Forest",
+      "Id": "red_forest",
+      "Type": "Surface",
+      "_realAnchor": "Highly radioactive Red Forest \u2014 51.378N, 30.050E",
+      "X": 0.45,
+      "Y": 0.22,
+      "ThreatLevel": 0.88,
+      "Radius": 0.09,
+      "Factions": [
+        "Monolith",
+        "Mutants"
+      ],
+      "POIs": [
+        "Forester's Observation Tower",
+        "Symbiont Anomaly Cluster",
+        "Bridge to Limansk",
+        "Mine Camp",
+        "Tank Anomaly",
+        "Compass Anomaly Field",
+        "Witch's Circle",
+        "Pine Kill Zone"
+      ],
+      "Connections": [
+        "military",
+        "duga",
+        "chistogalovka",
+        "radar",
+        "limansk",
+        "jupiter"
+      ]
+    },
+    {
+      "Name": "Radar (Brain Scorcher)",
+      "Id": "radar",
+      "Type": "Surface",
+      "_realAnchor": "CNPP perimeter radar installations \u2014 51.37N, 30.09E",
+      "X": 0.66,
+      "Y": 0.22,
+      "ThreatLevel": 0.82,
+      "Radius": 0.09,
+      "Factions": [
+        "Monolith"
+      ],
+      "POIs": [
+        "Brain Scorcher Tower",
+        "Perimeter Road Crossroads",
+        "Dead Pine Forest",
+        "Monolith Camp",
+        "Antenna Array Ruins"
+      ],
+      "Connections": [
+        "military",
+        "red_forest",
+        "pripyat",
+        "x19_lab"
+      ]
+    },
+    {
+      "Name": "Lab X-19",
+      "Id": "x19_lab",
+      "Type": "UndergroundLab",
+      "X": 0.66,
+      "Y": 0.22,
+      "ThreatLevel": 0.92,
+      "Radius": 0.04,
+      "Factions": [
+        "Monolith",
+        "Mutants"
+      ],
+      "POIs": [
+        "Control Room",
+        "Generators",
+        "Cooling System",
+        "Armory"
+      ],
+      "Connections": [
+        "radar"
+      ]
+    },
+    {
+      "Name": "Kopachi",
+      "Id": "kopachi",
+      "Type": "Surface",
+      "_realAnchor": "Demolished village of Kopachi \u2014 51.353N, 30.076E",
+      "X": 0.55,
+      "Y": 0.2,
+      "ThreatLevel": 0.75,
+      "Radius": 0.06,
+      "Factions": [
+        "Mutants",
+        "Monolith"
+      ],
+      "POIs": [
+        "Kopachi Kindergarten (Buried)",
+        "Demolished House Foundations",
+        "Radiation Warning Signs",
+        "Overgrown Road",
+        "Bunker Entrance"
+      ],
+      "Connections": [
+        "chistogalovka",
+        "radar",
+        "jupiter"
+      ]
+    },
+    {
+      "Name": "Limansk",
+      "Id": "limansk",
+      "Type": "Surface",
+      "_realAnchor": "Fictionalized northern sector \u2014 51.40N, 29.97E",
+      "X": 0.28,
+      "Y": 0.18,
+      "ThreatLevel": 0.76,
+      "Radius": 0.07,
+      "Factions": [
+        "Monolith",
+        "Mercenary"
+      ],
+      "POIs": [
+        "Bridge Over Uzh River",
+        "Construction Site",
+        "Hospital Entrance",
+        "Fountain Square",
+        "Ambush Street"
+      ],
+      "Connections": [
+        "dead_city",
+        "red_forest",
+        "hospital"
+      ]
+    },
+    {
+      "Name": "Deserted Hospital",
+      "Id": "hospital",
+      "Type": "Surface",
+      "_realAnchor": "Hospital sector near Limansk \u2014 51.41N, 29.96E",
+      "X": 0.28,
+      "Y": 0.1,
+      "ThreatLevel": 0.86,
+      "Radius": 0.06,
+      "Factions": [
+        "Monolith",
+        "Mutants"
+      ],
+      "POIs": [
+        "Emergency Wing",
+        "Surgery Block",
+        "Rooftop Nest",
+        "Underground Passage"
+      ],
+      "Connections": [
+        "limansk",
+        "zaton"
+      ]
+    },
+    {
+      "Name": "Zaton",
+      "Id": "zaton",
+      "Type": "Surface",
+      "_realAnchor": "Flooded areas west of CNPP \u2014 51.40N, 30.01E",
+      "X": 0.35,
+      "Y": 0.08,
+      "ThreatLevel": 0.68,
+      "Radius": 0.09,
+      "Factions": [
+        "Loner",
+        "Mercenary",
+        "Bandit"
+      ],
+      "POIs": [
+        "Skadovsk Barge",
+        "Waste Processing Station",
+        "Iron Forest",
+        "Sawmill Ruins",
+        "Shevchenko Village Remnants",
+        "Ranger Station",
+        "Dredge Station",
+        "Burnt Village",
+        "Flooded Substation"
+      ],
+      "Connections": [
+        "hospital",
+        "jupiter"
+      ]
+    },
+    {
+      "Name": "Jupiter (Pripyat Industrial)",
+      "Id": "jupiter",
+      "Type": "Surface",
+      "_realAnchor": "Pripyat industrial district / Jupiter factory \u2014 51.40N, 30.07E",
+      "X": 0.52,
+      "Y": 0.14,
+      "ThreatLevel": 0.77,
+      "Radius": 0.09,
+      "Factions": [
+        "Loner",
+        "Duty",
+        "Freedom"
+      ],
+      "POIs": [
+        "Yanov Station",
+        "Jupiter Plant",
+        "Cement Factory",
+        "Oasis Anomaly",
+        "Kopachi Transition",
+        "Cooling Tower Complex",
+        "Volkhov AA Complex",
+        "Ash Heap",
+        "Plavni"
+      ],
+      "Connections": [
+        "red_forest",
+        "kopachi",
+        "zaton",
+        "pripyat",
+        "jupiter_underground"
+      ]
+    },
+    {
+      "Name": "Jupiter Underground",
+      "Id": "jupiter_underground",
+      "Type": "UndergroundLab",
+      "X": 0.52,
+      "Y": 0.14,
+      "ThreatLevel": 0.85,
+      "Radius": 0.04,
+      "Factions": [
+        "Mutants",
+        "Monolith"
+      ],
+      "POIs": [
+        "Main Tunnel",
+        "Transport Area",
+        "Pumping Station",
+        "Control Post"
+      ],
+      "Connections": [
+        "jupiter",
+        "pripyat"
+      ]
+    },
+    {
+      "Name": "Pripyat",
+      "Id": "pripyat",
+      "Type": "Surface",
+      "_realAnchor": "Ghost city of Pripyat \u2014 51.405N, 30.055E",
+      "X": 0.66,
+      "Y": 0.12,
+      "ThreatLevel": 0.9,
+      "Radius": 0.08,
+      "Factions": [
+        "Monolith"
+      ],
+      "POIs": [
+        "Laundromat",
+        "Prometheus Cinema",
+        "Pripyat Hospital (Real)",
+        "School No. 3",
+        "Amusement Park Ferris Wheel",
+        "Yubileiny Service Center",
+        "Kindergarten Solnechny",
+        "River Port",
+        "Palace of Culture Energetik",
+        "Prypiat Hotel"
+      ],
+      "Connections": [
+        "radar",
+        "jupiter",
+        "jupiter_underground",
+        "cnpp",
+        "x8_lab"
+      ]
+    },
+    {
+      "Name": "Lab X-8",
+      "Id": "x8_lab",
+      "Type": "UndergroundLab",
+      "X": 0.66,
+      "Y": 0.12,
+      "ThreatLevel": 0.95,
+      "Radius": 0.04,
+      "Factions": [
+        "Mutants",
+        "Monolith"
+      ],
+      "POIs": [
+        "Archives",
+        "Main Lab",
+        "Canteen",
+        "Elevator Room"
+      ],
+      "Connections": [
+        "pripyat"
+      ]
+    },
+    {
+      "Name": "Chernobyl NPP",
+      "Id": "cnpp",
+      "Type": "Surface",
+      "_realAnchor": "Chernobyl Nuclear Power Plant \u2014 51.3896N, 30.0995E",
+      "X": 0.66,
+      "Y": 0.06,
+      "ThreatLevel": 1.0,
+      "Radius": 0.06,
+      "Factions": [
+        "Monolith",
+        "Sin"
+      ],
+      "POIs": [
+        "Main Gate Checkpoint",
+        "Reactor 4 Sarcophagus",
+        "New Safe Confinement (NSC)",
+        "Cooling Towers (Units 5&6)",
+        "CNPP Train Depot",
+        "Turbine Hall B",
+        "Administration Building"
+      ],
+      "Connections": [
+        "pripyat",
+        "generators",
+        "sarcophagus"
+      ]
+    },
+    {
+      "Name": "Generators",
+      "Id": "generators",
+      "Type": "Surface",
+      "_realAnchor": "CNPP generator building exterior \u2014 51.38N, 30.06E",
+      "X": 0.5,
+      "Y": 0.03,
+      "ThreatLevel": 1.0,
+      "Radius": 0.07,
+      "Factions": [
+        "Monolith"
+      ],
+      "POIs": [
+        "Generator Field",
+        "Warlab Entrance",
+        "Village Ruins",
+        "Military Perimeter Base"
+      ],
+      "Connections": [
+        "cnpp",
+        "warlab"
+      ]
+    },
+    {
+      "Name": "Sarcophagus",
+      "Id": "sarcophagus",
+      "Type": "Surface",
+      "_realAnchor": "Reactor 4 sarcophagus and NSC \u2014 51.389N, 30.100E",
+      "X": 0.66,
+      "Y": 0.06,
+      "ThreatLevel": 1.0,
+      "Radius": 0.04,
+      "Factions": [
+        "Monolith",
+        "Sin"
+      ],
+      "POIs": [
+        "Reactor Core Access",
+        "Outer Containment Wall",
+        "Turbine Hall (Lethal)"
+      ],
+      "Connections": [
+        "cnpp",
+        "monolith_control"
+      ]
+    },
+    {
+      "Name": "Monolith Control Center",
+      "Id": "monolith_control",
+      "Type": "UndergroundLab",
+      "X": 0.66,
+      "Y": 0.06,
+      "ThreatLevel": 1.0,
+      "Radius": 0.04,
+      "Factions": [
+        "Monolith"
+      ],
+      "POIs": [
+        "Wish Granter Chamber",
+        "CNPP Core Control",
+        "Hologram Array"
+      ],
+      "Connections": [
+        "sarcophagus",
+        "warlab"
+      ]
+    },
+    {
+      "Name": "Warlab",
+      "Id": "warlab",
+      "Type": "UndergroundLab",
+      "X": 0.5,
+      "Y": 0.03,
+      "ThreatLevel": 1.0,
+      "Radius": 0.04,
+      "Factions": [
+        "Monolith",
+        "Mutants"
+      ],
+      "POIs": [
+        "Control Center",
+        "Generator Control",
+        "Hologram Room"
+      ],
+      "Connections": [
+        "monolith_control",
+        "generators"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "_comment": "Macro spawn factions aligned with S.T.A.L.K.E.R. Anomaly Gamma smart-terrain / simulation spawn points.",
+  "_source": "https://stalker-anomaly-gamma.fandom.com/wiki/Characters",
+  "regions": {
+    "cordon": {
+      "primaryFaction": "Loner",
+      "mix": [{ "faction": "Military", "weight": 0.12 }]
+    },
+    "swamps": {
+      "primaryFaction": "ClearSky",
+      "mix": [{ "faction": "Renegade", "weight": 0.06 }]
+    },
+    "meadow": {
+      "primaryFaction": "Loner"
+    },
+    "zalissya": {
+      "primaryFaction": "Loner",
+      "mix": [{ "faction": "Bandit", "weight": 0.22 }]
+    },
+    "buriakivka": {
+      "primaryFaction": "Ecologist",
+      "mix": [{ "faction": "Renegade", "weight": 0.10 }]
+    },
+    "garbage": {
+      "primaryFaction": "Bandit",
+      "mix": [{ "faction": "Loner", "weight": 0.28 }]
+    },
+    "agroprom": {
+      "primaryFaction": "Military",
+      "mix": [{ "faction": "Loner", "weight": 0.18 }]
+    },
+    "chernobyl_town": {
+      "primaryFaction": "Military",
+      "mix": [
+        { "faction": "Duty", "weight": 0.12 },
+        { "faction": "Loner", "weight": 0.10 }
+      ]
+    },
+    "dark_valley": {
+      "primaryFaction": "Bandit",
+      "mix": [{ "faction": "Loner", "weight": 0.12 }]
+    },
+    "duga": {
+      "primaryFaction": "Mercenary",
+      "mix": [{ "faction": "Monolith", "weight": 0.15 }]
+    },
+    "rostok": {
+      "primaryFaction": "Duty",
+      "mix": [{ "faction": "Loner", "weight": 0.32 }]
+    },
+    "truck_cemetery": {
+      "primaryFaction": "Loner",
+      "mix": [
+        { "faction": "Bandit", "weight": 0.20 },
+        { "faction": "Mercenary", "weight": 0.12 }
+      ]
+    },
+    "wild_territory": {
+      "primaryFaction": "Freedom",
+      "mix": [
+        { "faction": "Loner", "weight": 0.15 },
+        { "faction": "Mercenary", "weight": 0.10 }
+      ]
+    },
+    "yantar": {
+      "primaryFaction": "Ecologist",
+      "mix": [{ "faction": "Loner", "weight": 0.18 }]
+    },
+    "dead_city": {
+      "primaryFaction": "Mercenary",
+      "mix": [{ "faction": "Bandit", "weight": 0.12 }]
+    },
+    "military": {
+      "primaryFaction": "Freedom",
+      "mix": [{ "faction": "Mercenary", "weight": 0.14 }]
+    },
+    "chistogalovka": {
+      "primaryFaction": "Monolith"
+    },
+    "red_forest": {
+      "primaryFaction": "Monolith",
+      "mix": [{ "faction": "Loner", "weight": 0.04 }]
+    },
+    "radar": {
+      "primaryFaction": "Monolith"
+    },
+    "kopachi": {
+      "primaryFaction": "Monolith"
+    },
+    "limansk": {
+      "primaryFaction": "Monolith",
+      "mix": [{ "faction": "Mercenary", "weight": 0.08 }]
+    },
+    "hospital": {
+      "primaryFaction": "Monolith"
+    },
+    "zaton": {
+      "primaryFaction": "Loner",
+      "mix": [
+        { "faction": "Bandit", "weight": 0.12 },
+        { "faction": "Mercenary", "weight": 0.08 }
+      ]
+    },
+    "jupiter": {
+      "primaryFaction": "Loner",
+      "mix": [
+        { "faction": "Duty", "weight": 0.08 },
+        { "faction": "Freedom", "weight": 0.08 }
+      ]
+    },
+    "pripyat": {
+      "primaryFaction": "Monolith",
+      "mix": [{ "faction": "Mercenary", "weight": 0.06 }]
+    },
+    "cnpp": {
+      "primaryFaction": "Monolith",
+      "mix": [{ "faction": "Sin", "weight": 0.08 }]
+    },
+    "generators": {
+      "primaryFaction": "Monolith"
+    },
+    "sarcophagus": {
+      "primaryFaction": "Monolith"
+    },
+    "monolith_control": {
+      "primaryFaction": "Monolith"
+    },
+    "warlab": {
+      "primaryFaction": "Monolith",
+      "mix": [{ "faction": "Sin", "weight": 0.12 }]
+    }
+  },
+  "poiOverrides": {
+    "Rookie Village": "Loner",
+    "Ditiatky Checkpoint": "Military",
+    "Southern Watchtower": "Military",
+    "Northern Checkpoint": "Military",
+    "Clear Sky Base": "ClearSky",
+    "Freedom Base": "Freedom",
+    "Duty Headquarters": "Duty",
+    "100 Rads Bar": "Loner",
+    "Ecologist Mobile Lab": "Ecologist",
+    "Mercenary Base": "Mercenary",
+    "Bandit Base": "Bandit",
+    "Skadovsk Barge": "Loner",
+    "Yanov Station": "Loner",
+    "Military Research Base": "Military"
+  }
+}

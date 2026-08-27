@@ -1,0 +1,11 @@
+[
+    { "id": "con_bread",     "name": "Bread",                     "baseValue": 80.0,    "category": "Food",        "isArtifactOrSpecimen": false },
+    { "id": "con_sausage",   "name": "Sausage",                   "baseValue": 150.0,   "category": "Food",        "isArtifactOrSpecimen": false },
+    { "id": "con_canned",    "name": "Canned Goods",              "baseValue": 200.0,   "category": "Food",        "isArtifactOrSpecimen": false },
+    { "id": "con_vodka",     "name": "Vodka",                     "baseValue": 350.0,   "category": "Consumable",  "isArtifactOrSpecimen": false },
+    { "id": "con_beer",      "name": "Beer",                      "baseValue": 150.0,   "category": "Consumable",  "isArtifactOrSpecimen": false },
+    { "id": "con_antirad",   "name": "Anti-Radiation Drug",       "baseValue": 500.0,   "category": "Medical",     "isArtifactOrSpecimen": false },
+    { "id": "con_bandage",   "name": "Bandage",                   "baseValue": 120.0,   "category": "Medical",     "isArtifactOrSpecimen": false },
+    { "id": "con_medkit",    "name": "Medkit",                    "baseValue": 800.0,   "category": "Medical",     "isArtifactOrSpecimen": false },
+    { "id": "con_sci_medkit","name": "Scientific Medkit",         "baseValue": 2500.0,  "category": "Medical",     "isArtifactOrSpecimen": false }
+]

@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="S.T.A.L.K.E.R. A-Life real-time simulation telemetry visualizer — GPU-accelerated PixiJS dashboard.">
+    <title>S.T.A.L.K.E.R. A-Life Visualizer v4.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:          #080a0e;
+            --panel:       #0f1520;
+            --border:      #1e2d40;
+            --accent:      #66fcf1;
+            --accent-dim:  #45a29e;
+            --danger:      #ef4444;
+            --safe:        #22c55e;
+            --text:        #c5c6c7;
+            --text-dim:    #6b7280;
+
+            --loner:       #a1a1aa;
+            --duty:        #ef4444;
+            --freedom:     #22c55e;
+            --bandit:      #854d0e;
+            --mercenary:   #3b82f6;
+            --clearsky:    #06b6d4;
+            --monolith:    #f3f4f6;
+            --ecologist:   #fbbf24;
+            --zombified:   #7c3aed;
+            --military:    #84cc16;
+            --mutants:     #d946ef;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            gap: 0;
+        }
+
+        /* ── Sidebar ── */
+        #sidebar {
+            width: 340px;
+            min-width: 340px;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #sidebarHeader {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, #0f1520 0%, #0a1828 100%);
+        }
+
+        #sidebarHeader h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        #sidebarHeader h1 span {
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        /* Connection status */
+        #statusBar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        #statusDot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--danger);
+            transition: background 0.4s;
+            box-shadow: 0 0 6px var(--danger);
+        }
+        #statusDot.connected { background: var(--safe); box-shadow: 0 0 6px var(--safe); }
+
+        #statusText {
+            font-size: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Layer Controls */
+        #layerControls {
+            display: flex;
+            gap: 0;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .layer-btn {
+            flex: 1;
+            padding: 6px 0;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            transition: all 0.2s;
+        }
+        .layer-btn:first-child { border-radius: 4px 0 0 4px; }
+        .layer-btn:last-child  { border-radius: 0 4px 4px 0; }
+        .layer-btn:hover       { background: rgba(102,252,241,0.08); color: var(--accent); }
+        .layer-btn.active      { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+
+        /* ── Inspector ── */
+        #inspector {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        #inspector h2 {
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .inspector-idle {
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+        }
+
+        .inspector-idle svg {
+            opacity: 0.3;
+            margin-bottom: 10px;
+        }
+
+        .entity-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .entity-faction {
+            font-size: 0.85rem;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .inspector-section {
+            margin-bottom: 16px;
+        }
+
+        .inspector-section-title {
+            font-size: 0.6rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--accent-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .prop-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 0.85rem;
+        }
+
+        .prop-label { color: var(--text-dim); }
+        .prop-val   { color: #fff; font-weight: 600; text-align: right; }
+
+        .goal-badge {
+            display: inline-block;
+            background: rgba(102,252,241,0.1);
+            border: 1px solid var(--accent-dim);
+            color: var(--accent);
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.04em;
+        }
+
+        .goal-badge.fleeing {
+            background: rgba(239,68,68,0.15);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .desperation-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 700;
+        }
+        .desperation-pill.high { background: rgba(239,68,68,0.2); color: var(--danger); }
+        .desperation-pill.norm { background: rgba(34,197,94,0.15); color: var(--safe); }
+
+        /* Coords display */
+        .coords-display {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            background: rgba(255,255,255,0.03);
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            margin-top: 4px;
+        }
+
+        /* ── PDA Feed ── */
+        #pdaFeed {
+            border-top: 1px solid var(--border);
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        #pdaFeed h2 {
+            font-size: 0.6rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .pda-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+        }
+        .pda-tab {
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .pda-tab.active {
+            color: var(--accent);
+        }
+
+        #pdaMessages {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 130px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .pda-msg {
+            font-size: 0.72rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            border-left: 2px solid var(--border);
+            padding-left: 8px;
+            line-height: 1.4;
+            transition: border-color 0.3s;
+        }
+        .pda-msg.urgent {
+            border-color: var(--danger);
+            color: #fca5a5;
+            animation: pdaPulse 1.5s infinite;
+        }
+        .pda-msg .pda-sender { color: var(--accent-dim); }
+
+        @keyframes pdaPulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.7; }
+        }
+
+        /* ── Storm Banner ── */
+        #stormBanner {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            padding: 10px;
+            background: linear-gradient(90deg, #7f1d1d, #991b1b);
+            color: #fecaca;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            z-index: 1000;
+            animation: stormPulse 1s infinite;
+        }
+        @keyframes stormPulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.85; }
+        }
+
+        /* ── Map Area ── */
+        #mapArea {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #pixiCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Tooltip */
+        #tooltip {
+            position: absolute;
+            background: rgba(8,10,14,0.92);
+            border: 1px solid var(--accent-dim);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            pointer-events: none;
+            display: none;
+            font-size: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            z-index: 100;
+            white-space: nowrap;
+        }
+
+        /* Zoom hint */
+        #zoomHint {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            background: rgba(0,0,0,0.5);
+            padding: 4px 8px;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+        /* ── Population Tracker ── */
+        #popTracker {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.15);
+        }
+        #popTracker h2 {
+            font-size: 0.6rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+        .pop-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .pop-label {
+            font-size: 0.68rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            width: 60px;
+            flex-shrink: 0;
+        }
+        .pop-bar-bg {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .pop-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.8s ease;
+        }
+        .pop-bar-fill.stalker { background: linear-gradient(90deg, #45a29e, #66fcf1); }
+        .pop-bar-fill.mutant  { background: linear-gradient(90deg, #7c3aed, #d946ef); }
+        .pop-count {
+            font-size: 0.72rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: #fff;
+            width: 48px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .need-bar-bg {
+            flex: 1;
+            height: 5px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .need-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--accent);
+        }
+        .need-bar-fill.warn { background: var(--danger); }
+
+        .prot-row { margin-bottom: 3px; }
+        .prot-label { font-size: 0.65rem; color: var(--text-dim); min-width: 58px; display: inline-block; }
+        .gamma-tag {
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--accent);
+            background: rgba(102,252,241,0.08);
+            border: 1px solid rgba(102,252,241,0.2);
+            padding: 1px 5px;
+            border-radius: 2px;
+            margin-left: 4px;
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.04em;
+        }
+        .status-pill.looted { background: rgba(107,114,128,0.25); color: #9ca3af; border: 1px solid #4b5563; }
+        .status-pill.reported { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.35); }
+        .status-pill.lootable { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.35); }
+        .status-pill.despawn { background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.35); }
+        .gear-cond { color: var(--text-dim); font-size: 0.7rem; margin-left: 4px; }
+
+        .prot-row { margin-bottom: 3px; }
+        .prot-label { font-size: 0.65rem; color: var(--text-dim); min-width: 58px; display: inline-block; }
+        .gamma-tag {
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--accent);
+            background: rgba(102,252,241,0.08);
+            border: 1px solid rgba(102,252,241,0.2);
+            padding: 1px 5px;
+            border-radius: 2px;
+            margin-left: 4px;
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.04em;
+        }
+        .status-pill.looted { background: rgba(107,114,128,0.25); color: #9ca3af; border: 1px solid #4b5563; }
+        .status-pill.reported { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.35); }
+        .status-pill.lootable { background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.35); }
+        .status-pill.despawn { background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.35); }
+        .gear-cond { color: var(--text-dim); font-size: 0.7rem; margin-left: 4px; }
+        .need-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-size: 0.78rem;
+        }
+        .need-label { color: var(--text-dim); width: 72px; flex-shrink: 0; }
+        .need-val { width: 36px; text-align: right; font-size: 0.72rem; color: #fff; }
+        .pop-corpse {
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            text-align: right;
+            margin-top: 2px;
+        }
+        .pop-mission {
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: #fbbf24;
+            text-align: right;
+            margin-top: 2px;
+            line-height: 1.45;
+        }
+        .mission-pill {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-family: 'Share Tech Mono', monospace;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(251,191,36,0.12);
+            color: #fbbf24;
+            border: 1px solid rgba(251,191,36,0.35);
+        }
+        .goal-badge.mission { background: rgba(251,191,36,0.15); color: #fbbf24; border-color: rgba(251,191,36,0.4); }
+
+        /* ── Leaderboard ── */
+        #leaderboardPanel {
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.12);
+            padding: 10px 16px 8px;
+            max-height: 220px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        #leaderboardPanel h2 {
+            font-size: 0.6rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+            flex-shrink: 0;
+        }
+        #leaderboardList {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+            flex: 1;
+            min-height: 0;
+        }
+        .lb-row {
+            display: grid;
+            grid-template-columns: 24px 1fr auto;
+            gap: 6px;
+            align-items: center;
+            padding: 4px 6px;
+            margin-bottom: 2px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            border: 1px solid transparent;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .lb-row:hover {
+            background: rgba(102,252,241,0.06);
+            border-color: rgba(102,252,241,0.15);
+        }
+        .lb-row.selected {
+            background: rgba(102,252,241,0.12);
+            border-color: var(--accent-dim);
+        }
+        .lb-pos {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            font-size: 0.65rem;
+            text-align: right;
+        }
+        .lb-pos.top3 { color: var(--accent); font-weight: 700; }
+        .lb-name {
+            color: #fff;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .lb-meta {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+        .lb-kills {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            color: var(--accent);
+            text-align: right;
+            white-space: nowrap;
+        }
+        .kill-stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .kill-stat-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 6px;
+            text-align: center;
+        }
+        .kill-stat-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .kill-stat-lbl {
+            font-size: 0.58rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 2px;
+        }
+        .kill-stat-box.stalker .kill-stat-val { color: #ef4444; }
+        .kill-stat-box.mutant .kill-stat-val { color: #d946ef; }
+
+        #followBanner {
+            display: none;
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            background: rgba(11,12,16,0.92);
+            border: 1px solid var(--accent-dim);
+            color: var(--accent);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem;
+            padding: 6px 10px 6px 14px;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+            align-items: center;
+            gap: 10px;
+            pointer-events: auto;
+        }
+        #followBanner.visible { display: flex; }
+        #followBanner .follow-label { letter-spacing: 0.04em; }
+        #followBanner .follow-name { color: #fff; font-weight: 700; }
+        #btnStopFollow {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        #btnStopFollow:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        .lb-row.following {
+            border-color: rgba(102,252,241,0.35);
+            background: rgba(102,252,241,0.08);
+        }
+        .lb-follow-tag {
+            font-size: 0.58rem;
+            color: var(--accent);
+            margin-left: 4px;
+        }
+
+        /* ── Inventory Grid ── */
+        .inv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .inv-slot {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 6px 8px;
+            position: relative;
+        }
+        .inv-slot.wide { grid-column: span 2; }
+        .inv-slot-label {
+            font-size: 0.55rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .inv-item-name {
+            font-size: 0.8rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        .inv-item-cond {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+        }
+        .inv-item-tag {
+            margin-top: 4px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div id="sidebarHeader">
+            <h1>A-Life <span>Visualizer</span> v5.0</h1>
+            <div id="statusBar">
+                <div id="statusDot"></div>
+                <span id="statusText">Connecting to simulation...</span>
+            </div>
+        </div>
+
+        <!-- Layer Toggle -->
+        <div id="layerControls">
+            <button class="layer-btn" id="btnInterior" onclick="App.setLayer(1)">Interior +1</button>
+            <button class="layer-btn active" id="btnSurface" onclick="App.setLayer(0)">Surface 0</button>
+            <button class="layer-btn" id="btnUnderground" onclick="App.setLayer(-1)">Underground -1</button>
+        </div>
+
+        <!-- Population Tracker -->
+        <div id="popTracker">
+            <h2>// Population</h2>
+            <div class="pop-row">
+                <span class="pop-label">Stalkers</span>
+                <div class="pop-bar-bg"><div class="pop-bar-fill stalker" id="barStalker" style="width:0%"></div></div>
+                <span class="pop-count" id="cntStalker">— / —</span>
+            </div>
+            <div class="pop-row">
+                <span class="pop-label">Mutants</span>
+                <div class="pop-bar-bg"><div class="pop-bar-fill mutant" id="barMutant" style="width:0%"></div></div>
+                <span class="pop-count" id="cntMutant">— / —</span>
+            </div>
+            <div class="pop-corpse" id="cntCorpse">Corpses in field: —</div>
+            <div class="pop-mission" id="cntMission">Active missions: —</div>
+        </div>
+
+        <!-- Top 100 Leaderboard -->
+        <div id="leaderboardPanel">
+            <h2>// Top 100 Stalkers</h2>
+            <div id="leaderboardList">
+                <div class="lb-row" style="cursor:default;opacity:0.5">
+                    <span class="lb-pos">—</span>
+                    <span class="lb-name">Loading leaderboard…</span>
+                    <span class="lb-kills"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inspector Panel -->
+        <div id="inspector">
+            <h2>// Tactical Inspector</h2>
+            <div id="inspectorContent">
+                <div class="inspector-idle">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <p>Click an entity on the map<br>to inspect its current state.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDA Feed -->
+        <div id="pdaFeed">
+            <div class="pda-tabs">
+                <div class="pda-tab active" data-tab="All">// All</div>
+                <div class="pda-tab" data-tab="News">// News</div>
+                <div class="pda-tab" data-tab="Missions">// Missions</div>
+                <div class="pda-tab" data-tab="Kills">// Kills</div>
+            </div>
+            <div id="pdaMessages">
+                <div class="pda-msg"><span class="pda-sender">SYSTEM</span> — Awaiting connection...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Storm Banner -->
+    <div id="stormBanner">⚠ EMISSION IN PROGRESS — SEEK SHELTER IMMEDIATELY ⚠</div>
+
+    <!-- Map / PixiJS Canvas -->
+    <div id="mapArea">
+        <canvas id="pixiCanvas"></canvas>
+        <div id="tooltip"></div>
+        <div id="followBanner">
+            <span class="follow-label">Following</span>
+            <span class="follow-name" id="followName">—</span>
+            <button id="btnStopFollow" type="button">Stop</button>
+        </div>
+        <div id="zoomHint">Scroll to zoom · Drag to pan · Click entity to follow</div>
+    </div>
+
+<!-- Load PIXI and Viewport globally -->
+<script src="https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pixi-viewport@5.1.0/dist/viewport.min.js"></script>
+
+<script type="module">
+    import { init, setStatusCallback, setLayer, setInspectorCallback, setStormCallback, setMissionStatsCallback, setFollowCallback, focusEntity, getSelectedEntityId, getFollowEntityId, stopFollow } from './app.js?v=9';
+
+    // ── Layer toggle ──────────────────────────────────────────────────────────
+    window.App = { setLayer };
+
+    document.querySelectorAll('.layer-btn').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('.layer-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+    }));
+
+    // ── Status callback ───────────────────────────────────────────────────────
+    setStatusCallback((status) => {
+        const dot  = document.getElementById('statusDot');
+        const text = document.getElementById('statusText');
+        if (status === 'connected') {
+            dot.classList.add('connected');
+            text.textContent = 'Connected to simulation';
+        } else {
+            dot.classList.remove('connected');
+            text.textContent = status === 'error' ? 'Connection error' : 'Disconnected — Retrying...';
+        }
+    });
+
+    // ── Inspector renderer ────────────────────────────────────────────────────
+    function needBar(label, value, max = 100, warnAt = 75) {
+        const pct = Math.min(100, Math.round((value / max) * 100));
+        const warn = pct >= warnAt;
+        return `<div class="need-row">
+            <span class="need-label">${label}</span>
+            <div class="need-bar-bg"><div class="need-bar-fill ${warn ? 'warn' : ''}" style="width:${pct}%"></div></div>
+            <span class="need-val">${Math.round(value)}</span>
+        </div>`;
+    }
+
+    function formatDuration(sec) {
+        if (sec == null || sec <= 0) return 'imminent';
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return m > 0 ? `${m}m ${s}s` : `${s}s`;
+    }
+
+    function condPct(c) {
+        if (c == null || c <= 0) return '';
+        return `<span class="gear-cond">${Math.round(c * 100)}%</span>`;
+    }
+
+    function gammaTag(id) {
+        if (!id) return '';
+        return `<span class="gamma-tag">${id}</span>`;
+    }
+
+    function protBar(label, value) {
+        const pct = Math.min(100, Math.round((value ?? 0) * 100));
+        return `<div class="need-row prot-row">
+            <span class="need-label prot-label">${label}</span>
+            <div class="need-bar-bg"><div class="need-bar-fill" style="width:${pct}%"></div></div>
+            <span class="need-val">${pct}%</span>
+        </div>`;
+    }
+
+    function renderProtection(prot) {
+        if (!prot) return '';
+        return `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Protection (GAMMA)</div>
+                ${protBar('Bullet', prot.bullet)}
+                ${protBar('Slash', prot.slash)}
+                ${protBar('Radiation', prot.rad)}
+                ${protBar('Burn', prot.burn)}
+                ${protBar('Chemical', prot.chemical)}
+                ${protBar('Psi', prot.psi)}
+            </div>`;
+    }
+
+    function renderGearSlot(label, name, id, gammaId, condition, isWide = false) {
+        if (!name || name === 'None') return `
+            <div class="inv-slot ${isWide ? 'wide' : ''}">
+                <span class="inv-slot-label">${label}</span>
+                <span class="inv-item-name" style="color:var(--text-dim)">Empty</span>
+            </div>`;
+        return `
+            <div class="inv-slot ${isWide ? 'wide' : ''}">
+                <span class="inv-slot-label">${label}</span>
+                <div class="inv-item-cond">${condPct(condition)}</div>
+                <div class="inv-item-name">${name}</div>
+                <div class="inv-item-tag">${gammaTag(gammaId || (id?.startsWith('out_') || id?.startsWith('helm_') ? id.replace(/^(out_|helm_)/, '') : null))}</div>
+            </div>`;
+    }
+
+    function renderCorpseLoot(loot) {
+        if (!loot) return '<div class="prop-row"><span class="prop-label">Loot</span><span class="prop-val">Nothing</span></div>';
+        const rows = [
+            ['Primary', loot.primaryWeapon],
+            ['Secondary', loot.secondaryWeapon],
+            ['Armor', loot.armor],
+            ['Helmet', loot.helmet],
+        ].filter(([, g]) => g?.id).map(([lbl, g]) =>
+            `<div class="prop-row"><span class="prop-label">${lbl}</span><span class="prop-val">${g.name}${condPct(g.condition)}${gammaTag(g.gammaId)}</span></div>`
+        ).join('');
+        return rows || '<div class="prop-row"><span class="prop-label">Loot</span><span class="prop-val">Stripped</span></div>';
+    }
+
+    function missionTypeLabel(type) {
+        return { ScoutPoi: 'Scout', RetrieveStash: 'Retrieve', EscortConvoy: 'Escort' }[type] ?? type ?? 'Job';
+    }
+
+    function renderKillStats(ent) {
+        const k = ent.killStats;
+        if (!k || (k.total ?? 0) <= 0) return '';
+        return `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Kill Record</div>
+                <div class="kill-stat-grid">
+                    <div class="kill-stat-box">
+                        <div class="kill-stat-val">${k.total ?? 0}</div>
+                        <div class="kill-stat-lbl">Total</div>
+                    </div>
+                    <div class="kill-stat-box stalker">
+                        <div class="kill-stat-val">${k.stalkerKills ?? 0}</div>
+                        <div class="kill-stat-lbl">Stalkers</div>
+                    </div>
+                    <div class="kill-stat-box mutant">
+                        <div class="kill-stat-val">${k.mutantKills ?? 0}</div>
+                        <div class="kill-stat-lbl">Mutants</div>
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    function renderMissionSection(ent) {
+        if (ent.mission) {
+            const m = ent.mission;
+            return `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Active Mission</div>
+                <div class="prop-row">
+                    <span class="prop-label">Type</span>
+                    <span class="mission-pill">${missionTypeLabel(m.type)}</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">Issuer</span>
+                    <span class="prop-val">${m.issuerName} (${m.issuerFaction || '?'})</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">Phase</span>
+                    <span class="mission-pill">${m.objectiveDone ? 'RETURN FOR PAYOUT' : 'IN FIELD'}</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">${m.objectiveDone ? 'Return to' : 'Target'}</span>
+                    <span class="prop-val">${m.objectiveDone ? m.issuerName : m.targetLabel}</span>
+                </div>
+                ${m.objectiveDone ? `<div class="prop-row"><span class="prop-label">Objective</span><span class="prop-val">${m.targetLabel}</span></div>` : ''}
+                <div class="prop-row">
+                    <span class="prop-label">Reward</span>
+                    <span class="prop-val" style="color:#fbbf24">${Math.round(m.rewardGold ?? 0)} RU</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">Threat</span>
+                    <span class="prop-val">${((m.targetThreat ?? 0) * 100).toFixed(0)}%</span>
+                </div>
+                ${m.brief ? `<div class="prop-row"><span class="prop-label">Brief</span><span class="prop-val" style="font-size:0.72rem">${m.brief}</span></div>` : ''}
+            </div>`;
+        }
+        if (ent.hasMissionOffer) {
+            return `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Mission Board</div>
+                <div class="prop-row">
+                    <span class="prop-label">Status</span>
+                    <span class="mission-pill">OFFER AVAILABLE</span>
+                </div>
+            </div>`;
+        }
+        if (ent.missionsCompleted > 0) {
+            return `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Mission Record</div>
+                <div class="prop-row">
+                    <span class="prop-label">Completed</span>
+                    <span class="prop-val">${ent.missionsCompleted}</span>
+                </div>
+            </div>`;
+        }
+        return '';
+    }
+
+    function renderInspectorBasic(ent) {
+        const isCorpse = ent.type === 'corpse' || ent.type === 'corpse_mutant' || (ent.id && ent.id.startsWith('corpse_'));
+        if (isCorpse) {
+            renderInspector({
+                entityId: ent.id,
+                name: ent.victimName ?? ent.name,
+                faction: ent.victimFaction ?? ent.faction,
+                type: ent.isMutant ? 'corpse_mutant' : 'corpse',
+                position: ent.position,
+                causeOfDeath: ent.cause,
+                isReported: ent.isReported,
+                isLooted: ent.isLooted,
+                isPatchIntact: ent.isPatchIntact,
+                ageSec: ent.ageSec,
+                despawnSec: ent.despawnSec,
+                corpseLoot: ent.loot,
+            });
+            return;
+        }
+        renderInspector({
+            entityId: ent.id,
+            name: ent.name,
+            faction: ent.faction,
+            type: ent.type,
+            layerIndex: ent.layerIndex,
+            health: ent.health,
+            currentGoal: ent.currentGoal,
+            activity: ent.activity,
+            desperation: ent.desperation,
+            position: ent.position,
+            equipment: ent.equipment,
+            mission: ent.mission,
+        });
+    }
+
+    function renderInspector(ent) {
+        const panel = document.getElementById('inspectorContent');
+        const isCorpse = ent.type === 'corpse' || ent.type === 'corpse_mutant';
+        const factionClass = (ent.faction ?? ent.apparentFaction ?? 'loner').toLowerCase().replace(/\s+/g, '');
+        const goalClass = ent.mission || (ent.currentGoal || '').includes('Mission')
+            ? 'mission'
+            : ent.currentGoal?.toLowerCase().includes('emission') || ent.currentGoal?.toLowerCase().includes('flee') ? 'fleeing' : '';
+        const id = ent.entityId ?? ent.id ?? '?';
+
+        if (isCorpse) {
+            let statusHtml = '';
+            if (ent.isLooted) statusHtml += `<span class="status-pill looted">STRIPPED</span> `;
+            else if (ent.corpseLoot && (ent.corpseLoot.primaryWeapon || ent.corpseLoot.armor)) statusHtml += `<span class="status-pill lootable">LOOTABLE</span> `;
+            if (ent.isReported) statusHtml += `<span class="status-pill reported">REPORTED</span> `;
+            if (ent.despawnSec != null && ent.despawnSec < 300) statusHtml += `<span class="status-pill despawn">DESPAWN ${formatDuration(ent.despawnSec)}</span>`;
+
+            panel.innerHTML = `
+                <div class="entity-name">${ent.name}</div>
+                <div class="entity-faction" style="color:var(--${factionClass || 'loner'})">${ent.faction} · ${ent.type === 'corpse_mutant' ? 'MUTANT CARCASS' : 'STALKER CORPSE'}</div>
+                <div style="margin-bottom:12px">${statusHtml}</div>
+
+                <div class="inspector-section">
+                    <div class="inspector-section-title">Death</div>
+                    <div class="prop-row"><span class="prop-label">Cause</span><span class="prop-val">${ent.causeOfDeath ?? 'Unknown'}</span></div>
+                    <div class="prop-row"><span class="prop-label">Patch</span><span class="prop-val">${ent.isPatchIntact === false ? 'Destroyed' : 'Intact'}</span></div>
+                    <div class="prop-row"><span class="prop-label">Age</span><span class="prop-val">${formatDuration(ent.ageSec)}</span></div>
+                    <div class="prop-row"><span class="prop-label">Despawn</span><span class="prop-val">${formatDuration(ent.despawnSec)}</span></div>
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-section-title">Loot on Body</div>
+                    ${renderCorpseLoot(ent.corpseLoot)}
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-section-title">Position</div>
+                    <div class="coords-display">X: ${ent.position?.x?.toFixed(1) ?? '?'} &nbsp;·&nbsp; Y: ${ent.position?.y?.toFixed(1) ?? '?'}</div>
+                    <div class="prop-row"><span class="prop-label">ID</span><span class="prop-val" style="font-family:monospace;font-size:0.7rem;color:var(--text-dim)">${id}</span></div>
+                </div>`;
+            return;
+        }
+
+        let needsHtml = '';
+        if (ent.needs) {
+            needsHtml = `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Needs</div>
+                ${needBar('Hunger', ent.needs.hunger)}
+                ${needBar('Thirst', ent.needs.thirst)}
+                ${needBar('Fatigue', ent.needs.fatigue)}
+                ${needBar('Morale', ent.needs.morale)}
+                <div class="prop-row"><span class="prop-label">Radiation</span><span class="prop-val">${ent.needs.radiation?.toFixed(1) ?? 0} Sv</span></div>
+                <div class="prop-row"><span class="prop-label">Gold</span><span class="prop-val">${Math.round(ent.needs.gold ?? 0)} RU</span></div>
+                <div class="prop-row"><span class="prop-label">Ammo</span><span class="prop-val">${ent.needs.ammo ?? 0}</span></div>
+            </div>`;
+        }
+
+        let skillsHtml = '';
+        if (ent.skills) {
+            skillsHtml = `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Skills</div>
+                <div class="prop-row"><span class="prop-label">Marksmanship</span><span class="prop-val">${ent.skills.marksmanship}</span></div>
+                <div class="prop-row"><span class="prop-label">Zone Survival</span><span class="prop-val">${ent.skills.zoneSurvival}</span></div>
+                <div class="prop-row"><span class="prop-label">Charisma</span><span class="prop-val">${ent.skills.charisma}</span></div>
+                <div class="prop-row"><span class="prop-label">Trust</span><span class="prop-val">${ent.skills.trustworthiness}</span></div>
+            </div>`;
+        }
+
+        let disguiseHtml = '';
+        if (ent.apparentFaction && ent.apparentFaction !== ent.faction) {
+            disguiseHtml = `<div class="prop-row"><span class="prop-label">Disguise</span><span class="prop-val">${ent.apparentFaction}</span></div>`;
+        }
+        if (ent.suspicionLevel !== undefined && ent.suspicionLevel > 0) {
+            disguiseHtml += `<div class="prop-row"><span class="prop-label">Suspicion</span><span class="prop-val" style="color:var(--danger)">${ent.suspicionLevel.toFixed(0)}%</span></div>`;
+        }
+
+        panel.innerHTML = `
+            <div class="entity-name">${ent.name}</div>
+            <div class="entity-faction" style="color:var(--${factionClass})">${ent.faction} · ${ent.type?.toUpperCase() ?? 'ENTITY'}${ent.rank ? ' · ' + ent.rank : ''}</div>
+
+            <div class="inspector-section">
+                <div class="inspector-section-title">Identity</div>
+                <div class="prop-row">
+                    <span class="prop-label">ID</span>
+                    <span class="prop-val" style="font-family:monospace;font-size:0.7rem;color:var(--text-dim)">${id}</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">Layer</span>
+                    <span class="prop-val">${ent.layerIndex === 0 ? 'Surface' : ent.layerIndex === 1 ? 'Interior' : 'Underground'}</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">Health</span>
+                    <span class="prop-val">${ent.health ?? '?'} HP</span>
+                </div>
+                ${disguiseHtml}
+            </div>
+
+            <div class="inspector-section">
+                <div class="inspector-section-title">AI State</div>
+                <div class="prop-row">
+                    <span class="prop-label">Current Goal</span>
+                    <span class="goal-badge ${goalClass}">${ent.currentGoal || 'Idle'}</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">Activity</span>
+                    <span class="prop-val">${ent.activity || '—'}</span>
+                </div>
+                <div class="prop-row">
+                    <span class="prop-label">Desperation</span>
+                    <span class="desperation-pill ${ent.desperation ? 'high' : 'norm'}">${ent.desperation ? 'CRITICAL' : 'Normal'}</span>
+                </div>
+            </div>
+
+            ${needsHtml}
+            ${skillsHtml}
+            ${renderKillStats(ent)}
+            ${renderMissionSection(ent)}
+
+            ${ent.type === 'stalker' ? `
+            <div class="inspector-section">
+                <div class="inspector-section-title">Equipment</div>
+                <div class="inv-grid">
+                    ${renderGearSlot('Primary', ent.equipment?.weapon, ent.equipment?.weaponId, ent.equipment?.weaponGammaId, ent.equipment?.weaponCondition, true)}
+                    ${renderGearSlot('Secondary', ent.equipment?.secondaryWeapon, ent.equipment?.secondaryWeaponId, null, ent.equipment?.weaponCondition)}
+                    ${renderGearSlot('Helmet', ent.equipment?.helmet, ent.equipment?.helmetId, ent.equipment?.helmetGammaId, ent.equipment?.helmetCondition)}
+                    ${renderGearSlot('Armor', ent.equipment?.armor, ent.equipment?.armorId, ent.equipment?.armorGammaId, ent.equipment?.armorCondition, true)}
+                </div>
+                ${ent.equipment?.belt?.length ? `
+                <div class="prop-row">
+                    <span class="prop-label">Belt</span>
+                    <span class="prop-val" style="font-size:0.7rem">${ent.equipment.belt.join(', ')}</span>
+                </div>` : ''}
+            </div>
+            ${renderProtection(ent.equipment?.protection)}` : ''}
+
+            <div class="inspector-section">
+                <div class="inspector-section-title">Position</div>
+                <div class="coords-display">X: ${ent.position?.x?.toFixed(1) ?? '?'} &nbsp;·&nbsp; Y: ${ent.position?.y?.toFixed(1) ?? '?'}</div>
+            </div>
+        `;
+
+        if (typeof leaderboardData !== 'undefined' && leaderboardData.length) {
+            renderLeaderboard(leaderboardData);
+        }
+    }
+
+    setInspectorCallback(renderInspector);
+
+    // ── PDA Feed renderer ─────────────────────────────────────────────────────
+    let currentPdaTab = 'All';
+    let currentFeedData = [];
+    let currentKillsData = [];
+
+    document.querySelectorAll('.pda-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            document.querySelectorAll('.pda-tab').forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+            currentPdaTab = e.target.dataset.tab;
+            renderPDAFeed(currentFeedData, currentKillsData);
+        });
+    });
+
+    function renderPDAFeed(feed, kills) {
+        if (feed) currentFeedData = feed;
+        if (kills) currentKillsData = kills;
+
+        const container = document.getElementById('pdaMessages');
+        container.innerHTML = '';
+        
+        if (currentPdaTab === 'Kills') {
+            if (!currentKillsData || !currentKillsData.length) {
+                container.innerHTML = '<div class="pda-msg"><span class="pda-sender">SYSTEM</span> — No recent casualties.</div>';
+                return;
+            }
+            [...currentKillsData].forEach(k => {
+                const div = document.createElement('div');
+                div.className = 'pda-msg';
+                const timeStr = k.gameTime ? `[${k.gameTime}] ` : '';
+                
+                let killerStr = `<span class="pda-sender" style="color:var(--${(k.killerFaction||'').toLowerCase()})">${k.killerName}</span>`;
+                let victimStr = `<span style="color:var(--${(k.victimFaction||'').toLowerCase()})">${k.victimName}</span>`;
+                
+                div.innerHTML = `<span class="pda-sender" style="color:var(--text-dim)">${timeStr}</span> ${killerStr} killed ${victimStr} [${k.cause}]`;
+                container.appendChild(div);
+            });
+        } else {
+            let filtered = currentFeedData || [];
+            if (currentPdaTab === 'News') {
+                filtered = (currentFeedData || []).filter(m => ['FactionNews', 'BlowoutWarning', 'RumorAlert'].includes(m.type));
+            } else if (currentPdaTab === 'Missions') {
+                filtered = (currentFeedData || []).filter(m => m.type === 'MissionBrief');
+            }
+
+            [...filtered].reverse().forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'pda-msg' + (msg.isUrgent ? ' urgent' : '');
+                
+                let timeStr = "";
+                if (msg.time !== undefined) {
+                    let h = Math.floor(msg.time);
+                    let m = Math.floor((msg.time % 1) * 60);
+                    timeStr = `[${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}] `;
+                }
+
+                div.innerHTML = `<span class="pda-sender">${timeStr}${msg.headline || 'UNKNOWN'}</span> — ${msg.body || ''}`;
+                container.appendChild(div);
+            });
+        }
+    }
+
+    // ── Storm banner ──────────────────────────────────────────────────────────
+    const PHASE_LABELS = {
+        Warning:   '⚠ EMISSION WARNING — PREPARE SHELTER ⚠',
+        Panic:     '⚠ EMISSION IMMINENT — SEEK SHELTER NOW ⚠',
+        Peak:      '☢ EMISSION IN PROGRESS — STAY INDOORS ☢',
+        Aftermath: '☢ EMISSION AFTERMATH — ZONE UNSTABLE ☢',
+    };
+
+    function updateStormBanner(active, phase) {
+        const banner = document.getElementById('stormBanner');
+        const show = active || (phase && phase !== 'Dormant');
+        banner.style.display = show ? 'block' : 'none';
+        if (show) banner.textContent = PHASE_LABELS[phase] ?? '⚠ EMISSION ALERT ⚠';
+    }
+
+    setStormCallback(updateStormBanner);
+
+    function updateFollowBanner(state) {
+        const banner = document.getElementById('followBanner');
+        const nameEl = document.getElementById('followName');
+        if (state?.active && state.name) {
+            banner.classList.add('visible');
+            nameEl.textContent = state.name;
+        } else {
+            banner.classList.remove('visible');
+            nameEl.textContent = '—';
+        }
+        if (typeof leaderboardData !== 'undefined' && leaderboardData.length) {
+            renderLeaderboard(leaderboardData);
+        }
+    }
+
+    setFollowCallback(updateFollowBanner);
+    document.getElementById('btnStopFollow').addEventListener('click', () => stopFollow());
+
+    // ── Boot ──────────────────────────────────────────────────────────────────
+    const canvas = document.getElementById('pixiCanvas');
+    await init(canvas, renderInspectorBasic);
+
+    // ── Population Tracker ────────────────────────────────────────────────────
+    function updatePopTracker(pop) {
+        if (!pop) return;
+        const sPct = Math.min(100, Math.round(pop.stalkers / pop.stalkerTarget * 100));
+        const mPct = Math.min(100, Math.round(pop.mutants  / pop.mutantTarget  * 100));
+        document.getElementById('barStalker').style.width = sPct + '%';
+        document.getElementById('barMutant').style.width  = mPct + '%';
+        document.getElementById('cntStalker').textContent = `${pop.stalkers} / ${pop.stalkerTarget}`;
+        document.getElementById('cntMutant').textContent  = `${pop.mutants} / ${pop.mutantTarget}`;
+        document.getElementById('cntCorpse').textContent  = `Corpses in field: ${pop.corpses ?? '—'}`;
+
+        const ms = pop.missions;
+        const el = document.getElementById('cntMission');
+        if (!ms) {
+            el.textContent = 'Active missions: —';
+            return;
+        }
+        const parts = [`Active: ${ms.active ?? 0}`, `Leaders: ${ms.leadersActive ?? 0}`];
+        if (ms.scout || ms.stash || ms.escort) {
+            parts.push(`S${ms.scout ?? 0}/R${ms.stash ?? 0}/E${ms.escort ?? 0}`);
+        }
+        if (ms.completedLifetime != null) {
+            parts.push(`Done: ${ms.completedLifetime}`);
+        }
+        el.textContent = parts.join(' · ');
+        el.title = `Offers: ${ms.totalOffers ?? '?'} at ${ms.basesWithOffers ?? '?'} bases · Accepted lifetime: ${ms.acceptedLifetime ?? 0}`;
+    }
+
+    function updateMissionStatsFromFrame(stats) {
+        if (!stats) return;
+        const el = document.getElementById('cntMission');
+        const parts = [`Active: ${stats.activeCount ?? 0}`, `Leaders: ${stats.leadersActive ?? 0}`];
+        if (stats.scoutCount || stats.stashCount || stats.escortCount) {
+            parts.push(`S${stats.scoutCount ?? 0}/R${stats.stashCount ?? 0}/E${stats.escortCount ?? 0}`);
+        }
+        if (stats.completedLifetime != null) {
+            parts.push(`Done: ${stats.completedLifetime}`);
+        }
+        el.textContent = parts.join(' · ');
+        el.title = `Offers: ${stats.totalOffers ?? '?'} at ${stats.basesWithOffers ?? '?'} bases · Accepted lifetime: ${stats.acceptedLifetime ?? 0}`;
+    }
+
+    setMissionStatsCallback(updateMissionStatsFromFrame);
+
+    // ── Leaderboard ───────────────────────────────────────────────────────────
+    let leaderboardData = [];
+
+    function renderLeaderboard(entries) {
+        leaderboardData = entries ?? [];
+        const list = document.getElementById('leaderboardList');
+        const selectedId = getSelectedEntityId();
+        const followId = getFollowEntityId();
+
+        if (!leaderboardData.length) {
+            list.innerHTML = '<div class="lb-row" style="cursor:default;opacity:0.5"><span class="lb-pos">—</span><span class="lb-name">No ranked stalkers yet</span></div>';
+            return;
+        }
+
+        list.innerHTML = leaderboardData.map(entry => {
+            const fc = (entry.faction || 'loner').toLowerCase().replace(/\s+/g, '');
+            const top3 = entry.position <= 3 ? ' top3' : '';
+            const sel = entry.id === selectedId ? ' selected' : '';
+            const fol = entry.id === followId ? ' following' : '';
+            const rankShort = (entry.rank || 'Rookie').replace('Professional', 'Pro').replace('Experienced', 'Exp');
+            return `<div class="lb-row${sel}${fol}" data-id="${entry.id}" title="${entry.name} · ${entry.rank} · ${entry.xp} XP · Click to follow">
+                <span class="lb-pos${top3}">#${entry.position}</span>
+                <div>
+                    <div class="lb-name" style="color:var(--${fc})">${entry.name}${entry.id === followId ? '<span class="lb-follow-tag">LIVE</span>' : ''}</div>
+                    <div class="lb-meta">${entry.faction} · ${rankShort}</div>
+                </div>
+                <span class="lb-kills">${entry.kills}K <span style="color:#ef4444">${entry.stalkerKills ?? 0}S</span>/<span style="color:#d946ef">${entry.mutantKills ?? 0}M</span></span>
+            </div>`;
+        }).join('');
+
+        list.querySelectorAll('.lb-row[data-id]').forEach(row => {
+            row.addEventListener('click', () => {
+                const id = row.dataset.id;
+                const entry = leaderboardData.find(e => e.id === id);
+                if (!entry) return;
+                focusEntity(id, { follow: true });
+                renderInspector({
+                    entityId: entry.id,
+                    name: entry.name,
+                    faction: entry.faction,
+                    rank: entry.rank,
+                    type: 'stalker',
+                    isAlive: true,
+                    killStats: {
+                        total: entry.kills,
+                        stalkerKills: entry.stalkerKills ?? 0,
+                        mutantKills: entry.mutantKills ?? 0
+                    },
+                    currentGoal: '—',
+                    activity: '—'
+                });
+                renderLeaderboard(leaderboardData);
+            });
+        });
+    }
+
+    async function pollLeaderboard() {
+        try {
+            const res = await fetch('http://localhost:5050/api/leaderboard');
+            const data = await res.json();
+            renderLeaderboard(data.entries);
+        } catch (_) {}
+    }
+
+    // Poll /api/state for PDA feed + storm status + population
+    async function pollState() {
+        try {
+            const res = await fetch('http://localhost:5050/api/state');
+            const data = await res.json();
+            if (data.feed || data.kills) renderPDAFeed(data.feed, data.kills);
+            if (data.population) updatePopTracker(data.population);
+        } catch (_) {}
+    }
+    setInterval(pollState, 2000);
+    setInterval(pollLeaderboard, 5000);
+    pollLeaderboard();
+</script>
+</body>
+</html>
