@@ -87,6 +87,8 @@ public sealed class SpawnOrchestrator : ISimulationSystem
         if (!IsInitialSpawnActive)
         {
             Console.WriteLine("[Population] Staggered initial spawn complete.");
+            SimulationDebugLog.RecordInitialPopulationDistribution(ctx.Stalkers);
+            LeaderboardSerializer.SaveLeaderboard(ctx.Stalkers, "data/leaderboard.json");
         }
     }
 
@@ -165,7 +167,7 @@ public sealed class SpawnOrchestrator : ISimulationSystem
         else
             SimulationDebugLog.RespawnBatch(toSpawnS, toSpawnM);
 
-        var newLeaderIds = SpawnPopulationBatch(ctx, toSpawnS, toSpawnM);
+        var newLeaderIds = SpawnPopulationBatch(ctx, toSpawnS, toSpawnM, isInitial);
         foreach (var id in newLeaderIds)
         {
             var leader = ctx.Stalkers.FirstOrDefault(s => s.Id == id);
@@ -189,7 +191,7 @@ public sealed class SpawnOrchestrator : ISimulationSystem
         }
     }
 
-    private List<string> SpawnPopulationBatch(SimulationContext ctx, int stalkerCount, int mutantCount)
+    private List<string> SpawnPopulationBatch(SimulationContext ctx, int stalkerCount, int mutantCount, bool isInitial)
     {
         var newLeaderIds = new List<string>();
 
@@ -205,9 +207,17 @@ public sealed class SpawnOrchestrator : ISimulationSystem
                     ? 1
                     : Math.Min(Random.Shared.Next(2, 5), remaining);
 
-                var spawnPoi = ctx.MacroPois[Random.Shared.Next(ctx.MacroPois.Count)];
-                string faction = FactionSpawnTable.RollSpawnFaction(spawnPoi.RegionId);
+                // Initial random POI to seed faction
+                var tempPoi = ctx.MacroPois[Random.Shared.Next(ctx.MacroPois.Count)];
+                string faction = FactionSpawnTable.RollSpawnFaction(tempPoi.RegionId);
                 if (string.IsNullOrEmpty(faction) || faction == "Mutants") faction = "Loner";
+
+                StalkerRank rank = isInitial 
+                    ? DemographicsEngine.RollInitialRank(faction)
+                    : (Random.Shared.NextDouble() < 0.85 ? StalkerRank.Rookie : StalkerRank.Trainee);
+                
+                var validPois = StalkerALifeSandbox.AI.Decision.ZoneGateEvaluator.GetValidSpawnRegions(rank, faction, ctx.MacroPois, ctx.WorldGen);
+                var spawnPoi = validPois[Random.Shared.Next(validPois.Count)];
 
                 string squadId = Guid.NewGuid().ToString()[..8];
                 Vector3 squadPos = PickHomeSpawnPosition(ctx, spawnPoi.Position);
@@ -227,9 +237,9 @@ public sealed class SpawnOrchestrator : ISimulationSystem
                         SquadId = squadId,
                         IsSquadLeader = (m == 0)
                     };
-                    ItemDatabase.ApplySpawnLoadout(rs, rs.IsSquadLeader);
+                    StalkerSpawnHelper.ConfigureFreshSpawn(rs, rank);
+                    ItemDatabase.AssignRankAppropriateLoadout(rs, faction, rank, rs.IsSquadLeader);
                     rs.Blackboard.HomeBasePosition = spawnPoi.Position;
-                    StalkerSpawnHelper.ConfigureFreshSpawn(rs);
 
                     ctx.Stalkers.Add(rs);
                     ctx.PDA.RegisterListener(rs.Blackboard);

@@ -12,6 +12,15 @@ public enum CulturalBackground
     WesternOutsider   // English, German, etc. — severe accent penalty
 }
 
+public class RankDistribution
+{
+    public float Rookie { get; set; } = 0.50f;
+    public float Trainee { get; set; } = 0.30f;
+    public float Experienced { get; set; } = 0.15f; // Combines Experienced/Professional
+    public float Veteran { get; set; } = 0.05f;     // Combines Veteran+
+}
+
+
 /// <summary>
 /// Generates faction-appropriate cultural background for spawned NPCs.
 /// Applies accent/dialect suspicion penalties to the DisguiseSystem.
@@ -20,6 +29,7 @@ public sealed class DemographicsEngine
 {
     // Probability weights per faction. Indices: Ukrainian, Russian, CIS, Western
     private static readonly Dictionary<string, float[]> FactionWeights = new();
+    private static readonly Dictionary<string, RankDistribution> RankWeights = new();
     private static bool _isLoaded;
 
     public static void EnsureLoaded()
@@ -32,14 +42,28 @@ public sealed class DemographicsEngine
             using var doc = System.Text.Json.JsonDocument.Parse(json);
             foreach (var element in doc.RootElement.EnumerateArray())
             {
-                if (element.TryGetProperty("id", out var idProp) && element.TryGetProperty("demographicWeights", out var weightsProp))
+                if (element.TryGetProperty("id", out var idProp))
                 {
                     string id = idProp.GetString() ?? "";
-                    float uk = weightsProp.TryGetProperty("Ukrainian", out var ukP) ? ukP.GetSingle() : 0.5f;
-                    float ru = weightsProp.TryGetProperty("Russian", out var ruP) ? ruP.GetSingle() : 0.3f;
-                    float cis = weightsProp.TryGetProperty("CIS", out var cisP) ? cisP.GetSingle() : 0.15f;
-                    float west = weightsProp.TryGetProperty("Western", out var westP) ? westP.GetSingle() : 0.05f;
-                    FactionWeights[id] = new[] { uk, ru, cis, west };
+                    if (element.TryGetProperty("demographicWeights", out var weightsProp))
+                    {
+                        float uk = weightsProp.TryGetProperty("Ukrainian", out var ukP) ? ukP.GetSingle() : 0.5f;
+                        float ru = weightsProp.TryGetProperty("Russian", out var ruP) ? ruP.GetSingle() : 0.3f;
+                        float cis = weightsProp.TryGetProperty("CIS", out var cisP) ? cisP.GetSingle() : 0.15f;
+                        float west = weightsProp.TryGetProperty("Western", out var westP) ? westP.GetSingle() : 0.05f;
+                        FactionWeights[id] = new[] { uk, ru, cis, west };
+                    }
+                    if (element.TryGetProperty("initialRankWeights", out var rankProp))
+                    {
+                        var dist = new RankDistribution
+                        {
+                            Rookie = rankProp.TryGetProperty("Rookie", out var rp) ? rp.GetSingle() : 0.50f,
+                            Trainee = rankProp.TryGetProperty("Trainee", out var tp) ? tp.GetSingle() : 0.30f,
+                            Experienced = rankProp.TryGetProperty("Experienced", out var ep) ? ep.GetSingle() : 0.15f,
+                            Veteran = rankProp.TryGetProperty("Veteran", out var vp) ? vp.GetSingle() : 0.05f
+                        };
+                        RankWeights[id] = dist;
+                    }
                 }
             }
         }
@@ -81,5 +105,29 @@ public sealed class DemographicsEngine
             if (roll < cumulative) return backgrounds[i];
         }
         return CulturalBackground.Ukrainian;
+    }
+
+    /// <summary>
+    /// Randomly assigns a rank to an initial NPC based on faction weights.
+    /// </summary>
+    public static StalkerALifeSandbox.Entities.Characters.StalkerRank RollInitialRank(string factionId)
+    {
+        EnsureLoaded();
+        if (!RankWeights.TryGetValue(factionId, out var weights))
+            weights = new RankDistribution();
+
+        float roll = Random.Shared.NextSingle();
+        if (roll < weights.Rookie) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Rookie;
+        roll -= weights.Rookie;
+        if (roll < weights.Trainee) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Trainee;
+        roll -= weights.Trainee;
+        if (roll < weights.Experienced) return Random.Shared.NextDouble() < 0.6 ? StalkerALifeSandbox.Entities.Characters.StalkerRank.Experienced : StalkerALifeSandbox.Entities.Characters.StalkerRank.Professional;
+        
+        // Split the remaining into Veteran, Expert, Master, Legend
+        double rand = Random.Shared.NextDouble();
+        if (rand < 0.4) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Veteran;
+        if (rand < 0.7) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Expert;
+        if (rand < 0.9) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Master;
+        return StalkerALifeSandbox.Entities.Characters.StalkerRank.Legend;
     }
 }

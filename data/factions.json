@@ -2,85 +2,211 @@
     {
         "id": "Loner",
         "displayName": "Loner Stalkers",
-        "latitudeRange": [0.0, 0.25],
+        "latitudeRange": [
+            0.0,
+            0.25
+        ],
         "defaultGearTier": 1,
-        "demographicWeights": { "Ukrainian": 0.55, "Russian": 0.30, "CIS": 0.10, "Western": 0.05 }
+        "demographicWeights": {
+            "Ukrainian": 0.55,
+            "Russian": 0.3,
+            "CIS": 0.1,
+            "Western": 0.05
+        }
     },
     {
         "id": "Bandit",
         "displayName": "Bandits",
-        "latitudeRange": [0.0, 0.25],
+        "latitudeRange": [
+            0.0,
+            0.25
+        ],
         "defaultGearTier": 1,
-        "demographicWeights": { "Ukrainian": 0.40, "Russian": 0.40, "CIS": 0.15, "Western": 0.05 }
+        "demographicWeights": {
+            "Ukrainian": 0.4,
+            "Russian": 0.4,
+            "CIS": 0.15,
+            "Western": 0.05
+        },
+        "initialRankWeights": {
+            "Rookie": 0.65,
+            "Trainee": 0.25,
+            "Experienced": 0.08,
+            "Veteran": 0.02
+        }
     },
     {
         "id": "Clear Sky",
         "displayName": "Clear Sky",
-        "latitudeRange": [0.0, 0.30],
+        "latitudeRange": [
+            0.0,
+            0.3
+        ],
         "defaultGearTier": 2,
-        "demographicWeights": { "Ukrainian": 0.50, "Russian": 0.30, "CIS": 0.15, "Western": 0.05 }
+        "demographicWeights": {
+            "Ukrainian": 0.5,
+            "Russian": 0.3,
+            "CIS": 0.15,
+            "Western": 0.05
+        }
     },
     {
         "id": "Renegade",
         "displayName": "Renegades",
-        "latitudeRange": [0.0, 0.30],
+        "latitudeRange": [
+            0.0,
+            0.3
+        ],
         "defaultGearTier": 1,
-        "demographicWeights": { "Ukrainian": 0.45, "Russian": 0.35, "CIS": 0.15, "Western": 0.05 }
+        "demographicWeights": {
+            "Ukrainian": 0.45,
+            "Russian": 0.35,
+            "CIS": 0.15,
+            "Western": 0.05
+        },
+        "initialRankWeights": {
+            "Rookie": 0.65,
+            "Trainee": 0.25,
+            "Experienced": 0.08,
+            "Veteran": 0.02
+        }
     },
     {
         "id": "Duty",
         "displayName": "Duty Paramilitary",
-        "latitudeRange": [0.25, 0.60],
+        "latitudeRange": [
+            0.25,
+            0.6
+        ],
         "defaultGearTier": 3,
-        "demographicWeights": { "Ukrainian": 0.35, "Russian": 0.50, "CIS": 0.15, "Western": 0.00 }
+        "demographicWeights": {
+            "Ukrainian": 0.35,
+            "Russian": 0.5,
+            "CIS": 0.15,
+            "Western": 0.0
+        }
     },
     {
         "id": "Freedom",
         "displayName": "Freedom",
-        "latitudeRange": [0.25, 0.60],
+        "latitudeRange": [
+            0.25,
+            0.6
+        ],
         "defaultGearTier": 2,
-        "demographicWeights": { "Ukrainian": 0.45, "Russian": 0.30, "CIS": 0.15, "Western": 0.10 }
+        "demographicWeights": {
+            "Ukrainian": 0.45,
+            "Russian": 0.3,
+            "CIS": 0.15,
+            "Western": 0.1
+        }
     },
     {
         "id": "Ecologist",
         "displayName": "Ecologists",
-        "latitudeRange": [0.25, 0.60],
+        "latitudeRange": [
+            0.25,
+            0.6
+        ],
         "defaultGearTier": 2,
-        "demographicWeights": { "Ukrainian": 0.30, "Russian": 0.25, "CIS": 0.10, "Western": 0.35 }
+        "demographicWeights": {
+            "Ukrainian": 0.3,
+            "Russian": 0.25,
+            "CIS": 0.1,
+            "Western": 0.35
+        }
     },
     {
         "id": "Military",
         "displayName": "Ukrainian Military",
-        "latitudeRange": [0.25, 0.60],
+        "latitudeRange": [
+            0.25,
+            0.6
+        ],
         "defaultGearTier": 3,
-        "demographicWeights": { "Ukrainian": 0.20, "Russian": 0.60, "CIS": 0.20, "Western": 0.00 }
+        "demographicWeights": {
+            "Ukrainian": 0.2,
+            "Russian": 0.6,
+            "CIS": 0.2,
+            "Western": 0.0
+        }
     },
     {
         "id": "Mercenary",
         "displayName": "Mercenaries",
-        "latitudeRange": [0.60, 0.85],
+        "latitudeRange": [
+            0.6,
+            0.85
+        ],
         "defaultGearTier": 4,
-        "demographicWeights": { "Ukrainian": 0.10, "Russian": 0.20, "CIS": 0.10, "Western": 0.60 }
+        "demographicWeights": {
+            "Ukrainian": 0.1,
+            "Russian": 0.2,
+            "CIS": 0.1,
+            "Western": 0.6
+        },
+        "initialRankWeights": {
+            "Rookie": 0.3,
+            "Trainee": 0.35,
+            "Experienced": 0.25,
+            "Veteran": 0.1
+        }
     },
     {
         "id": "UNISG",
         "displayName": "UNISG",
-        "latitudeRange": [0.60, 0.85],
+        "latitudeRange": [
+            0.6,
+            0.85
+        ],
         "defaultGearTier": 5,
-        "demographicWeights": { "Ukrainian": 0.05, "Russian": 0.05, "CIS": 0.05, "Western": 0.85 }
+        "demographicWeights": {
+            "Ukrainian": 0.05,
+            "Russian": 0.05,
+            "CIS": 0.05,
+            "Western": 0.85
+        },
+        "initialRankWeights": {
+            "Rookie": 0.3,
+            "Trainee": 0.35,
+            "Experienced": 0.25,
+            "Veteran": 0.1
+        }
     },
     {
         "id": "Monolith",
         "displayName": "Monolith",
-        "latitudeRange": [0.85, 1.00],
+        "latitudeRange": [
+            0.85,
+            1.0
+        ],
         "defaultGearTier": 4,
-        "demographicWeights": { "Ukrainian": 0.50, "Russian": 0.40, "CIS": 0.10, "Western": 0.00 }
+        "demographicWeights": {
+            "Ukrainian": 0.5,
+            "Russian": 0.4,
+            "CIS": 0.1,
+            "Western": 0.0
+        },
+        "initialRankWeights": {
+            "Rookie": 0.3,
+            "Trainee": 0.35,
+            "Experienced": 0.25,
+            "Veteran": 0.1
+        }
     },
     {
         "id": "Sin",
         "displayName": "Sin",
-        "latitudeRange": [0.85, 1.00],
+        "latitudeRange": [
+            0.85,
+            1.0
+        ],
         "defaultGearTier": 3,
-        "demographicWeights": { "Ukrainian": 0.50, "Russian": 0.35, "CIS": 0.15, "Western": 0.00 }
+        "demographicWeights": {
+            "Ukrainian": 0.5,
+            "Russian": 0.35,
+            "CIS": 0.15,
+            "Western": 0.0
+        }
     }
 ]

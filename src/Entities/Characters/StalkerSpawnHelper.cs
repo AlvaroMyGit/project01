@@ -16,9 +16,16 @@ public static class StalkerSpawnHelper
         }
     }
 
-    public static void ConfigureFreshSpawn(Stalker stalker)
+    public static void ConfigureFreshSpawn(Stalker stalker, StalkerRank rank)
     {
-        stalker.Attributes.RollForRank(StalkerRank.Rookie);
+        stalker.Attributes.RollForRank(rank);
+        
+        // Assign XP to the mid-point of the tier.
+        int xpBase = RankProgression.ScaledThreshold(rank);
+        int xpNext = rank == StalkerRank.Legend ? xpBase + 1000 : RankProgression.ScaledThreshold(rank + 1);
+        int startingXp = xpBase + (xpNext - xpBase) / 2;
+        stalker.Rank.AddXP(startingXp);
+
         stalker.SpawnGraceRemaining = GraceGameSeconds;
     }
 }

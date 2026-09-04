@@ -100,4 +100,7 @@ public static class ItemDatabase
 
     public static void ApplySpawnLoadout(Stalker stalker, bool isLeader = false) =>
         SpawnLoadoutResolver.Instance.ApplySpawnLoadout(stalker, isLeader);
+
+    public static void AssignRankAppropriateLoadout(Stalker stalker, string faction, StalkerRank rank, bool isLeader = false) =>
+        SpawnLoadoutResolver.Instance.AssignRankAppropriateLoadout(stalker, faction, rank, isLeader);
 }

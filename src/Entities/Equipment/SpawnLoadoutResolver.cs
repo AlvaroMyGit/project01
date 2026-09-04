@@ -49,7 +49,6 @@ public sealed class SpawnLoadoutResolver
         return 1;
     }
 
-    /// <summary>Apply standard faction spawn gear to a stalker.</summary>
     public void ApplySpawnLoadout(Stalker stalker, bool isLeader = false)
     {
         EnsureLoaded();
@@ -57,6 +56,37 @@ public sealed class SpawnLoadoutResolver
         int tier = GetGearTier(faction);
         if (isLeader)
             tier = Math.Clamp(tier + _config.LeaderBonusTier, 1, 5);
+
+        ApplyLoadoutInternal(stalker, faction, tier, isLeader);
+    }
+
+    public void AssignRankAppropriateLoadout(Stalker stalker, string faction, StalkerRank rank, bool isLeader = false)
+    {
+        EnsureLoaded();
+        int tier = rank switch
+        {
+            StalkerRank.Rookie => 1,
+            StalkerRank.Trainee => 1,
+            StalkerRank.Experienced => 2,
+            StalkerRank.Professional => 2,
+            StalkerRank.Veteran => 3,
+            StalkerRank.Expert => 4,
+            StalkerRank.Master => 4,
+            StalkerRank.Legend => 5,
+            _ => 1
+        };
+        // Some factions have minimum tiers (e.g. Monolith is default 4)
+        int factionMin = GetGearTier(faction);
+        if (tier < factionMin) tier = factionMin;
+        
+        if (isLeader)
+            tier = Math.Clamp(tier + _config.LeaderBonusTier, 1, 5);
+
+        ApplyLoadoutInternal(stalker, faction, tier, isLeader);
+    }
+
+    private void ApplyLoadoutInternal(Stalker stalker, string faction, int tier, bool isLeader)
+    {
 
         var table = ResolveLoadoutTable(faction, tier);
 

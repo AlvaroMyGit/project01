@@ -111,4 +111,22 @@ public static class ZoneGateEvaluator
         }
         return StalkerRank.Legend;
     }
+
+    /// <summary>Returns regions appropriate for the given rank to spawn in.</summary>
+    public static List<StalkerALifeSandbox.World.Poi> GetValidSpawnRegions(StalkerRank rank, string factionId, List<StalkerALifeSandbox.World.Poi> allPois, StaticWorldGenerator worldGen)
+    {
+        float maxThreat = BaseComfortThreat(rank) + GateSlack + 0.05f;
+        float minThreat = rank >= StalkerRank.Veteran ? maxThreat - 0.3f : 0f;
+        
+        var valid = new List<StalkerALifeSandbox.World.Poi>();
+        foreach (var poi in allPois)
+        {
+            float threat = ThreatAt(worldGen, poi.Position);
+            if (threat >= minThreat && threat <= maxThreat)
+                valid.Add(poi);
+        }
+        
+        // Fallback if none found
+        return valid.Count > 0 ? valid : allPois;
+    }
 }
