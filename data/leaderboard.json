@@ -1,568 +1,40 @@
 [
   {
     "position": 1,
-    "id": "0fb62374",
-    "name": "Jake Ivanov \u0027Scar\u0027",
-    "faction": "Ecologist",
-    "rank": "Expert",
-    "xp": 1610,
-    "kills": 5,
-    "stalkerKills": 1,
-    "mutantKills": 4,
-    "missions": 14,
+    "id": "afadc022",
+    "name": "Igor Ivanov \u0027Crow\u0027",
+    "faction": "Monolith",
+    "rank": "Experienced",
+    "xp": 400,
+    "kills": 6,
+    "stalkerKills": 0,
+    "mutantKills": 6,
+    "missions": 1,
     "positionCoords": {
-      "x": 24.837141,
-      "y": 1093.708
+      "x": 492.73962,
+      "y": 587.8941
     }
   },
   {
     "position": 2,
-    "id": "10217d3c",
-    "name": "Oleksiy Bondarenko \u0027Bullet\u0027",
-    "faction": "Ecologist",
-    "rank": "Expert",
-    "xp": 1500,
-    "kills": 0,
+    "id": "48b1da59",
+    "name": "Taras Petrov \u0027Bone\u0027",
+    "faction": "Loner",
+    "rank": "Experienced",
+    "xp": 400,
+    "kills": 4,
     "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 15,
+    "mutantKills": 4,
+    "missions": 2,
     "positionCoords": {
-      "x": 34.250366,
-      "y": 1093.063
+      "x": 1045,
+      "y": 2714
     }
   },
   {
     "position": 3,
-    "id": "135c7c44",
-    "name": "Serhiy Sokolov \u0027Stitch\u0027",
-    "faction": "Ecologist",
-    "rank": "Expert",
-    "xp": 1400,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 13,
-    "positionCoords": {
-      "x": 33.33396,
-      "y": 1096.9423
-    }
-  },
-  {
-    "position": 4,
-    "id": "0c8709ac",
-    "name": "Oleg Petrov \u0027Razor\u0027",
-    "faction": "Ecologist",
-    "rank": "Expert",
-    "xp": 1400,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 13,
-    "positionCoords": {
-      "x": 34.93042,
-      "y": 1090.5475
-    }
-  },
-  {
-    "position": 5,
-    "id": "7b5d34e3",
-    "name": "Viktor Melnyk \u0027Razor\u0027",
-    "faction": "Ecologist",
-    "rank": "Veteran",
-    "xp": 910,
-    "kills": 1,
-    "stalkerKills": 1,
-    "mutantKills": 0,
-    "missions": 9,
-    "positionCoords": {
-      "x": 29.0246,
-      "y": 1096.6504
-    }
-  },
-  {
-    "position": 6,
-    "id": "7f72446a",
-    "name": "Mykola Melnyk \u0027Viper\u0027",
-    "faction": "Loner",
-    "rank": "Veteran",
-    "xp": 800,
-    "kills": 4,
-    "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 6,
-    "positionCoords": {
-      "x": 1028,
-      "y": 2727
-    }
-  },
-  {
-    "position": 7,
-    "id": "9894dffa",
-    "name": "Serhiy Bondarenko \u0027Crow\u0027",
-    "faction": "Loner",
-    "rank": "Veteran",
-    "xp": 800,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 7,
-    "positionCoords": {
-      "x": 1040.4819,
-      "y": 2727.4463
-    }
-  },
-  {
-    "position": 8,
-    "id": "cb2c6c51",
-    "name": "Bohdan Ivanov \u0027Scar\u0027",
-    "faction": "Ecologist",
-    "rank": "Professional",
-    "xp": 500,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 9,
-    "id": "866e9e68",
-    "name": "Zombified Oleg",
-    "faction": "Zombified",
-    "rank": "Experienced",
-    "xp": 460,
-    "kills": 10,
-    "stalkerKills": 1,
-    "mutantKills": 9,
-    "missions": 0,
-    "positionCoords": {
-      "x": 318,
-      "y": 2561
-    }
-  },
-  {
-    "position": 10,
-    "id": "7201f310",
-    "name": "Pierre Ivanov \u0027Badger\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 460,
-    "kills": 2,
-    "stalkerKills": 1,
-    "mutantKills": 1,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 11,
-    "id": "f2e054be",
-    "name": "Serhiy Petrov \u0027Mole\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 460,
-    "kills": 2,
-    "stalkerKills": 1,
-    "mutantKills": 1,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 12,
-    "id": "4f646c80",
-    "name": "Pavel Volkov \u0027Crow\u0027",
-    "faction": "Loner",
-    "rank": "Experienced",
-    "xp": 450,
-    "kills": 9,
-    "stalkerKills": 0,
-    "mutantKills": 9,
-    "missions": 0,
-    "positionCoords": {
-      "x": 1299.6436,
-      "y": 2829.8228
-    }
-  },
-  {
-    "position": 13,
-    "id": "ac557a13",
-    "name": "Oleksiy Shevchenko \u0027Raven\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 450,
-    "kills": 1,
-    "stalkerKills": 0,
-    "mutantKills": 1,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 14,
-    "id": "0774bfad",
-    "name": "Viktor Ivanov \u0027Jackal\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 450,
-    "kills": 1,
-    "stalkerKills": 0,
-    "mutantKills": 1,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 15,
-    "id": "a85b19d5",
-    "name": "Jake Melnyk \u0027Bullet\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 450,
-    "kills": 1,
-    "stalkerKills": 0,
-    "mutantKills": 1,
-    "missions": 4,
-    "positionCoords": {
-      "x": 38.782185,
-      "y": 1095.9469
-    }
-  },
-  {
-    "position": 16,
-    "id": "a4701a5d",
-    "name": "Oleg Bondarenko \u0027Shadow\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 450,
-    "kills": 1,
-    "stalkerKills": 0,
-    "mutantKills": 1,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 17,
-    "id": "a204a7a1",
-    "name": "Yuriy Petrov \u0027Mole\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 450,
-    "kills": 1,
-    "stalkerKills": 0,
-    "mutantKills": 1,
-    "missions": 4,
-    "positionCoords": {
-      "x": 401.78857,
-      "y": 1442.5787
-    }
-  },
-  {
-    "position": 18,
-    "id": "58e6e962",
-    "name": "Ivan Kovalenko \u0027Mole\u0027",
-    "faction": "Loner",
-    "rank": "Experienced",
-    "xp": 426,
-    "kills": 4,
-    "stalkerKills": 1,
-    "mutantKills": 3,
-    "missions": 0,
-    "positionCoords": {
-      "x": 1043.4775,
-      "y": 2721.6772
-    }
-  },
-  {
-    "position": 19,
-    "id": "67ed54a7",
-    "name": "Dmitri Petrenko \u0027Ghost\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 410,
-    "kills": 1,
-    "stalkerKills": 1,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 30.997278,
-      "y": 1088.0026
-    }
-  },
-  {
-    "position": 20,
-    "id": "f3e8bbcf",
-    "name": "Oleg Kovalenko \u0027Bone\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 410,
-    "kills": 1,
-    "stalkerKills": 1,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 29.80846,
-      "y": 1084.8123
-    }
-  },
-  {
-    "position": 21,
-    "id": "9a9a9f48",
-    "name": "Taras Shevchenko \u0027Raven\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 22,
-    "id": "3dad5266",
-    "name": "Pierre Volkov \u0027Bullet\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 29.80846,
-      "y": 1084.8123
-    }
-  },
-  {
-    "position": 23,
-    "id": "c22e7626",
-    "name": "Timur Kovalenko \u0027Bullet\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 24,
-    "id": "58d73f88",
-    "name": "Sergei Kovalenko \u0027Jackal\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 25,
-    "id": "4e4eab96",
-    "name": "Lars Bondarenko \u0027Viper\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 28.102886,
-      "y": 1079.2235
-    }
-  },
-  {
-    "position": 26,
-    "id": "d6494749",
-    "name": "Nikolai Popov \u0027Ghost\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 27,
-    "id": "020c1c0e",
-    "name": "Karl Petrov \u0027Jackal\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 28,
-    "id": "a20e79df",
-    "name": "Lars Sokolov \u0027Viper\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 28.149986,
-      "y": 1076.5308
-    }
-  },
-  {
-    "position": 29,
-    "id": "b01192c8",
-    "name": "Serhiy Melnyk \u0027Bone\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 29.80846,
-      "y": 1084.8123
-    }
-  },
-  {
-    "position": 30,
-    "id": "98b7ffb9",
-    "name": "Bohdan Melnyk \u0027Bullet\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 31,
-    "id": "09c9362b",
-    "name": "Mykola Bondarenko \u0027Raven\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.925144,
-      "y": 1076.1976
-    }
-  },
-  {
-    "position": 32,
-    "id": "6f858ff4",
-    "name": "Andriy Sokolov \u0027Shadow\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.141254,
-      "y": 1088.138
-    }
-  },
-  {
-    "position": 33,
-    "id": "e12f2ae8",
-    "name": "Andrei Melnyk \u0027Shadow\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 39.34067,
-      "y": 1096.3076
-    }
-  },
-  {
-    "position": 34,
-    "id": "911012fa",
-    "name": "Mykola Petrenko \u0027Wolf\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 29.80846,
-      "y": 1084.8123
-    }
-  },
-  {
-    "position": 35,
-    "id": "0ad3e46b",
-    "name": "Lasha Bondarenko \u0027Ghost\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 400,
-    "kills": 0,
-    "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 4,
-    "positionCoords": {
-      "x": 29.80846,
-      "y": 1084.8123
-    }
-  },
-  {
-    "position": 36,
-    "id": "290469e3",
-    "name": "Marcus Bondarenko \u0027Two-Fingers\u0027",
+    "id": "8ef44943",
+    "name": "Lars Petrenko \u0027Stitch\u0027",
     "faction": "Mercenary",
     "rank": "Experienced",
     "xp": 360,
@@ -571,14 +43,14 @@
     "mutantKills": 5,
     "missions": 1,
     "positionCoords": {
-      "x": 1054,
-      "y": 2720
+      "x": 297.8181,
+      "y": 1394.6168
     }
   },
   {
-    "position": 37,
-    "id": "f01728dd",
-    "name": "Heinrich Sokolov \u0027Broken Nose\u0027",
+    "position": 4,
+    "id": "53be36c8",
+    "name": "Tobias Petrenko \u0027One-Eye\u0027",
     "faction": "Mercenary",
     "rank": "Experienced",
     "xp": 350,
@@ -587,111 +59,79 @@
     "mutantKills": 7,
     "missions": 0,
     "positionCoords": {
-      "x": 439.841,
-      "y": 1151.834
+      "x": 1038.2063,
+      "y": 2006.7097
     }
   },
   {
-    "position": 38,
-    "id": "a4bd322a",
-    "name": "Zombified Pierre",
-    "faction": "Zombified",
-    "rank": "Experienced",
-    "xp": 350,
-    "kills": 7,
-    "stalkerKills": 0,
-    "mutantKills": 7,
-    "missions": 0,
-    "positionCoords": {
-      "x": 420.08084,
-      "y": 1126.2391
-    }
-  },
-  {
-    "position": 39,
-    "id": "456bf116",
-    "name": "Heinrich Petrov \u0027Whisper\u0027",
+    "position": 5,
+    "id": "aec963fe",
+    "name": "Dmitri Ivanov \u0027One-Eye\u0027",
     "faction": "Mercenary",
     "rank": "Experienced",
     "xp": 350,
-    "kills": 5,
+    "kills": 3,
     "stalkerKills": 0,
-    "mutantKills": 5,
-    "missions": 1,
+    "mutantKills": 3,
+    "missions": 2,
     "positionCoords": {
-      "x": 308.57083,
-      "y": 1427.7402
+      "x": 248.00002,
+      "y": 1400
     }
   },
   {
-    "position": 40,
-    "id": "6ecb5116",
-    "name": "Marcus Popov \u0027Shadow\u0027",
-    "faction": "Mercenary",
+    "position": 6,
+    "id": "37dd1e62",
+    "name": "Dmytro Petrenko \u0027Shadow\u0027",
+    "faction": "Loner",
     "rank": "Experienced",
     "xp": 350,
-    "kills": 5,
+    "kills": 3,
     "stalkerKills": 0,
-    "mutantKills": 5,
-    "missions": 1,
+    "mutantKills": 3,
+    "missions": 2,
     "positionCoords": {
-      "x": 154.43161,
-      "y": 1376.4562
+      "x": 1048,
+      "y": 2713
     }
   },
   {
-    "position": 41,
-    "id": "294d282b",
-    "name": "Zombified Sergei",
-    "faction": "Zombified",
-    "rank": "Experienced",
-    "xp": 350,
-    "kills": 1,
-    "stalkerKills": 0,
-    "mutantKills": 1,
-    "missions": 3,
-    "positionCoords": {
-      "x": 28.26704,
-      "y": 1044.2583
-    }
-  },
-  {
-    "position": 42,
-    "id": "0ae776d6",
-    "name": "Alexei Petrov \u0027Fox\u0027",
+    "position": 7,
+    "id": "ffeab1c5",
+    "name": "Bohdan Ivanov \u0027Jackal\u0027",
     "faction": "Monolith",
     "rank": "Experienced",
-    "xp": 320,
-    "kills": 8,
-    "stalkerKills": 2,
-    "mutantKills": 6,
-    "missions": 0,
+    "xp": 350,
+    "kills": 3,
+    "stalkerKills": 0,
+    "mutantKills": 3,
+    "missions": 2,
     "positionCoords": {
-      "x": 1534.5629,
-      "y": 1084.4357
+      "x": 1088.8517,
+      "y": 664.6021
     }
   },
   {
-    "position": 43,
-    "id": "2baf18de",
-    "name": "Sergei Bondarenko \u0027Ghost\u0027",
-    "faction": "Military",
+    "position": 8,
+    "id": "dae2878f",
+    "name": "Sean Popov \u0027One-Eye\u0027",
+    "faction": "Bandit",
     "rank": "Experienced",
-    "xp": 310,
-    "kills": 5,
-    "stalkerKills": 1,
+    "xp": 320,
+    "kills": 6,
+    "stalkerKills": 2,
     "mutantKills": 4,
     "missions": 1,
     "positionCoords": {
-      "x": 1361,
-      "y": 2066
+      "x": 1105,
+      "y": 2402
     }
   },
   {
-    "position": 44,
-    "id": "931bdeed",
-    "name": "Lasha Volkov \u0027Ghost\u0027",
-    "faction": "ClearSky",
+    "position": 9,
+    "id": "9b04efc1",
+    "name": "Taras Petrov \u0027Bullet\u0027",
+    "faction": "Loner",
     "rank": "Experienced",
     "xp": 300,
     "kills": 6,
@@ -699,46 +139,46 @@
     "mutantKills": 6,
     "missions": 0,
     "positionCoords": {
-      "x": 319.767,
-      "y": 2558.3152
+      "x": 1049.2268,
+      "y": 2721.809
     }
   },
   {
-    "position": 45,
-    "id": "17e9aa3d",
-    "name": "Andrei Petrov \u0027Badger\u0027",
+    "position": 10,
+    "id": "342da550",
+    "name": "Rustam Ivanov \u0027Crow\u0027",
+    "faction": "Duty",
+    "rank": "Experienced",
+    "xp": 300,
+    "kills": 6,
+    "stalkerKills": 0,
+    "mutantKills": 6,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1345,
+      "y": 2087
+    }
+  },
+  {
+    "position": 11,
+    "id": "1a7130b0",
+    "name": "Ivan Bondarenko \u0027Spark\u0027",
     "faction": "Loner",
     "rank": "Experienced",
     "xp": 300,
-    "kills": 4,
+    "kills": 6,
     "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 1,
+    "mutantKills": 6,
+    "missions": 0,
     "positionCoords": {
-      "x": 405.3218,
-      "y": 1439.203
+      "x": 796.87006,
+      "y": 1443.3452
     }
   },
   {
-    "position": 46,
-    "id": "2d2794fb",
-    "name": "Heinrich Bondarenko \u0027Razor\u0027",
-    "faction": "Ecologist",
-    "rank": "Experienced",
-    "xp": 300,
-    "kills": 4,
-    "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 1,
-    "positionCoords": {
-      "x": 400.84772,
-      "y": 1437.8447
-    }
-  },
-  {
-    "position": 47,
-    "id": "eacb3984",
-    "name": "Andrei Ivanov \u0027Scar\u0027",
+    "position": 12,
+    "id": "24f5358f",
+    "name": "Nikolai Melnyk \u0027Bullet\u0027",
     "faction": "Military",
     "rank": "Experienced",
     "xp": 300,
@@ -747,115 +187,131 @@
     "mutantKills": 4,
     "missions": 1,
     "positionCoords": {
-      "x": 1349.1005,
-      "y": 2074.4785
+      "x": 1350.4438,
+      "y": 2073.952
     }
   },
   {
-    "position": 48,
-    "id": "c6985aea",
-    "name": "Mykola Bondarenko \u0027Scar\u0027",
-    "faction": "Ecologist",
+    "position": 13,
+    "id": "dade6191",
+    "name": "Rustam Shevchenko \u0027Spark\u0027",
+    "faction": "Loner",
     "rank": "Experienced",
     "xp": 300,
-    "kills": 0,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 0,
-    "missions": 3,
+    "mutantKills": 2,
+    "missions": 2,
     "positionCoords": {
-      "x": 23.4662,
-      "y": 1086.4714
+      "x": 1027.3704,
+      "y": 2716.0583
     }
   },
   {
-    "position": 49,
-    "id": "847e1370",
-    "name": "Dmitri Volkov \u0027Bullet\u0027",
-    "faction": "Military",
-    "rank": "Trainee",
-    "xp": 260,
-    "kills": 4,
-    "stalkerKills": 1,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1362.8369,
-      "y": 2090.8633
-    }
-  },
-  {
-    "position": 50,
-    "id": "c87f6efc",
-    "name": "Pierre Petrenko \u0027Ugly\u0027",
-    "faction": "Mercenary",
-    "rank": "Trainee",
-    "xp": 260,
-    "kills": 4,
-    "stalkerKills": 1,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 185.48875,
-      "y": 1468.3815
-    }
-  },
-  {
-    "position": 51,
-    "id": "79cae2da",
-    "name": "Alexei Petrenko \u0027Shadow\u0027",
-    "faction": "Military",
-    "rank": "Trainee",
-    "xp": 260,
-    "kills": 4,
-    "stalkerKills": 1,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1364,
-      "y": 2070
-    }
-  },
-  {
-    "position": 52,
-    "id": "912344ff",
-    "name": "Marcus Sokolov \u0027Bone\u0027",
-    "faction": "Mercenary",
-    "rank": "Trainee",
-    "xp": 250,
-    "kills": 5,
+    "position": 14,
+    "id": "2eae94a7",
+    "name": "Mikhail Sokolov \u0027Bullet\u0027",
+    "faction": "ClearSky",
+    "rank": "Experienced",
+    "xp": 300,
+    "kills": 2,
     "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 2,
+    "positionCoords": {
+      "x": 325,
+      "y": 2557
+    }
+  },
+  {
+    "position": 15,
+    "id": "27ad17ec",
+    "name": "Vasyl Sokolov \u0027Crow\u0027",
+    "faction": "Bandit",
+    "rank": "Experienced",
+    "xp": 300,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 2,
+    "positionCoords": {
+      "x": 1200,
+      "y": 1760
+    }
+  },
+  {
+    "position": 16,
+    "id": "7cdf8900",
+    "name": "Mikhail Ivanov \u0027Ghost\u0027",
+    "faction": "Loner",
+    "rank": "Experienced",
+    "xp": 300,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 2,
+    "positionCoords": {
+      "x": 1028,
+      "y": 2730
+    }
+  },
+  {
+    "position": 17,
+    "id": "33892d15",
+    "name": "Dmytro Shevchenko \u0027Shadow\u0027",
+    "faction": "Monolith",
+    "rank": "Trainee",
+    "xp": 270,
+    "kills": 7,
+    "stalkerKills": 2,
     "mutantKills": 5,
     "missions": 0,
     "positionCoords": {
-      "x": 438.8393,
-      "y": 1116.463
+      "x": 871.1304,
+      "y": 641.17065
     }
   },
   {
-    "position": 53,
-    "id": "e10fcec7",
-    "name": "Zombified Yuriy",
-    "faction": "Zombified",
+    "position": 18,
+    "id": "4d80d52a",
+    "name": "Alexei Popov \u0027Phantom\u0027",
+    "faction": "Military",
     "rank": "Trainee",
-    "xp": 250,
+    "xp": 270,
     "kills": 3,
-    "stalkerKills": 0,
-    "mutantKills": 3,
-    "missions": 1,
+    "stalkerKills": 2,
+    "mutantKills": 1,
+    "missions": 2,
     "positionCoords": {
-      "x": 11.872648,
-      "y": 3098.3933
+      "x": 390.89392,
+      "y": 1879.3225
     }
   },
   {
-    "position": 54,
-    "id": "73842633",
-    "name": "Timur Petrov \u0027One-Eye\u0027",
+    "position": 19,
+    "id": "f5566711",
+    "name": "Mikhail Popov \u0027Razor\u0027",
+    "faction": "Military",
+    "rank": "Trainee",
+    "xp": 260,
+    "kills": 6,
+    "stalkerKills": 1,
+    "mutantKills": 5,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1354.7336,
+      "y": 2083.8542
+    }
+  },
+  {
+    "position": 20,
+    "id": "1c648a18",
+    "name": "Sean Ivanov \u0027Viper\u0027",
     "faction": "Mercenary",
     "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
+    "xp": 260,
+    "kills": 4,
+    "stalkerKills": 1,
     "mutantKills": 3,
     "missions": 1,
     "positionCoords": {
@@ -864,122 +320,42 @@
     }
   },
   {
-    "position": 55,
-    "id": "52c0beda",
-    "name": "Oleg Volkov \u0027The Butcher\u0027",
+    "position": 21,
+    "id": "a364c5d1",
+    "name": "Zura Volkov \u0027The Rat\u0027",
     "faction": "Mercenary",
     "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
+    "xp": 260,
+    "kills": 4,
+    "stalkerKills": 1,
     "mutantKills": 3,
     "missions": 1,
     "positionCoords": {
-      "x": 308.57083,
-      "y": 1427.7402
+      "x": 198.07297,
+      "y": 1423.1202
     }
   },
   {
-    "position": 56,
-    "id": "7bf8ecaa",
-    "name": "Ivan Popov \u0027Bone\u0027",
+    "position": 22,
+    "id": "34a9f02e",
+    "name": "Oleksiy Petrenko \u0027Stitch\u0027",
+    "faction": "Ecologist",
+    "rank": "Trainee",
+    "xp": 260,
+    "kills": 2,
+    "stalkerKills": 1,
+    "mutantKills": 1,
+    "missions": 2,
+    "positionCoords": {
+      "x": 39.141254,
+      "y": 1088.138
+    }
+  },
+  {
+    "position": 23,
+    "id": "c43d295a",
+    "name": "Dmytro Melnyk \u0027Razor\u0027",
     "faction": "Loner",
-    "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1045.5074,
-      "y": 2716.873
-    }
-  },
-  {
-    "position": 57,
-    "id": "f679ace6",
-    "name": "Serhiy Shevchenko \u0027Fox\u0027",
-    "faction": "Loner",
-    "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1047,
-      "y": 2725
-    }
-  },
-  {
-    "position": 58,
-    "id": "407fe077",
-    "name": "Dmytro Sokolov \u0027Shadow\u0027",
-    "faction": "Mercenary",
-    "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 246.07884,
-      "y": 1392.741
-    }
-  },
-  {
-    "position": 59,
-    "id": "b19b025a",
-    "name": "Serhiy Petrenko \u0027Scar\u0027",
-    "faction": "Loner",
-    "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1050.017,
-      "y": 2716.6882
-    }
-  },
-  {
-    "position": 60,
-    "id": "9905d2c9",
-    "name": "Viktor Bondarenko \u0027Ash\u0027",
-    "faction": "Military",
-    "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1350.3374,
-      "y": 2080.0059
-    }
-  },
-  {
-    "position": 61,
-    "id": "164a0983",
-    "name": "Zombified Mykola",
-    "faction": "Zombified",
-    "rank": "Trainee",
-    "xp": 250,
-    "kills": 3,
-    "stalkerKills": 0,
-    "mutantKills": 3,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1031.8219,
-      "y": 2715.3716
-    }
-  },
-  {
-    "position": 62,
-    "id": "aa17039b",
-    "name": "Dmitri Petrov \u0027Ugly\u0027",
-    "faction": "Mercenary",
     "rank": "Trainee",
     "xp": 250,
     "kills": 1,
@@ -987,31 +363,47 @@
     "mutantKills": 1,
     "missions": 2,
     "positionCoords": {
-      "x": 236.15483,
-      "y": 1394.7896
+      "x": 1047,
+      "y": 2721
     }
   },
   {
-    "position": 63,
-    "id": "a9c6881b",
-    "name": "Oleksiy Volkov \u0027Razor\u0027",
+    "position": 24,
+    "id": "672a853e",
+    "name": "Dmytro Petrenko \u0027Spark\u0027",
     "faction": "Loner",
     "rank": "Trainee",
-    "xp": 210,
-    "kills": 5,
-    "stalkerKills": 1,
-    "mutantKills": 4,
-    "missions": 0,
+    "xp": 250,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 2,
     "positionCoords": {
-      "x": 1291.7924,
-      "y": 2824.2302
+      "x": 1041,
+      "y": 2716
     }
   },
   {
-    "position": 64,
-    "id": "ae4aa9d3",
-    "name": "Mykola Volkov \u0027Fox\u0027",
-    "faction": "Loner",
+    "position": 25,
+    "id": "f22b11fb",
+    "name": "Tobias Bondarenko \u0027Crow\u0027",
+    "faction": "Ecologist",
+    "rank": "Trainee",
+    "xp": 220,
+    "kills": 2,
+    "stalkerKills": 2,
+    "mutantKills": 0,
+    "missions": 2,
+    "positionCoords": {
+      "x": -21.363056,
+      "y": 1109.4468
+    }
+  },
+  {
+    "position": 26,
+    "id": "600e330f",
+    "name": "Oleg Petrov \u0027Ghost\u0027",
+    "faction": "Military",
     "rank": "Trainee",
     "xp": 210,
     "kills": 3,
@@ -1019,30 +411,30 @@
     "mutantKills": 2,
     "missions": 1,
     "positionCoords": {
-      "x": 1115.523,
-      "y": 2407.258
+      "x": 1366,
+      "y": 2068
     }
   },
   {
-    "position": 65,
-    "id": "9c1caf77",
-    "name": "Yuriy Melnyk \u0027Stitch\u0027",
-    "faction": "Loner",
+    "position": 27,
+    "id": "0dfd93c1",
+    "name": "Bohdan Ivanov \u0027Razor\u0027",
+    "faction": "ClearSky",
     "rank": "Trainee",
-    "xp": 200,
-    "kills": 4,
-    "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 0,
+    "xp": 210,
+    "kills": 1,
+    "stalkerKills": 1,
+    "mutantKills": 0,
+    "missions": 2,
     "positionCoords": {
-      "x": 1039.49,
-      "y": 2726.0164
+      "x": 315.56332,
+      "y": 2487.8105
     }
   },
   {
-    "position": 66,
-    "id": "6475cac4",
-    "name": "Timur Kovalenko \u0027Wolf\u0027",
+    "position": 28,
+    "id": "01292226",
+    "name": "Dmytro Shevchenko \u0027Spark\u0027",
     "faction": "Monolith",
     "rank": "Trainee",
     "xp": 200,
@@ -1051,14 +443,14 @@
     "mutantKills": 4,
     "missions": 0,
     "positionCoords": {
-      "x": 1543.5927,
-      "y": 1082.815
+      "x": 532.1489,
+      "y": 852.2587
     }
   },
   {
-    "position": 67,
-    "id": "fa84af0c",
-    "name": "Dmitri Petrov \u0027Wolf\u0027",
+    "position": 29,
+    "id": "20f90ce9",
+    "name": "Nikolai Melnyk \u0027Jackal\u0027",
     "faction": "Monolith",
     "rank": "Trainee",
     "xp": 200,
@@ -1067,63 +459,31 @@
     "mutantKills": 4,
     "missions": 0,
     "positionCoords": {
-      "x": 888.4935,
-      "y": 52.18297
+      "x": 1088.8517,
+      "y": 664.6021
     }
   },
   {
-    "position": 68,
-    "id": "7b123144",
-    "name": "Mykola Bondarenko \u0027Raven\u0027",
-    "faction": "Duty",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 4,
-    "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 0,
-    "positionCoords": {
-      "x": 1386.8591,
-      "y": 2086.6235
-    }
-  },
-  {
-    "position": 69,
-    "id": "ed11c93f",
-    "name": "Giorgi Petrov \u0027Ghost\u0027",
-    "faction": "Loner",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 4,
-    "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 0,
-    "positionCoords": {
-      "x": 1036.7952,
-      "y": 2718.572
-    }
-  },
-  {
-    "position": 70,
-    "id": "e0295bc1",
-    "name": "Oleksiy Petrenko \u0027Spark\u0027",
-    "faction": "Loner",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 4,
-    "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 0,
-    "positionCoords": {
-      "x": 539.60944,
-      "y": 3067.3555
-    }
-  },
-  {
-    "position": 71,
-    "id": "33f7aa88",
-    "name": "Pierre Bondarenko \u0027Phantom\u0027",
+    "position": 30,
+    "id": "518bda03",
+    "name": "Taras Volkov \u0027Shadow\u0027",
     "faction": "Mercenary",
+    "rank": "Trainee",
+    "xp": 200,
+    "kills": 4,
+    "stalkerKills": 0,
+    "mutantKills": 4,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1038.2063,
+      "y": 2006.7097
+    }
+  },
+  {
+    "position": 31,
+    "id": "22716071",
+    "name": "Yuriy Popov \u0027Viper\u0027",
+    "faction": "Ecologist",
     "rank": "Trainee",
     "xp": 200,
     "kills": 4,
@@ -1132,14 +492,14 @@
     "missions": 0,
     "positionCoords": {
       "x": 400,
-      "y": 1152
+      "y": 1440
     }
   },
   {
-    "position": 72,
-    "id": "11acd390",
-    "name": "Connor Bondarenko \u0027Ugly\u0027",
-    "faction": "Mercenary",
+    "position": 32,
+    "id": "b58700a4",
+    "name": "Alexei Popov \u0027One-Eye\u0027",
+    "faction": "Bandit",
     "rank": "Trainee",
     "xp": 200,
     "kills": 4,
@@ -1147,31 +507,15 @@
     "mutantKills": 4,
     "missions": 0,
     "positionCoords": {
-      "x": 421.63815,
-      "y": 1124.6589
+      "x": 801.17834,
+      "y": 1927.295
     }
   },
   {
-    "position": 73,
-    "id": "334ee75c",
-    "name": "Armen Petrenko \u0027Scar\u0027",
-    "faction": "Monolith",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 4,
-    "stalkerKills": 0,
-    "mutantKills": 4,
-    "missions": 0,
-    "positionCoords": {
-      "x": 1579.5879,
-      "y": 526.536
-    }
-  },
-  {
-    "position": 74,
-    "id": "1551a862",
-    "name": "Tobias Volkov \u0027Mole\u0027",
-    "faction": "Mercenary",
+    "position": 33,
+    "id": "27ccad4a",
+    "name": "Connor Petrenko \u0027Viper\u0027",
+    "faction": "Ecologist",
     "rank": "Trainee",
     "xp": 200,
     "kills": 2,
@@ -1179,14 +523,46 @@
     "mutantKills": 2,
     "missions": 1,
     "positionCoords": {
-      "x": 254.38434,
-      "y": 1405.9058
+      "x": 406.1716,
+      "y": 1432.6309
     }
   },
   {
-    "position": 75,
-    "id": "2bf8e78d",
-    "name": "Tobias Ivanov \u0027Viper\u0027",
+    "position": 34,
+    "id": "06178b83",
+    "name": "Viktor Bondarenko \u0027Badger\u0027",
+    "faction": "Ecologist",
+    "rank": "Trainee",
+    "xp": 200,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 1,
+    "positionCoords": {
+      "x": 406.74603,
+      "y": 1442.3002
+    }
+  },
+  {
+    "position": 35,
+    "id": "5abf9f8d",
+    "name": "Viktor Petrov \u0027Ash\u0027",
+    "faction": "Ecologist",
+    "rank": "Trainee",
+    "xp": 200,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 1,
+    "positionCoords": {
+      "x": 393.96063,
+      "y": 1427.5696
+    }
+  },
+  {
+    "position": 36,
+    "id": "4bfe40bd",
+    "name": "Andrei Popov \u0027Mole\u0027",
     "faction": "Loner",
     "rank": "Trainee",
     "xp": 200,
@@ -1195,15 +571,15 @@
     "mutantKills": 2,
     "missions": 1,
     "positionCoords": {
-      "x": 1028,
-      "y": 2710
+      "x": 1052,
+      "y": 2706
     }
   },
   {
-    "position": 76,
-    "id": "cb6b0f9e",
-    "name": "Lars Bondarenko \u0027The Rat\u0027",
-    "faction": "Mercenary",
+    "position": 37,
+    "id": "9122bd62",
+    "name": "Nikolai Volkov \u0027Fox\u0027",
+    "faction": "ClearSky",
     "rank": "Trainee",
     "xp": 200,
     "kills": 2,
@@ -1211,95 +587,15 @@
     "mutantKills": 2,
     "missions": 1,
     "positionCoords": {
-      "x": 308.57083,
-      "y": 1427.7402
+      "x": 319.90063,
+      "y": 2556.6729
     }
   },
   {
-    "position": 77,
-    "id": "0e4cbb66",
-    "name": "Karl Volkov \u0027Scar\u0027",
-    "faction": "Mercenary",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 1,
-    "positionCoords": {
-      "x": 278.4,
-      "y": 1465.6
-    }
-  },
-  {
-    "position": 78,
-    "id": "4c82b8d8",
-    "name": "Nikolai Shevchenko \u0027Mole\u0027",
-    "faction": "Military",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1360.1648,
-      "y": 2079.538
-    }
-  },
-  {
-    "position": 79,
-    "id": "9d7b91e3",
-    "name": "Alexei Kovalenko \u0027Wolf\u0027",
-    "faction": "Military",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1372.0781,
-      "y": 2077.7683
-    }
-  },
-  {
-    "position": 80,
-    "id": "29ee5a5e",
-    "name": "Lars Shevchenko \u0027Bullet\u0027",
+    "position": 38,
+    "id": "b70b255e",
+    "name": "Bakhyt Sokolov \u0027Phantom\u0027",
     "faction": "Loner",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1028.3909,
-      "y": 2718.792
-    }
-  },
-  {
-    "position": 81,
-    "id": "a6168cb2",
-    "name": "Andrei Kovalenko \u0027Raven\u0027",
-    "faction": "Loner",
-    "rank": "Trainee",
-    "xp": 200,
-    "kills": 2,
-    "stalkerKills": 0,
-    "mutantKills": 2,
-    "missions": 1,
-    "positionCoords": {
-      "x": 1038.293,
-      "y": 2727.9414
-    }
-  },
-  {
-    "position": 82,
-    "id": "872b9a3e",
-    "name": "Heinrich Volkov \u0027Viper\u0027",
-    "faction": "Mercenary",
     "rank": "Trainee",
     "xp": 200,
     "kills": 0,
@@ -1307,296 +603,1000 @@
     "mutantKills": 0,
     "missions": 2,
     "positionCoords": {
-      "x": 246.07884,
-      "y": 1392.741
+      "x": 1043,
+      "y": 2719
+    }
+  },
+  {
+    "position": 39,
+    "id": "c73a4ef5",
+    "name": "Alibek Ivanov \u0027Viper\u0027",
+    "faction": "Ecologist",
+    "rank": "Trainee",
+    "xp": 200,
+    "kills": 0,
+    "stalkerKills": 0,
+    "mutantKills": 0,
+    "missions": 2,
+    "positionCoords": {
+      "x": -21.363056,
+      "y": 1109.4468
+    }
+  },
+  {
+    "position": 40,
+    "id": "159912d1",
+    "name": "Serhiy Kovalenko \u0027Jackal\u0027",
+    "faction": "ClearSky",
+    "rank": "Trainee",
+    "xp": 200,
+    "kills": 0,
+    "stalkerKills": 0,
+    "mutantKills": 0,
+    "missions": 2,
+    "positionCoords": {
+      "x": 316,
+      "y": 2553
+    }
+  },
+  {
+    "position": 41,
+    "id": "ccf14643",
+    "name": "Viktor Shevchenko \u0027Broken Nose\u0027",
+    "faction": "Mercenary",
+    "rank": "Rookie",
+    "xp": 170,
+    "kills": 5,
+    "stalkerKills": 2,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 681.80804,
+      "y": 1502.5116
+    }
+  },
+  {
+    "position": 42,
+    "id": "ecc79679",
+    "name": "Pavel Sokolov \u0027Jackal\u0027",
+    "faction": "Military",
+    "rank": "Rookie",
+    "xp": 170,
+    "kills": 5,
+    "stalkerKills": 2,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 398.4133,
+      "y": 1918.2059
+    }
+  },
+  {
+    "position": 43,
+    "id": "ade8cdea",
+    "name": "Andriy Sokolov \u0027Mole\u0027",
+    "faction": "Mercenary",
+    "rank": "Rookie",
+    "xp": 170,
+    "kills": 3,
+    "stalkerKills": 2,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 786.9065,
+      "y": 1441.4578
+    }
+  },
+  {
+    "position": 44,
+    "id": "5e83a230",
+    "name": "Pavel Melnyk \u0027Viper\u0027",
+    "faction": "Mercenary",
+    "rank": "Rookie",
+    "xp": 160,
+    "kills": 2,
+    "stalkerKills": 1,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 278.4,
+      "y": 1465.6
+    }
+  },
+  {
+    "position": 45,
+    "id": "a6c3a65d",
+    "name": "Vasyl Bondarenko \u0027Ghost\u0027",
+    "faction": "Ecologist",
+    "rank": "Rookie",
+    "xp": 160,
+    "kills": 2,
+    "stalkerKills": 1,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 39.141254,
+      "y": 1088.138
+    }
+  },
+  {
+    "position": 46,
+    "id": "05ef3cd0",
+    "name": "Dmytro Volkov \u0027Badger\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 160,
+    "kills": 2,
+    "stalkerKills": 1,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 797.7715,
+      "y": 2721.3835
+    }
+  },
+  {
+    "position": 47,
+    "id": "12301f1b",
+    "name": "Pavel Sokolov \u0027Raven\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 160,
+    "kills": 2,
+    "stalkerKills": 1,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 405.9826,
+      "y": 558.52856
+    }
+  },
+  {
+    "position": 48,
+    "id": "2b605208",
+    "name": "Serhiy Petrenko \u0027Stitch\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 3,
+    "stalkerKills": 0,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 870.63727,
+      "y": 641.18005
+    }
+  },
+  {
+    "position": 49,
+    "id": "7721f312",
+    "name": "Vasyl Volkov \u0027Spark\u0027",
+    "faction": "Freedom",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 3,
+    "stalkerKills": 0,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 916.72424,
+      "y": 1169.9934
+    }
+  },
+  {
+    "position": 50,
+    "id": "f1d10393",
+    "name": "Mikhail Kovalenko \u0027Phantom\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 3,
+    "stalkerKills": 0,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1052.1056,
+      "y": 371.2971
+    }
+  },
+  {
+    "position": 51,
+    "id": "3b6a9a90",
+    "name": "Dmytro Melnyk \u0027Scar\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 3,
+    "stalkerKills": 0,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1070.7107,
+      "y": 701.874
+    }
+  },
+  {
+    "position": 52,
+    "id": "84b95a9f",
+    "name": "Andrei Volkov \u0027Bullet\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 3,
+    "stalkerKills": 0,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 803.5395,
+      "y": 2718.9058
+    }
+  },
+  {
+    "position": 53,
+    "id": "b902efa5",
+    "name": "Dmytro Volkov \u0027Ghost\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 3,
+    "stalkerKills": 0,
+    "mutantKills": 3,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1069.7894,
+      "y": 364.48138
+    }
+  },
+  {
+    "position": 54,
+    "id": "9f3360a8",
+    "name": "Vasyl Sokolov \u0027Whisper\u0027",
+    "faction": "Bandit",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 1258.5345,
+      "y": 1692.5552
+    }
+  },
+  {
+    "position": 55,
+    "id": "fc40f61d",
+    "name": "Heinrich Sokolov \u0027Fox\u0027",
+    "faction": "Ecologist",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 372.16623,
+      "y": 1381.3634
+    }
+  },
+  {
+    "position": 56,
+    "id": "bd84e8cc",
+    "name": "Karl Petrov \u0027The Nail\u0027",
+    "faction": "Bandit",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 1209,
+      "y": 1745
+    }
+  },
+  {
+    "position": 57,
+    "id": "fa1161b3",
+    "name": "Rustam Shevchenko \u0027Raven\u0027",
+    "faction": "Military",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 396.6852,
+      "y": 1925.7483
+    }
+  },
+  {
+    "position": 58,
+    "id": "a25bc13f",
+    "name": "Serhiy Petrov \u0027Raven\u0027",
+    "faction": "Bandit",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 1212,
+      "y": 1748
+    }
+  },
+  {
+    "position": 59,
+    "id": "fbf0bf85",
+    "name": "Vasyl Petrov \u0027Ghost\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 801.61334,
+      "y": 2712.8794
+    }
+  },
+  {
+    "position": 60,
+    "id": "2701bdc4",
+    "name": "Mykola Ivanov \u0027Bullet\u0027",
+    "faction": "Ecologist",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 400,
+      "y": 1440
+    }
+  },
+  {
+    "position": 61,
+    "id": "fbdcade1",
+    "name": "Igor Petrenko \u0027Jackal\u0027",
+    "faction": "ClearSky",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 323.46432,
+      "y": 2557.8926
+    }
+  },
+  {
+    "position": 62,
+    "id": "2035b868",
+    "name": "Damir Volkov \u0027Stitch\u0027",
+    "faction": "Military",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 1346,
+      "y": 2074
+    }
+  },
+  {
+    "position": 63,
+    "id": "e978be9c",
+    "name": "Mykola Volkov \u0027Bone\u0027",
+    "faction": "Military",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 411.54318,
+      "y": 1935.5872
+    }
+  },
+  {
+    "position": 64,
+    "id": "39b1caca",
+    "name": "Marcus Melnyk \u0027Badger\u0027",
+    "faction": "ClearSky",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 320.13654,
+      "y": 2564.8853
+    }
+  },
+  {
+    "position": 65,
+    "id": "017a923e",
+    "name": "Oleg Bondarenko \u0027Phantom\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 541.92413,
+      "y": 853.1023
+    }
+  },
+  {
+    "position": 66,
+    "id": "fb3978cb",
+    "name": "Nodar Ivanov \u0027Two-Fingers\u0027",
+    "faction": "Bandit",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 794,
+      "y": 1932.0001
+    }
+  },
+  {
+    "position": 67,
+    "id": "aee37541",
+    "name": "Rustam Kovalenko \u0027Spark\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 802.31036,
+      "y": 2723.2988
+    }
+  },
+  {
+    "position": 68,
+    "id": "ffda7410",
+    "name": "Dmitri Volkov \u0027Bullet\u0027",
+    "faction": "Bandit",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 1215.179,
+      "y": 1800.0244
+    }
+  },
+  {
+    "position": 69,
+    "id": "ba7d22cf",
+    "name": "Mikhail Bondarenko \u0027Stitch\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 807.4696,
+      "y": 2711.8838
+    }
+  },
+  {
+    "position": 70,
+    "id": "e6eacb10",
+    "name": "Yuriy Petrenko \u0027Shadow\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 1033,
+      "y": 2733
+    }
+  },
+  {
+    "position": 71,
+    "id": "99ebec44",
+    "name": "Pierre Shevchenko \u0027Crow\u0027",
+    "faction": "Mercenary",
+    "rank": "Rookie",
+    "xp": 150,
+    "kills": 1,
+    "stalkerKills": 0,
+    "mutantKills": 1,
+    "missions": 1,
+    "positionCoords": {
+      "x": 232.24767,
+      "y": 1409.8843
+    }
+  },
+  {
+    "position": 72,
+    "id": "125069b9",
+    "name": "Timur Ivanov \u0027Ash\u0027",
+    "faction": "Freedom",
+    "rank": "Rookie",
+    "xp": 110,
+    "kills": 3,
+    "stalkerKills": 1,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 646.8985,
+      "y": 1448.172
+    }
+  },
+  {
+    "position": 73,
+    "id": "c2396a1c",
+    "name": "Oleg Bondarenko \u0027Badger\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 110,
+    "kills": 1,
+    "stalkerKills": 1,
+    "mutantKills": 0,
+    "missions": 1,
+    "positionCoords": {
+      "x": 805.95703,
+      "y": 2730.412
+    }
+  },
+  {
+    "position": 74,
+    "id": "afb15b32",
+    "name": "Frank Bondarenko \u0027Ghost\u0027",
+    "faction": "Mercenary",
+    "rank": "Rookie",
+    "xp": 110,
+    "kills": 1,
+    "stalkerKills": 1,
+    "mutantKills": 0,
+    "missions": 1,
+    "positionCoords": {
+      "x": 807,
+      "y": 1453
+    }
+  },
+  {
+    "position": 75,
+    "id": "12747941",
+    "name": "Sergei Sokolov \u0027Stitch\u0027",
+    "faction": "Bandit",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 6,
+    "stalkerKills": 5,
+    "mutantKills": 1,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1115.5132,
+      "y": 2405.5146
+    }
+  },
+  {
+    "position": 76,
+    "id": "f44407a0",
+    "name": "Zura Melnyk \u0027Shadow\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 593.05096,
+      "y": 794.27716
+    }
+  },
+  {
+    "position": 77,
+    "id": "59b7a38c",
+    "name": "Lars Shevchenko \u0027Viper\u0027",
+    "faction": "Mercenary",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 803,
+      "y": 1919.0001
+    }
+  },
+  {
+    "position": 78,
+    "id": "46d63d03",
+    "name": "Mykola Ivanov \u0027Fox\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1067.2,
+      "y": 211.2
+    }
+  },
+  {
+    "position": 79,
+    "id": "d1ad88fe",
+    "name": "Andriy Melnyk \u0027Scar\u0027",
+    "faction": "Mercenary",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 884.3558,
+      "y": 1126.7888
+    }
+  },
+  {
+    "position": 80,
+    "id": "c9f3d6d4",
+    "name": "Oleg Popov \u0027Jackal\u0027",
+    "faction": "Loner",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 1048.9696,
+      "y": 2722.428
+    }
+  },
+  {
+    "position": 81,
+    "id": "75d6f9b0",
+    "name": "Lasha Sokolov \u0027Crow\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 772.42267,
+      "y": 690.95624
+    }
+  },
+  {
+    "position": 82,
+    "id": "e36fee2f",
+    "name": "Alexei Bondarenko \u0027Stitch\u0027",
+    "faction": "Monolith",
+    "rank": "Rookie",
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
+    "positionCoords": {
+      "x": 727.19763,
+      "y": 718.5424
     }
   },
   {
     "position": 83,
-    "id": "3948d24a",
-    "name": "Andrei Kovalenko \u0027Wolf\u0027",
-    "faction": "Military",
+    "id": "25b79323",
+    "name": "Dmytro Bondarenko \u0027Jackal\u0027",
+    "faction": "Monolith",
     "rank": "Rookie",
-    "xp": 193,
+    "xp": 100,
     "kills": 2,
-    "stalkerKills": 1,
-    "mutantKills": 1,
-    "missions": 1,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
     "positionCoords": {
-      "x": 1345,
-      "y": 2084
+      "x": 1091.089,
+      "y": 656.03094
     }
   },
   {
     "position": 84,
-    "id": "54c9b232",
-    "name": "Zombified Sean",
-    "faction": "Zombified",
+    "id": "01109c31",
+    "name": "Vasyl Bondarenko \u0027Mole\u0027",
+    "faction": "Monolith",
     "rank": "Rookie",
-    "xp": 160,
-    "kills": 4,
-    "stalkerKills": 1,
-    "mutantKills": 3,
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 237.25058,
-      "y": 1388.1831
+      "x": 795.18207,
+      "y": 95.02985
     }
   },
   {
     "position": 85,
-    "id": "94e352fb",
-    "name": "Viktor Popov \u0027Badger\u0027",
-    "faction": "Military",
+    "id": "aa96a6ca",
+    "name": "Sean Sokolov \u0027Wolf\u0027",
+    "faction": "Freedom",
     "rank": "Rookie",
-    "xp": 160,
-    "kills": 4,
-    "stalkerKills": 1,
-    "mutantKills": 3,
+    "xp": 100,
+    "kills": 2,
+    "stalkerKills": 0,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 1359.166,
-      "y": 2086.9695
+      "x": 837.68915,
+      "y": 1115.7095
     }
   },
   {
     "position": 86,
-    "id": "303f9644",
-    "name": "Lars Kovalenko \u0027Badger\u0027",
-    "faction": "Mercenary",
+    "id": "c274e309",
+    "name": "Oleg Kovalenko \u0027Bullet\u0027",
+    "faction": "Loner",
     "rank": "Rookie",
-    "xp": 160,
+    "xp": 100,
     "kills": 2,
-    "stalkerKills": 1,
-    "mutantKills": 1,
-    "missions": 1,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
     "positionCoords": {
-      "x": 240.00002,
-      "y": 1408
+      "x": 1044.0189,
+      "y": 2729.321
     }
   },
   {
     "position": 87,
-    "id": "41110e74",
-    "name": "Andrei Shevchenko \u0027Fox\u0027",
-    "faction": "ClearSky",
+    "id": "ef64fb9a",
+    "name": "Igor Shevchenko \u0027Broken Nose\u0027",
+    "faction": "Bandit",
     "rank": "Rookie",
-    "xp": 160,
+    "xp": 100,
     "kills": 2,
-    "stalkerKills": 1,
-    "mutantKills": 1,
-    "missions": 1,
+    "stalkerKills": 0,
+    "mutantKills": 2,
+    "missions": 0,
     "positionCoords": {
-      "x": 312.75897,
-      "y": 2549.7231
+      "x": 1202.2089,
+      "y": 1751.1339
     }
   },
   {
     "position": 88,
-    "id": "96f59929",
-    "name": "Marcus Kovalenko \u0027Ash\u0027",
-    "faction": "Mercenary",
+    "id": "16a430d7",
+    "name": "Andriy Kovalenko \u0027The Nail\u0027",
+    "faction": "Bandit",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 365.79608,
-      "y": 1189.5928
+      "x": 1205.4191,
+      "y": 1754.0262
     }
   },
   {
     "position": 89,
-    "id": "60ce765e",
-    "name": "Zombified Timur",
-    "faction": "Zombified",
+    "id": "e5d24669",
+    "name": "Bohdan Ivanov \u0027Phantom\u0027",
+    "faction": "Freedom",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 252.62708,
-      "y": 1386.3448
+      "x": 913.9982,
+      "y": 1175.4475
     }
   },
   {
     "position": 90,
-    "id": "c3673662",
-    "name": "Andrei Melnyk \u0027Stitch\u0027",
-    "faction": "Duty",
+    "id": "c84e4968",
+    "name": "Pavel Popov \u0027Viper\u0027",
+    "faction": "Military",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 1353,
-      "y": 2067
+      "x": 1352.8738,
+      "y": 2073.9175
     }
   },
   {
     "position": 91,
-    "id": "bf8d6db1",
-    "name": "Giorgi Melnyk \u0027Jackal\u0027",
-    "faction": "ClearSky",
+    "id": "20a8cd4f",
+    "name": "Igor Volkov \u0027Ugly\u0027",
+    "faction": "Bandit",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 533.81866,
-      "y": 3060.6655
+      "x": 798.16174,
+      "y": 1914.9518
     }
   },
   {
     "position": 92,
-    "id": "65d0df5a",
-    "name": "Andriy Bondarenko \u0027Raven\u0027",
-    "faction": "ClearSky",
+    "id": "a0a3aeff",
+    "name": "Serhiy Shevchenko \u0027Wolf\u0027",
+    "faction": "Mercenary",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 539.60944,
-      "y": 3067.3555
+      "x": 903.3878,
+      "y": 1163.3701
     }
   },
   {
     "position": 93,
-    "id": "1e185453",
-    "name": "Mikhail Bondarenko \u0027Mole\u0027",
-    "faction": "Loner",
+    "id": "b273018c",
+    "name": "Igor Melnyk \u0027Jackal\u0027",
+    "faction": "Monolith",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 1043.9456,
-      "y": 2720.5723
+      "x": 601.6,
+      "y": 726.4
     }
   },
   {
     "position": 94,
-    "id": "21909687",
-    "name": "Dmytro Kovalenko \u0027Knuckle\u0027",
-    "faction": "Mercenary",
+    "id": "e4485920",
+    "name": "Oleksiy Popov \u0027Ash\u0027",
+    "faction": "Monolith",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 392.5321,
-      "y": 1146.0762
+      "x": 541.92413,
+      "y": 853.1023
     }
   },
   {
     "position": 95,
-    "id": "24e87cbf",
-    "name": "Viktor Bondarenko \u0027Ghost\u0027",
-    "faction": "Monolith",
+    "id": "b57a3ece",
+    "name": "Taras Petrov \u0027Ghost\u0027",
+    "faction": "Freedom",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 1564.201,
-      "y": 1341.0349
+      "x": 845.3909,
+      "y": 1110.2893
     }
   },
   {
     "position": 96,
-    "id": "87a0c6c0",
-    "name": "Zombified Nikolai",
-    "faction": "Zombified",
+    "id": "83372181",
+    "name": "Karl Petrov \u0027Wolf\u0027",
+    "faction": "Loner",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 1043.1141,
-      "y": 2715.3875
+      "x": 766.38025,
+      "y": 2742.5234
     }
   },
   {
     "position": 97,
-    "id": "1602c25d",
-    "name": "Bohdan Melnyk \u0027Phantom\u0027",
-    "faction": "Monolith",
+    "id": "92e52bcc",
+    "name": "Alexei Kovalenko \u0027Spark\u0027",
+    "faction": "Mercenary",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 1583.4069,
-      "y": 1057.182
+      "x": 154.43161,
+      "y": 1376.4562
     }
   },
   {
     "position": 98,
-    "id": "14e12a73",
-    "name": "Andriy Petrenko \u0027Stitch\u0027",
-    "faction": "Loner",
+    "id": "79512a25",
+    "name": "Igor Melnyk \u0027Bone\u0027",
+    "faction": "Military",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 19.300875,
-      "y": 3092.0254
+      "x": 1362.7611,
+      "y": 2079.3992
     }
   },
   {
     "position": 99,
-    "id": "efeb2e6d",
-    "name": "Vasyl Melnyk \u0027Phantom\u0027",
-    "faction": "Loner",
+    "id": "9b75f528",
+    "name": "Pavel Popov \u0027Stitches\u0027",
+    "faction": "Bandit",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 314.85812,
-      "y": 2539.353
+      "x": 1194.3381,
+      "y": 1770.0387
     }
   },
   {
     "position": 100,
-    "id": "1d7f3bca",
-    "name": "Oleksiy Melnyk \u0027Scar\u0027",
-    "faction": "Loner",
+    "id": "43d2fa45",
+    "name": "Zombified Alexei",
+    "faction": "Zombified",
     "rank": "Rookie",
-    "xp": 150,
-    "kills": 3,
+    "xp": 100,
+    "kills": 2,
     "stalkerKills": 0,
-    "mutantKills": 3,
+    "mutantKills": 2,
     "missions": 0,
     "positionCoords": {
-      "x": 1292.1232,
-      "y": 2824.48
+      "x": 1030.2972,
+      "y": 2001.8063
     }
   }
 ]

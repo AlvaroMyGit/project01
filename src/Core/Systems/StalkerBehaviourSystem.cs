@@ -160,6 +160,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             s.Position.X / ctx.WorldGen.Width, s.Position.Z / ctx.WorldGen.Height);
         int allies = CountSquadAlliesInRange(ctx, s, 120f);
         float dist = Vector3.Distance(s.Position, closeMutant.Position);
+        s.Equipment.PrimaryWeapon?.WearPerShot(0.015f);
         bool stalkerWins = Random.Shared.NextDouble()
             < CombatResolver.StalkerVsMutantWinChance(s, closeMutant, threat, allies, dist);
         
@@ -196,6 +197,8 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             s.Position.X / ctx.WorldGen.Width, s.Position.Z / ctx.WorldGen.Height);
         float dist = Vector3.Distance(s.Position, other.Position);
         float heavySuppression = CombatResolver.HeavyWeaponSuppression(s, snapshot);
+        s.Equipment.PrimaryWeapon?.WearPerShot(0.015f);
+        other.Equipment.PrimaryWeapon?.WearPerShot(0.015f);
         bool thisWins = Random.Shared.NextDouble()
             < CombatResolver.StalkerVsStalkerWinChance(s, other, threat, dist, heavySuppression);
         

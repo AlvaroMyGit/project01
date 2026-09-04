@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StalkerALifeSandbox")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2e237581c4804d5fe32dc7b925f3a1c8cb3b32f2")]
 [assembly: System.Reflection.AssemblyProductAttribute("StalkerALifeSandbox")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StalkerALifeSandbox")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

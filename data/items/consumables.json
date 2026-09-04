@@ -7,5 +7,7 @@
     { "id": "con_antirad",   "name": "Anti-Radiation Drug",       "baseValue": 500.0,   "category": "Medical",     "isArtifactOrSpecimen": false },
     { "id": "con_bandage",   "name": "Bandage",                   "baseValue": 120.0,   "category": "Medical",     "isArtifactOrSpecimen": false },
     { "id": "con_medkit",    "name": "Medkit",                    "baseValue": 800.0,   "category": "Medical",     "isArtifactOrSpecimen": false },
-    { "id": "con_sci_medkit","name": "Scientific Medkit",         "baseValue": 2500.0,  "category": "Medical",     "isArtifactOrSpecimen": false }
+    { "id": "con_sci_medkit","name": "Scientific Medkit",         "baseValue": 2500.0,  "category": "Medical",     "isArtifactOrSpecimen": false },
+    { "id": "con_repair_kit","name": "Repair Kit",                "baseValue": 1200.0,  "category": "Equipment",   "isArtifactOrSpecimen": false },
+    { "id": "con_gun_oil",   "name": "Gun Oil",                   "baseValue": 450.0,   "category": "Equipment",   "isArtifactOrSpecimen": false }
 ]

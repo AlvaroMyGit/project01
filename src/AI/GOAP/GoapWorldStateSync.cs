@@ -45,7 +45,8 @@ public static class GoapWorldStateSync
         bool weaponDamaged = stalker.Equipment.PrimaryWeapon?.Condition < 0.70f;
         bool armorDamaged  = stalker.Equipment.EquippedArmor?.Condition < 0.70f;
         bool hasScrap      = stalker.ScrapCount >= 5; // minimum threshold to attempt a repair
-        Set(bb, GoapKeys.HasGearDamage, (weaponDamaged || armorDamaged) && hasScrap);
+        Set(bb, GoapKeys.HasGearDamage, (weaponDamaged || armorDamaged));
+        bb.WorldStateFloats["PrimaryWeaponCondition"] = stalker.Equipment.PrimaryWeapon?.Condition ?? 1.0f;
         Set(bb, GoapKeys.GearRepaired, false);
 
         float nx = stalker.Position.X / ctx.WorldGen.Width;

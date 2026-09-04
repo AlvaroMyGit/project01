@@ -18,6 +18,9 @@ public sealed class GoalRepairGear : GOAPGoal
         if (bb.WorldStateBools.GetValueOrDefault(GoapKeys.GearRepaired)) return 0f;
 
         // Scale utility with desperation — hurt gear is a survival risk
+        float condition = bb.WorldStateFloats.GetValueOrDefault("PrimaryWeaponCondition", 1.0f);
+        if (condition < 0.3f) return 70f; // Jamming range! Massive priority
+        if (condition < 0.5f) return 45f;
         return 35f;
     }
 

@@ -49,3 +49,4 @@
 /home/alvaromendes/Documents/project01/bin/Debug/net8.0/data/gamma/weapons.json
 /home/alvaromendes/Documents/project01/bin/Debug/net8.0/data/items/gamma_armors.json
 /home/alvaromendes/Documents/project01/bin/Debug/net8.0/data/items/gamma_helmets.json
+/home/alvaromendes/Documents/project01/obj/Debug/net8.0/StalkerALifeSandbox.sourcelink.json

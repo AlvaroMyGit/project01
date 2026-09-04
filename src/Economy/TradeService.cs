@@ -25,6 +25,13 @@ public static class TradeService
         var gear = EquipmentUpgradeService.TryBuyGearUpgrades(stalker, trader);
         notes.AddRange(gear.Select(g => $"↑{g}"));
 
+        // Repair supplies
+        if (stalker.Equipment.PrimaryWeapon?.Condition < 0.70f || stalker.Equipment.EquippedArmor?.Condition < 0.70f)
+        {
+            if (TryBuy(stalker, trader, "con_repair_kit")) notes.Add("repair kit");
+            else if (TryBuy(stalker, trader, "con_gun_oil")) notes.Add("gun oil");
+        }
+
         // Food — restock when not comfortably fed
         if (stalker.Needs.Hunger > 30f)
         {
@@ -172,6 +179,8 @@ public static class TradeService
                 stalker.Needs.AdjustMorale(10f);
                 break;
             case "con_antirad": stalker.Needs.TakeAntiRad(35f); break;
+            case "con_repair_kit": stalker.ScrapCount += 15; break;
+            case "con_gun_oil": stalker.ScrapCount += 5; break;
             case "ammo_9x18": stalker.Needs.AddAmmo(20); break;
             case "ammo_9x19": stalker.Needs.AddAmmo(25); break;
             case "ammo_9x21": stalker.Needs.AddAmmo(20); break;

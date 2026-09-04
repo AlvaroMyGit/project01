@@ -881,11 +881,19 @@
                 <span class="inv-slot-label">${label}</span>
                 <span class="inv-item-name" style="color:var(--text-dim)">Empty</span>
             </div>`;
+            
+        let condBar = '';
+        if (condition != null && condition > 0) {
+            let color = condition > 0.7 ? '#22c55e' : (condition > 0.3 ? '#fbbf24' : '#ef4444');
+            condBar = `<div style="height:2px;background:rgba(255,255,255,0.1);margin-top:4px;border-radius:1px;overflow:hidden;"><div style="height:100%;width:${condition*100}%;background:${color};"></div></div>`;
+        }
+
         return `
             <div class="inv-slot ${isWide ? 'wide' : ''}">
                 <span class="inv-slot-label">${label}</span>
                 <div class="inv-item-cond">${condPct(condition)}</div>
                 <div class="inv-item-name">${name}</div>
+                ${condBar}
                 <div class="inv-item-tag">${gammaTag(gammaId || (id?.startsWith('out_') || id?.startsWith('helm_') ? id.replace(/^(out_|helm_)/, '') : null))}</div>
             </div>`;
     }

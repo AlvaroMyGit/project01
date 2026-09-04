@@ -31,15 +31,24 @@ public static class CombatResolver
         {
             chance += (weapon.Damage - 25) * 0.003;
             chance += (weapon.Accuracy - 0.7) * 0.10;
-            chance += weapon.Condition * 0.04;
+            
+            bool isJammed = weapon.Condition < 0.3f && Random.Shared.NextDouble() < (0.3f - weapon.Condition);
+            if (isJammed)
+            {
+                chance -= 0.25; // Massive penalty for jamming
+            }
+            else
+            {
+                chance += weapon.Condition * 0.04;
 
-            // Snipers get a bonus vs large/slow mutants at range; penalty at close quarters
-            if (IsSniper(weapon))
-                chance += engagementDistance > CombatBalanceConfig.SniperRangeThresholdM ? 0.12 : -0.06;
+                // Snipers get a bonus vs large/slow mutants at range; penalty at close quarters
+                if (IsSniper(weapon))
+                    chance += engagementDistance > CombatBalanceConfig.SniperRangeThresholdM ? 0.12 : -0.06;
 
-            // Heavy weapons suppress large mutants regardless of range
-            if (IsHeavy(weapon))
-                chance += 0.15;
+                // Heavy weapons suppress large mutants regardless of range
+                if (IsHeavy(weapon))
+                    chance += 0.15;
+            }
         }
         else
         {
@@ -68,14 +77,40 @@ public static class CombatResolver
         chance += attacker.Equipment.PrimaryWeapon != null ? 0.05 : -0.03;
 
         var atkWeapon = attacker.Equipment.PrimaryWeapon;
+        if (atkWeapon != null)
+        {
+            bool isJammed = atkWeapon.Condition < 0.3f && Random.Shared.NextDouble() < (0.3f - atkWeapon.Condition);
+            if (isJammed)
+            {
+                chance -= 0.25;
+            }
+            else
+            {
+                chance += atkWeapon.Condition * 0.04;
+                
+                // Snipers dominate at range, are at a disadvantage up close
+                if (IsSniper(atkWeapon))
+                    chance += engagementDistance > CombatBalanceConfig.SniperRangeThresholdM ? CombatBalanceConfig.SniperLongRangeBonus : -0.08;
 
-        // Snipers dominate at range, are at a disadvantage up close
-        if (IsSniper(atkWeapon))
-            chance += engagementDistance > CombatBalanceConfig.SniperRangeThresholdM ? CombatBalanceConfig.SniperLongRangeBonus : -0.08;
+                // Heavy weapon wielder suppresses the field
+                if (IsHeavy(atkWeapon))
+                    chance += 0.10;
+            }
+        }
 
-        // Heavy weapon wielder suppresses the field
-        if (IsHeavy(atkWeapon))
-            chance += 0.10;
+        var defWeapon = defender.Equipment.PrimaryWeapon;
+        if (defWeapon != null)
+        {
+            bool defJammed = defWeapon.Condition < 0.3f && Random.Shared.NextDouble() < (0.3f - defWeapon.Condition);
+            if (defJammed)
+            {
+                chance += 0.25; // Defender weapon jammed, attacker gets bonus
+            }
+            else
+            {
+                chance -= defWeapon.Condition * 0.04;
+            }
+        }
 
         // Nearby friendly heavy-weapon wielder provides area suppression bonus
         chance += heavySuppression;
