@@ -15,6 +15,7 @@ namespace StalkerALifeSandbox.Web
         private readonly ConcurrentDictionary<Guid, WebSocket> _clients = new();
         private readonly int _port;
         private Func<string, InspectorDTO?>? _inspectHandler;
+        private Action<string, JsonElement>? _commandHandler;
 
         public WebVisualizerServer(int port = 8080)
         {
@@ -26,6 +27,9 @@ namespace StalkerALifeSandbox.Web
 
         public void SetInspectHandler(Func<string, InspectorDTO?> handler) =>
             _inspectHandler = handler;
+
+        public void SetCommandHandler(Action<string, JsonElement> handler) =>
+            _commandHandler = handler;
 
         public void Start()
         {
@@ -103,43 +107,51 @@ namespace StalkerALifeSandbox.Web
 
         private async Task TryHandleClientMessageAsync(WebSocket socket, string text)
         {
-            if (_inspectHandler == null || socket.State != WebSocketState.Open)
+            if (socket.State != WebSocketState.Open)
                 return;
 
             try
             {
                 using var doc = JsonDocument.Parse(text);
                 var root = doc.RootElement;
-                if (!root.TryGetProperty("type", out var typeProp) ||
-                    typeProp.GetString() != "inspect")
+                if (!root.TryGetProperty("type", out var typeProp))
                     return;
 
-                if (!root.TryGetProperty("entityId", out var idProp))
-                    return;
-
-                var entityId = idProp.GetString();
-                if (string.IsNullOrEmpty(entityId))
-                    return;
-
-                var inspector = _inspectHandler(entityId);
-                if (inspector == null)
-                    return;
-
-                var payload = JsonSerializer.Serialize(new
+                var type = typeProp.GetString();
+                if (type == "inspect")
                 {
-                    type = "inspector",
-                    data = inspector
-                });
-                var bytes = Encoding.UTF8.GetBytes(payload);
-                await socket.SendAsync(
-                    new ArraySegment<byte>(bytes),
-                    WebSocketMessageType.Text,
-                    true,
-                    CancellationToken.None);
+                    if (_inspectHandler == null) return;
+                    if (!root.TryGetProperty("entityId", out var idProp))
+                        return;
+
+                    var entityId = idProp.GetString();
+                    if (string.IsNullOrEmpty(entityId))
+                        return;
+
+                    var inspector = _inspectHandler(entityId);
+                    if (inspector == null)
+                        return;
+
+                    var payload = JsonSerializer.Serialize(new
+                    {
+                        type = "inspector",
+                        data = inspector
+                    });
+                    var bytes = Encoding.UTF8.GetBytes(payload);
+                    await socket.SendAsync(
+                        new ArraySegment<byte>(bytes),
+                        WebSocketMessageType.Text,
+                        true,
+                        CancellationToken.None);
+                }
+                else if (type != null)
+                {
+                    _commandHandler?.Invoke(type, root);
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[WebVisualizerServer] Inspect handler error: {ex.Message}");
+                Console.WriteLine($"[WebVisualizerServer] Handler error: {ex.Message}");
             }
         }
 

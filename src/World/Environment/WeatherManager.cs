@@ -33,6 +33,15 @@ public sealed class WeatherManager
         }
     }
 
+    public void ForceClearWeather()
+    {
+        CurrentWeather = WeatherType.Clear;
+        RainIntensity = 0f;
+        FogDensity = 0f;
+        VisibilityMod = 1.0f;
+        _nextShiftTime += 3600f; // Keep it clear for at least an hour
+    }
+
     private void ShiftWeather()
     {
         // Simple random transition

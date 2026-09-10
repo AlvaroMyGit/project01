@@ -120,7 +120,7 @@ public class Program
                     CurrentLevelId = poi.RegionId
                 };
                 ItemDatabase.ApplySpawnLoadout(leader, isLeader: true);
-                StalkerSpawnHelper.ConfigureFreshSpawn(leader);
+                StalkerSpawnHelper.ConfigureFreshSpawn(leader, StalkerRank.Veteran);
                 stalkers.Add(leader);
             }
         }
@@ -313,6 +313,7 @@ public class Program
                         mutants = mutants.Count(m => m.IsAlive),
                         mutantTarget = 1000,
                         corpses = corpses.Count,
+                        factionCounts = stalkers.Where(s => s.IsAlive).GroupBy(s => s.TrueFaction).ToDictionary(g => g.Key, g => g.Count()),
                         missions = new {
                             active = stalkers.Count(s => s.IsAlive && s.ActiveMission != null),
                             leadersActive = stalkers.Count(s => s.IsAlive && s.IsSquadLeader && s.ActiveMission != null),
@@ -344,6 +345,22 @@ public class Program
                     entries = LeaderboardSerializer.BuildTop100(stalkers)
                 });
             }
+        });
+
+        app.MapGet("/api/factions", () => {
+            var matrixDict = new Dictionary<string, Dictionary<string, int>>();
+            foreach (var f1 in FactionMatrix.FactionIds)
+            {
+                matrixDict[f1] = new Dictionary<string, int>();
+                foreach (var f2 in FactionMatrix.FactionIds)
+                {
+                    matrixDict[f1][f2] = (int)factionMatrix.Get(f1, f2);
+                }
+            }
+            return Results.Json(new {
+                factions = FactionMatrix.FactionIds,
+                matrix = matrixDict
+            });
         });
 
         app.MapGet("/", async context =>

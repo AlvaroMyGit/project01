@@ -14,6 +14,9 @@ namespace StalkerALifeSandbox.Web
         [JsonPropertyName("weather")]
         public string Weather { get; set; } = string.Empty;
 
+        [JsonPropertyName("emissionCountdown")]
+        public float EmissionCountdown { get; set; }
+
         [JsonPropertyName("stormActive")]
         public bool StormActive { get; set; }
 
@@ -144,7 +147,16 @@ namespace StalkerALifeSandbox.Web
         public string Type { get; set; } = string.Empty; // "stalker", "mutant"
 
         [JsonPropertyName("position")]
-        public PositionDTO Position { get; set; } = new PositionDTO();
+        public PositionDTO Position { get; set; } = new();
+
+        [JsonPropertyName("facingAngle")]
+        public float FacingAngle { get; set; }
+
+        [JsonPropertyName("fov")]
+        public float FOV { get; set; }
+
+        [JsonPropertyName("goapTargetPosition")]
+        public PositionDTO? GoapTargetPosition { get; set; }
 
         [JsonPropertyName("levelId")]
         public string LevelId { get; set; } = string.Empty;
@@ -455,6 +467,16 @@ namespace StalkerALifeSandbox.Web
 
         [JsonPropertyName("vodkaCount")]
         public int VodkaCount { get; set; }
+
+        // Smart Object Extensions
+        [JsonPropertyName("smartObjectType")]
+        public string SmartObjectType { get; set; } = string.Empty;
+
+        [JsonPropertyName("assignedStalkers")]
+        public List<string> AssignedStalkers { get; set; } = new();
+
+        [JsonPropertyName("capacity")]
+        public int Capacity { get; set; }
     }
 
     public class KillStatsDTO

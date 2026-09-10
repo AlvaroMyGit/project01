@@ -1,3 +1,4 @@
+using System.Numerics;
 using StalkerALifeSandbox.Economy;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Equipment;
@@ -116,6 +117,30 @@ public static class InspectorBuilder
             AgeSec = dto.AgeSec,
             DespawnSec = dto.DespawnSec,
             CorpseLoot = dto.Loot
+        };
+    }
+    public static InspectorDTO? FromPOI(World.Generation.WorldPOIBase poi, Core.SimulationContext ctx)
+    {
+        return new InspectorDTO
+        {
+            EntityId = poi.Id,
+            Name = poi.Name,
+            Faction = poi.OwnerFaction,
+            Type = "poi",
+            SmartObjectType = poi.Type.ToString(),
+            IsAlive = false,
+            Health = 100,
+            LayerIndex = 0,
+            LevelId = poi.RegionId,
+            CurrentGoal = "Idle",
+            Activity = poi.Description,
+            Position = new PositionDTO { X = poi.Position.X, Y = poi.Position.Z },
+            Capacity = poi.Type == World.Generation.POIType.MacroBase ? 50 : 10,
+            AssignedStalkers = ctx.Stalkers
+                .Where(s => s.Blackboard.FinalDestination.HasValue && 
+                            Vector3.Distance(s.Position, poi.Position) < 50f)
+                .Select(s => s.DisplayName)
+                .ToList()
         };
     }
 }

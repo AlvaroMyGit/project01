@@ -69,6 +69,14 @@ public sealed class EmissionSystem
 
     public EmissionSystem() => ScheduleNext(0f);
 
+    public void ForceWarning()
+    {
+        if (CurrentPhase == EmissionPhase.Dormant)
+        {
+            _nextEmissionAt = 0f; // Will trigger immediately next tick
+        }
+    }
+
     public void SetWorldContext(StaticWorldGenerator worldGen, IReadOnlyList<WorldPOIBase> macroBases)
     {
         _worldGen = worldGen;

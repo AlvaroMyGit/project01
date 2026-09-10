@@ -37,6 +37,7 @@ public sealed class SimulationLoop
     
     private readonly WebVisualizerServer _webVisualizer;
     private readonly StalkerGoapService _goap;
+    private readonly WeatherManager _weather;
     
     private int _tickInProgress;
     private Timer? _driver;
@@ -71,6 +72,7 @@ public sealed class SimulationLoop
     {
         _director = director;
         _webVisualizer = webVisualizer;
+        _weather = weather;
         
         _goap = new StalkerGoapService(
             worldGen, stamper, pathfinder, emissionSystem, time, corpses,
@@ -109,6 +111,30 @@ public sealed class SimulationLoop
         _director.RegisterMacroFrequency(TickMacroFrequency);
 
         _webVisualizer.SetInspectHandler(BuildInspector);
+        _webVisualizer.SetCommandHandler(HandleCommand);
+    }
+
+    private void HandleCommand(string type, System.Text.Json.JsonElement data)
+    {
+        try
+        {
+            if (type == "set_speed" && data.TryGetProperty("factor", out var factorProp))
+            {
+                Time.TimeFactor = factorProp.GetSingle();
+            }
+            else if (type == "force_emission")
+            {
+                Emissions.ForceWarning();
+            }
+            else if (type == "force_weather")
+            {
+                _weather.ForceClearWeather();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[SimulationLoop] Command error: {ex.Message}");
+        }
     }
 
     public InspectorDTO? BuildInspector(string entityId)
@@ -124,6 +150,11 @@ public sealed class SimulationLoop
         var corpse = _ctx.Corpses.FirstOrDefault(c => c.CorpseId == entityId);
         if (corpse != null)
             return InspectorBuilder.FromCorpse(corpse, (float)_ctx.Time.ElapsedGameSeconds);
+
+        var poi = _ctx.MacroPois.FirstOrDefault(p => p.Id == entityId) ?? 
+                  _ctx.WildPoiCandidates.FirstOrDefault(p => p.Id == entityId);
+        if (poi != null)
+            return InspectorBuilder.FromPOI(poi, _ctx);
 
         return null;
     }

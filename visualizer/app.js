@@ -422,8 +422,14 @@ function drawPOIs() {
     });
 }
 
+let _roofGfx = null;
+let _roofLabels = [];
 function updateRoofCutaway() {
-    roofContainer.removeChildren();
+    if (!_roofGfx) { _roofGfx = new PIXI.Graphics(); roofContainer.addChild(_roofGfx); }
+    _roofGfx.clear();
+    _roofLabels.forEach(l => l.destroy());
+    _roofLabels = [];
+    
     if (!worldData?.pois || viewport.scale.x < ROOF_CUTAWAY) {
         cutawayBaseId = null;
         return;
@@ -452,65 +458,64 @@ function updateRoofCutaway() {
         const building = worldData?.buildings?.find(b =>
             b.name === poi.name || b.poiId === poi.id);
 
-        const g = new PIXI.Graphics();
         const isCutaway = cutawayBaseId && (poi.id === cutawayBaseId || poi.name === cutawayBaseId);
 
         if (building && isCutaway) {
-            g.lineStyle(2, 0x88ccff, 0.95);
-            g.beginFill(0x1a2530, 0.25);
-            g.drawRect(
-                building.centerX - building.width * 0.5,
-                building.centerZ - building.depth * 0.5,
+            _roofGfx.lineStyle(2, 0x88ccff, 0.95);
+            _roofGfx.beginFill(0x1a2530, 0.25);
+            _roofGfx.drawRect(
+                x + (building.centerX - poi.x) - building.width * 0.5,
+                y + (building.centerZ - poi.y) - building.depth * 0.5,
                 building.width,
                 building.depth
             );
-            g.endFill();
+            _roofGfx.endFill();
         } else if (isCutaway) {
-            g.lineStyle(2, 0xffa500, 0.9);
-            g.beginFill(0xffa500, 0.08);
-            g.drawCircle(0, 0, 18);
-            g.endFill();
+            _roofGfx.lineStyle(2, 0xffa500, 0.9);
+            _roofGfx.beginFill(0xffa500, 0.08);
+            _roofGfx.drawCircle(x, y, 18);
+            _roofGfx.endFill();
         } else {
-            g.lineStyle(1, 0x000000, 0.4);
-            g.beginFill(0xffa500, 0.0);
-            g.drawCircle(0, 0, 5);
-            g.endFill();
+            _roofGfx.lineStyle(1, 0x000000, 0.4);
+            _roofGfx.beginFill(0xffa500, 0.0);
+            _roofGfx.drawCircle(x, y, 5);
+            _roofGfx.endFill();
         }
-        g.position.set(x, y);
-        roofContainer.addChild(g);
 
-        if (isCutaway || !building) {
-            const lbl = new PIXI.Text(poi.name, {
-                fontFamily: 'monospace',
+        if (viewport.scale.x > 0.4) {
+            const lbl = new PIXI.Text(poi.name.toUpperCase(), {
+                fontFamily: 'Share Tech Mono',
                 fontSize: 9,
                 fill: 0xffffff,
                 alpha: isCutaway ? 1.0 : 0.75,
             });
             lbl.position.set(x + 9, y - 4);
             roofContainer.addChild(lbl);
+            _roofLabels.push(lbl);
         }
     });
 }
 
+
 // ─── Anomaly Fields ───────────────────────────────────────────────────────────
+let _anomalyGfx = null;
 function drawAnomalyFields(fields) {
-    anomalyContainer.removeChildren();
+    if (!_anomalyGfx) { _anomalyGfx = new PIXI.Graphics(); anomalyContainer.addChild(_anomalyGfx); }
+    _anomalyGfx.clear();
     fields.forEach(f => {
-        const g = new PIXI.Graphics();
         const x = wX(f.center.x), y = wY(f.center.z ?? f.center.y);
         const r = (f.radius ?? 40) * (1600 / (worldData?.width ?? 1600));
 
         const colorMap = { Electro: 0xfbbf24, Fire: 0xef4444, Chemical: 0x22c55e, Psi: 0x8b5cf6, Gravitational: 0x06b6d4 };
         const color = colorMap[f.type] ?? 0xff6600;
 
-        g.lineStyle(1.5, color, 0.7);
-        g.beginFill(color, 0.12);
-        g.drawCircle(0, 0, r);
-        g.endFill();
-        g.position.set(x, y);
-        anomalyContainer.addChild(g);
+        _anomalyGfx.lineStyle(1.5, color, 0.7);
+        _anomalyGfx.beginFill(color, 0.12);
+        _anomalyGfx.drawCircle(x, y, r);
+        _anomalyGfx.endFill();
     });
 }
+
 
 // ─── Radiation Zones ──────────────────────────────────────────────────────────
 function drawRadZones() {
@@ -644,8 +649,10 @@ function missionTypeLabel(type) {
     return { ScoutPoi: 'Scout', RetrieveStash: 'Retrieve', EscortConvoy: 'Escort' }[type] ?? type ?? 'Job';
 }
 
+let _squadGfx = null;
 function updateSquadLinks(frameEntities) {
-    squadContainer.removeChildren();
+    if (!_squadGfx) { _squadGfx = new PIXI.Graphics(); squadContainer.addChild(_squadGfx); }
+    _squadGfx.clear();
     const zoom = viewport.scale.x;
     if (zoom < LOD_ICON) return;
 
@@ -666,26 +673,25 @@ function updateSquadLinks(frameEntities) {
         squad.members.forEach(member => {
             const mx = wX(member.position.x);
             const my = wY(member.position.y);
-            const line = new PIXI.Graphics();
-            line.lineStyle(1, color, 0.4);
-            line.moveTo(lx, ly);
-            line.lineTo(mx, my);
+            _squadGfx.lineStyle(1, color, 0.4);
+            _squadGfx.moveTo(lx, ly);
+            _squadGfx.lineTo(mx, my);
             
-            // Draw a subtle arrowhead indicating connection direction (to member)
             const angle = Math.atan2(my - ly, mx - lx);
             const arrowLen = zoom >= LOD_SPRITE ? 5 : 3;
-            line.moveTo(mx, my);
-            line.lineTo(mx - arrowLen * Math.cos(angle - Math.PI / 6), my - arrowLen * Math.sin(angle - Math.PI / 6));
-            line.moveTo(mx, my);
-            line.lineTo(mx - arrowLen * Math.cos(angle + Math.PI / 6), my - arrowLen * Math.sin(angle + Math.PI / 6));
-
-            squadContainer.addChild(line);
+            _squadGfx.moveTo(mx, my);
+            _squadGfx.lineTo(mx - arrowLen * Math.cos(angle - 0.5), my - arrowLen * Math.sin(angle - 0.5));
+            _squadGfx.moveTo(mx, my);
+            _squadGfx.lineTo(mx - arrowLen * Math.cos(angle + 0.5), my - arrowLen * Math.sin(angle + 0.5));
         });
     });
 }
 
+
+let _missionGfx = null;
 function updateMissionOverlays(frameEntities) {
-    missionContainer.removeChildren();
+    if (!_missionGfx) { _missionGfx = new PIXI.Graphics(); missionContainer.addChild(_missionGfx); }
+    _missionGfx.clear();
     const zoom = viewport.scale.x;
     if (zoom < LOD_ICON) return;
 
@@ -701,20 +707,17 @@ function updateMissionOverlays(frameEntities) {
         const y2 = wY(dest.y);
         const lineColor = returning ? 0x34d399 : 0xfbbf24;
 
-        const line = new PIXI.Graphics();
-        line.lineStyle(1, lineColor, returning ? 0.55 : 0.45);
-        line.moveTo(x1, y1);
-        line.lineTo(x2, y2);
-        missionContainer.addChild(line);
+        _missionGfx.lineStyle(1, lineColor, returning ? 0.55 : 0.45);
+        _missionGfx.moveTo(x1, y1);
+        _missionGfx.lineTo(x2, y2);
 
-        const marker = new PIXI.Graphics();
-        marker.lineStyle(1.5, lineColor, 0.85);
-        marker.beginFill(lineColor, returning ? 0.35 : 0.25);
-        marker.drawCircle(x2, y2, zoom >= LOD_SPRITE ? 6 : 4);
-        marker.endFill();
-        missionContainer.addChild(marker);
+        _missionGfx.lineStyle(0);
+        _missionGfx.beginFill(lineColor, returning ? 0.8 : 0.65);
+        _missionGfx.drawCircle(x2, y2, 2.5);
+        _missionGfx.endFill();
     });
 }
+
 
 function updateFollowCamera() {
     if (!followEntityId) return;
@@ -755,8 +758,8 @@ function updateEntities(frame) {
     const alive = new Set(entities.map(e => e.id));
     entityPool.forEach((obj, id) => {
         if (!alive.has(id)) {
-            entityContainer.removeChild(obj.root);
-            labelContainer.removeChild(obj.label);
+            obj.root.destroy({children: true});
+            if (obj.label) obj.label.destroy();
             entityPool.delete(id);
         }
     });
