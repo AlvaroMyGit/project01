@@ -1,0 +1,13 @@
+# Build output
+bin/
+obj/
+
+# Runtime logs
+logs/
+
+# User-specific / IDE
+*.user
+*.suo
+.vs/
+.idea/
+.vscode/
