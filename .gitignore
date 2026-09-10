@@ -5,6 +5,9 @@ obj/
 # Runtime logs
 logs/
 
+# Simulation-generated output (rewritten every tick)
+data/leaderboard.json
+
 # User-specific / IDE
 *.user
 *.suo
