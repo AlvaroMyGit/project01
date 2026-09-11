@@ -94,7 +94,7 @@ public sealed class SimulationHost
         var mutants = new List<Mutant>();
         var entityLock = new object();
         var corpses = new CorpseRegistry();
-        CorpseCleanupService.ConfigureFromEnvironment();
+        CorpseCleanupService.Configure(CorpseCleanupOptions.FromEnvironment());
         var macroPois = Stamper.Stamps.Where(s => s.Type == POIType.MacroBase).ToList();
 
         // ── Anomaly / Emission System Setup ────────────────────────────────

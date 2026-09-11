@@ -2,32 +2,33 @@ using StalkerALifeSandbox.Entities.Characters;
 
 namespace StalkerALifeSandbox.Systems;
 
-/// <summary>Despawn rules for stalker and mutant corpses.</summary>
+/// <summary>
+/// Despawn rules for stalker and mutant corpses. Thresholds come from an
+/// immutable <see cref="CorpseCleanupOptions"/> supplied once by the composition
+/// root via <see cref="Configure"/>; the per-threshold getters are read-only, so
+/// configuration can no longer be mutated arbitrarily at runtime.
+/// </summary>
 public static class CorpseCleanupService
 {
+    private static CorpseCleanupOptions _options = new();
+
+    /// <summary>Installs the despawn thresholds. Call once at startup.</summary>
+    public static void Configure(CorpseCleanupOptions options) => _options = options;
+
     /// <summary>Untouched stalker body (game seconds).</summary>
-    public static float StalkerIdleDespawnSec { get; set; } = 2700f;
+    public static float StalkerIdleDespawnSec => _options.StalkerIdleDespawnSec;
 
     /// <summary>Stalker body after loot/report (game seconds).</summary>
-    public static float StalkerInteractedDespawnSec { get; set; } = 720f;
+    public static float StalkerInteractedDespawnSec => _options.StalkerInteractedDespawnSec;
 
     /// <summary>Eaten stalker remains (game seconds).</summary>
-    public static float StalkerEatenDespawnSec { get; set; } = 300f;
+    public static float StalkerEatenDespawnSec => _options.StalkerEatenDespawnSec;
 
     /// <summary>Untouched mutant carcass (game seconds).</summary>
-    public static float MutantIdleDespawnSec { get; set; } = 1500f;
+    public static float MutantIdleDespawnSec => _options.MutantIdleDespawnSec;
 
     /// <summary>Mutant carcass after something happened nearby (game seconds).</summary>
-    public static float MutantInteractedDespawnSec { get; set; } = 480f;
-
-    public static void ConfigureFromEnvironment()
-    {
-        if (TryEnv("STALKER_CORPSE_STALKER_IDLE_SEC", out float v)) StalkerIdleDespawnSec = v;
-        if (TryEnv("STALKER_CORPSE_STALKER_INTERACT_SEC", out v)) StalkerInteractedDespawnSec = v;
-        if (TryEnv("STALKER_CORPSE_EATEN_SEC", out v)) StalkerEatenDespawnSec = v;
-        if (TryEnv("STALKER_CORPSE_MUTANT_IDLE_SEC", out v)) MutantIdleDespawnSec = v;
-        if (TryEnv("STALKER_CORPSE_MUTANT_INTERACT_SEC", out v)) MutantInteractedDespawnSec = v;
-    }
+    public static float MutantInteractedDespawnSec => _options.MutantInteractedDespawnSec;
 
     public static void MarkInteraction(Corpse corpse, float gameTime) =>
         corpse.LastInteractionGameTime = gameTime;
@@ -56,11 +57,4 @@ public static class CorpseCleanupService
         corpse.IsReported ||
         corpse.Loot?.IsLooted == true ||
         corpse.LastInteractionGameTime > corpse.SpawnGameTime + 0.01f;
-
-    private static bool TryEnv(string name, out float value)
-    {
-        value = 0f;
-        string? raw = Environment.GetEnvironmentVariable(name);
-        return raw != null && float.TryParse(raw, out value) && value > 0f;
-    }
 }
