@@ -45,7 +45,7 @@ This document provides a detailed reference for every module, class, and data fi
 - [data/ — JSON Data Tables](#data--json-data-tables)
 - [scripts/ — Python Utilities](#scripts--python-utilities)
 - [tests/ — Test Suite](#tests--test-suite)
-- [Root Utility Scripts](#root-utility-scripts)
+- [scripts/ — Maintenance Utilities](#scripts--maintenance-utilities)
 
 ---
 
