@@ -8,6 +8,12 @@ logs/
 # Simulation-generated output (rewritten every tick)
 data/leaderboard.json
 
+# Test / coverage output
+TestResults/
+*.cobertura.xml
+coverage*.json
+*.trx
+
 # User-specific / IDE
 *.user
 *.suo
