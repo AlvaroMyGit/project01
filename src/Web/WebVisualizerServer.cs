@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
@@ -9,21 +8,18 @@ using System.Threading.Tasks;
 
 namespace StalkerALifeSandbox.Web
 {
+    /// <summary>
+    /// Tracks connected WebSocket clients and broadcasts telemetry frames to them.
+    /// The socket itself is accepted by ASP.NET Core's WebSocket middleware (see
+    /// <see cref="WebApiEndpoints"/>'s <c>/ws</c> mapping) — this class no longer
+    /// owns a listener or a port; it is a passive hub handed already-accepted
+    /// <see cref="WebSocket"/> instances via <see cref="HandleConnectionAsync"/>.
+    /// </summary>
     public class WebVisualizerServer : IDisposable
     {
-        private readonly HttpListener _listener;
         private readonly ConcurrentDictionary<Guid, WebSocket> _clients = new();
-        private readonly int _port;
         private Func<string, InspectorDTO?>? _inspectHandler;
         private Action<string, JsonElement>? _commandHandler;
-
-        public WebVisualizerServer(int port = 8080)
-        {
-            _port = port;
-            _listener = new HttpListener();
-            _listener.Prefixes.Add($"http://localhost:{_port}/");
-            _listener.Prefixes.Add($"http://127.0.0.1:{_port}/");
-        }
 
         public void SetInspectHandler(Func<string, InspectorDTO?> handler) =>
             _inspectHandler = handler;
@@ -31,73 +27,18 @@ namespace StalkerALifeSandbox.Web
         public void SetCommandHandler(Action<string, JsonElement> handler) =>
             _commandHandler = handler;
 
-        public void Start()
+        /// <summary>
+        /// Registers an already-accepted WebSocket connection and services it
+        /// until the client disconnects. Awaited directly by the Kestrel request
+        /// delegate that accepted the upgrade, per the standard ASP.NET Core
+        /// WebSocket pattern.
+        /// </summary>
+        public async Task HandleConnectionAsync(WebSocket socket)
         {
-            _listener.Start();
-            Console.WriteLine($"[WebVisualizerServer] WebSocket server started on ws://localhost:{_port}/");
-            Task.Run(AcceptConnectionsAsync);
-        }
+            var clientId = Guid.NewGuid();
+            _clients.TryAdd(clientId, socket);
+            Console.WriteLine($"[WebVisualizerServer] Client {clientId} connected.");
 
-        /// <summary>Stops accepting connections, aborts open sockets, and releases the listener.</summary>
-        public void Stop()
-        {
-            try
-            {
-                if (_listener.IsListening)
-                    _listener.Stop();
-                _listener.Close();
-            }
-            catch
-            {
-                // Already stopped/closed — nothing to do.
-            }
-
-            foreach (var socket in _clients.Values)
-            {
-                try { socket.Abort(); } catch { /* client already gone */ }
-            }
-            _clients.Clear();
-        }
-
-        /// <summary>Stops the listener and aborts open sockets. Equivalent to <see cref="Stop"/>; safe to call more than once.</summary>
-        public void Dispose() => Stop();
-
-        private async Task AcceptConnectionsAsync()
-        {
-            while (_listener.IsListening)
-            {
-                try
-                {
-                    var context = await _listener.GetContextAsync();
-                    if (context.Request.IsWebSocketRequest)
-                    {
-                        var wsContext = await context.AcceptWebSocketAsync(null);
-                        var clientId = Guid.NewGuid();
-                        _clients.TryAdd(clientId, wsContext.WebSocket);
-                        Console.WriteLine($"[WebVisualizerServer] Client {clientId} connected.");
-                        
-                        _ = Task.Run(() => HandleClientAsync(clientId, wsContext.WebSocket));
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 400;
-                        context.Response.Close();
-                    }
-                }
-                catch (Exception ex) when (ex is ObjectDisposedException or HttpListenerException && !_listener.IsListening)
-                {
-                    // Expected during Stop() — the listener was disposed/closed.
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[WebVisualizerServer] Accept error: {ex.Message}");
-                }
-            }
-        }
-
-        private async Task HandleClientAsync(Guid clientId, WebSocket socket)
-        {
             var buffer = new byte[4096];
             var messageBuffer = new StringBuilder();
             try
@@ -133,6 +74,19 @@ namespace StalkerALifeSandbox.Web
                 Console.WriteLine($"[WebVisualizerServer] Client {clientId} disconnected.");
             }
         }
+
+        /// <summary>Aborts all tracked client connections. Safe to call more than once.</summary>
+        public void Stop()
+        {
+            foreach (var socket in _clients.Values)
+            {
+                try { socket.Abort(); } catch { /* client already gone */ }
+            }
+            _clients.Clear();
+        }
+
+        /// <summary>Aborts all tracked client connections. Equivalent to <see cref="Stop"/>.</summary>
+        public void Dispose() => Stop();
 
         private async Task TryHandleClientMessageAsync(WebSocket socket, string text)
         {
@@ -203,7 +157,7 @@ namespace StalkerALifeSandbox.Web
                     }
                     catch
                     {
-                        // Ignore send errors, client disconnect will be handled in HandleClientAsync
+                        // Ignore send errors, client disconnect will be handled in HandleConnectionAsync
                     }
                 }
             }

@@ -29,6 +29,11 @@ public class Program
         var app = builder.Build();
         app.UseCors();
 
+        // Enables the "/ws" WebSocket telemetry endpoint mapped in
+        // WebApiEndpoints.MapSimulationApi. Must run before that mapping so the
+        // upgrade request reaches AcceptWebSocketAsync.
+        app.UseWebSockets();
+
         // Serve static files from the visualizer directory (app.js, icons, etc.).
         var staticPath = Path.Combine(Directory.GetCurrentDirectory(), "visualizer");
         if (Directory.Exists(staticPath))

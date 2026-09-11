@@ -65,8 +65,8 @@ A fully autonomous open-world life simulation inspired by the A-Life system from
 |---|---|
 | **Engine** | C# / .NET 8 |
 | **Serialization** | System.Text.Json |
-| **Web Server** | ASP.NET Core (port 5050) |
-| **WebSocket** | System.Net.WebSockets (port 8080) |
+| **Web Server** | ASP.NET Core (port 5050) — serves the REST API, dashboard, and WebSocket telemetry |
+| **WebSocket** | ASP.NET Core WebSocket middleware, `/ws` route (same host/port as above) |
 | **Visualizer** | HTML5 / PixiJS v7 / pixi-viewport |
 | **Data Format** | JSON |
 | **Asset Tooling** | Python (Pillow, rembg) |
@@ -94,12 +94,13 @@ dotnet build
 dotnet run
 ```
 
-The simulation will start and output diagnostic logs to the console. Two servers launch automatically:
+The simulation will start and output diagnostic logs to the console. One ASP.NET Core host serves everything:
 
 | Service | URL | Purpose |
 |---|---|---|
 | **Visualizer** | `http://localhost:5050` | Browser-based dashboard |
-| **WebSocket** | `ws://localhost:8080` | Real-time telemetry stream |
+| **REST API** | `http://localhost:5050/api/*` | World, state, leaderboard, faction data |
+| **WebSocket** | `ws://localhost:5050/ws` | Real-time telemetry stream |
 
 Open `http://localhost:5050` in your browser to watch the Zone come alive.
 
@@ -135,7 +136,7 @@ StalkerALifeSandbox/
 │   ├── Crafting/                 # Field crafting, mutant cooking (partially wired)
 │   ├── PDA/                      # Communication network, chatter templates
 │   ├── UI/                       # Server-side UI renderers
-│   └── Web/                      # WebSocket server, telemetry DTOs, inspector
+│   └── Web/                      # REST endpoints, WebSocket hub, telemetry DTOs, inspector
 ├── data/                         # JSON data tables (regions, factions, items, etc.)
 ├── visualizer/                   # Browser dashboard (HTML + PixiJS)
 ├── scripts/                      # Python asset & data generation utilities

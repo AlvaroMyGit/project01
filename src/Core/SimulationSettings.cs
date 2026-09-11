@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace StalkerALifeSandbox.Core;
 
 /// <summary>
-/// Central host configuration — ports, population targets, and allowed CORS
+/// Central host configuration — port, population targets, and allowed CORS
 /// origins — replacing values that were previously hard-coded in several places.
-/// Ports can be overridden via environment variables for local runs.
+/// The port can be overridden via an environment variable for local runs.
 /// </summary>
 public sealed record SimulationSettings
 {
-    /// <summary>WebSocket telemetry server port.</summary>
-    public int WebSocketPort { get; init; } = 8080;
-
-    /// <summary>REST API / dashboard port.</summary>
+    /// <summary>
+    /// REST API, dashboard, and WebSocket telemetry (/ws) port. One Kestrel host
+    /// serves all three — see WebApiEndpoints.MapSimulationApi.
+    /// </summary>
     public int RestPort { get; init; } = 5050;
 
     public int StalkerTarget { get; init; } = 1500;
@@ -34,7 +34,6 @@ public sealed record SimulationSettings
         var defaults = new SimulationSettings();
         return defaults with
         {
-            WebSocketPort = EnvInt("STALKER_WS_PORT", defaults.WebSocketPort),
             RestPort = EnvInt("STALKER_REST_PORT", defaults.RestPort)
         };
     }

@@ -12,9 +12,10 @@ using StalkerALifeSandbox.Systems;
 namespace StalkerALifeSandbox.Web;
 
 /// <summary>
-/// Maps the visualizer's read-only REST API onto a <see cref="WebApplication"/>.
-/// Every endpoint reads either static world data or the simulation's immutable
-/// snapshot — never live entities — so requests never race the tick loop.
+/// Maps the visualizer's read-only REST API, plus the live telemetry WebSocket,
+/// onto a single <see cref="WebApplication"/>. Every REST endpoint reads either
+/// static world data or the simulation's immutable snapshot — never live
+/// entities — so requests never race the tick loop.
 /// </summary>
 public static class WebApiEndpoints
 {
@@ -24,7 +25,29 @@ public static class WebApiEndpoints
         MapState(app, host);
         MapLeaderboard(app, host);
         MapFactions(app, host);
+        MapWebSocket(app, host);
         MapIndex(app);
+    }
+
+    /// <summary>
+    /// Live telemetry stream, replacing the previous standalone HttpListener
+    /// WebSocket server on its own port. Accepts the upgrade here and hands the
+    /// socket to the WebVisualizerServer hub, which owns the connection for its
+    /// lifetime (broadcasting frames, handling inspect/command messages).
+    /// </summary>
+    private static void MapWebSocket(WebApplication app, SimulationHost host)
+    {
+        app.Map("/ws", async context =>
+        {
+            if (!context.WebSockets.IsWebSocketRequest)
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
+            using var socket = await context.WebSockets.AcceptWebSocketAsync();
+            await host.WebVisualizer.HandleConnectionAsync(socket);
+        });
     }
 
     private static void MapWorld(WebApplication app, SimulationHost host)

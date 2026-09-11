@@ -57,8 +57,11 @@ public sealed class SimulationHost
         var mutantEcology = new MutantEcologyManager();
         var pdaNetwork = new PDANetwork();
 
-        WebVisualizer = new WebVisualizerServer(_settings.WebSocketPort);
-        WebVisualizer.Start();
+        // Hub only — no listener/port of its own. ASP.NET Core (Kestrel) accepts the
+        // actual WebSocket upgrade on the "/ws" route and hands it to this hub; see
+        // WebApiEndpoints.MapSimulationApi. This keeps the whole app on one HTTP
+        // stack/port instead of a second hand-rolled HttpListener server.
+        WebVisualizer = new WebVisualizerServer();
 
         // 2. Generate the Zone World & POIs
         WorldGen = new StaticWorldGenerator(seed: 42) { Width = 1600, Height = 3200 };

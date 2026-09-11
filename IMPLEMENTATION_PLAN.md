@@ -11,7 +11,7 @@
 * **Project Name:** StalkerALifeSandbox
 * **Language/Framework:** C# (.NET 8) Core Engine
 * **Visualizer Frontend:** HTML5 / WebGL 2D Engine (**PixiJS v7** + `pixi-viewport`)
-* **Network Protocol:** WebSocket server (`System.Net.WebSockets` on port 8080) + REST API (port 5050)
+* **Network Protocol:** Single ASP.NET Core host on port 5050 — REST API + `/ws` WebSocket telemetry (consolidated from a separate `System.Net.WebSockets`/`HttpListener` server on port 8080)
 * **Architecture:** Modular, event-driven, data-oriented components — **subsystem library is broad; live sim uses a subset**
 * **Current simulation scale:** ~1500 stalkers (12 factions), ~1000 mutants (5 species spawned at runtime), 28 surface + 8 underground regions
 * **Target scale (design doc):** ~750 stalkers, ~500 mutants, 17 species, 35 surface maps

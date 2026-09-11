@@ -2,7 +2,9 @@
 // Phase 10: pixel sprites, paperdoll, corpses, roof cutaway, on-demand inspect.
 
 // ─── Constants ──────────────────────────────────────────────────────────────
-const WS_URL    = 'ws://localhost:8080/';
+// Both served from the same Kestrel host/port (5050) — the WebSocket telemetry
+// stream lives at the "/ws" route rather than its own separate port/server.
+const WS_URL    = 'ws://localhost:5050/ws';
 const API_WORLD = 'http://localhost:5050/api/world';
 
 const FACTION_COLORS = {
