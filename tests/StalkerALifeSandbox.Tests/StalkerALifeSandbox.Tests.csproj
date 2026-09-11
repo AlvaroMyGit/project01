@@ -7,6 +7,13 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+
+    <!-- Built-in .NET analyzers, pinned explicitly — see StalkerALifeSandbox.csproj
+         for the full evaluation. AnalysisMode=Recommended here also adds 214x CA1707
+         ("remove underscores from member names"), which fights xUnit's idiomatic
+         Method_Scenario_Expected test naming — another reason Default is kept. -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>

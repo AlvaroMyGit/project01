@@ -31,7 +31,7 @@ namespace StalkerALifeSandbox.Core;
 /// publishes an immutable <see cref="SimulationSnapshot"/> once per 1 Hz tick and
 /// web threads read it lock-free via <see cref="CurrentSnapshot"/>.
 /// </summary>
-public sealed class SimulationLoop
+public sealed class SimulationLoop : IDisposable
 {
     private readonly ZoneDirector _director;
     private readonly SimulationContext _ctx;
@@ -175,6 +175,9 @@ public sealed class SimulationLoop
         _driver?.Dispose();
         _driver = null;
     }
+
+    /// <summary>Disposes the tick timer. Equivalent to <see cref="Stop"/>; safe to call more than once.</summary>
+    public void Dispose() => Stop();
 
     public void AssignInitialDestination(Stalker stalker) =>
         _goap.RequestReplan(stalker);

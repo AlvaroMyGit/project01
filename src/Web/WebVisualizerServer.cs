@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StalkerALifeSandbox.Web
 {
-    public class WebVisualizerServer
+    public class WebVisualizerServer : IDisposable
     {
         private readonly HttpListener _listener;
         private readonly ConcurrentDictionary<Guid, WebSocket> _clients = new();
@@ -58,6 +58,9 @@ namespace StalkerALifeSandbox.Web
             }
             _clients.Clear();
         }
+
+        /// <summary>Stops the listener and aborts open sockets. Equivalent to <see cref="Stop"/>; safe to call more than once.</summary>
+        public void Dispose() => Stop();
 
         private async Task AcceptConnectionsAsync()
         {

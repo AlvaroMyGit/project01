@@ -7,6 +7,26 @@
     <Nullable>enable</Nullable>
     <RootNamespace>StalkerALifeSandbox</RootNamespace>
     <DefaultItemExcludes>$(DefaultItemExcludes);tests\**</DefaultItemExcludes>
+
+    <!-- Built-in .NET analyzers (CAxxxx). Pinned explicitly rather than relying on
+         the SDK's undocumented default so a future SDK upgrade can't silently change
+         what runs. AnalysisMode is intentionally left at "Default" (its current
+         implicit value) rather than "Recommended" or "All":
+           - Default:     0 new warnings today (verified).
+           - Recommended: +220 warnings, ~70% of which are CA1305 (culture-specific
+             formatting) — a real concern for library code shipped to locales with
+             different number formats, but low value for this single-locale sandbox
+             app, and a large, invasive diff to fix across the codebase.
+           - All:         +1354 warnings, including 324x CA5394 flagging Random.Shared
+             as "insecure randomness" — a false positive here (this is spawn/loot RNG,
+             not cryptography) — plus large batches of public-API design rules (CA1002,
+             CA1815, CA2227, CA1819) meant for NuGet library authors, not an internal
+             app. Not worth adopting wholesale.
+         The one genuine finding from that evaluation (CA1001: SimulationLoop and
+         WebVisualizerServer owned disposable fields without implementing IDisposable)
+         was fixed directly — both now implement IDisposable. -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
 
   <ItemGroup>
