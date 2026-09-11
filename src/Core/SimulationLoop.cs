@@ -65,61 +65,38 @@ public sealed class SimulationLoop
     /// </summary>
     public SimulationSnapshot CurrentSnapshot => Volatile.Read(ref _snapshot);
 
-    public SimulationLoop(
-        ZoneDirector director,
-        TimeManager time,
-        EnvironmentManager environment,
-        WeatherManager weather,
-        FactionMatrix factionMatrix,
-        MutantEcologyManager mutantEcology,
-        PDANetwork pdaNetwork,
-        WebVisualizerServer webVisualizer,
-        StaticWorldGenerator worldGen,
-        POIPrefabStamper stamper,
-        ZonePathfinder pathfinder,
-        EmissionSystem emissionSystem,
-        ScientistForecaster scientistForecaster,
-        List<Stalker> stalkers,
-        List<Mutant> mutants,
-        object entityLock,
-        CorpseRegistry corpses,
-        List<WorldPOIBase> macroPois,
-        List<WorldPOIBase> wildPoiCandidates,
-        MarketPrices market,
-        TraderRegistry traders,
-        MissionRegistry missions,
-        ConvoyManager convoys)
+    public SimulationLoop(SimulationDependencies deps)
     {
-        _director = director;
-        _webVisualizer = webVisualizer;
-        _weather = weather;
-        
+        _director = deps.Director;
+        _webVisualizer = deps.WebVisualizer;
+        _weather = deps.Weather;
+
         _goap = new StalkerGoapService(
-            worldGen, stamper, pathfinder, emissionSystem, time, corpses,
-            traders, missions, pdaNetwork, stalkers);
-            
+            deps.WorldGen, deps.Stamper, deps.Pathfinder, deps.Emissions, deps.Time, deps.Corpses,
+            deps.Traders, deps.Missions, deps.Pda, deps.Stalkers);
+
         _ctx = new SimulationContext(
-            stalkers, mutants, entityLock, corpses, time, factionMatrix,
-            worldGen, stamper, pathfinder, emissionSystem, pdaNetwork, traders, missions,
-            macroPois, wildPoiCandidates, s => _goap.RequestReplan(s)
+            deps.Stalkers, deps.Mutants, deps.EntityLock, deps.Corpses, deps.Time, deps.Factions,
+            deps.WorldGen, deps.Stamper, deps.Pathfinder, deps.Emissions, deps.Pda, deps.Traders, deps.Missions,
+            deps.MacroPois, deps.WildPoiCandidates, s => _goap.RequestReplan(s)
         );
-            
-        _spawnOrchestrator = new SpawnOrchestrator(mutantEcology, s => _goap.RequestReplan(s));
-            
+
+        _spawnOrchestrator = new SpawnOrchestrator(deps.MutantEcology, s => _goap.RequestReplan(s));
+
         _systems10Hz = new ISimulationSystem[]
         {
             new EmissionTickSystem(),
             new StalkerBehaviourSystem(_goap),
-            new MutantBehaviourSystem(mutantEcology, environment, weather),
-            new TelemetrySystem(webVisualizer)
+            new MutantBehaviourSystem(deps.MutantEcology, deps.Environment, deps.Weather),
+            new TelemetrySystem(deps.WebVisualizer)
         };
-        
+
         _systems1Hz = new ISimulationSystem[]
         {
-            new SocialSystem(factionMatrix, environment),
+            new SocialSystem(deps.Factions, deps.Environment),
             _spawnOrchestrator
         };
-        
+
         _systems0_1Hz = new ISimulationSystem[]
         {
             new CorpseCleanupSystem(),

@@ -1,0 +1,255 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Threading.Tasks;
+using StalkerALifeSandbox.Economy;
+using StalkerALifeSandbox.Entities.Characters;
+using StalkerALifeSandbox.Entities.Equipment;
+using StalkerALifeSandbox.Entities.Mutants;
+using StalkerALifeSandbox.Factions;
+using StalkerALifeSandbox.PDA;
+using StalkerALifeSandbox.Systems;
+using StalkerALifeSandbox.Web;
+using StalkerALifeSandbox.World.Environment;
+using StalkerALifeSandbox.World.Generation;
+using StalkerALifeSandbox.World.Hazards;
+using StalkerALifeSandbox.World.Navigation;
+
+namespace StalkerALifeSandbox.Core;
+
+/// <summary>
+/// Composition root for the simulation. Loads data, generates the world and
+/// entities, wires the <see cref="SimulationLoop"/>, and starts it. Exposes the
+/// pieces the web layer needs to read. Keeps <c>Program.Main</c> a thin shell
+/// around "build host, host the web API".
+/// </summary>
+public sealed class SimulationHost
+{
+    private const int TargetStalkerPop = 1500;
+    private const int TargetMutantPop = 1000;
+
+    public SimulationLoop Simulation { get; }
+    public WebVisualizerServer WebVisualizer { get; }
+    public StaticWorldGenerator WorldGen { get; }
+    public POIPrefabStamper Stamper { get; }
+    public RoadNetwork RoadNetwork { get; }
+    public IReadOnlyList<BuildingFootprint> BuildingFootprints { get; }
+    public EmissionSystem Emissions { get; }
+    public FactionMatrix Factions { get; }
+
+    public float[] ThreatMap { get; }
+    public int ThreatW { get; }
+    public int ThreatH { get; }
+
+    public SimulationHost()
+    {
+        // 1. Initialize data-driven systems
+        NameGenerator.EnsureLoaded();
+        DemographicsEngine.EnsureLoaded();
+        PDANetwork.EnsureSlangLoaded();
+        PDANetwork.EnsureTemplatesLoaded();
+        FactionSpawnTable.EnsureLoaded();
+        ItemDatabase.EnsureLoaded();
+
+        Factions = new FactionMatrix();
+        var mutantEcology = new MutantEcologyManager();
+        var pdaNetwork = new PDANetwork();
+
+        WebVisualizer = new WebVisualizerServer(8080);
+        WebVisualizer.Start();
+
+        // 2. Generate the Zone World & POIs
+        WorldGen = new StaticWorldGenerator(seed: 42) { Width = 1600, Height = 3200 };
+        pdaNetwork.BindWorld(WorldGen);
+        KillTracker.MapHeight = WorldGen.Height;
+        Stamper = new POIPrefabStamper(WorldGen, seed: 42);
+        Stamper.Generate(microPerMacro: 3);
+
+        RoadNetwork = new RoadNetwork();
+        RoadNetwork.Build(WorldGen, seed: 42);
+
+        var pathfinder = new ZonePathfinder(WorldGen, resolution: 40);
+        pathfinder.RegisterRoads(RoadNetwork.Segments);
+        pathfinder.RegisterPortals(Stamper.Hatches);
+        BuildingFootprints = BuildingFootprintLoader.LoadOrGenerate(Stamper.Stamps, WorldGen, seed: 42);
+        pathfinder.RegisterFootprints(BuildingFootprints);
+        Console.WriteLine($"[World] {BuildingFootprints.Count} building footprints registered (pathfinding blockers + interiors)");
+
+        // Pre-compute threat map array for the client (scaled down for bandwidth)
+        ThreatW = 100;
+        ThreatH = 200;
+        ThreatMap = new float[ThreatW * ThreatH];
+        for (int y = 0; y < ThreatH; y++)
+        {
+            for (int x = 0; x < ThreatW; x++)
+            {
+                // Y=0 is north (top of map), Y=1 is south — matches map_regions.json convention
+                ThreatMap[y * ThreatW + x] = WorldGen.GetThreatLevel((float)x / ThreatW, (float)y / ThreatH);
+            }
+        }
+
+        // 3. Generate Entities
+        var stalkers = new List<Stalker>();
+        var mutants = new List<Mutant>();
+        var entityLock = new object();
+        var corpses = new CorpseRegistry();
+        CorpseCleanupService.ConfigureFromEnvironment();
+        var macroPois = Stamper.Stamps.Where(s => s.Type == POIType.MacroBase).ToList();
+
+        // ── Anomaly / Emission System Setup ────────────────────────────────
+        Emissions = new EmissionSystem();
+        AnomalySeeder.SeedStaticFields(Emissions, WorldGen);
+        AnomalySeeder.SeedRadiationZones(Emissions, WorldGen);
+        Emissions.SetWorldContext(WorldGen, Stamper.Stamps);
+
+        // ScientistForecaster wires itself to emission events in its constructor.
+        _ = new ScientistForecaster(Emissions, pdaNetwork);
+
+        foreach (var poi in macroPois)
+        {
+            string primaryFaction = FactionSpawnTable.GetPrimaryFaction(poi.RegionId);
+            if (string.IsNullOrEmpty(primaryFaction) || primaryFaction == "Mutants")
+                primaryFaction = "Loner";
+
+            string leaderName = poi.Name switch
+            {
+                "Cordon" => "Sidorovich",
+                "Rostok" => "Barkeep",
+                "Army Warehouses" => "Lukash",
+                "Great Swamps" => "Cold",
+                "Yantar" => "Professor Sakharov",
+                "Dead City" => "Dushman",
+                "Zaton" => "Beard",
+                "Jupiter" => "Hawaiian",
+                _ => ""
+            };
+
+            if (!string.IsNullOrEmpty(leaderName))
+            {
+                var leader = new Stalker(Guid.NewGuid().ToString()[..8], leaderName, primaryFaction)
+                {
+                    Position = poi.Position,
+                    CurrentLevelId = poi.RegionId
+                };
+                ItemDatabase.ApplySpawnLoadout(leader, isLeader: true);
+                StalkerSpawnHelper.ConfigureFreshSpawn(leader, StalkerRank.Veteran);
+                stalkers.Add(leader);
+            }
+        }
+
+        int stalkerInboundBudget = Math.Max(0, TargetStalkerPop - stalkers.Count);
+
+        // Place starter demo corpses in the wilderness and at a couple POIs
+        for (int cc = 0; cc < 7; cc++)
+        {
+            float nx = (float)Random.Shared.NextDouble();
+            float ny = (float)Random.Shared.NextDouble();
+            corpses.Add(new Corpse
+            {
+                CorpseId = $"corpse_{cc}",
+                VictimName = $"Stalker {cc}",
+                VictimFaction = "Loner",
+                Position = new Vector3(nx * WorldGen.Width, 0, ny * WorldGen.Height),
+                CauseOfDeath = (CauseOfDeath)(cc % 4),
+                SpawnTime = 0
+            });
+        }
+        // Place corpses at ~10% of micro POIs (for more dynamic mutant feeding)
+        foreach (var minor in Stamper.Stamps.Where(p => p.Type == POIType.MicroShelter && Random.Shared.NextDouble() < 0.10))
+        {
+            corpses.Add(new Corpse
+            {
+                CorpseId = $"corpse_{minor.Name.Replace(' ', '_')}",
+                VictimName = minor.Name + " Victim",
+                VictimFaction = "Unknown",
+                Position = minor.Position,
+                CauseOfDeath = CauseOfDeath.Unknown,
+                SpawnTime = 0
+            });
+        }
+
+        // Mutants arrive via staggered initial spawn (same pipeline as inbound stalkers)
+        var wildPoiCandidates = Stamper.Stamps
+            .Where(p => p.Type == POIType.MutantDen || p.Type == POIType.MicroShelter)
+            .ToList();
+        var market = new MarketPrices();
+        var traderRegistry = TraderRegistry.Bootstrap(macroPois, market, Factions);
+        var poiRegistry = new StalkerALifeSandbox.World.POI.POIRegistry(Stamper.Stamps);
+        var missionRegistry = MissionRegistry.Bootstrap(traderRegistry, poiRegistry, WorldGen, macroPois);
+        var borderSpawn = new Vector3(WorldGen.Width * 0.5f, 0f, WorldGen.Height * 0.02f);
+        _ = new ConvoyManager(traderRegistry, market, borderSpawn);
+        Console.WriteLine($"[Economy] {traderRegistry.Sites.Count} macro traders online; {missionRegistry.OffersByIssuer.Count} bases posting missions");
+
+        // 4. ZoneDirector-driven simulation loop
+        var timeManager = new TimeManager();
+        if (float.TryParse(Environment.GetEnvironmentVariable("STALKER_TIME_FACTOR"), out float tf) && tf > 0f)
+            timeManager.TimeFactor = tf;
+        Console.WriteLine($"[Time] TimeFactor={timeManager.TimeFactor:F1}x (override via STALKER_TIME_FACTOR)");
+        var environment = new EnvironmentManager(timeManager);
+        var weather = new WeatherManager();
+        var zoneDirector = new ZoneDirector(timeManager, environment);
+
+        Simulation = new SimulationLoop(new SimulationDependencies
+        {
+            Director = zoneDirector,
+            Time = timeManager,
+            Environment = environment,
+            Weather = weather,
+            Factions = Factions,
+            MutantEcology = mutantEcology,
+            Pda = pdaNetwork,
+            WebVisualizer = WebVisualizer,
+            WorldGen = WorldGen,
+            Stamper = Stamper,
+            Pathfinder = pathfinder,
+            Emissions = Emissions,
+            Stalkers = stalkers,
+            Mutants = mutants,
+            EntityLock = entityLock,
+            Corpses = corpses,
+            MacroPois = macroPois,
+            WildPoiCandidates = wildPoiCandidates,
+            Traders = traderRegistry,
+            Missions = missionRegistry
+        })
+        {
+            PopulationTargets = (TargetStalkerPop, TargetMutantPop)
+        };
+
+        float initialSpawnSec = 720f;
+        if (float.TryParse(Environment.GetEnvironmentVariable("STALKER_INITIAL_SPAWN_SEC"), out float iss) && iss >= 60f)
+            initialSpawnSec = iss;
+
+        Simulation.ConfigureInitialSpawn(stalkerInboundBudget, TargetMutantPop, initialSpawnSec);
+        Simulation.RegisterStalkerListeners(stalkers);
+
+        foreach (var s in stalkers.Where(s => s.IsSquadLeader || s.SquadId == null))
+            Simulation.AssignInitialDestination(s);
+
+        SimulationDebugLog.Initialize();
+        SimulationDebugLog.RecordInitialPopulation(stalkers.Count, mutants.Count);
+        Console.WriteLine(
+            $"[Debug] Seed at t=0: {stalkers.Count} faction leaders; " +
+            $"inbound {stalkerInboundBudget} stalkers + {TargetMutantPop} mutants over {initialSpawnSec / 60f:F0} min");
+    }
+
+    /// <summary>Starts the simulation loop and, if configured, an auto-stop timer.</summary>
+    public void Start()
+    {
+        Simulation.Start();
+        Console.WriteLine("[Simulation] ZoneDirector loop started (10 Hz / 1 Hz / 0.1 Hz)");
+
+        if (int.TryParse(Environment.GetEnvironmentVariable("STALKER_RUN_DURATION_SEC"), out int runSec) && runSec > 0)
+        {
+            Console.WriteLine($"[Debug] Auto-stop scheduled in {runSec}s (STALKER_RUN_DURATION_SEC)");
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(runSec * 1000);
+                Console.WriteLine("[Debug] Run duration reached — flushing report and exiting.");
+                Simulation.FlushDebugReport();
+                Environment.Exit(0);
+            });
+        }
+    }
+}

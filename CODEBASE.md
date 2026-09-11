@@ -96,15 +96,17 @@ Communication between decoupled systems is handled by a global `EventBus` using 
 
 ## Entry Point — Program.cs
 
-**File:** [`Program.cs`](file:///home/alvaromendes/Documents/project01/Program.cs) (384 lines)
+**File:** [`Program.cs`](file:///home/alvaromendes/Documents/project01/Program.cs) (~40 lines)
 
-The application entry point performs the full bootstrap sequence:
+`Program.Main` is a thin shell: it builds and starts a [`SimulationHost`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationHost.cs), then configures the ASP.NET Core web host (CORS, static files) and maps the REST API via [`WebApiEndpoints.MapSimulationApi`](file:///home/alvaromendes/Documents/project01/src/Web/WebApiEndpoints.cs) before running on port 5050.
+
+`SimulationHost` is the composition root and performs the full bootstrap sequence:
 
 1. **Data Loading** — Loads `NameGenerator`, `DemographicsEngine`, `PDANetwork`, `FactionSpawnTable`, `ItemDatabase` from JSON data files (resolved via [`DataPaths`](file:///home/alvaromendes/Documents/project01/src/Core/DataPaths.cs) relative to the app base directory, not the working directory)
 2. **World Generation** — Creates `StaticWorldGenerator` (1600×3200 world), stamps POIs via `POIPrefabStamper`, builds `RoadNetwork`, initializes `ZonePathfinder` grid, loads `BuildingFootprintLoader`, seeds anomaly fields via `AnomalySeeder`
 3. **Faction Setup** — Spawns macro-base faction leaders, initializes `TraderRegistry`, `MissionRegistry`, and `ConvoyManager`
-4. **Simulation Init** — Configures `TimeManager`, `EnvironmentManager`, `WeatherManager`, `ZoneDirector`, and instantiates `SimulationLoop` with 12-minute staggered spawn for ~1,500 stalkers and ~1,000 mutants
-5. **Web Host** — Starts ASP.NET Core on port 5050 with REST endpoints and serves the visualizer dashboard
+4. **Simulation Init** — Configures `TimeManager`, `EnvironmentManager`, `WeatherManager`, `ZoneDirector`, and instantiates `SimulationLoop` (via a `SimulationDependencies` parameter object) with 12-minute staggered spawn for ~1,500 stalkers and ~1,000 mutants
+5. **Web Host** — `Program.Main` starts ASP.NET Core on port 5050 with REST endpoints and serves the visualizer dashboard
 
 ### REST API Endpoints
 
@@ -143,6 +145,12 @@ Resolves bundled `data/**` files relative to `AppContext.BaseDirectory` (where t
 
 ### [`SimulationSnapshot.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationSnapshot.cs)
 Immutable point-in-time view of simulation state (entity pins, population/mission counts, PDA feed, top-100 leaderboard, and per-entity inspector payloads) consumed by the web layer. **Threading contract:** all simulation ticks run on a single timer thread — the sole writer of entity state — which builds a snapshot once per 1 Hz tick via `SimulationSnapshot.Build(...)`. `SimulationLoop` publishes it through a volatile reference (`CurrentSnapshot`); REST endpoints and the WebSocket inspect handler read it lock-free and never touch live entities, eliminating torn-read races.
+
+### [`SimulationHost.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationHost.cs)
+Composition root. Loads data, generates the world and entities, wires the `SimulationLoop`, and starts it (`Start()` also arms the optional `STALKER_RUN_DURATION_SEC` auto-stop). Exposes the read-only pieces the web layer needs (`WorldGen`, `Stamper`, `RoadNetwork`, `BuildingFootprints`, `Emissions`, `Factions`, threat map, and `Simulation`).
+
+### [`SimulationDependencies.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationDependencies.cs)
+Named parameter object grouping the ~20 collaborators `SimulationLoop` needs, replacing a long positional-argument constructor. Built once by `SimulationHost`.
 
 ---
 
@@ -465,6 +473,7 @@ Located in `src/AI/GOAP/Goals/`:
 | [`TelemetryDTOs.cs`](file:///home/alvaromendes/Documents/project01/src/Web/TelemetryDTOs.cs) | Multiple DTOs | `TelemetryFrame`, `EntityDTO`, `InspectorDTO`, `CorpseDTO`, `MapDTO`, `MissionDTO`, and more |
 | [`TelemetryMapper.cs`](file:///home/alvaromendes/Documents/project01/src/Web/TelemetryMapper.cs) | `TelemetryMapper` | Maps live entity objects to lightweight telemetry DTOs for serialization |
 | [`InspectorBuilder.cs`](file:///home/alvaromendes/Documents/project01/src/Web/InspectorBuilder.cs) | `InspectorBuilder` | Builds rich `InspectorDTO` payloads for stalkers, mutants, corpses, and POIs |
+| [`WebApiEndpoints.cs`](file:///home/alvaromendes/Documents/project01/src/Web/WebApiEndpoints.cs) | `WebApiEndpoints` | `MapSimulationApi` extension mapping the REST endpoints (`/api/world`, `/api/state`, `/api/leaderboard`, `/api/factions`, `/`) onto the web host |
 
 ---
 
