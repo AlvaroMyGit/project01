@@ -50,6 +50,30 @@ public class ZoneGateEvaluatorTests
     }
 
     [Fact]
+    public void MinRankForThreat_ReturnsLowestAdequateRank()
+    {
+        // A safe zone should be handled by the lowest rank...
+        Assert.Equal(StalkerRank.Rookie, ZoneGateEvaluator.MinRankForThreat(0.15f));
+        // ...only the top rank clears the deadliest zones...
+        Assert.Equal(StalkerRank.Legend, ZoneGateEvaluator.MinRankForThreat(0.95f));
+        // ...and impossible threat still falls back to Legend, not lower.
+        Assert.Equal(StalkerRank.Legend, ZoneGateEvaluator.MinRankForThreat(5.0f));
+    }
+
+    [Fact]
+    public void MinRankForThreat_IsMonotonicInThreat()
+    {
+        int previous = -1;
+        for (float t = 0.0f; t <= 1.5f; t += 0.1f)
+        {
+            int rank = (int)ZoneGateEvaluator.MinRankForThreat(t);
+            Assert.True(rank >= previous,
+                $"Required rank must not decrease as threat ({t:F1}) rises.");
+            previous = rank;
+        }
+    }
+
+    [Fact]
     public void CanEnterZone_LegendCanGoAnywhereARookieCan()
     {
         var rookie = Rookie();

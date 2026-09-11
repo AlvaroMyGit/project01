@@ -104,7 +104,10 @@ public static class ZoneGateEvaluator
     /// <summary>Minimum GAMMA rank comfortable with a regional threat level.</summary>
     public static StalkerRank MinRankForThreat(float threat)
     {
-        for (int i = BaseComfortByRank.Length - 1; i >= 0; i--)
+        // Comfort rises with rank, so scan low->high and return the first
+        // (lowest) rank whose comfort band covers the threat. Falls back to the
+        // top rank when nothing is comfortable.
+        for (int i = 0; i < BaseComfortByRank.Length; i++)
         {
             if (BaseComfortByRank[i] + GateSlack >= threat)
                 return (StalkerRank)i;
