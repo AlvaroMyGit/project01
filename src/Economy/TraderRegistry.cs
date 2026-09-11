@@ -17,7 +17,7 @@ public sealed class TraderRegistry
         public string PoiName { get; init; } = "";
         public string RegionId { get; init; } = "";
         public Vector3 Position { get; init; }
-        public TraderComponent Trader { get; init; } = null!;
+        public required TraderComponent Trader { get; init; }
     }
 
     private readonly List<TraderSite> _sites = new();

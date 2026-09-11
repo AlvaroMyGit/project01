@@ -13,8 +13,12 @@ using System.Collections.Generic;
 namespace StalkerALifeSandbox.Core;
 
 /// <summary>
-/// Lightweight read-only view of shared simulation state passed into each ISimulationSystem.
-/// Avoids passing 20 parameters into every subsystem.
+/// Bundle of shared simulation state passed into each ISimulationSystem, so
+/// subsystems take one parameter instead of twenty. Note this is NOT read-only:
+/// the entity lists are mutable and the record holds live references. Only the
+/// simulation thread may mutate this state (see the threading contract on
+/// <see cref="SimulationLoop"/>); readers on other threads must go through the
+/// published <see cref="SimulationSnapshot"/> instead.
 /// </summary>
 public sealed record SimulationContext(
     List<Stalker>            Stalkers,

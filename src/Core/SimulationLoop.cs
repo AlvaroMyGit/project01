@@ -169,6 +169,13 @@ public sealed class SimulationLoop
         }, null, 0, (int)(stepSec * 1000));
     }
 
+    /// <summary>Stops the tick timer. Any in-flight tick completes first.</summary>
+    public void Stop()
+    {
+        _driver?.Dispose();
+        _driver = null;
+    }
+
     public void AssignInitialDestination(Stalker stalker) =>
         _goap.RequestReplan(stalker);
 

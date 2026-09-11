@@ -13,15 +13,15 @@ namespace StalkerALifeSandbox.AI.GOAP;
 /// <summary>Shared world services available to GOAP actions during execution.</summary>
 public sealed class GoapContext
 {
-    public StaticWorldGenerator WorldGen { get; init; } = null!;
-    public POIPrefabStamper Stamper { get; init; } = null!;
-    public POIRegistry POIRegistry { get; init; } = null!;
-    public ZonePathfinder Pathfinder { get; init; } = null!;
-    public EmissionSystem Emissions { get; init; } = null!;
-    public TimeManager Time { get; init; } = null!;
-    public CorpseRegistry Corpses { get; init; } = null!;
-    public TraderRegistry Traders { get; init; } = null!;
-    public MissionRegistry Missions { get; init; } = null!;
+    public required StaticWorldGenerator WorldGen { get; init; }
+    public required POIPrefabStamper Stamper { get; init; }
+    public required POIRegistry POIRegistry { get; init; }
+    public required ZonePathfinder Pathfinder { get; init; }
+    public required EmissionSystem Emissions { get; init; }
+    public required TimeManager Time { get; init; }
+    public required CorpseRegistry Corpses { get; init; }
+    public required TraderRegistry Traders { get; init; }
+    public required MissionRegistry Missions { get; init; }
     public PDANetwork? PDANetwork { get; init; }
 
     private Func<string, Stalker?>? _resolveStalker;

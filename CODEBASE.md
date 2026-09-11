@@ -106,7 +106,7 @@ Communication between decoupled systems is handled by a global `EventBus` using 
 2. **World Generation** — Creates `StaticWorldGenerator` (1600×3200 world), stamps POIs via `POIPrefabStamper`, builds `RoadNetwork`, initializes `ZonePathfinder` grid, loads `BuildingFootprintLoader`, seeds anomaly fields via `AnomalySeeder`
 3. **Faction Setup** — Spawns macro-base faction leaders, initializes `TraderRegistry`, `MissionRegistry`, and `ConvoyManager`
 4. **Simulation Init** — Configures `TimeManager`, `EnvironmentManager`, `WeatherManager`, `ZoneDirector`, and instantiates `SimulationLoop` (via a `SimulationDependencies` parameter object) with 12-minute staggered spawn for ~1,500 stalkers and ~1,000 mutants
-5. **Web Host** — `Program.Main` starts ASP.NET Core on port 5050 with REST endpoints and serves the visualizer dashboard
+5. **Web Host** — `Program.Main` builds a `SimulationSettings`, starts ASP.NET Core on the configured REST port (default 5050) with CORS scoped to the local dashboard origins, and serves the visualizer. Shutdown is graceful: `ApplicationStopping` calls `SimulationHost.Stop()` (disposes the tick timer, stops the WebSocket server, flushes the final report), and the optional `STALKER_RUN_DURATION_SEC` auto-stop requests a graceful shutdown rather than calling `Environment.Exit`.
 
 ### REST API Endpoints
 
@@ -151,6 +151,9 @@ Composition root. Loads data, generates the world and entities, wires the `Simul
 
 ### [`SimulationDependencies.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationDependencies.cs)
 Named parameter object grouping the ~20 collaborators `SimulationLoop` needs, replacing a long positional-argument constructor. Built once by `SimulationHost`.
+
+### [`SimulationSettings.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationSettings.cs)
+Central host configuration — WebSocket/REST ports, population targets, and allowed CORS origins — replacing values previously hard-coded in multiple places. `FromEnvironment()` applies `STALKER_WS_PORT` / `STALKER_REST_PORT` overrides.
 
 ---
 

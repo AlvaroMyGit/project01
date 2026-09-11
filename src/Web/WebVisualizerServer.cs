@@ -38,6 +38,27 @@ namespace StalkerALifeSandbox.Web
             Task.Run(AcceptConnectionsAsync);
         }
 
+        /// <summary>Stops accepting connections, aborts open sockets, and releases the listener.</summary>
+        public void Stop()
+        {
+            try
+            {
+                if (_listener.IsListening)
+                    _listener.Stop();
+                _listener.Close();
+            }
+            catch
+            {
+                // Already stopped/closed — nothing to do.
+            }
+
+            foreach (var socket in _clients.Values)
+            {
+                try { socket.Abort(); } catch { /* client already gone */ }
+            }
+            _clients.Clear();
+        }
+
         private async Task AcceptConnectionsAsync()
         {
             while (_listener.IsListening)
@@ -59,6 +80,11 @@ namespace StalkerALifeSandbox.Web
                         context.Response.StatusCode = 400;
                         context.Response.Close();
                     }
+                }
+                catch (Exception ex) when (ex is ObjectDisposedException or HttpListenerException && !_listener.IsListening)
+                {
+                    // Expected during Stop() — the listener was disposed/closed.
+                    break;
                 }
                 catch (Exception ex)
                 {

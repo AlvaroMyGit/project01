@@ -26,8 +26,7 @@ namespace StalkerALifeSandbox.Core;
 /// </summary>
 public sealed class SimulationHost
 {
-    private const int TargetStalkerPop = 1500;
-    private const int TargetMutantPop = 1000;
+    private readonly SimulationSettings _settings;
 
     public SimulationLoop Simulation { get; }
     public WebVisualizerServer WebVisualizer { get; }
@@ -42,8 +41,10 @@ public sealed class SimulationHost
     public int ThreatW { get; }
     public int ThreatH { get; }
 
-    public SimulationHost()
+    public SimulationHost(SimulationSettings? settings = null)
     {
+        _settings = settings ?? new SimulationSettings();
+
         // 1. Initialize data-driven systems
         NameGenerator.EnsureLoaded();
         DemographicsEngine.EnsureLoaded();
@@ -56,7 +57,7 @@ public sealed class SimulationHost
         var mutantEcology = new MutantEcologyManager();
         var pdaNetwork = new PDANetwork();
 
-        WebVisualizer = new WebVisualizerServer(8080);
+        WebVisualizer = new WebVisualizerServer(_settings.WebSocketPort);
         WebVisualizer.Start();
 
         // 2. Generate the Zone World & POIs
@@ -138,7 +139,7 @@ public sealed class SimulationHost
             }
         }
 
-        int stalkerInboundBudget = Math.Max(0, TargetStalkerPop - stalkers.Count);
+        int stalkerInboundBudget = Math.Max(0, _settings.StalkerTarget - stalkers.Count);
 
         // Place starter demo corpses in the wilderness and at a couple POIs
         for (int cc = 0; cc < 7; cc++)
@@ -214,14 +215,14 @@ public sealed class SimulationHost
             Missions = missionRegistry
         })
         {
-            PopulationTargets = (TargetStalkerPop, TargetMutantPop)
+            PopulationTargets = (_settings.StalkerTarget, _settings.MutantTarget)
         };
 
         float initialSpawnSec = 720f;
         if (float.TryParse(Environment.GetEnvironmentVariable("STALKER_INITIAL_SPAWN_SEC"), out float iss) && iss >= 60f)
             initialSpawnSec = iss;
 
-        Simulation.ConfigureInitialSpawn(stalkerInboundBudget, TargetMutantPop, initialSpawnSec);
+        Simulation.ConfigureInitialSpawn(stalkerInboundBudget, _settings.MutantTarget, initialSpawnSec);
         Simulation.RegisterStalkerListeners(stalkers);
 
         foreach (var s in stalkers.Where(s => s.IsSquadLeader || s.SquadId == null))
@@ -231,25 +232,32 @@ public sealed class SimulationHost
         SimulationDebugLog.RecordInitialPopulation(stalkers.Count, mutants.Count);
         Console.WriteLine(
             $"[Debug] Seed at t=0: {stalkers.Count} faction leaders; " +
-            $"inbound {stalkerInboundBudget} stalkers + {TargetMutantPop} mutants over {initialSpawnSec / 60f:F0} min");
+            $"inbound {stalkerInboundBudget} stalkers + {_settings.MutantTarget} mutants over {initialSpawnSec / 60f:F0} min");
     }
 
-    /// <summary>Starts the simulation loop and, if configured, an auto-stop timer.</summary>
+    /// <summary>
+    /// Optional auto-stop window (seconds) from STALKER_RUN_DURATION_SEC; null when unset.
+    /// The composition root wires this to graceful host shutdown.
+    /// </summary>
+    public int? RunDurationSeconds =>
+        int.TryParse(Environment.GetEnvironmentVariable("STALKER_RUN_DURATION_SEC"), out int s) && s > 0 ? s : null;
+
+    /// <summary>Starts the simulation loop.</summary>
     public void Start()
     {
         Simulation.Start();
         Console.WriteLine("[Simulation] ZoneDirector loop started (10 Hz / 1 Hz / 0.1 Hz)");
+    }
 
-        if (int.TryParse(Environment.GetEnvironmentVariable("STALKER_RUN_DURATION_SEC"), out int runSec) && runSec > 0)
-        {
-            Console.WriteLine($"[Debug] Auto-stop scheduled in {runSec}s (STALKER_RUN_DURATION_SEC)");
-            _ = Task.Run(async () =>
-            {
-                await Task.Delay(runSec * 1000);
-                Console.WriteLine("[Debug] Run duration reached — flushing report and exiting.");
-                Simulation.FlushDebugReport();
-                Environment.Exit(0);
-            });
-        }
+    /// <summary>
+    /// Stops the simulation and the WebSocket server and flushes the final report.
+    /// Idempotent and safe to call from a host-shutdown callback.
+    /// </summary>
+    public void Stop()
+    {
+        Simulation.Stop();
+        Simulation.FlushDebugReport();
+        WebVisualizer.Stop();
+        Console.WriteLine("[Simulation] Stopped and final report flushed.");
     }
 }
