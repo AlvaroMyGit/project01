@@ -25,14 +25,21 @@ jobs:
       - name: Build (warnings as errors)
         run: dotnet build project01.sln --configuration Release --no-restore -warnaserror
 
-      - name: Test (with coverage)
+      # Rebuilds the test project so coverlet.msbuild can instrument it, then
+      # fails the job if total line coverage drops below the floor. Raise the
+      # Threshold as coverage grows (ratchet).
+      - name: Test (with coverage gate)
         run: >
           dotnet test tests/StalkerALifeSandbox.Tests/StalkerALifeSandbox.Tests.csproj
           --configuration Release
-          --no-build
           --logger "trx;LogFileName=test-results.trx"
-          --collect:"XPlat Code Coverage"
           --results-directory ./TestResults
+          /p:CollectCoverage=true
+          /p:CoverletOutputFormat=cobertura
+          /p:CoverletOutput=./TestResults/coverage.cobertura.xml
+          /p:Threshold=10
+          /p:ThresholdType=line
+          /p:ThresholdStat=total
 
       - name: Upload test results
         if: always()

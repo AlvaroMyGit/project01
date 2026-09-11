@@ -571,7 +571,7 @@ Runtime item catalogs loaded by `ItemDatabase.cs`:
 
 ## tests/ — Test Suite
 
-Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 60 tests):
+Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 74 tests):
 
 | File | Coverage |
 |---|---|
@@ -583,9 +583,13 @@ Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 60 tests):
 | `FactionMatrixTests.cs` | `FactionMatrix` relation symmetry, Neutral fallback, hostile/friendly thresholds, `IndexOf` |
 | `GOAPPlannerTests.cs` | Goal selection by utility, action chaining, cheapest-path preference, empty/null-plan edge cases |
 | `ItemDatabaseTests.cs` | `ItemRegistry` registration and `ItemFactory` instantiation |
+| `MarketPricesTests.cs` | Latitude/supply multipliers, supply clamping, price formula |
+| `PDANetworkTests.cs` | Feed append + size cap, band/latitude fallbacks without a bound world |
 | `RankProgressionTests.cs` | XP thresholds, monotonic rank, XP floor, kill/mission accounting |
 | `SurvivalNeedsTests.cs` | Need decay over time, feeding, critical-state threshold, ammo consumption |
+| `TelemetryMapperTests.cs` | Mission/corpse DTO mapping and despawn-remaining computation |
 | `ZoneGateEvaluatorTests.cs` | Comfort-threat monotonicity, rank-gating, `MinRankForThreat` |
+| `ZonePathfinderTests.cs` | Grid dimensions and A* `FindPath` between open points |
 | `TestParallelization.cs` | Disables xUnit cross-collection parallelization while process-global static state remains (see roadmap Phase 4) |
 
 Run tests with:
@@ -595,7 +599,7 @@ dotnet test tests/StalkerALifeSandbox.Tests/
 
 ### Continuous Integration
 
-[`.github/workflows/ci.yml`](file:///home/alvaromendes/Documents/project01/.github/workflows/ci.yml) runs on every push and pull request to `main`: restore, build the solution in Release with warnings treated as errors (`-warnaserror`), then run the test suite with code coverage. Formatting and style conventions live in [`.editorconfig`](file:///home/alvaromendes/Documents/project01/.editorconfig); generated build output and logs are excluded via `.gitignore`.
+[`.github/workflows/ci.yml`](file:///home/alvaromendes/Documents/project01/.github/workflows/ci.yml) runs on every push and pull request to `main`: restore, build the solution in Release with warnings treated as errors (`-warnaserror`), then run the test suite under a **coverage gate** (coverlet.msbuild) that fails the job if total line coverage drops below the floor (currently 10%; raise it as coverage grows). Formatting and style conventions live in [`.editorconfig`](file:///home/alvaromendes/Documents/project01/.editorconfig); generated build output and logs are excluded via `.gitignore`.
 
 ---
 
