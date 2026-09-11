@@ -63,7 +63,7 @@ public sealed class SimulationHost
         // 2. Generate the Zone World & POIs
         WorldGen = new StaticWorldGenerator(seed: 42) { Width = 1600, Height = 3200 };
         pdaNetwork.BindWorld(WorldGen);
-        KillTracker.MapHeight = WorldGen.Height;
+        KillTracker.Configure(new KillTrackerOptions { MapHeight = WorldGen.Height });
         Stamper = new POIPrefabStamper(WorldGen, seed: 42);
         Stamper.Generate(microPerMacro: 3);
 

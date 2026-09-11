@@ -20,12 +20,16 @@ public static class KillTracker
 {
     private static readonly ConcurrentQueue<KillEventDTO> _killLog = new();
     private static int _killCounter = 0;
+    private static KillTrackerOptions _options = new();
+
+    /// <summary>Installs tracker configuration. Call once at startup.</summary>
+    public static void Configure(KillTrackerOptions options) => _options = options;
 
     /// <summary>Map height for latitude → PDA band conversion on death reports.</summary>
-    public static float MapHeight { get; set; } = 3200f;
+    public static float MapHeight => _options.MapHeight;
 
     /// <summary>Publish templated PDA death reports for stalker casualties.</summary>
-    public static bool PublishDeathReports { get; set; } = true;
+    public static bool PublishDeathReports => _options.PublishDeathReports;
 
     /// <summary>Maximum number of kill events to keep in memory.</summary>
     private const int MaxLogSize = 500;
