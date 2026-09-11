@@ -305,7 +305,8 @@ Located in `src/AI/GOAP/Goals/`:
 | [`ProtectionProfile.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/ProtectionProfile.cs) | `ProtectionProfile` | Computes composite 9-channel defense by summing armor + helmet + belt items |
 | [`RankSystem.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/RankSystem.cs) | `RankSystem` | Awards XP on kills with rank-delta multipliers; triggers promotions across 8 tiers |
 | [`ScientistForecaster.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/ScientistForecaster.cs) | `ScientistForecaster` | Multi-stage emission PDA warnings (1-3hr, 30min, 15min before impact) |
-| [`SimulationDebugLog.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/SimulationDebugLog.cs) | `SimulationDebugLog` | Structured logging with periodic snapshots and final reports (`[COMBAT]`, `[GEAR]`, `[TRADE]`, `[CORPSE]`, `[MISSION]`) |
+| [`SimulationDebugLog.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/SimulationDebugLog.cs) | `SimulationDebugLog` | Metrics aggregation — lifetime/interval counters, periodic snapshots, final report (`[COMBAT]`, `[GEAR]`, `[TRADE]`, `[CORPSE]`, `[MISSION]`, ...). Decides *what* to log and formats it; delegates actual writing to `DebugLogSink` |
+| [`DebugLogSink.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/DebugLogSink.cs) | `DebugLogSink` | The logging mechanism itself — console + append-only log file, lock-protected. Split out of `SimulationDebugLog` so metrics aggregation and I/O are separate concerns |
 | [`SkillEvaluator.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/SkillEvaluator.cs) | `SkillEvaluator` | Diminishing-returns skill progression: `Delta = BaseGain × (1 - Current/100)^1.5` |
 
 ---

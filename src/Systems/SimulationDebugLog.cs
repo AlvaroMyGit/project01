@@ -8,11 +8,14 @@ using StalkerALifeSandbox.World.Hazards;
 
 namespace StalkerALifeSandbox.Systems;
 
-/// <summary>Structured simulation debug logging — counters, periodic snapshots, final report.</summary>
+/// <summary>
+/// Simulation metrics aggregation — lifetime/interval counters, periodic
+/// snapshots, and the final report. Delegates the actual writing (console +
+/// file) to <see cref="DebugLogSink"/> so this class owns only WHAT gets
+/// logged, not HOW.
+/// </summary>
 public static class SimulationDebugLog
 {
-    private static readonly object FileLock = new();
-    private static string? _logPath;
     private static DateTime _startedAt = DateTime.UtcNow;
     private static DateTime _lastSnapshotAt = DateTime.MinValue;
     private static double _snapshotIntervalSec = 30;
@@ -93,21 +96,20 @@ public static class SimulationDebugLog
         if (!Enabled) return;
 
         _snapshotIntervalSec = snapshotIntervalSec;
-        _logPath = logPath ?? Path.Combine("logs", $"sim_{DateTime.UtcNow:yyyyMMdd_HHmmss}.log");
-        Directory.CreateDirectory(Path.GetDirectoryName(_logPath)!);
+        DebugLogSink.Initialize(logPath ?? Path.Combine("logs", $"sim_{DateTime.UtcNow:yyyyMMdd_HHmmss}.log"));
         _startedAt = DateTime.UtcNow;
         _lastSnapshotAt = _startedAt;
 
         EventBus.Subscribe<EmissionPhaseChangedEvent>(OnEmissionPhase);
 
-        Write("INIT", $"Debug logging enabled → {_logPath}");
-        Write("INIT", $"Snapshot interval={_snapshotIntervalSec}s");
+        DebugLogSink.WriteLine("INIT", $"Debug logging enabled → {DebugLogSink.LogPath}");
+        DebugLogSink.WriteLine("INIT", $"Snapshot interval={_snapshotIntervalSec}s");
     }
 
     public static void WriteEvent(string category, string message)
     {
         if (!Enabled) return;
-        Write(category, message);
+        DebugLogSink.WriteLine(category, message);
     }
 
     public static void RecordInitialPopulation(int stalkers, int mutants)
@@ -115,7 +117,7 @@ public static class SimulationDebugLog
         if (!Enabled) return;
         _initialStalkerPop = stalkers;
         _initialMutantPop = mutants;
-        Write("INIT", $"Initial population: {stalkers} stalkers, {mutants} mutants (not counted as trickle spawns)");
+        DebugLogSink.WriteLine("INIT", $"Initial population: {stalkers} stalkers, {mutants} mutants (not counted as trickle spawns)");
     }
 
     private static void OnEmissionPhase(EmissionPhaseChangedEvent e)
@@ -127,15 +129,15 @@ public static class SimulationDebugLog
         {
             Interlocked.Increment(ref _emissionStorms);
             _emissionCasualtiesAtStormStart = CurrentEmissionCasualties();
-            Write("EMISSION", $"Storm #{_emissionStorms} BEGIN — phase=Panic intensity={e.Intensity:F2} game={FormatGameSec(e.GameTime)}");
+            DebugLogSink.WriteLine("EMISSION", $"Storm #{_emissionStorms} BEGIN — phase=Panic intensity={e.Intensity:F2} game={FormatGameSec(e.GameTime)}");
         }
         else if (e.Phase == EmissionPhase.Peak)
         {
-            Write("EMISSION", $"Storm #{_emissionStorms} PEAK — intensity={e.Intensity:F2} game={FormatGameSec(e.GameTime)}");
+            DebugLogSink.WriteLine("EMISSION", $"Storm #{_emissionStorms} PEAK — intensity={e.Intensity:F2} game={FormatGameSec(e.GameTime)}");
         }
         else
         {
-            Write("EMISSION", $"Phase → {e.Phase} intensity={e.Intensity:F2} game={FormatGameSec(e.GameTime)}");
+            DebugLogSink.WriteLine("EMISSION", $"Phase → {e.Phase} intensity={e.Intensity:F2} game={FormatGameSec(e.GameTime)}");
         }
 
         if (e.Phase == EmissionPhase.Dormant && _emissionStorms > 0)
@@ -147,7 +149,7 @@ public static class SimulationDebugLog
             _lastStormZombified = _stalkersZombified;
             string summary = $"Storm #{_emissionStorms} END — killed={deaths} zombified={zomb} total={totalStorm}";
             _stormHistory.Add(summary);
-            Write("EMISSION", summary);
+            DebugLogSink.WriteLine("EMISSION", summary);
         }
     }
 
@@ -246,14 +248,14 @@ public static class SimulationDebugLog
         if (!Enabled) return;
         Interlocked.Increment(ref _hazardHits);
         Interlocked.Increment(ref _intervalHazardHits);
-        Write("HAZARD", $"{stalkerFirstName} took {hazardType} exposure ({exposure:F2})");
+        DebugLogSink.WriteLine("HAZARD", $"{stalkerFirstName} took {hazardType} exposure ({exposure:F2})");
     }
 
     public static void RankPromotion(string name, StalkerRank rank)
     {
         if (!Enabled) return;
         Interlocked.Increment(ref _rankPromotions);
-        Write("RANK", $"{name} → {rank}");
+        DebugLogSink.WriteLine("RANK", $"{name} → {rank}");
     }
 
     public static void RespawnBatch(int s, int m)
@@ -263,7 +265,7 @@ public static class SimulationDebugLog
         Interlocked.Add(ref _trickleStalkers, s);
         Interlocked.Add(ref _trickleMutants, m);
         Interlocked.Add(ref _intervalTrickleSpawns, s + m);
-        Write("SPAWN", $"Trickle +{s} stalkers, +{m} mutants");
+        DebugLogSink.WriteLine("SPAWN", $"Trickle +{s} stalkers, +{m} mutants");
     }
 
     public static void CorpseReported() { if (Enabled) Interlocked.Increment(ref _corpsesReported); }
@@ -273,7 +275,7 @@ public static class SimulationDebugLog
         if (!Enabled || count <= 0) return;
         Interlocked.Add(ref _corpsesDespawned, count);
         Interlocked.Add(ref _intervalCorpseDespawns, count);
-        Write("CORPSE", $"Despawned {count} bodies (lifetime={_corpsesDespawned})");
+        DebugLogSink.WriteLine("CORPSE", $"Despawned {count} bodies (lifetime={_corpsesDespawned})");
     }
 
     public static void GearLooted(Stalker looter, string source, IEnumerable<string> itemIds)
@@ -284,7 +286,7 @@ public static class SimulationDebugLog
         Interlocked.Increment(ref _gearLootEvents);
         Interlocked.Add(ref _gearLootItems, items.Count);
         Interlocked.Increment(ref _intervalGearLoots);
-        Write("GEAR", $"{ShortName(looter.DisplayName)} looted [{string.Join(", ", items)}] via {source}");
+        DebugLogSink.WriteLine("GEAR", $"{ShortName(looter.DisplayName)} looted [{string.Join(", ", items)}] via {source}");
     }
 
     public static void GearPurchased(Stalker buyer, string traderBand, IEnumerable<string> itemIds)
@@ -295,7 +297,7 @@ public static class SimulationDebugLog
         Interlocked.Increment(ref _gearPurchaseEvents);
         Interlocked.Add(ref _gearPurchaseItems, items.Count);
         Interlocked.Increment(ref _intervalGearPurchases);
-        Write("TRADE", $"{ShortName(buyer.DisplayName)} bought [{string.Join(", ", items)}] @ {traderBand}");
+        DebugLogSink.WriteLine("TRADE", $"{ShortName(buyer.DisplayName)} bought [{string.Join(", ", items)}] @ {traderBand}");
     }
 
     public static void MissionAccepted(Stalker stalker, string missionType, string issuer, float reward)
@@ -303,7 +305,7 @@ public static class SimulationDebugLog
         if (!Enabled) return;
         Interlocked.Increment(ref _missionsAccepted);
         Interlocked.Increment(ref _intervalMissions);
-        Write("MISSION", $"{ShortName(stalker.DisplayName)} accepted {missionType} @ {issuer} ({reward:F0} RU)");
+        DebugLogSink.WriteLine("MISSION", $"{ShortName(stalker.DisplayName)} accepted {missionType} @ {issuer} ({reward:F0} RU)");
     }
 
     public static void MissionCompleted(Stalker stalker, string missionType, string target, float reward)
@@ -311,14 +313,14 @@ public static class SimulationDebugLog
         if (!Enabled) return;
         Interlocked.Increment(ref _missionsCompleted);
         Interlocked.Increment(ref _intervalMissions);
-        Write("MISSION", $"{ShortName(stalker.DisplayName)} completed {missionType} → {target} (+{reward:F0} RU)");
+        DebugLogSink.WriteLine("MISSION", $"{ShortName(stalker.DisplayName)} completed {missionType} → {target} (+{reward:F0} RU)");
     }
 
     public static void MissionObjectiveComplete(
         Stalker stalker, string missionType, string target, string issuer)
     {
         if (!Enabled) return;
-        Write("MISSION",
+        DebugLogSink.WriteLine("MISSION",
             $"{ShortName(stalker.DisplayName)} objective done {missionType} @ {target} → return to {issuer}");
     }
 
@@ -327,14 +329,14 @@ public static class SimulationDebugLog
         if (!Enabled) return;
         Interlocked.Increment(ref _missionsCompleted);
         Interlocked.Increment(ref _intervalMissions);
-        Write("MISSION", $"{ShortName(stalker.DisplayName)} turned in {missionType} @ {issuer} (+{reward:F0} RU)");
+        DebugLogSink.WriteLine("MISSION", $"{ShortName(stalker.DisplayName)} turned in {missionType} @ {issuer} (+{reward:F0} RU)");
     }
 
     public static void MissionArrived(
         Stalker stalker, string missionType, string target, float travelMeters, float workSeconds)
     {
         if (!Enabled) return;
-        Write("MISSION",
+        DebugLogSink.WriteLine("MISSION",
             $"{ShortName(stalker.DisplayName)} arrived for {missionType} @ {target} " +
             $"(travel={travelMeters:F0}m, work={workSeconds:F0}s game)");
     }
@@ -352,14 +354,14 @@ public static class SimulationDebugLog
 
         string name = ShortName(stalker.DisplayName);
         string suffix = detail != null ? $" [{detail}]" : "";
-        Write("TASK", $"{name} → {actionName}{suffix} (goal={goalName})");
+        DebugLogSink.WriteLine("TASK", $"{name} → {actionName}{suffix} (goal={goalName})");
     }
 
     public static void GoalCompleted(Stalker stalker, string goalName)
     {
         if (!Enabled) return;
         Interlocked.Increment(ref _goalsCompleted);
-        Write("GOAL", $"{ShortName(stalker.DisplayName)} achieved {goalName}");
+        DebugLogSink.WriteLine("GOAL", $"{ShortName(stalker.DisplayName)} achieved {goalName}");
     }
 
     public static void MaybeSnapshot(
@@ -422,7 +424,7 @@ public static class SimulationDebugLog
             .Select(s => $"{s.DisplayName.Split(' ')[0]}[{s.Rank.CurrentRank}/{DescribeGoal(s)}]");
         string goalSample = string.Join(", ", leaders);
 
-        Write("SNAPSHOT", new StringBuilder()
+        DebugLogSink.WriteLine("SNAPSHOT", new StringBuilder()
             .Append($"real={realElapsed:F1}min game={FormatGameTime(time)} ")
             .Append($"alive S={aliveStalkers} M={aliveMutants} corpses={corpseCount} lootable={lootableCorpses} ")
             .Append($"gammaGear out={gammaOutfits} helm={gammaHelmets} avgRU={avgGold:F0} ")
@@ -517,14 +519,11 @@ public static class SimulationDebugLog
 
         sb.AppendLine("===================================================");
         var report = sb.ToString();
-        Write("REPORT", report);
-        Console.WriteLine(report);
-
-        if (_logPath != null)
-        {
-            lock (FileLock)
-                File.AppendAllText(_logPath, report + Environment.NewLine);
-        }
+        // Single write: DebugLogSink.WriteLine already prints to console and
+        // appends to the log file — this used to also do both a second time
+        // (redundant Console.WriteLine + a raw File.AppendAllText), duplicating
+        // the entire final report in the console output and log file.
+        DebugLogSink.WriteLine("REPORT", report);
     }
 
     private static string ShortName(string name) =>
@@ -538,14 +537,4 @@ public static class SimulationDebugLog
 
     private static string FormatGameSec(float sec) =>
         $"D{(int)(sec / 86400)} {(int)(sec / 3600 % 24):D2}:{(int)(sec / 60 % 60):D2}";
-
-    private static void Write(string category, string message)
-    {
-        if (!Enabled) return;
-        string line = $"[{DateTime.UtcNow:HH:mm:ss}] [{category}] {message}";
-        Console.WriteLine(line);
-        if (_logPath == null) return;
-        lock (FileLock)
-            File.AppendAllText(_logPath, line + Environment.NewLine);
-    }
 }
