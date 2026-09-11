@@ -83,6 +83,10 @@ public class CraftingAndCookingTests
     public void RepairRestoresWeaponCondition()
     {
         var s        = MakeStalker();
+        // TryCraftUpgrade succeeds on a skill roll (0.5 + ZoneSurvival/200). Max the
+        // skill so success chance is 1.0 and the test is deterministic rather than
+        // failing ~1 run in 3 on the default rookie skill.
+        s.Attributes.AddZoneSurvival(100);
         float before = s.Equipment.PrimaryWeapon!.Condition; // 0.60
         s.ScrapCount = 20;
 
