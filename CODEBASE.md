@@ -571,17 +571,21 @@ Runtime item catalogs loaded by `ItemDatabase.cs`:
 
 ## tests/ — Test Suite
 
-Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 38 tests):
+Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 60 tests):
 
 | File | Coverage |
 |---|---|
 | `ArchitectureTests.cs` | Verifies `SimulationContext` initialization and `ISimulationSystem` wiring |
-| `CombatResolverTests.cs` | `CombatResolver` win-chance bounds and monotonicity (rank, armament, threat) |
+| `CombatResolverTests.cs` | `CombatResolver` win-chance bounds, rank/armament/threat monotonicity, sniper range, squad-ally bonus |
+| `CorpseCleanupServiceTests.cs` | Idle/eaten/interacted/mutant despawn thresholds |
 | `CraftingAndCookingTests.cs` | `MutantCookingSystem` hunger reduction, vodka radiation purge, `FieldCraftingSystem` repairs, belt slot insertion |
 | `EventBusTests.cs` | Event subscription, publication, and unsubscription on the decoupled `EventBus` |
 | `FactionMatrixTests.cs` | `FactionMatrix` relation symmetry, Neutral fallback, hostile/friendly thresholds, `IndexOf` |
+| `GOAPPlannerTests.cs` | Goal selection by utility, action chaining, cheapest-path preference, empty/null-plan edge cases |
 | `ItemDatabaseTests.cs` | `ItemRegistry` registration and `ItemFactory` instantiation |
 | `RankProgressionTests.cs` | XP thresholds, monotonic rank, XP floor, kill/mission accounting |
+| `SurvivalNeedsTests.cs` | Need decay over time, feeding, critical-state threshold, ammo consumption |
+| `ZoneGateEvaluatorTests.cs` | Comfort-threat monotonicity, rank-gating, `MinRankForThreat` |
 | `TestParallelization.cs` | Disables xUnit cross-collection parallelization while process-global static state remains (see roadmap Phase 4) |
 
 Run tests with:

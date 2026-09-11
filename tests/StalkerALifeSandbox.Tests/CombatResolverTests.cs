@@ -82,4 +82,41 @@ public class CombatResolverTests
         Assert.True(dangerous < calm,
             $"Higher threat ({dangerous:F3}) should reduce win chance vs calm ({calm:F3}).");
     }
+
+    private static Stalker Sniper()
+    {
+        var s = new Stalker($"s-{Guid.NewGuid():N}"[..8], "Sniper", "Loner");
+        s.Equipment.PrimaryWeapon = new WeaponItem
+        {
+            Id = "wpn_svd", DisplayName = "SVD", Class = "sniper", Condition = 1f,
+            Damage = 40f, Accuracy = 0.9f, FireRate = 2f, MagSize = 10, CurrentMag = 10
+        };
+        return s;
+    }
+
+    [Fact]
+    public void VsMutant_Sniper_IsBetterAtLongRangeThanCloseQuarters()
+    {
+        var beast = Beast();
+        float threshold = CombatBalanceConfig.SniperRangeThresholdM;
+
+        double longRange = CombatResolver.StalkerVsMutantWinChance(Sniper(), beast, localThreat: 0f, engagementDistance: threshold + 50f);
+        double closeRange = CombatResolver.StalkerVsMutantWinChance(Sniper(), beast, localThreat: 0f, engagementDistance: threshold - 50f);
+
+        Assert.True(longRange > closeRange,
+            $"Sniper long-range ({longRange:F3}) should beat close-quarters ({closeRange:F3}).");
+    }
+
+    [Fact]
+    public void VsMutant_AlliesInRange_RaiseWinChance()
+    {
+        var s = Fighter();
+        var beast = Beast();
+
+        double alone = CombatResolver.StalkerVsMutantWinChance(s, beast, localThreat: 0f, alliesInRange: 0);
+        double squad = CombatResolver.StalkerVsMutantWinChance(s, beast, localThreat: 0f, alliesInRange: 3);
+
+        Assert.True(squad > alone,
+            $"Fighting with allies ({squad:F3}) should beat fighting alone ({alone:F3}).");
+    }
 }
