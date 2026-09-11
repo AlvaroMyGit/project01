@@ -13,7 +13,6 @@ namespace StalkerALifeSandbox.Core.Systems;
 public sealed class SpawnOrchestrator : ISimulationSystem
 {
     private readonly MutantEcologyManager _mutantEcology;
-    private readonly object _entityLock;
     private readonly Action<Stalker> _onReplanRequested;
 
     private int _initialStalkerTotal;
@@ -26,10 +25,9 @@ public sealed class SpawnOrchestrator : ISimulationSystem
     private bool _initialSpawnConfigured;
     private float _compactAccum;
 
-    public SpawnOrchestrator(MutantEcologyManager mutantEcology, object entityLock, Action<Stalker> onReplanRequested)
+    public SpawnOrchestrator(MutantEcologyManager mutantEcology, Action<Stalker> onReplanRequested)
     {
         _mutantEcology = mutantEcology;
-        _entityLock = entityLock;
         _onReplanRequested = onReplanRequested;
     }
 

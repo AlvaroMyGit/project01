@@ -23,27 +23,47 @@ namespace StalkerALifeSandbox.Core;
 /// Owns the live simulation state and registers subsystem ticks on
 /// <see cref="ZoneDirector"/> at 10 Hz / 1 Hz / 0.1 Hz.
 /// Now acts as a thin orchestrator calling ISimulationSystem instances.
+///
+/// Threading contract: all simulation ticks run on a single timer thread
+/// (serialized by <see cref="_tickInProgress"/>), which is the ONLY writer of
+/// entity state. Web request threads (REST endpoints and the WebSocket inspect
+/// handler) are readers and MUST NOT read live entities. Instead the tick thread
+/// publishes an immutable <see cref="SimulationSnapshot"/> once per 1 Hz tick and
+/// web threads read it lock-free via <see cref="CurrentSnapshot"/>.
 /// </summary>
 public sealed class SimulationLoop
 {
     private readonly ZoneDirector _director;
     private readonly SimulationContext _ctx;
-    
+
     private readonly ISimulationSystem[] _systems10Hz;
     private readonly ISimulationSystem[] _systems1Hz;
     private readonly ISimulationSystem[] _systems0_1Hz;
-    
+
     private readonly SpawnOrchestrator _spawnOrchestrator;
-    
+
     private readonly WebVisualizerServer _webVisualizer;
     private readonly StalkerGoapService _goap;
     private readonly WeatherManager _weather;
-    
+
     private int _tickInProgress;
     private Timer? _driver;
 
+    // Immutable state published for web readers; swapped atomically each 1 Hz tick.
+    private SimulationSnapshot _snapshot = SimulationSnapshot.Empty;
+
     public TimeManager Time => _ctx.Time;
     public EmissionSystem Emissions => _ctx.Emissions;
+
+    /// <summary>Target populations reported to the dashboard.</summary>
+    public (int Stalker, int Mutant) PopulationTargets { get; set; } = (1500, 1000);
+
+    /// <summary>
+    /// Latest immutable snapshot of simulation state, safe to read from any
+    /// thread. Returns <see cref="SimulationSnapshot.Empty"/> until the first
+    /// 1 Hz tick has run.
+    /// </summary>
+    public SimulationSnapshot CurrentSnapshot => Volatile.Read(ref _snapshot);
 
     public SimulationLoop(
         ZoneDirector director,
@@ -84,7 +104,7 @@ public sealed class SimulationLoop
             macroPois, wildPoiCandidates, s => _goap.RequestReplan(s)
         );
             
-        _spawnOrchestrator = new SpawnOrchestrator(mutantEcology, new object(), s => _goap.RequestReplan(s));
+        _spawnOrchestrator = new SpawnOrchestrator(mutantEcology, s => _goap.RequestReplan(s));
             
         _systems10Hz = new ISimulationSystem[]
         {
@@ -137,24 +157,20 @@ public sealed class SimulationLoop
         }
     }
 
+    /// <summary>
+    /// Resolves an inspector payload for the web layer. Called on a WebSocket
+    /// thread, so it must never touch live entities: stalkers, mutants, and POIs
+    /// are served from the immutable snapshot, and corpses come from the
+    /// internally-locked <see cref="CorpseRegistry"/>.
+    /// </summary>
     public InspectorDTO? BuildInspector(string entityId)
     {
-        var stalker = _ctx.Stalkers.FirstOrDefault(s => s.Id == entityId);
-        if (stalker != null)
-            return InspectorBuilder.FromStalker(stalker, _ctx.Missions, _ctx.Traders);
-
-        var mutant = _ctx.Mutants.FirstOrDefault(m => m.Id == entityId);
-        if (mutant != null)
-            return InspectorBuilder.FromMutant(mutant);
+        if (CurrentSnapshot.Inspectors.TryGetValue(entityId, out var dto))
+            return dto;
 
         var corpse = _ctx.Corpses.FirstOrDefault(c => c.CorpseId == entityId);
         if (corpse != null)
             return InspectorBuilder.FromCorpse(corpse, (float)_ctx.Time.ElapsedGameSeconds);
-
-        var poi = _ctx.MacroPois.FirstOrDefault(p => p.Id == entityId) ?? 
-                  _ctx.WildPoiCandidates.FirstOrDefault(p => p.Id == entityId);
-        if (poi != null)
-            return InspectorBuilder.FromPOI(poi, _ctx);
 
         return null;
     }
@@ -206,10 +222,15 @@ public sealed class SimulationLoop
         foreach (var m in mutants.Where(m => m.IsAlive))
             m.Tick(gameDelta);
 
-        foreach (var sys in _systems1Hz) 
+        foreach (var sys in _systems1Hz)
             sys.Tick(_ctx, gameDelta);
 
         SimulationDebugLog.MaybeSnapshot(_ctx.Time, _ctx.Stalkers, _ctx.Mutants, _ctx.Corpses, _ctx.Emissions);
+
+        // Publish an immutable snapshot for web readers. Built here on the sim
+        // thread (the sole writer of entity state) and swapped in atomically.
+        Volatile.Write(ref _snapshot,
+            SimulationSnapshot.Build(_ctx, PopulationTargets.Stalker, PopulationTargets.Mutant));
     }
 
     private void TickMacroFrequency(float gameDelta)

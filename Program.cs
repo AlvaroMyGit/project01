@@ -184,6 +184,8 @@ public class Program
             stalkers, mutants, entityLock, corpses, macroPois, wildPoiCandidates,
             market, traderRegistry, missionRegistry, convoyManager);
 
+        simulation.PopulationTargets = (targetStalkerPop, targetMutantPop);
+
         float initialSpawnSec = 720f;
         if (float.TryParse(Environment.GetEnvironmentVariable("STALKER_INITIAL_SPAWN_SEC"), out float iss) && iss >= 60f)
             initialSpawnSec = iss;
@@ -289,63 +291,55 @@ public class Program
             })
         }));
 
+        // Reads the immutable snapshot published by the simulation thread — never
+        // live entities — so REST requests cannot race the tick loop. Kills come
+        // from the thread-safe KillTracker.
         app.MapGet("/api/state", () => {
-            lock (entityLock) {
-                return Results.Json(new {
-                    stalkers = stalkers.Where(s => s.IsAlive).Select(s => new { 
-                        id = s.Id, 
-                        name = s.DisplayName, 
-                        faction = s.TrueFaction,
-                        type = "stalker",
-                        x = s.Position.X, 
-                        y = s.Position.Z 
-                    }).Concat(mutants.Where(m => m.IsAlive).Select(m => new { 
-                        id = m.Id, 
-                        name = m.Species, 
-                        faction = "Mutants", 
-                        type = "mutant",
-                        x = m.Position.X, 
-                        y = m.Position.Z 
-                    })),
-                    population = new {
-                        stalkers = stalkers.Count(s => s.IsAlive),
-                        stalkerTarget = 1500,
-                        mutants = mutants.Count(m => m.IsAlive),
-                        mutantTarget = 1000,
-                        corpses = corpses.Count,
-                        factionCounts = stalkers.Where(s => s.IsAlive).GroupBy(s => s.TrueFaction).ToDictionary(g => g.Key, g => g.Count()),
-                        missions = new {
-                            active = stalkers.Count(s => s.IsAlive && s.ActiveMission != null),
-                            leadersActive = stalkers.Count(s => s.IsAlive && s.IsSquadLeader && s.ActiveMission != null),
-                            scout = stalkers.Count(s => s.IsAlive && s.ActiveMission?.Type == MissionType.ScoutPoi),
-                            stash = stalkers.Count(s => s.IsAlive && s.ActiveMission?.Type == MissionType.RetrieveStash),
-                            escort = stalkers.Count(s => s.IsAlive && s.ActiveMission?.Type == MissionType.EscortConvoy),
-                            acceptedLifetime = SimulationDebugLog.MissionsAccepted,
-                            completedLifetime = SimulationDebugLog.MissionsCompleted,
-                            totalOffers = missionRegistry.OffersByIssuer.Values.Sum(o => o.Count),
-                            basesWithOffers = missionRegistry.OffersByIssuer.Count
-                        }
-                    },
-                    feed = pdaNetwork.Feed.TakeLast(40).Select(m => new {
-                        time = m.GameTime,
-                        type = m.MessageType.ToString(),
-                        headline = m.Headline,
-                        body = m.Body,
-                        isUrgent = m.IsUrgent
-                    }),
-                    kills = KillTracker.GetRecentKills(50)
-                });
-            }
+            var snap = simulation.CurrentSnapshot;
+            var p = snap.Population;
+            return Results.Json(new {
+                stalkers = snap.Entities.Select(e => new {
+                    id = e.Id,
+                    name = e.Name,
+                    faction = e.Faction,
+                    type = e.Type,
+                    x = e.X,
+                    y = e.Y
+                }),
+                population = new {
+                    stalkers = p.Stalkers,
+                    stalkerTarget = p.StalkerTarget,
+                    mutants = p.Mutants,
+                    mutantTarget = p.MutantTarget,
+                    corpses = p.Corpses,
+                    factionCounts = p.FactionCounts,
+                    missions = new {
+                        active = p.Missions.Active,
+                        leadersActive = p.Missions.LeadersActive,
+                        scout = p.Missions.Scout,
+                        stash = p.Missions.Stash,
+                        escort = p.Missions.Escort,
+                        acceptedLifetime = p.Missions.AcceptedLifetime,
+                        completedLifetime = p.Missions.CompletedLifetime,
+                        totalOffers = p.Missions.TotalOffers,
+                        basesWithOffers = p.Missions.BasesWithOffers
+                    }
+                },
+                feed = snap.Feed.Select(f => new {
+                    time = f.Time,
+                    type = f.Type,
+                    headline = f.Headline,
+                    body = f.Body,
+                    isUrgent = f.IsUrgent
+                }),
+                kills = KillTracker.GetRecentKills(50)
+            });
         });
 
-        app.MapGet("/api/leaderboard", () => {
-            lock (entityLock) {
-                return Results.Json(new {
-                    updatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-                    entries = LeaderboardSerializer.BuildTop100(stalkers)
-                });
-            }
-        });
+        app.MapGet("/api/leaderboard", () => Results.Json(new {
+            updatedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+            entries = simulation.CurrentSnapshot.Leaderboard
+        }));
 
         app.MapGet("/api/factions", () => {
             var matrixDict = new Dictionary<string, Dictionary<string, int>>();

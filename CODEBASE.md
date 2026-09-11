@@ -141,6 +141,9 @@ Thread-safe global publish-subscribe hub keyed by struct event types. Methods: `
 ### [`DataPaths.cs`](file:///home/alvaromendes/Documents/project01/src/Core/DataPaths.cs)
 Resolves bundled `data/**` files relative to `AppContext.BaseDirectory` (where the build copies them) rather than the current working directory, so data loading is independent of where the process is launched. `Resolve(params string[])` builds a path; `Require(...)` throws a clear `FileNotFoundException` at load time if the file is missing. All JSON loaders route through this. The csproj copies `data/**` to the output directory (`PreserveNewest`), excluding the runtime-generated `leaderboard.json`.
 
+### [`SimulationSnapshot.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationSnapshot.cs)
+Immutable point-in-time view of simulation state (entity pins, population/mission counts, PDA feed, top-100 leaderboard, and per-entity inspector payloads) consumed by the web layer. **Threading contract:** all simulation ticks run on a single timer thread — the sole writer of entity state — which builds a snapshot once per 1 Hz tick via `SimulationSnapshot.Build(...)`. `SimulationLoop` publishes it through a volatile reference (`CurrentSnapshot`); REST endpoints and the WebSocket inspect handler read it lock-free and never touch live entities, eliminating torn-read races.
+
 ---
 
 ## src/Core/Systems/ — Tick-Driven Subsystems
