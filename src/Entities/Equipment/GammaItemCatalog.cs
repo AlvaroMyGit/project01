@@ -29,8 +29,8 @@ public static class GammaItemCatalog
         if (_loaded) return;
         GammaProtectionLoader.EnsureLoaded();
 
-        LoadOutfits(Path.Combine("data", "gamma", "outfits.json"));
-        LoadHelmets(Path.Combine("data", "gamma", "helmets.json"));
+        LoadOutfits(StalkerALifeSandbox.Core.DataPaths.Resolve("gamma", "outfits.json"));
+        LoadHelmets(StalkerALifeSandbox.Core.DataPaths.Resolve("gamma", "helmets.json"));
         _loaded = true;
     }
 

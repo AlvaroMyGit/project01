@@ -69,10 +69,7 @@ public sealed class StaticWorldGenerator
     {
         _rng = new Random(seed);
         
-        string jsonPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../data/map_regions.json");
-        if (!File.Exists(jsonPath))
-            jsonPath = Path.Combine(Directory.GetCurrentDirectory(), "data", "map_regions.json");
-            
+        string jsonPath = StalkerALifeSandbox.Core.DataPaths.Resolve("map_regions.json");
         if (File.Exists(jsonPath))
         {
             string json = File.ReadAllText(jsonPath);
@@ -80,6 +77,7 @@ public sealed class StaticWorldGenerator
         }
         else
         {
+            Console.WriteLine($"[StaticWorldGenerator] WARNING: map_regions.json not found at '{jsonPath}'; using empty map.");
             _mapData = new MapData(); // Fallback empty
         }
     }

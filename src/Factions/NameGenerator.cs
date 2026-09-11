@@ -24,7 +24,7 @@ public sealed class NameGenerator
     public static void EnsureLoaded()
     {
         if (_isLoaded) return;
-        string path = Path.Combine("data", "names.json");
+        string path = StalkerALifeSandbox.Core.DataPaths.Resolve("names.json");
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);

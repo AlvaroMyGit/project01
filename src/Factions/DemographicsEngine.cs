@@ -35,7 +35,7 @@ public sealed class DemographicsEngine
     public static void EnsureLoaded()
     {
         if (_isLoaded) return;
-        string path = System.IO.Path.Combine("data", "factions.json");
+        string path = StalkerALifeSandbox.Core.DataPaths.Resolve("factions.json");
         if (System.IO.File.Exists(path))
         {
             string json = System.IO.File.ReadAllText(path);

@@ -10,7 +10,7 @@ public static class BuildingFootprintLoader
         StaticWorldGenerator worldGen,
         int seed = 42)
     {
-        string path = Path.Combine("data", "building_footprints.json");
+        string path = StalkerALifeSandbox.Core.DataPaths.Resolve("building_footprints.json");
         if (File.Exists(path))
         {
             var loaded = Load(path);

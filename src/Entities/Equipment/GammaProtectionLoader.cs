@@ -18,7 +18,7 @@ public static class GammaProtectionLoader
     public static void EnsureLoaded()
     {
         if (_loaded) return;
-        string baseDir = Path.Combine("data", "gamma");
+        string baseDir = StalkerALifeSandbox.Core.DataPaths.Resolve("gamma");
         LoadCategory(Path.Combine(baseDir, "outfits.json"), _outfits);
         LoadCategory(Path.Combine(baseDir, "helmets.json"), _helmets);
         LoadCategory(Path.Combine(baseDir, "belt-attachments.json"), _beltAttachments);

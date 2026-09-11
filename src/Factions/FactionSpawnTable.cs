@@ -28,7 +28,7 @@ public static class FactionSpawnTable
     {
         if (_loaded) return;
 
-        string path = Path.Combine("data", "spawn_factions.json");
+        string path = StalkerALifeSandbox.Core.DataPaths.Resolve("spawn_factions.json");
         if (!File.Exists(path))
         {
             _loaded = true;

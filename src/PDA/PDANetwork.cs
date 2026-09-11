@@ -49,7 +49,7 @@ public sealed class PDANetwork
     public static void EnsureSlangLoaded()
     {
         if (_slangLoaded) return;
-        string path = Path.Combine("data", "slang.json");
+        string path = DataPaths.Resolve("slang.json");
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
@@ -78,7 +78,7 @@ public sealed class PDANetwork
     public static void EnsureTemplatesLoaded()
     {
         if (_templatesLoaded) return;
-        string path = Path.Combine("data", "pda_chatter_templates.json");
+        string path = DataPaths.Resolve("pda_chatter_templates.json");
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);

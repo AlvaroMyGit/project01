@@ -96,7 +96,7 @@ public sealed class FactionMatrix
                 ? FactionRelation.Allied
                 : FactionRelation.Neutral;
 
-        string path = System.IO.Path.Combine("data", "faction_matrix.json");
+        string path = StalkerALifeSandbox.Core.DataPaths.Resolve("faction_matrix.json");
         if (System.IO.File.Exists(path))
         {
             string json = System.IO.File.ReadAllText(path);

@@ -28,7 +28,7 @@ public sealed class TelemetrySystem : ISimulationSystem
             _leaderboardAccum = 0f;
             lock(ctx.EntityLock)
             {
-                LeaderboardSerializer.SaveLeaderboard(ctx.Stalkers.ToList(), "data/leaderboard.json");
+                LeaderboardSerializer.SaveLeaderboard(ctx.Stalkers.ToList(), DataPaths.Resolve("leaderboard.json"));
             }
         }
     }

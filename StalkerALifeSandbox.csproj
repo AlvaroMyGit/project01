@@ -13,4 +13,17 @@
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
+  <!-- Copy bundled data files next to the built assembly so they resolve via
+       AppContext.BaseDirectory regardless of the working directory. The Web SDK
+       already includes data/** as Content, so we Update (not Include) to set the
+       copy behavior. leaderboard.json is generated at runtime, so it is not bundled. -->
+  <ItemGroup>
+    <Content Update="data\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="data\leaderboard.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

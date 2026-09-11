@@ -24,7 +24,7 @@ public sealed class ItemRegistry
     {
         if (_loaded) return;
 
-        string itemsDir = Path.Combine("data", "items");
+        string itemsDir = StalkerALifeSandbox.Core.DataPaths.Resolve("items");
         if (Directory.Exists(itemsDir))
         {
             foreach (string file in Directory.GetFiles(itemsDir, "*.json"))

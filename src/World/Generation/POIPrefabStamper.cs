@@ -58,7 +58,7 @@ public sealed class POIPrefabStamper
         FactionSpawnTable.EnsureLoaded();
 
         // ── Load Minor POIs and promote to stamps ──────────────────
-        string minorPath = System.IO.Path.Combine("data", "minor_pois.json");
+        string minorPath = StalkerALifeSandbox.Core.DataPaths.Resolve("minor_pois.json");
         foreach (var minor in MinorPOILoader.Load(minorPath))
         {
             var gameplayType = minor.GameplayPOIType != GameplayPOIType.Unknown

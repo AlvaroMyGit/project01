@@ -21,7 +21,7 @@ public sealed class MutantEcologyManager
 
     private void InitializeSpecs()
     {
-        string path = Path.Combine("data", "mutants.json");
+        string path = StalkerALifeSandbox.Core.DataPaths.Resolve("mutants.json");
         if (File.Exists(path))
         {
             var options = new JsonSerializerOptions { Converters = { new JsonStringEnumConverter() } };

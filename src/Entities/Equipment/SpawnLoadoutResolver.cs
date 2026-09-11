@@ -33,8 +33,8 @@ public sealed class SpawnLoadoutResolver
     {
         if (_loaded) return;
         _registry.EnsureLoaded();
-        LoadGearTiers(Path.Combine("data", "factions.json"));
-        LoadLoadouts(Path.Combine("data", "faction_loadouts.json"));
+        LoadGearTiers(StalkerALifeSandbox.Core.DataPaths.Resolve("factions.json"));
+        LoadLoadouts(StalkerALifeSandbox.Core.DataPaths.Resolve("faction_loadouts.json"));
         _loaded = true;
     }
 
