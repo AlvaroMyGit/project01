@@ -571,7 +571,7 @@ Runtime item catalogs loaded by `ItemDatabase.cs`:
 
 ## tests/ — Test Suite
 
-Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 74 tests):
+Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 134 tests, ~20% line coverage):
 
 | File | Coverage |
 |---|---|
@@ -583,11 +583,17 @@ Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 74 tests):
 | `FactionMatrixTests.cs` | `FactionMatrix` relation symmetry, Neutral fallback, hostile/friendly thresholds, `IndexOf` |
 | `GOAPPlannerTests.cs` | Goal selection by utility, action chaining, cheapest-path preference, empty/null-plan edge cases |
 | `ItemDatabaseTests.cs` | `ItemRegistry` registration and `ItemFactory` instantiation |
+| `KillTrackerTests.cs` | Kill recording (stalker/mutant/unrecognized killers), cause override, recent-kills log |
 | `MarketPricesTests.cs` | Latitude/supply multipliers, supply clamping, price formula |
+| `NPCBlackboardTests.cs` | Path/waypoint state machine, sighting memory + pruning, `Reset`, navigation status text |
 | `PDANetworkTests.cs` | Feed append + size cap, band/latitude fallbacks without a bound world |
+| `POIRegistryTests.cs` | Name- and field-based POI classification, loot availability, patrol/loot/rest target picking |
 | `RankProgressionTests.cs` | XP thresholds, monotonic rank, XP floor, kill/mission accounting |
 | `SurvivalNeedsTests.cs` | Need decay over time, feeding, critical-state threshold, ammo consumption |
 | `TelemetryMapperTests.cs` | Mission/corpse DTO mapping and despawn-remaining computation |
+| `TradeServiceTests.cs` | Buy/sell gating on gold, purchased-item effects, trade-visit summaries |
+| `TraderComponentTests.cs` | Dynamic pricing, faction price modifiers, stock/gold mutation on buy/sell |
+| `TraderRegistryTests.cs` | `Bootstrap` stock seeding by base name/faction/band, nearest/by-name lookup |
 | `ZoneGateEvaluatorTests.cs` | Comfort-threat monotonicity, rank-gating, `MinRankForThreat` |
 | `ZonePathfinderTests.cs` | Grid dimensions and A* `FindPath` between open points |
 | `TestParallelization.cs` | Disables xUnit cross-collection parallelization while process-global static state remains (see roadmap Phase 4) |
@@ -599,7 +605,7 @@ dotnet test tests/StalkerALifeSandbox.Tests/
 
 ### Continuous Integration
 
-[`.github/workflows/ci.yml`](file:///home/alvaromendes/Documents/project01/.github/workflows/ci.yml) runs on every push and pull request to `main`: restore, build the solution in Release with warnings treated as errors (`-warnaserror`), then run the test suite under a **coverage gate** (coverlet.msbuild) that fails the job if total line coverage drops below the floor (currently 10%; raise it as coverage grows). Formatting and style conventions live in [`.editorconfig`](file:///home/alvaromendes/Documents/project01/.editorconfig); generated build output and logs are excluded via `.gitignore`.
+[`.github/workflows/ci.yml`](file:///home/alvaromendes/Documents/project01/.github/workflows/ci.yml) runs on every push and pull request to `main`: restore, build the solution in Release with warnings treated as errors (`-warnaserror`), then run the test suite under a **coverage gate** (coverlet.msbuild) that fails the job if total line coverage drops below the floor (currently 19%, just under the measured ~20.4%; raise it as coverage grows). Formatting and style conventions live in [`.editorconfig`](file:///home/alvaromendes/Documents/project01/.editorconfig); generated build output and logs are excluded via `.gitignore`.
 
 ---
 
