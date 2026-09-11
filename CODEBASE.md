@@ -100,7 +100,7 @@ Communication between decoupled systems is handled by a global `EventBus` using 
 
 The application entry point performs the full bootstrap sequence:
 
-1. **Data Loading** — Loads `NameGenerator`, `DemographicsEngine`, `PDANetwork`, `FactionSpawnTable`, `ItemDatabase` from JSON data files
+1. **Data Loading** — Loads `NameGenerator`, `DemographicsEngine`, `PDANetwork`, `FactionSpawnTable`, `ItemDatabase` from JSON data files (resolved via [`DataPaths`](file:///home/alvaromendes/Documents/project01/src/Core/DataPaths.cs) relative to the app base directory, not the working directory)
 2. **World Generation** — Creates `StaticWorldGenerator` (1600×3200 world), stamps POIs via `POIPrefabStamper`, builds `RoadNetwork`, initializes `ZonePathfinder` grid, loads `BuildingFootprintLoader`, seeds anomaly fields via `AnomalySeeder`
 3. **Faction Setup** — Spawns macro-base faction leaders, initializes `TraderRegistry`, `MissionRegistry`, and `ConvoyManager`
 4. **Simulation Init** — Configures `TimeManager`, `EnvironmentManager`, `WeatherManager`, `ZoneDirector`, and instantiates `SimulationLoop` with 12-minute staggered spawn for ~1,500 stalkers and ~1,000 mutants
@@ -137,6 +137,9 @@ Master tick scheduler distributing elapsed engine time into three accumulator bu
 
 ### [`EventBus.cs`](file:///home/alvaromendes/Documents/project01/src/Core/EventBus.cs)
 Thread-safe global publish-subscribe hub keyed by struct event types. Methods: `Subscribe<T>()`, `Unsubscribe<T>()`, `Publish<T>()`, `ClearAll()`. Defined event structs include: `DeathLogEvent`, `BlowoutWarningEvent`, `EmissionPhaseChangedEvent`, `FactionNewsEvent`, `TradeOfferEvent`, `BountyEvent`, `MutantEncounterEvent`.
+
+### [`DataPaths.cs`](file:///home/alvaromendes/Documents/project01/src/Core/DataPaths.cs)
+Resolves bundled `data/**` files relative to `AppContext.BaseDirectory` (where the build copies them) rather than the current working directory, so data loading is independent of where the process is launched. `Resolve(params string[])` builds a path; `Require(...)` throws a clear `FileNotFoundException` at load time if the file is missing. All JSON loaders route through this. The csproj copies `data/**` to the output directory (`PreserveNewest`), excluding the runtime-generated `leaderboard.json`.
 
 ---
 
@@ -553,24 +556,33 @@ Runtime item catalogs loaded by `ItemDatabase.cs`:
 
 ## tests/ — Test Suite
 
-Located in `tests/StalkerALifeSandbox.Tests/`:
+Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 38 tests):
 
 | File | Coverage |
 |---|---|
 | `ArchitectureTests.cs` | Verifies `SimulationContext` initialization and `ISimulationSystem` wiring |
+| `CombatResolverTests.cs` | `CombatResolver` win-chance bounds and monotonicity (rank, armament, threat) |
 | `CraftingAndCookingTests.cs` | `MutantCookingSystem` hunger reduction, vodka radiation purge, `FieldCraftingSystem` repairs, belt slot insertion |
 | `EventBusTests.cs` | Event subscription, publication, and unsubscription on the decoupled `EventBus` |
+| `FactionMatrixTests.cs` | `FactionMatrix` relation symmetry, Neutral fallback, hostile/friendly thresholds, `IndexOf` |
 | `ItemDatabaseTests.cs` | `ItemRegistry` registration and `ItemFactory` instantiation |
-| `UnitTest1.cs` | Default template test |
+| `RankProgressionTests.cs` | XP thresholds, monotonic rank, XP floor, kill/mission accounting |
+| `TestParallelization.cs` | Disables xUnit cross-collection parallelization while process-global static state remains (see roadmap Phase 4) |
 
 Run tests with:
 ```bash
 dotnet test tests/StalkerALifeSandbox.Tests/
 ```
 
+### Continuous Integration
+
+[`.github/workflows/ci.yml`](file:///home/alvaromendes/Documents/project01/.github/workflows/ci.yml) runs on every push and pull request to `main`: restore, build the solution in Release with warnings treated as errors (`-warnaserror`), then run the test suite with code coverage. Formatting and style conventions live in [`.editorconfig`](file:///home/alvaromendes/Documents/project01/.editorconfig); generated build output and logs are excluded via `.gitignore`.
+
 ---
 
-## Root Utility Scripts
+## scripts/ — Maintenance Utilities
+
+Relocated from the repository root in Phase 0.
 
 | File | Description |
 |---|---|
