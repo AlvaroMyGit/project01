@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using StalkerALifeSandbox.AI.Social;
 using StalkerALifeSandbox.Economy;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Equipment;
@@ -36,6 +37,7 @@ public sealed class SimulationHost
     public IReadOnlyList<BuildingFootprint> BuildingFootprints { get; }
     public EmissionSystem Emissions { get; }
     public FactionMatrix Factions { get; }
+    public CampfireRegistry Campfires { get; }
 
     public float[] ThreatMap { get; }
     public int ThreatW { get; }
@@ -177,6 +179,11 @@ public sealed class SimulationHost
         var wildPoiCandidates = Stamper.Stamps
             .Where(p => p.Type == POIType.MutantDen || p.Type == POIType.MicroShelter)
             .ToList();
+        // One campfire at every macro base (so anywhere a stalker could already
+        // idle at base has a real campfire) plus a share of micro shelters.
+        Campfires = CampfireRegistry.Generate(Stamper.Stamps, CampfireOptions.FromEnvironment());
+        Console.WriteLine($"[Social] {Campfires.All.Count} campfires placed");
+
         var market = new MarketPrices();
         var traderRegistry = TraderRegistry.Bootstrap(macroPois, market, Factions);
         var poiRegistry = new StalkerALifeSandbox.World.POI.POIRegistry(Stamper.Stamps);
@@ -201,6 +208,7 @@ public sealed class SimulationHost
             Environment = environment,
             Weather = weather,
             Factions = Factions,
+            Campfires = Campfires,
             MutantEcology = mutantEcology,
             Pda = pdaNetwork,
             WebVisualizer = WebVisualizer,

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using StalkerALifeSandbox.AI.Social;
 using StalkerALifeSandbox.Economy;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Mutants;
@@ -38,6 +39,9 @@ public sealed record SimulationDependencies
     // Factions & ecology
     public required FactionMatrix Factions { get; init; }
     public required MutantEcologyManager MutantEcology { get; init; }
+
+    // Social
+    public required CampfireRegistry Campfires { get; init; }
 
     // Entities
     public required List<Stalker> Stalkers { get; init; }

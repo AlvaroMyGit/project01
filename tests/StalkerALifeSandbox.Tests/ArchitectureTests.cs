@@ -1,3 +1,4 @@
+using StalkerALifeSandbox.AI.Social;
 using Xunit;
 using StalkerALifeSandbox.Core;
 using StalkerALifeSandbox.Core.Systems;
@@ -28,11 +29,14 @@ public class ArchitectureTests
         var time = new TimeManager();
         var factions = new FactionMatrix();
 
+        var campfires = new CampfireRegistry(new CampfireOptions());
+
         var ctx = new SimulationContext(
             stalkers, mutants, entityLock, corpses, time, factions,
-            null!, null!, null!, null!, null!, null!, null!, null!, null!, _ => { });
+            null!, null!, null!, null!, null!, null!, null!, null!, null!, campfires, _ => { });
 
         Assert.NotNull(ctx);
         Assert.Same(entityLock, ctx.EntityLock);
+        Assert.Same(campfires, ctx.Campfires);
     }
 }

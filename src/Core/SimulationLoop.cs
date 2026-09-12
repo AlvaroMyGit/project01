@@ -78,7 +78,7 @@ public sealed class SimulationLoop : IDisposable
         _ctx = new SimulationContext(
             deps.Stalkers, deps.Mutants, deps.EntityLock, deps.Corpses, deps.Time, deps.Factions,
             deps.WorldGen, deps.Stamper, deps.Pathfinder, deps.Emissions, deps.Pda, deps.Traders, deps.Missions,
-            deps.MacroPois, deps.WildPoiCandidates, s => _goap.RequestReplan(s)
+            deps.MacroPois, deps.WildPoiCandidates, deps.Campfires, s => _goap.RequestReplan(s)
         );
 
         _spawnOrchestrator = new SpawnOrchestrator(deps.MutantEcology, s => _goap.RequestReplan(s));

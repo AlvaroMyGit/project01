@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using StalkerALifeSandbox.AI.Social;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Mutants;
 using StalkerALifeSandbox.World.Generation;
@@ -36,5 +37,6 @@ public sealed record SimulationContext(
     MissionRegistry          Missions,
     List<WorldPOIBase>       MacroPois,
     List<WorldPOIBase>       WildPoiCandidates,
+    CampfireRegistry         Campfires,
     Action<Stalker>          RequestReplan
 );
