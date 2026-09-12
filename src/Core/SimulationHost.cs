@@ -104,7 +104,12 @@ public sealed class SimulationHost
         var macroPois = Stamper.Stamps.Where(s => s.Type == POIType.MacroBase).ToList();
 
         // ── Anomaly / Emission System Setup ────────────────────────────────
-        Emissions = new EmissionSystem();
+        var emissionOptions = EmissionOptions.FromEnvironment();
+        Emissions = new EmissionSystem(emissionOptions);
+        Console.WriteLine(
+            $"[Emissions] interval {emissionOptions.MinIntervalSec / 3600f:F1}-" +
+            $"{emissionOptions.MaxIntervalSec / 3600f:F1} game-hours " +
+            "(override via STALKER_EMISSION_MIN_SEC / _MAX_SEC)");
         AnomalySeeder.SeedStaticFields(Emissions, WorldGen);
         AnomalySeeder.SeedRadiationZones(Emissions, WorldGen);
         Emissions.SetWorldContext(WorldGen, Stamper.Stamps);

@@ -342,6 +342,7 @@ Located in `src/AI/GOAP/Goals/`:
 | [`AnomalyField.cs`](file:///home/alvaromendes/Documents/project01/src/World/Hazards/AnomalyField.cs) | `AnomalyField` | Hazard volume dealing elemental/psi damage and spawning artifacts post-emission |
 | [`AnomalySeeder.cs`](file:///home/alvaromendes/Documents/project01/src/World/Hazards/AnomalySeeder.cs) | `AnomalySeeder` | Seeds 39 real-world Chernobyl anomaly clusters plus dynamic wilderness fields |
 | [`EmissionSystem.cs`](file:///home/alvaromendes/Documents/project01/src/World/Hazards/EmissionSystem.cs) | `EmissionSystem` | 4-phase blowout lifecycle (Dormant → Warning → Panic → Peak → Aftermath) with anomaly reshuffling |
+| [`EmissionOptions.cs`](file:///home/alvaromendes/Documents/project01/src/World/Hazards/EmissionOptions.cs) | `EmissionOptions` | Immutable emission timings in game seconds. Defaults are GAMMA-style 12–24 game hours between blowouts; `FromEnvironment()` reads `STALKER_EMISSION_MIN_SEC`, `_MAX_SEC`, `_WARNING_SEC`, `_PANIC_SEC`, `_PEAK_SEC`, `_AFTERMATH_SEC` |
 
 ### Navigation
 

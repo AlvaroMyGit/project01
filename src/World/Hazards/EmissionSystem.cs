@@ -31,14 +31,27 @@ public readonly record struct RadiationZone(
 /// </summary>
 public sealed class EmissionSystem
 {
-    // Interval in game-seconds. At TimeFactor 3×: 600 gs = ~3 real-min, 1500 gs = ~8 real-min.
-    // Old values (3600–7200) were never reachable in a 30-minute run (max ~3060 game-sec elapsed).
-    public float MinIntervalSec { get; set; } = 600f;
-    public float MaxIntervalSec { get; set; } = 1500f;
-    public float WarningLeadSec { get; set; } = 120f;
-    public float PanicDuration    { get; set; } = 15f;
-    public float PeakDuration     { get; set; } = 30f;
-    public float AftermathDuration { get; set; } = 15f;
+    // Timings live in EmissionOptions (game seconds) — see that type for why the
+    // defaults are GAMMA-style 12-24 game hours rather than the old
+    // 600-1500 testing values, and for the STALKER_EMISSION_* overrides.
+    private EmissionOptions _options = new();
+
+    public float MinIntervalSec => _options.MinIntervalSec;
+    public float MaxIntervalSec => _options.MaxIntervalSec;
+    public float WarningLeadSec => _options.WarningLeadSec;
+    public float PanicDuration => _options.PanicDuration;
+    public float PeakDuration => _options.PeakDuration;
+    public float AftermathDuration => _options.AftermathDuration;
+
+    /// <summary>
+    /// Install timings. Call before the first Tick — it reschedules the next
+    /// emission against the new interval.
+    /// </summary>
+    public void Configure(EmissionOptions options)
+    {
+        _options = options;
+        ScheduleNext(0f);
+    }
 
     public EmissionPhase CurrentPhase { get; private set; } = EmissionPhase.Dormant;
     public float PeakIntensity  { get; private set; }
@@ -67,7 +80,11 @@ public sealed class EmissionSystem
     private StaticWorldGenerator? _worldGen;
     private IReadOnlyList<WorldPOIBase>? _macroBases;
 
-    public EmissionSystem() => ScheduleNext(0f);
+    public EmissionSystem(EmissionOptions? options = null)
+    {
+        _options = options ?? new EmissionOptions();
+        ScheduleNext(0f);
+    }
 
     public void ForceWarning()
     {

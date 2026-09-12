@@ -87,6 +87,25 @@ public class MissionTargetReachabilityTests
     }
 
     [Fact]
+    public void TheMissionPoolIsReproducible()
+    {
+        // Bootstrap seeds its Random with 42 precisely so the pool is stable.
+        // AddLocalErrand used Random.Shared instead, which made the pool vary
+        // run to run and turned the reachability test above intermittent.
+        static List<string> Fingerprint()
+        {
+            var (_, missions, _) = BuildWorldWithFootprints(snapTargets: true);
+            return missions.OffersByIssuer
+                .OrderBy(kv => kv.Key)
+                .SelectMany(kv => kv.Value.Select(o =>
+                    $"{kv.Key}|{o.Id}|{o.Type}|{o.TargetPoiId}|{o.TargetPosition}"))
+                .ToList();
+        }
+
+        Assert.Equal(Fingerprint(), Fingerprint());
+    }
+
+    [Fact]
     public void NearestNavigable_LeavesClearGroundAlone_AndEscapesBlockedGround()
     {
         var (pathfinder, missions, _) = BuildWorldWithFootprints(snapTargets: false);

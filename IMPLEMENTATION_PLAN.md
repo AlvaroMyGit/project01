@@ -921,6 +921,56 @@ runtime. It must only test what the planner cannot reason about — context
 availability, whether the contract still exists. Anything that another action
 can *achieve* belongs in `GetPreconditions`, never in `IsValid`.
 
+### ✅ Emission cadence restored to canon (2026-09-12)
+
+The interval had been cut to 600–1500 game seconds — one blowout every ~18 game
+minutes, 78 a day — and the code comment said why: the real values "were never
+reachable in a 30-minute run" at TimeFactor 3. A testing accommodation had
+become the production default, and it was expensive. `EmissionImminent`
+hard-gates `GoalCompleteMission`, `GoalSocialise`, `ActionFulfillMission`,
+`ActionReturnToMissionIssuer` and all wilderness/POI travel, so ~19% of all sim
+time every stalker was fleeing or forbidden from doing anything purposeful —
+against journeys of about 3 game minutes. The premise had also expired: runs now
+go at TimeFactor 150, where 7 real minutes is 17.5 game hours.
+
+New `EmissionOptions` (same pattern as `CorpseCleanupOptions` / `CampfireOptions`)
+defaults to GAMMA/Anomaly-style **12–24 game hours**, with
+`STALKER_EMISSION_MIN_SEC` / `_MAX_SEC` / `_WARNING_SEC` / `_PANIC_SEC` /
+`_PEAK_SEC` / `_AFTERMATH_SEC` overrides. Verified live: the default logs
+`interval 12.0-24.0 game-hours` and produces no storms in an 11-game-hour run;
+the old cadence is reproducible on demand with the env vars (21 storms in 6.4
+game hours).
+
+**Effect on a 7-minute run at TimeFactor 150** (vs the same run before):
+
+| metric | frequent storms | canon storms |
+|---|---|---|
+| missions accepted | 407 | **661** |
+| missions completed | 178 | **575** |
+| emission deaths | 48 | **0** |
+| gunfire deaths | 21 | 306 |
+| alive at end | ~160 | 161 |
+| avg morale | ~50 | **77** |
+
+Emissions were suppressing the mission economy far more than the storm counter
+suggested. Combat is now the dominant cause of death, which is the right shape
+for the Zone.
+
+**Side effect worth knowing:** socialising has gone to **zero**. `GoalSocialise`
+needs morale below 75 and average morale is now 77 — with missions completing
+and no storms grinding them down, stalkers are simply content. The campfire
+cluster from 6A steps 1–5b is wired correctly but has nothing to trigger it.
+Re-tune it against this baseline rather than the old one; every socialising
+number recorded earlier was measured under both the navigation bug and the
+storm-every-18-minutes cadence.
+
+**Also fixed here:** `AddLocalErrand` used `Random.Shared` while `Bootstrap`
+seeds its own `Random(42)` for reproducibility, so the mission pool varied run
+to run. It now uses the seeded instance, pinned by a test — this was surfacing
+as an intermittent failure in the reachability test.
+
+---
+
 ### Deliberately *not* in Phase 6
 
 - **`TaskManager`** (emergent needs-driven contracts) — overlaps the live

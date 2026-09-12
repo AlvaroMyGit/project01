@@ -94,7 +94,7 @@ public sealed class MissionRegistry
             }
 
             // Guaranteed rookie errand — always within local comfort band
-            AddLocalErrand(offers, ref missionIdx, site, issuer, poiRegistry);
+            AddLocalErrand(offers, ref missionIdx, site, issuer, poiRegistry, rng);
 
             if (offers.Count > 0)
                 registry._offersByIssuer[site.PoiId] = offers;
@@ -241,7 +241,8 @@ public sealed class MissionRegistry
         ref int missionIdx,
         TraderRegistry.TraderSite site,
         WorldPOIBase issuer,
-        POIRegistry poiRegistry)
+        POIRegistry poiRegistry,
+        Random rng)
     {
         float maxThreat = issuer.ThreatLevel + 0.04f;
         var nearby = poiRegistry.All
@@ -249,7 +250,9 @@ public sealed class MissionRegistry
             .Where(r => r.Stamp.ThreatLevel <= maxThreat)
             .Select(r => (Record: r, Dist: Vector3.Distance(r.Stamp.Position, issuer.Position)))
             .Where(x => x.Dist is >= LocalErrandMinDistance and <= LocalErrandMaxDistance)
-            .OrderBy(_ => Random.Shared.Next())
+            // Seeded rng, not Random.Shared: Bootstrap seeds 42 so the mission
+            // pool is reproducible. This one line made it vary run to run.
+            .OrderBy(_ => rng.Next())
             .FirstOrDefault();
 
         if (nearby.Record == null) return;
