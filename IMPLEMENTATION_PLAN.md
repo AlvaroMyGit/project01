@@ -806,6 +806,47 @@ shrinks hearing radius · NVG ignores light level.
 
 ---
 
+### 🔴 Blocker found 2026-09-12 — shared action state breaks the mission loop
+
+Checking why missions never complete turned up a live, proven bug rather than a
+tuning problem.
+
+**Measured funnel** over one 7-minute run at `TimeFactor=150` (~15 game hours):
+
+| stage | count |
+|---|---|
+| `AcceptMission` completed | 256 |
+| `[MISSION] … arrived` | **1** |
+| objective done | 7 |
+| turned in | 5 |
+
+**Cause.** GOAP actions are registered as ONE instance each
+(`StalkerGoapService.RegisterActions`) and shared by every planning stalker.
+`GoapTravelAction` keeps `_pathSet` as *instance* state, so one stalker's
+`Enter` overwrites the flag another stalker's `Execute` is reading. Two failure
+modes, both live:
+
+- a stalker whose travel finished reports "not finished" **forever**, because
+  someone else's `Enter` cleared the flag — it holds a plan that can never
+  complete;
+- a stalker that never got a path reports "arrived" **instantly**, because
+  someone else's `Enter` set it — it skips the travel step without moving.
+
+**Proven, not inferred:** `GoapSharedActionStateTests` demonstrates all three
+states (correct in isolation, arrival lost, arrival faked) deterministically.
+These are characterization tests — when the bug is fixed they must be inverted.
+
+**Scope of fix.** This is the systemic issue flagged during 6A step 4: 11
+actions hold per-execution state (`_timer`, `_finished`, `_working`,
+`_accepted`, `_pathSet`) on shared singletons. The established remedy is
+already in the codebase — `NPCBlackboard.SeatedCampfireId` was put there for
+exactly this reason. Options: move the state to `NPCBlackboard`, or give each
+stalker its own action instances.
+
+**This outranks Phase 6A step 6 and Phase 6B.** Nearly every conclusion drawn
+from live runs — goal competition, socialising rates, mission pacing — is
+measured through a broken travel step.
+
 ### Deliberately *not* in Phase 6
 
 - **`TaskManager`** (emergent needs-driven contracts) — overlaps the live
