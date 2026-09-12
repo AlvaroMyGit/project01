@@ -1,7 +1,7 @@
 # Master Implementation Plan: S.T.A.L.K.E.R. A-Life Open-World Sandbox (v4.5 — Weapons, Gear & Interior Navigation)
 
-> **Last audited:** 2026-08-19  
-> **Runtime entry point:** `Program.cs` → `SimulationLoop.cs` (10 Hz via `ZoneDirector`)  
+> **Last audited:** 2026-09-12 (status markers re-verified against the code; five claims were stale and are corrected)  
+> **Runtime entry point:** `Program.cs` → `SimulationHost.cs` → `SimulationLoop.cs` (10 Hz via `ZoneDirector`)  
 > **Status legend:** `[x]` done & wired · `[~]` partial (class/data exists, not fully integrated) · `[ ]` missing or not started
 
 ---
@@ -95,7 +95,7 @@ StalkerALifeSandbox/
     │   └── POI/                   # POIRegistry, LootTableResolver
     │
     ├── Entities/                  # Stalker, Mutant, Equipment, Needs, …
-    ├── Crafting/                  # [~] Classes exist; not in sim loop
+    ├── Crafting/                  # [x] FieldCraftingSystem runs at 0.1 Hz; MutantCookingSystem used by it
     ├── Factions/                  # [x] Matrix + demographics wired at spawn
     ├── Economy/                   # [x] TraderRegistry, MissionRegistry, TraderEconomyConfig, ConvoyManager, TradeService
     ├── PDA/                       # [x] Chatter + forecaster + templated death reports
@@ -171,16 +171,16 @@ Spec sections below describe the **design target**. See §4 for honest completio
 
 ### Phase 3: Demographics, RPG Skills & Belt Gear
 - [x] `DemographicsEngine.cs` — wired at stalker spawn
-- [~] `StalkerAttributes.cs` — 4-skill matrix on every stalker; **`GenerateForRank()` never called at spawn** (all stalkers get default stats)
+- [x] `StalkerAttributes.cs` — 4-skill matrix rolled per rank at spawn via `StalkerSpawnHelper.ConfigureFreshSpawn()` → `RollForRank()`, on **both** spawn paths (faction leaders + inbound trickle). *(The static `GenerateForRank()` factory is unused — `RollForRank()` is the live path.)*
 - [~] `BeltSlot.cs` — slot array exists; **items rarely populated at runtime**
 - [~] `BetrayalEvaluator.cs` — **desperate squad betrayal wired at 1 Hz**; treason PDA alerts
 
 ### Phase 4: Full Mutant Ecology & Cooking Mechanics
 - [x] `data/mutants.json` — all 17 G.A.M.M.A. species defined
-- [~] `MutantEcologyManager.cs` — activity modifiers implemented; **weather/light not passed in sim loop**
+- [x] `MutantEcologyManager.cs` — activity modifiers implemented; environment + weather **are** passed into `MutantBehaviourSystem` and used by `ShouldSleepInDen(species, environment, weather)`
 - [x] Runtime spawn roster — **all 17 species** via `MutantEcologyManager.RollSpecies(threat)`
-- [~] `ActionMutantFeedOnCorpse.cs` — exists; **mutant feeding uses inline logic in `SimulationLoop`, not GOAP action**
-- [~] `MutantCookingSystem.cs` — exists; **not called from sim**
+- [ ] `ActionMutantFeedOnCorpse.cs` — **dead code: 0 external references.** Mutant feeding uses inline logic, not this GOAP action
+- [x] `MutantCookingSystem.cs` — used by `FieldCraftingSystem` (0.1 Hz tick) and `ActionCookMutantMeat`
 - [x] `ArtifactDecisionEngine.cs` — wired in `ActionHarvestArtifact`
 - [x] `ActionHarvestArtifact.cs` — belt populate + trader sell
 - [x] `ActionShareDrink.cs`, `ActionPlayGuitar.cs`, `ActionCraftUpgrade.cs` — GOAP wrappers wired; **CraftUpgrade is placeholder (no real repair)**
@@ -243,9 +243,16 @@ Spec sections below describe the **design target**. See §4 for honest completio
 - [~] Starting gold **850 RU**; south-band affordable stock; GAMMA stock capped by band price — **buys fire in debug runs** but still secondary to combat loot
 - [x] `DisguiseSystem.cs` — **suspicion ticks wired**; infiltrators need mismatched patches
 - [x] Squad leadership — **`SquadSuccession`** on leader death (promote / merge / disband)
-- [~] `FieldCraftingSystem.cs` — **not in sim loop**
-- [~] `TaskManager.cs`, `PDAInterfacePanel.cs` — **not in sim loop**
-- [~] `VisionCone.cs`, `AcousticSensor.cs` — **not in sim loop** (combat is proximity + `CombatResolver` at tuned rates)
+- [x] `FieldCraftingSystem.cs` — runs in the 0.1 Hz tick bucket (`SimulationLoop._systems0_1Hz`)
+- [ ] `TaskManager.cs`, `PDAInterfacePanel.cs` — **dead code: 0 external references**
+- [ ] `VisionCone.cs`, `AcousticSensor.cs` — **dead code: 0 external references** (combat is proximity + `CombatResolver` at tuned rates; `AcousticSensor`'s only mention is a comment inside the equally-unwired `ScientistEscortMission`)
+
+> **Orphaned code inventory** (verified 2026-09-12 — 0 external references each, ~995 lines / 5.9% of `src/`):
+> `ActionMutantFeedOnCorpse`, `TaskManager`, `PDAInterfacePanel`, `VisionCone`, `AcousticSensor`, `SquadOrders`,
+> `ZoneTopology`, `HierarchicalNav` (only referenced by the orphaned `ZoneTopology`), `ScientistEscortMission`,
+> `CampfireSmartObject`, `PersonalMemory`, plus the whole `src/UI/` directory (`HUDManager`, `InspectorPanel`,
+> `PDAInterfacePanel`) — server-side UI superseded by the browser visualizer.
+> These are written but never wired in; they inflate `src/` LOC and can never be covered by tests.
 
 ### Phase 11: Simulation Pacing & Combat ✅ (2026-08-12, extended 2026-08-13)
 - [x] Lower `TimeFactor` (6.0 → 3.0 default; `STALKER_TIME_FACTOR` env override)
