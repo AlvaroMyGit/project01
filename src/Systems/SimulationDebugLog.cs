@@ -518,6 +518,17 @@ public static class SimulationDebugLog
             $"Morale (alive): avg={(gammaAlive.Count > 0 ? gammaAlive.Average(s => s.Needs.Morale) : 0):F0} " +
             $"min={(gammaAlive.Count > 0 ? gammaAlive.Min(s => s.Needs.Morale) : 0):F0} " +
             $"under40={gammaAlive.Count(s => s.Needs.Morale < 40f)} | at a campfire={atFire}");
+        // Split by role, because the population average hides a bimodal
+        // distribution: every morale gain in the sim comes from a GOAP action
+        // (trade, rest, loot, mission turn-in, campfire), and squad followers
+        // do not run GOAP at all — they can only decay. Reporting one number
+        // reads as "everyone is content" when half the Zone is sliding.
+        var moralePlanners = gammaAlive.Where(x => x.IsSquadLeader || x.SquadId == null).ToList();
+        var moraleFollowers = gammaAlive.Where(x => !x.IsSquadLeader && x.SquadId != null).ToList();
+        static string MoraleStat(List<Stalker> g) => g.Count == 0 ? "n/a"
+            : $"n={g.Count} avg={g.Average(x => x.Needs.Morale):F0} max={g.Max(x => x.Needs.Morale):F0}";
+        sb.AppendLine($"  by role: planners [{MoraleStat(moralePlanners)}] " +
+                      $"followers [{MoraleStat(moraleFollowers)}]");
         sb.AppendLine($"Socialising: drinks={_sharedDrinks} tunes={_guitarSessions} morale auras applied={_moraleAurasApplied} (reaching {_moraleAuraRecipients} stalkers)");
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");

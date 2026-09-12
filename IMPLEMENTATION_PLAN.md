@@ -971,6 +971,56 @@ as an intermittent failure in the reachability test.
 
 ---
 
+### 🔴 Found 2026-09-12 — squad followers are a morale dead end
+
+Morale is per-stalker (`SurvivalNeeds.Morale`, spawns at 70), so it is not
+shared. But it does not vary by *squad* in any designed way — it varies by
+**role**, and only in one direction.
+
+Every morale gain in the sim comes from a GOAP action: `ActionTradeRun` +5,
+`ActionRestAtBase` +8, `ActionShareDrink` +5, `ActionPlayGuitar` +10,
+`MissionRegistry` turn-in +8, `LootTableResolver` +12, `TradeService`
+consumables, `MutantCookingSystem`. Squad followers do not run GOAP at all
+(`StalkerGoapService.ShouldPlan` admits only leaders and solos), so they can
+reach none of them. What remains for a follower is passive decay and emission
+exposure — both negative — plus the campfire aura, which needs *someone else*
+to run a campfire action nearby.
+
+Measured over a 5-minute run at `TimeFactor=150`:
+
+| group | n | avg morale | max |
+|---|---|---|---|
+| planners (leaders + solos) | 85 | 85 | 100 |
+| **followers** | 59 | **43** | **70** |
+
+The follower maximum is exactly 70 — the spawn default. **No follower has ever
+gained a single point of morale.** Roughly 40% of the Zone is on a one-way
+slide, and the population average (68) hid it completely.
+
+Between-squad mean spread was 85 and average within-squad spread 39, so squads
+do look different from each other — but that is the leader/follower gap
+showing through, not squad character.
+
+**Telemetry:** the final report now splits morale by role, because one averaged
+number reads as "everyone is content" when half the Zone is sliding.
+
+**Options, not yet chosen:**
+1. *Squad morale coupling* — followers drift toward their leader's morale, or a
+   squad shares a morale pool. Cheap, no new planning load, and gives squads
+   real character. Closest to what the "squads should differ" intuition wants.
+2. *Let followers benefit passively* — mission turn-in and loot pay a smaller
+   morale share to squadmates in range. Also cheap, and rewards sticking with a
+   successful leader.
+3. *Let followers plan* — the honest fix, but measured earlier at 1.8× over the
+   1 Hz tick budget for 1500 stalkers, and it dissolves squads as a unit.
+
+Note this also distorts `GoalSocialise`: only planners can select it, and
+planners are exactly the group whose morale is already high (avg 85, versus the
+goal's threshold of 75). The stalkers who most need a drink are the ones who
+can never ask for one.
+
+---
+
 ### Deliberately *not* in Phase 6
 
 - **`TaskManager`** (emergent needs-driven contracts) — overlaps the live
