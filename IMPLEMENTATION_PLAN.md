@@ -654,17 +654,23 @@ switch off crafting, cooking, repair and mission-accept.**
 **Goal:** replace the boolean proxy with real spatial gathering points, so the
 already-running social actions happen *somewhere*, with real group effects.
 
-1. **Generate campfires.** None exist in data, so create them in
+*Progress: steps 1–5 ✅ (commits `f1aa3ba`, `4ca18eb`, `f85161b`). Steps 6–7 open.*
+
+1. ✅ **Generate campfires.** None exist in data, so create them in
    `SimulationHost` after POI stamping: one per macro base (guarantees the
    `IdleAtBase` sites keep working) plus a fraction of `MicroShelter` POIs.
-2. **`CampfireRegistry`** — holds instances, `FindNearest(pos, radius)`.
+2. ✅ **`CampfireRegistry`** — holds instances, `FindNearest(pos, radius)`.
    Flow it through `SimulationDependencies` → `SimulationContext`, matching the
    established pattern.
-3. **Extend `IsAtCampfire`** at `GoapWorldStateSync.cs:33` per the mitigation above.
-4. **Seat management** — `TrySit` / `Stand` from the actions' existing
+3. ✅ **Extend `IsAtCampfire`** at `GoapWorldStateSync.cs:33` per the mitigation above.
+4. ✅ **Seat management** — `TrySit` / `Stand` from the actions' existing
    `Enter()` / `Exit()` hooks (`GOAPAction` already defines both).
-5. **Subscribe `MoraleBoostEvent`** — apply `AdjustMorale` to stalkers within
+   *Seat id lives on `NPCBlackboard.SeatedCampfireId`, not on the action:
+   actions are shared singletons across all stalkers (see caveat below).*
+5. ✅ **Subscribe `MoraleBoostEvent`** — apply `AdjustMorale` to stalkers within
    `Radius`. Home: `SocialSystem` (already 1 Hz, already takes `EnvironmentManager`).
+   *Buffered and drained on tick, not applied inline — `EventBus.Publish` is
+   synchronous and the scan is O(all stalkers).*
 6. **Attach `PersonalMemory`** to `Stalker`; on a shared drink, `RecordPositive`
    between co-seated stalkers so drinking builds real relationships.
 7. **Combat-snap** — use the proximity hostile check for now; the *noise* half
@@ -676,6 +682,41 @@ guard) · `PersonalMemory` crosses the ±80 ally/enemy threshold.
 
 **Done when:** campfires appear in telemetry, stalkers visibly gather, morale
 moves, and the five `IsAtCampfire` behaviours fire at their pre-change rates.
+
+#### ⚠️ Found while implementing steps 4–5: socialising has no goal of its own
+
+The wiring is correct but the cluster stays near-silent, and the cause is above
+the actions, not in them. Measured, not assumed:
+
+- `ActionShareDrink` and `ActionPlayGuitar` declare `HasCompletedPatrol` as
+  their effect. That is the target state of **`GoalPatrol`** — so the only way
+  a stalker socialises is by deciding to *patrol* and then having the planner
+  pick a campfire as the cheapest way to call the patrol done. There is no
+  "socialise" goal anywhere in `src/AI/GOAP/Goals/`.
+- **Within** `GoalPatrol` the campfire actions already win: at `BaseCost` 2f
+  they are the cheapest of the six `HasCompletedPatrol` producers
+  (`PatrolWilds` 5f, `TradeRun` 4f, `HarvestArtifact` 6f, `ExploreLab` 7f).
+  So the bottleneck is entirely goal selection, not action selection.
+- `GoalPatrol` scores a flat **25**. `GoalAcceptMission` starts at **32** and
+  is relevant whenever a mission offer exists — which is nearly always.
+- The perverse part: `GoalAcceptMission` adds **+8 when `IsAtCampfire`**. So
+  arriving at a campfire now makes a stalker *more* likely to walk away and
+  take a job. Extending `IsAtCampfire` in step 3 slightly *suppressed*
+  socialising rather than encouraging it.
+
+This is why live runs are a poor oracle here — observed `ShareDrink` counts
+swung 29 / 0 / 0 / 0 / 0 across five runs at `TimeFactor=150` purely on goal
+competition. It is a **design gap, not a regression**: nothing in steps 1–5
+changed any planner selection surface.
+
+**Proposed amendment — new step 5b, `GoalSocialise`:** its own goal keyed on a
+new `HasSocialised` flag, with utility driven by low morale, time since last
+social act, and being near an active campfire — so gathering is something a
+stalker *wants*, not a side effect of a patrol. Repoint the two campfire
+actions' effects at `HasSocialised`, leaving the other four
+`HasCompletedPatrol` producers untouched. Needs a decision before step 6:
+`PersonalMemory` bonds form during shared drinks, so if drinks stay rare the
+relationship system has nothing to feed on.
 
 ---
 
