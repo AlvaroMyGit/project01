@@ -49,6 +49,10 @@ public sealed class CampfireRegistry
     /// <summary>True when an active campfire sits within the configured radius.</summary>
     public bool IsNear(Vector3 position) => FindNearest(position) != null;
 
+    /// <summary>Look a campfire up by id — used to release a seat on action exit.</summary>
+    public CampfireSmartObject? FindById(string? id) =>
+        string.IsNullOrEmpty(id) ? null : _campfires.FirstOrDefault(c => c.Id == id);
+
     /// <summary>
     /// Places one campfire at every macro base — guaranteeing that anywhere a
     /// stalker could previously idle at base also has a real campfire — plus a

@@ -55,6 +55,14 @@ public sealed class NPCBlackboard
     public string? ApparentFactionId { get; set; }
     public float SuspicionLevel { get; set; }
 
+    /// <summary>
+    /// Campfire this NPC currently occupies a seat at, if any. Lives here rather
+    /// than on the GOAP action because actions are registered as single shared
+    /// instances across every stalker — per-execution state on them is not
+    /// per-stalker.
+    /// </summary>
+    public string? SeatedCampfireId { get; set; }
+
     public void RegisterSighting(string entityId, Vector3 position, float gameTime)
     {
         KnownEntities[entityId] = position;
@@ -142,6 +150,7 @@ public sealed class NPCBlackboard
         MoveTarget = null;
         ClearPath();
         SuspicionLevel = 0f;
+        SeatedCampfireId = null;
         Combat = CombatState.Idle;
         TimeSinceLastThreatSight = 0f;
         KnownEntities.Clear();

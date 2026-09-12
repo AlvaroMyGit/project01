@@ -27,11 +27,14 @@ public sealed class ActionPlayGuitar : GOAPAction
     {
         _timer = 20f;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
-        if (stalker != null)
-        {
-            stalker.Activity = "🎸 Guitar";
-            stalker.Blackboard.OverrideNavigationStatus = stalker.Activity;
-        }
+        if (stalker == null) return;
+
+        stalker.Activity = "🎸 Guitar";
+        stalker.Blackboard.OverrideNavigationStatus = stalker.Activity;
+
+        var fire = _ctx?.Campfires.FindNearest(stalker.Position);
+        if (fire != null && fire.TrySit(bb.OwnerId))
+            bb.SeatedCampfireId = fire.Id;
     }
 
     public override bool Execute(NPCBlackboard bb, float delta)
@@ -44,7 +47,16 @@ public sealed class ActionPlayGuitar : GOAPAction
         {
             stalker.Needs.AdjustMorale(10f);
             SkillEvaluator.RecordCharismaEvent(stalker, "campfire_guitar");
+
+            // Seated at a real fire: the tune carries — publishes MoraleBoostEvent.
+            _ctx?.Campfires.FindById(bb.SeatedCampfireId)?.PlayGuitar(bb.OwnerId);
         }
         return true;
+    }
+
+    public override void Exit(NPCBlackboard bb)
+    {
+        _ctx?.Campfires.FindById(bb.SeatedCampfireId)?.Stand(bb.OwnerId);
+        bb.SeatedCampfireId = null;
     }
 }

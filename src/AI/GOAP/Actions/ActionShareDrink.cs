@@ -27,11 +27,16 @@ public sealed class ActionShareDrink : GOAPAction
     {
         _timer = 15f;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
-        if (stalker != null)
-        {
-            stalker.Activity = "🍺 Drinking";
-            stalker.Blackboard.OverrideNavigationStatus = stalker.Activity;
-        }
+        if (stalker == null) return;
+
+        stalker.Activity = "🍺 Drinking";
+        stalker.Blackboard.OverrideNavigationStatus = stalker.Activity;
+
+        // Take a seat if a real campfire is in reach. A full campfire is fine —
+        // the stalker still drinks, just without the shared morale pulse.
+        var fire = _ctx?.Campfires.FindNearest(stalker.Position);
+        if (fire != null && fire.TrySit(bb.OwnerId))
+            bb.SeatedCampfireId = fire.Id;
     }
 
     public override bool Execute(NPCBlackboard bb, float delta)
@@ -45,7 +50,17 @@ public sealed class ActionShareDrink : GOAPAction
             stalker.Needs.Drink(30f);
             stalker.Needs.AdjustMorale(5f);
             SkillEvaluator.RecordCharismaEvent(stalker, "campfire_guitar");
+
+            // Seated at a real fire: share it out — publishes MoraleBoostEvent
+            // to everyone in the aura.
+            _ctx?.Campfires.FindById(bb.SeatedCampfireId)?.ShareDrink(bb.OwnerId, stalker.Needs);
         }
         return true;
+    }
+
+    public override void Exit(NPCBlackboard bb)
+    {
+        _ctx?.Campfires.FindById(bb.SeatedCampfireId)?.Stand(bb.OwnerId);
+        bb.SeatedCampfireId = null;
     }
 }

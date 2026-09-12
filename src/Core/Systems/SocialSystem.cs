@@ -16,16 +16,49 @@ public sealed class SocialSystem : ISimulationSystem
     private readonly DisguiseSystem _disguise;
     private readonly EnvironmentManager _environment;
 
+    /// <summary>
+    /// Morale auras published by campfire actions, applied on the next tick.
+    /// Buffered rather than applied inline because EventBus.Publish is
+    /// synchronous: handling it in place would run an O(all stalkers) radius
+    /// scan inside a GOAP action's Execute at 10 Hz. Draining here bounds that
+    /// to once per 1 Hz tick and keeps the mutation at a known point.
+    /// Sim-thread only, per the SimulationLoop threading contract.
+    /// </summary>
+    private readonly List<MoraleBoostEvent> _pendingMorale = new();
+
     public SocialSystem(FactionMatrix factionMatrix, EnvironmentManager environment)
     {
         _disguise = new DisguiseSystem(factionMatrix);
         _environment = environment;
+
+        EventBus.Subscribe<MoraleBoostEvent>(e => _pendingMorale.Add(e));
     }
 
     public void Tick(SimulationContext ctx, float gameDelta)
     {
+        ApplyPendingMorale(ctx);
         TickBetrayalLogic(ctx, gameDelta);
         TickDisguiseSuspicion(ctx, gameDelta);
+    }
+
+    /// <summary>Applies each buffered campfire aura to living stalkers in range.</summary>
+    private void ApplyPendingMorale(SimulationContext ctx)
+    {
+        if (_pendingMorale.Count == 0) return;
+
+        foreach (var boost in _pendingMorale)
+        {
+            foreach (var s in ctx.Stalkers)
+            {
+                if (!s.IsAlive) continue;
+                if (Vector3.Distance(s.Position, boost.SourcePos) > boost.Radius) continue;
+                s.Needs.AdjustMorale(boost.MoraleDelta);
+            }
+        }
+
+        SimulationDebugLog.WriteEvent("SOCIAL",
+            $"Applied {_pendingMorale.Count} campfire morale aura(s)");
+        _pendingMorale.Clear();
     }
 
     private void TickBetrayalLogic(SimulationContext ctx, float gameDelta)
