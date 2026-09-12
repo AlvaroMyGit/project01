@@ -1,3 +1,4 @@
+using StalkerALifeSandbox.AI.Social;
 using System.Collections.Concurrent;
 using StalkerALifeSandbox.AI.GOAP.Actions;
 using StalkerALifeSandbox.AI.GOAP.Goals;
@@ -32,11 +33,13 @@ public sealed class StalkerGoapService
         CorpseRegistry corpses,
         TraderRegistry traders,
         MissionRegistry missions,
+        CampfireRegistry campfires,
         PDANetwork? pdaNetwork,
         IEnumerable<Stalker> stalkers)
     {
         _ctx = new GoapContext
         {
+            Campfires = campfires,
             WorldGen = worldGen,
             Stamper = stamper,
             POIRegistry = new POIRegistry(stamper.Stamps),

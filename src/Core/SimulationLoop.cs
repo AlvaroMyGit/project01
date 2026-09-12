@@ -73,7 +73,7 @@ public sealed class SimulationLoop : IDisposable
 
         _goap = new StalkerGoapService(
             deps.WorldGen, deps.Stamper, deps.Pathfinder, deps.Emissions, deps.Time, deps.Corpses,
-            deps.Traders, deps.Missions, deps.Pda, deps.Stalkers);
+            deps.Traders, deps.Missions, deps.Campfires, deps.Pda, deps.Stalkers);
 
         _ctx = new SimulationContext(
             deps.Stalkers, deps.Mutants, deps.EntityLock, deps.Corpses, deps.Time, deps.Factions,

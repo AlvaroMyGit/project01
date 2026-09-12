@@ -30,7 +30,14 @@ public static class GoapWorldStateSync
         Set(bb, GoapKeys.IsHungrySatisfied, needs.Hunger < SurvivalNeeds.UrgentThreshold);
         Set(bb, GoapKeys.IsThirstSatisfied, needs.Thirst < SurvivalNeeds.UrgentThreshold);
         Set(bb, GoapKeys.IsFatigueSatisfied, needs.Fatigue < SurvivalNeeds.UrgentThreshold);
-        Set(bb, GoapKeys.IsAtCampfire, stalker.IdleAtBase);
+        // Deliberately a DISJUNCTION, not a replacement. Dropping the IdleAtBase
+        // term would make ActionRestAtBase's declared IsAtCampfire effect a lie to
+        // the A* planner (it sets IdleAtBase, not position), and would silently
+        // switch off the five behaviours gated on this flag. Widening it can only
+        // ever make the flag more true, never less — so no behaviour can regress.
+        // See CampfireGatingCharacterizationTests.
+        Set(bb, GoapKeys.IsAtCampfire,
+            stalker.IdleAtBase || ctx.Campfires.IsNear(stalker.Position));
         Set(bb, GoapKeys.CanRest, atShelter || atHome);
         bool needsLoot = needs.IsOutOfAmmo || needs.GoldAmount < 300f;
         Set(bb, GoapKeys.NeedsLoot, needsLoot);

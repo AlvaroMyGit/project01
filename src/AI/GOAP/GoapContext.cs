@@ -1,3 +1,4 @@
+using StalkerALifeSandbox.AI.Social;
 using System.Collections.Concurrent;
 using StalkerALifeSandbox.Core;
 using StalkerALifeSandbox.Economy;
@@ -22,6 +23,7 @@ public sealed class GoapContext
     public required CorpseRegistry Corpses { get; init; }
     public required TraderRegistry Traders { get; init; }
     public required MissionRegistry Missions { get; init; }
+    public required CampfireRegistry Campfires { get; init; }
     public PDANetwork? PDANetwork { get; init; }
 
     private Func<string, Stalker?>? _resolveStalker;

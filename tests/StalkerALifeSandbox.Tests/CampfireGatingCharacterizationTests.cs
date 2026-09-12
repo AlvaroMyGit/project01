@@ -3,6 +3,7 @@ using StalkerALifeSandbox.AI.Blackboards;
 using StalkerALifeSandbox.AI.GOAP;
 using StalkerALifeSandbox.AI.GOAP.Actions;
 using StalkerALifeSandbox.AI.GOAP.Goals;
+using StalkerALifeSandbox.AI.Social;
 using StalkerALifeSandbox.Economy;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Equipment;
@@ -173,6 +174,52 @@ public class CampfireGatingCharacterizationTests
         Assert.False(roaming.Blackboard.WorldStateBools[GoapKeys.IsAtCampfire]);
     }
 
+    // ── New in 6A: proximity to a real campfire also sets the flag ──────────
+
+    [Fact]
+    public void Sync_SetsIsAtCampfire_WhenStandingNearARealCampfire()
+    {
+        // Same shared world, but a context whose registry has one campfire at origin.
+        var baseCtx = SharedGoapContext.Value;
+        var fireAtOrigin = CampfireRegistry.Generate(
+            new[] { new POIStamp { Id = "b", Name = "b", Type = POIType.MacroBase, Position = Vector3.Zero } },
+            new CampfireOptions { ProximityRadius = 30f });
+
+        var ctx = new GoapContext
+        {
+            WorldGen = baseCtx.WorldGen,
+            Stamper = baseCtx.Stamper,
+            POIRegistry = baseCtx.POIRegistry,
+            Pathfinder = baseCtx.Pathfinder,
+            Emissions = baseCtx.Emissions,
+            Time = baseCtx.Time,
+            Corpses = baseCtx.Corpses,
+            Traders = baseCtx.Traders,
+            Missions = baseCtx.Missions,
+            Campfires = fireAtOrigin
+        };
+
+        // Not idling at base — the flag must now come from position alone.
+        var nearFire = new Stalker("s-near", "Near", "Loner")
+        {
+            IdleAtBase = false,
+            Position = new Vector3(10f, 0f, 0f)
+        };
+        var farAway = new Stalker("s-far", "Far", "Loner")
+        {
+            IdleAtBase = false,
+            Position = new Vector3(900f, 0f, 900f)
+        };
+        ctx.BindStalkers(new[] { nearFire, farAway });
+
+        GoapWorldStateSync.Sync(nearFire, ctx);
+        GoapWorldStateSync.Sync(farAway, ctx);
+
+        Assert.True(nearFire.Blackboard.WorldStateBools[GoapKeys.IsAtCampfire],
+            "Standing next to a real campfire should now count, without needing IdleAtBase.");
+        Assert.False(farAway.Blackboard.WorldStateBools[GoapKeys.IsAtCampfire]);
+    }
+
     /// <summary>
     /// Full GoapContext is expensive to build (world gen + POI stamping + economy
     /// bootstrap), so build it once for the whole class.
@@ -201,7 +248,11 @@ public class CampfireGatingCharacterizationTests
             Time = new TimeManager(),
             Corpses = new CorpseRegistry(),
             Traders = traders,
-            Missions = missions
+            Missions = missions,
+            // Deliberately EMPTY: with no campfires anywhere, IsNear() is always
+            // false, so these tests isolate the IdleAtBase disjunct and prove it
+            // still stands on its own after Phase 6A widened the flag.
+            Campfires = new CampfireRegistry(new CampfireOptions())
         };
     });
 }
