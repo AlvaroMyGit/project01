@@ -611,3 +611,113 @@ Successfully transformed the simulation from a single monolithic `SimulationLoop
 | **Phase 6** | Dynamic rubber-band trickle respawn & ecology balancing | `SpawnOrchestrator.cs`, config | ✅ Complete |
 | **Phase 7** | Halved encounter rates to reduce 43 deaths/min baseline | `CombatBalanceConfig.cs` | ✅ Complete |
 | **Phase 8** | Mission lockstep fix — random ±30–90s variance per agent | `ActionFulfillMission.cs` | ✅ Complete |
+
+---
+
+## 9. Phase 6 Spec — Campfires, then Perception (planned 2026-09-12)
+
+Both halves wire up code that already exists and is complete, but was never
+connected. Ordered deliberately: **6A is the contained win that proves the
+wiring pattern; 6B is the deeper change that 6A's combat-snap depends on.**
+
+### Ground truth established before writing this spec
+
+| Fact | Evidence |
+|---|---|
+| `ActionShareDrink` / `ActionPlayGuitar` **are already registered** in GOAP | `StalkerGoapService.cs:108–109` |
+| …but no `CampfireSmartObject` is ever instantiated | 0 external references |
+| `IsAtCampfire` is a **proxy**, not a place | `GoapWorldStateSync.cs:33` → `stalker.IdleAtBase` |
+| `MoraleBoostEvent` / `CampfireCombatSnapEvent` have **no subscribers** | fire into the void |
+| **No Campfire POIs exist** in `minor_pois.json` | only Shelter (52), Stash (50), DeadStalker (1) |
+| Perception inputs already exist | `EnvironmentManager.LightLevel`, `WeatherManager.VisibilityMod`, `.RainIntensity` |
+| **Facing does not exist anywhere** — the one real gap for 6B | no `Facing`/heading field on `Stalker` or `NPCBlackboard` |
+| …but every movement site already computes the vector | `StalkerBehaviourSystem.cs:89,131`; `MutantBehaviourSystem.cs:55,74` |
+| `EntityDTO.FacingAngle` / `.FOV` exist but are hardcoded `0`/`90`/`120` | `TelemetrySystem.cs:67,68,87,88` — and `app.js` doesn't read them |
+
+### ⚠️ Primary risk — `IsAtCampfire` is load-bearing
+
+Five behaviours gate on it: `ActionShareDrink`, `ActionPlayGuitar`,
+`ActionCookMutantMeatGoap`, `ActionCraftUpgrade`, `ActionRestAtBase` — plus
+utility in `GoalCookFood` (+10), `GoalRepairGear` (returns 0 without it) and
+`GoalAcceptMission`. **Redefining it to require a real campfire could silently
+switch off crafting, cooking, repair and mission-accept.**
+
+> **Mitigation (non-negotiable):** keep the flag a *disjunction* —
+> `IsAtCampfire = stalker.IdleAtBase || campfires.IsNear(pos, radius)`.
+> Only consider dropping the `IdleAtBase` term after a live run shows campfire
+> coverage is dense enough, verified against the existing debug counters.
+
+---
+
+### Phase 6A — Campfires as real places
+
+**Goal:** replace the boolean proxy with real spatial gathering points, so the
+already-running social actions happen *somewhere*, with real group effects.
+
+1. **Generate campfires.** None exist in data, so create them in
+   `SimulationHost` after POI stamping: one per macro base (guarantees the
+   `IdleAtBase` sites keep working) plus a fraction of `MicroShelter` POIs.
+2. **`CampfireRegistry`** — holds instances, `FindNearest(pos, radius)`.
+   Flow it through `SimulationDependencies` → `SimulationContext`, matching the
+   established pattern.
+3. **Extend `IsAtCampfire`** at `GoapWorldStateSync.cs:33` per the mitigation above.
+4. **Seat management** — `TrySit` / `Stand` from the actions' existing
+   `Enter()` / `Exit()` hooks (`GOAPAction` already defines both).
+5. **Subscribe `MoraleBoostEvent`** — apply `AdjustMorale` to stalkers within
+   `Radius`. Home: `SocialSystem` (already 1 Hz, already takes `EnvironmentManager`).
+6. **Attach `PersonalMemory`** to `Stalker`; on a shared drink, `RecordPositive`
+   between co-seated stalkers so drinking builds real relationships.
+7. **Combat-snap** — use the proximity hostile check for now; the *noise* half
+   arrives with 6B.
+
+**Tests:** seat capacity/eviction · morale applied in radius, not outside ·
+`IsAtCampfire` true near a campfire *and* still true at a base (regression
+guard) · `PersonalMemory` crosses the ±80 ally/enemy threshold.
+
+**Done when:** campfires appear in telemetry, stalkers visibly gather, morale
+moves, and the five `IsAtCampfire` behaviours fire at their pre-change rates.
+
+---
+
+### Phase 6B — Stalkers that see and hear
+
+**Goal:** replace proximity detection with real line-of-sight and hearing.
+
+1. **Facing (the only missing input).** Add `Facing` to `NPCBlackboard`; set it
+   from the `dir` vector already computed at the four movement sites. Then feed
+   the hardcoded `FacingAngle` in `TelemetrySystem` (kills an existing TODO).
+2. **Noise bus.** Collect `NoiseEvent`s per tick; emit gunshots at the combat
+   sites in `StalkerBehaviourSystem` (~171, ~209), loudness by weapon class.
+3. **`PerceptionSystem`** — new `ISimulationSystem` at 10 Hz calling
+   `VisionCone.Sweep(...)` and `AcousticSensor.Process(...)`. Every argument
+   already exists; flashlight/NVG stub to `false` (or derive from night) until
+   equipment flags land.
+4. **Shadow mode first.** Populate `bb.KnownEntities` and *log divergence*
+   against today's proximity detection **before** letting combat use it —
+   combat rates are tuned (`CombatBalanceConfig`) and swapping the detection
+   model blind would destabilise them.
+5. **Switch combat** to `KnownEntities` once the divergence log looks sane.
+6. **Visualizer** — consume the `facingAngle`/`fov` already on the wire to draw
+   cones.
+
+**Tests:** target outside cone angle not seen · target beyond light-adjusted
+range not seen · flashlight beacon seen past normal range at night · rain
+shrinks hearing radius · NVG ignores light level.
+
+**Unlocks:** campfire combat-snap (real noise) and `ScientistEscortMission`
+(acoustic pulses) — both currently blocked on `NoiseEvent`.
+
+---
+
+### Deliberately *not* in Phase 6
+
+- **`TaskManager`** (emergent needs-driven contracts) — overlaps the live
+  `MissionRegistry`; needs a reconciliation decision first, not just wiring.
+- **`ActionMutantFeedOnCorpse`** — feeding already works via inline logic; this
+  only GOAP-ifies it. Low value.
+- **`Squad` object model / `SquadOrders`** — squads today are `SquadId` flags
+  (22 refs) + `SquadSuccession`. Adopting the object model is a deeper refactor;
+  it gates `ScientistEscortMission` and belongs in its own phase.
+- **`src/UI/`** — not a future feature. `HUDManager` is a 14-line placeholder;
+  `InspectorPanel`/`PDAInterfacePanel` are superseded by the browser
+  visualizer. Recommend deletion as separate cleanup.
