@@ -971,7 +971,7 @@ as an intermittent failure in the reachability test.
 
 ---
 
-### 🔴 Found 2026-09-12 — squad followers are a morale dead end
+### ✅ Fixed 2026-09-12 — squad followers were a morale dead end
 
 Morale is per-stalker (`SurvivalNeeds.Morale`, spawns at 70), so it is not
 shared. But it does not vary by *squad* in any designed way — it varies by
@@ -1004,15 +1004,50 @@ showing through, not squad character.
 **Telemetry:** the final report now splits morale by role, because one averaged
 number reads as "everyone is content" when half the Zone is sliding.
 
-**Options, not yet chosen:**
-1. *Squad morale coupling* — followers drift toward their leader's morale, or a
-   squad shares a morale pool. Cheap, no new planning load, and gives squads
-   real character. Closest to what the "squads should differ" intuition wants.
-2. *Let followers benefit passively* — mission turn-in and loot pay a smaller
-   morale share to squadmates in range. Also cheap, and rewards sticking with a
-   successful leader.
-3. *Let followers plan* — the honest fix, but measured earlier at 1.8× over the
-   1 Hz tick budget for 1500 stalkers, and it dissolves squads as a unit.
+**Fixed with options 1 and 2 together** (option 3 — letting followers plan —
+stays rejected at 1.8× over the 1 Hz tick budget):
+
+1. **Leader coupling.** `SocialSystem.TickSquadMoraleCoupling` drags each
+   follower's morale toward its leader's, using *exponential smoothing* rather
+   than a linear step so it is stable at any TimeFactor and cannot overshoot —
+   the failure mode that stalled movement at 150×. Followers beyond
+   `CouplingRadius` (60, against a ~10 unit follow distance) have lost contact
+   and do not couple.
+2. **Shared mission pulse.** Turning in a contract publishes a `SquadMoraleEvent`
+   worth `MissionShare` (4, against the earner's own 8) to every living
+   squadmate but the earner. `SocialSystem` buffers and drains it on tick, the
+   same pattern as the campfire aura.
+
+New `SquadMoraleOptions` (`STALKER_SQUAD_MORALE_COUPLING`, `_RADIUS`,
+`STALKER_SQUAD_MISSION_SHARE`) follows the `CampfireOptions` / `EmissionOptions`
+pattern. Setting coupling to 0 disables it, which is how the pulse is tested in
+isolation.
+
+**Result** — followers, 5-minute run at `TimeFactor=150`:
+
+| | before | after |
+|---|---|---|
+| follower avg morale | 43 | **92** |
+| follower max morale | 70 *(= spawn default)* | **100** |
+
+And squads now behave like squads:
+
+| measure | value | meaning |
+|---|---|---|
+| avg **within**-squad spread | **2** | a squad shares one mood |
+| **between**-squad mean range | **0–100** | squads genuinely differ from each other |
+
+That is the shape the design wants: internally coherent, externally varied. The
+final report now carries both numbers, since a small between-squad spread would
+mean morale had stopped carrying information.
+
+**Open follow-up — morale now saturates.** Population average has gone from ~68
+to ~86, with 100 common. Morale has many sources (mission +8, squad share +4,
+loot +12, rest +8, trade, cooking, campfire) and exactly one weak sink: decay
+that only runs while hunger, thirst or fatigue is already above 60. It is no
+longer a useful signal at the top of its range, and `GoalSocialise` — which
+needs morale below 75 — still almost never fires. The campfire cluster wants a
+sink, or a different trigger, before it will express itself.
 
 Note this also distorts `GoalSocialise`: only planners can select it, and
 planners are exactly the group whose morale is already high (avg 85, versus the

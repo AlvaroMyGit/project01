@@ -529,6 +529,21 @@ public static class SimulationDebugLog
             : $"n={g.Count} avg={g.Average(x => x.Needs.Morale):F0} max={g.Max(x => x.Needs.Morale):F0}";
         sb.AppendLine($"  by role: planners [{MoraleStat(moralePlanners)}] " +
                       $"followers [{MoraleStat(moraleFollowers)}]");
+
+        // Between-squad spread answers "do squads actually differ?" — the point
+        // of leader coupling. A small spread means morale has saturated and
+        // stopped carrying information, not that coupling failed.
+        var moraleSquads = gammaAlive.Where(x => x.SquadId != null)
+            .GroupBy(x => x.SquadId!).Where(g => g.Count() > 1).ToList();
+        if (moraleSquads.Count > 0)
+        {
+            var squadMeans = moraleSquads.Select(g => g.Average(x => x.Needs.Morale)).ToList();
+            sb.AppendLine(
+                $"  squads={moraleSquads.Count} " +
+                $"mean morale {squadMeans.Min():F0}-{squadMeans.Max():F0} " +
+                $"(spread {squadMeans.Max() - squadMeans.Min():F0}) | " +
+                $"avg within-squad spread {moraleSquads.Average(g => g.Max(x => x.Needs.Morale) - g.Min(x => x.Needs.Morale)):F0}");
+        }
         sb.AppendLine($"Socialising: drinks={_sharedDrinks} tunes={_guitarSessions} morale auras applied={_moraleAurasApplied} (reaching {_moraleAuraRecipients} stalkers)");
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");

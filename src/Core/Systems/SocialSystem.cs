@@ -26,19 +26,91 @@ public sealed class SocialSystem : ISimulationSystem
     /// </summary>
     private readonly List<MoraleBoostEvent> _pendingMorale = new();
 
-    public SocialSystem(FactionMatrix factionMatrix, EnvironmentManager environment)
+    /// <summary>Squad-scoped pulses, buffered for the same reason as above.</summary>
+    private readonly List<SquadMoraleEvent> _pendingSquadMorale = new();
+
+    private readonly SquadMoraleOptions _squadMorale;
+
+    public SocialSystem(
+        FactionMatrix factionMatrix,
+        EnvironmentManager environment,
+        SquadMoraleOptions? squadMorale = null)
     {
         _disguise = new DisguiseSystem(factionMatrix);
         _environment = environment;
+        _squadMorale = squadMorale ?? new SquadMoraleOptions();
 
         EventBus.Subscribe<MoraleBoostEvent>(e => _pendingMorale.Add(e));
+        EventBus.Subscribe<SquadMoraleEvent>(e => _pendingSquadMorale.Add(e));
     }
 
     public void Tick(SimulationContext ctx, float gameDelta)
     {
+        var squadLeaders = ctx.Stalkers
+            .Where(s => s.IsAlive && s.IsSquadLeader && s.SquadId != null)
+            .GroupBy(s => s.SquadId!)
+            .ToDictionary(g => g.Key, g => g.First());
+
         ApplyPendingMorale(ctx);
-        TickBetrayalLogic(ctx, gameDelta);
+        ApplyPendingSquadMorale(ctx);
+        TickSquadMoraleCoupling(ctx, squadLeaders, gameDelta);
+        TickBetrayalLogic(ctx, squadLeaders, gameDelta);
         TickDisguiseSuspicion(ctx, gameDelta);
+    }
+
+    /// <summary>
+    /// Drags each follower's morale toward its leader's, so a squad whose
+    /// leader is completing contracts becomes a visibly happier squad — and,
+    /// more basically, so followers have any upward path at all. They cannot
+    /// run GOAP, and every morale gain in the sim comes from a GOAP action.
+    ///
+    /// Exponential smoothing rather than a linear step: stable at any
+    /// TimeFactor and incapable of overshooting, which is exactly the failure
+    /// that stalled movement at 150x.
+    /// </summary>
+    private void TickSquadMoraleCoupling(
+        SimulationContext ctx, Dictionary<string, Stalker> squadLeaders, float gameDelta)
+    {
+        if (gameDelta <= 0f || _squadMorale.LeaderCouplingPerGameSec <= 0f) return;
+
+        float blend = 1f - MathF.Exp(-_squadMorale.LeaderCouplingPerGameSec * gameDelta);
+
+        foreach (var follower in ctx.Stalkers)
+        {
+            if (!follower.IsAlive || follower.IsSquadLeader || follower.SquadId == null) continue;
+            if (!squadLeaders.TryGetValue(follower.SquadId, out var leader)) continue;
+            if (Vector3.Distance(follower.Position, leader.Position) > _squadMorale.CouplingRadius)
+                continue;   // out of contact — no shared mood
+
+            float gap = leader.Needs.Morale - follower.Needs.Morale;
+            if (MathF.Abs(gap) < 0.01f) continue;
+            follower.Needs.AdjustMorale(gap * blend);
+        }
+    }
+
+    /// <summary>Pays a squad-scoped pulse to every living member but its source.</summary>
+    private void ApplyPendingSquadMorale(SimulationContext ctx)
+    {
+        if (_pendingSquadMorale.Count == 0) return;
+
+        int recipients = 0;
+        foreach (var pulse in _pendingSquadMorale)
+        {
+            if (string.IsNullOrEmpty(pulse.SquadId)) continue;
+
+            foreach (var s in ctx.Stalkers)
+            {
+                if (!s.IsAlive || s.SquadId != pulse.SquadId) continue;
+                if (s.Id == pulse.SourceId) continue;   // already paid directly
+                s.Needs.AdjustMorale(pulse.MoraleDelta);
+                recipients++;
+            }
+        }
+
+        if (recipients > 0)
+            SimulationDebugLog.WriteEvent("SOCIAL",
+                $"Shared {_pendingSquadMorale.Count} squad morale pulse(s) with {recipients} member(s)");
+        _pendingSquadMorale.Clear();
     }
 
     /// <summary>Applies each buffered campfire aura to living stalkers in range.</summary>
@@ -66,13 +138,9 @@ public sealed class SocialSystem : ISimulationSystem
         _pendingMorale.Clear();
     }
 
-    private void TickBetrayalLogic(SimulationContext ctx, float gameDelta)
+    private void TickBetrayalLogic(
+        SimulationContext ctx, Dictionary<string, Stalker> squadLeaders, float gameDelta)
     {
-        var squadLeaders = ctx.Stalkers
-            .Where(s => s.IsAlive && s.IsSquadLeader && s.SquadId != null)
-            .GroupBy(s => s.SquadId!)
-            .ToDictionary(g => g.Key, g => g.First());
-
         foreach (var traitor in ctx.Stalkers.Where(s => s.IsAlive && s.SquadId != null))
         {
             if (!_betrayal.IsDesperate(traitor.Needs)) continue;

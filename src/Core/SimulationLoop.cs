@@ -17,6 +17,8 @@ using StalkerALifeSandbox.World.Generation;
 using StalkerALifeSandbox.World.Hazards;
 using StalkerALifeSandbox.World.Navigation;
 
+using StalkerALifeSandbox.AI.Social;
+
 namespace StalkerALifeSandbox.Core;
 
 /// <summary>
@@ -93,7 +95,7 @@ public sealed class SimulationLoop : IDisposable
 
         _systems1Hz = new ISimulationSystem[]
         {
-            new SocialSystem(deps.Factions, deps.Environment),
+            new SocialSystem(deps.Factions, deps.Environment, SquadMoraleOptions.FromEnvironment()),
             _spawnOrchestrator
         };
 

@@ -1,5 +1,7 @@
 using System.Numerics;
 using StalkerALifeSandbox.AI.Decision;
+using StalkerALifeSandbox.AI.Social;
+using StalkerALifeSandbox.Core;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.PDA;
 using StalkerALifeSandbox.Systems;
@@ -33,6 +35,10 @@ public sealed class MissionRegistry
     public IReadOnlyDictionary<string, List<MissionOffer>> OffersByIssuer => _offersByIssuer;
 
     private MissionRegistry(StaticWorldGenerator worldGen) => _worldGen = worldGen;
+
+    /// <summary>Morale each squadmate gains when a member turns in a contract.</summary>
+    private static readonly float SquadMoraleShare =
+        SquadMoraleOptions.FromEnvironment().MissionShare;
 
     public static MissionRegistry Bootstrap(
         TraderRegistry traders,
@@ -205,6 +211,20 @@ public sealed class MissionRegistry
         stalker.Needs.GoldAmount += mission.RewardGold;
         stalker.Needs.AdjustMorale(8f);
         stalker.Rank.RecordMission();
+
+        // The squad shares the win. Without this a follower has no upward path
+        // for morale at all: every gain in the sim comes from a GOAP action and
+        // followers do not run GOAP. SocialSystem buffers and applies it.
+        if (!string.IsNullOrEmpty(stalker.SquadId))
+        {
+            EventBus.Publish(new SquadMoraleEvent
+            {
+                SquadId = stalker.SquadId,
+                SourceId = stalker.Id,
+                MoraleDelta = SquadMoraleShare,
+                Reason = $"{mission.Type} turned in"
+            });
+        }
 
         switch (mission.Type)
         {
