@@ -18,9 +18,10 @@ public sealed class ActionPlayGuitar : GOAPAction
         [GoapKeys.IsAtCampfire] = true
     };
 
+    // Satisfies GoalSocialise — see the note in ActionShareDrink.
     public override Dictionary<string, bool> GetEffects() => new()
     {
-        [GoapKeys.HasCompletedPatrol] = true
+        [GoapKeys.HasSocialised] = true
     };
 
     public override void Enter(NPCBlackboard bb)
@@ -46,10 +47,12 @@ public sealed class ActionPlayGuitar : GOAPAction
         if (stalker != null)
         {
             stalker.Needs.AdjustMorale(10f);
+            bb.LastSocialisedGameSeconds = _ctx?.ElapsedGameSeconds ?? 0f;
             SkillEvaluator.RecordCharismaEvent(stalker, "campfire_guitar");
 
             // Seated at a real fire: the tune carries — publishes MoraleBoostEvent.
             _ctx?.Campfires.FindById(bb.SeatedCampfireId)?.PlayGuitar(bb.OwnerId);
+            SimulationDebugLog.RecordGuitarSession();
         }
         return true;
     }

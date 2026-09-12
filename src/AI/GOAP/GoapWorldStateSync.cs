@@ -38,6 +38,14 @@ public static class GoapWorldStateSync
         // See CampfireGatingCharacterizationTests.
         Set(bb, GoapKeys.IsAtCampfire,
             stalker.IdleAtBase || ctx.Campfires.IsNear(stalker.Position));
+        // Unlike the other "achievement" flags below, this one is NOT reset to
+        // false every sync — it is a cooldown. It stays true for
+        // SocialCooldownGameSeconds after a drink or a tune, which is what stops
+        // GoalSocialise from re-selecting itself on the very next planning cycle
+        // and pinning the stalker to the fire.
+        Set(bb, GoapKeys.HasSocialised,
+            ctx.ElapsedGameSeconds - bb.LastSocialisedGameSeconds
+                < ctx.Campfires.Options.SocialCooldownGameSeconds);
         Set(bb, GoapKeys.CanRest, atShelter || atHome);
         bool needsLoot = needs.IsOutOfAmmo || needs.GoldAmount < 300f;
         Set(bb, GoapKeys.NeedsLoot, needsLoot);

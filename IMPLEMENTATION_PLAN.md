@@ -709,7 +709,50 @@ swung 29 / 0 / 0 / 0 / 0 across five runs at `TimeFactor=150` purely on goal
 competition. It is a **design gap, not a regression**: nothing in steps 1–5
 changed any planner selection surface.
 
-**Proposed amendment — new step 5b, `GoalSocialise`:** its own goal keyed on a
+#### Step 5b results ✅ — it fires, but the rate is bounded elsewhere
+
+`GoalSocialise` is implemented and registered: a new `HasSocialised` key, a
+4-game-hour cooldown in `CampfireOptions`, and the two campfire actions
+repointed off `HasCompletedPatrol`. The four actions that genuinely cover
+ground keep producing `HasCompletedPatrol`, so `GoalPatrol` stays satisfiable.
+
+Before: socialising was **structurally impossible to choose**. After: it is
+chosen and completes — the logs show `[TASK] … → ShareDrink (goal=Socialise)`
+followed by `[GOAL] … achieved Socialise`, and every selection that started
+also finished.
+
+But the observed rate is low — **1–5 shared drinks per 7-minute run at
+`TimeFactor=150`** (~10 game hours, ~160 alive). Retuning the utility
+coefficient from 1.3 (crossover morale ~37) to 1.85 (crossover ~49) did **not**
+raise it — it measured 0 and 1 drinks across two runs against 1.3's 2, 4 and 5,
+which is noise in both directions. So the coefficient is not what bounds this,
+and the conservative value was kept. What actually bounds it, measured at the
+final-report snapshot:
+
+| Constraint | Effect | Owner |
+|---|---|---|
+| `ShouldPlan` — only squad leaders and unsquadded stalkers run GOAP at all | ~114 of 160 alive ever plan | pre-existing, `StalkerGoapService.cs:224` |
+| Only some planners are near a fire at any moment | 41–53 of ~115 | expected |
+| `EmissionImminent` blocks the goal | storms every ~20 game min; one snapshot caught 95 planners on `FleeEmission` | emission tuning |
+| `IsInCriticalState` blocks it | ~15–30 of 160; thirst hits critical at ~6.7 game hours | needs tuning |
+| Planners already holding a long `GoalCompleteMission` plan | `Replan` will not interrupt a valid plan | by design |
+
+**Conclusion:** step 5b removed the *structural* block and is a strict
+improvement. Getting from "fires occasionally" to Phase 6A's "stalkers visibly
+gather" is a separate piece of work about who plans and how long plans hold —
+not about this goal's numbers. Candidates, in rough order of leverage:
+squad followers planning at all; a travel action that produces `IsAtCampfire`
+so socialising is reachable from further than 30 m; emission cadence.
+
+**Telemetry added:** the final report now carries a `Morale (alive)` line
+(avg / min / under-40 / at-a-campfire) and a `Socialising:` line
+(drinks / tunes / auras applied). A bare "0 drinks" is uninterpretable without
+knowing whether morale ever got low enough to want one — these are reported
+together on purpose.
+
+**Original proposal follows.**
+
+**Original proposal — new step 5b, `GoalSocialise`:** its own goal keyed on a
 new `HasSocialised` flag, with utility driven by low morale, time since last
 social act, and being near an active campfire — so gathering is something a
 stalker *wants*, not a side effect of a patrol. Repoint the two campfire

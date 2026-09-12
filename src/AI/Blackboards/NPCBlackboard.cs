@@ -63,6 +63,13 @@ public sealed class NPCBlackboard
     /// </summary>
     public string? SeatedCampfireId { get; set; }
 
+    /// <summary>
+    /// Game time of this NPC's last shared drink or guitar session. Negative
+    /// infinity means "never", so the cooldown is expired on spawn. Read by
+    /// <c>GoapWorldStateSync</c> to derive <c>GoapKeys.HasSocialised</c>.
+    /// </summary>
+    public float LastSocialisedGameSeconds { get; set; } = float.NegativeInfinity;
+
     public void RegisterSighting(string entityId, Vector3 position, float gameTime)
     {
         KnownEntities[entityId] = position;
@@ -151,6 +158,7 @@ public sealed class NPCBlackboard
         ClearPath();
         SuspicionLevel = 0f;
         SeatedCampfireId = null;
+        LastSocialisedGameSeconds = float.NegativeInfinity;
         Combat = CombatState.Idle;
         TimeSinceLastThreatSight = 0f;
         KnownEntities.Clear();

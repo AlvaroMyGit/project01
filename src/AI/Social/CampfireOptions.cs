@@ -22,6 +22,15 @@ public sealed record CampfireOptions
     public float MoraleAuraRadius { get; init; } = 5f;
 
     /// <summary>
+    /// How long after socialising a stalker stops wanting to socialise again,
+    /// in <em>game</em> seconds (default 4 game hours). This is what keeps
+    /// <c>GoalSocialise</c> from re-firing every planning cycle and pinning a
+    /// stalker to a campfire forever — the goal reads it via
+    /// <c>GoapKeys.HasSocialised</c>.
+    /// </summary>
+    public float SocialCooldownGameSeconds { get; init; } = 4f * 3600f;
+
+    /// <summary>
     /// Fraction of MicroShelter POIs that also get a campfire, so gatherings
     /// happen out in the Zone and not only at macro bases. 0 disables them.
     /// </summary>

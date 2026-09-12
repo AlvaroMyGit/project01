@@ -13,6 +13,7 @@ public static class GoapKeys
     public const string HasCompletedPatrol    = "HasCompletedPatrol";
     public const string HasUnreportedCorpseNearby = "HasUnreportedCorpseNearby";
     public const string IsAtCampfire          = "IsAtCampfire";
+    public const string HasSocialised         = "HasSocialised";
     public const string HasRawMeat            = "HasRawMeat";
     public const string HasArtifact           = "HasArtifact";
     public const string HasExploredLab        = "HasExploredLab";

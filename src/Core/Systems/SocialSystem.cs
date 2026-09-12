@@ -56,6 +56,7 @@ public sealed class SocialSystem : ISimulationSystem
             }
         }
 
+        SimulationDebugLog.RecordMoraleAuras(_pendingMorale.Count);
         SimulationDebugLog.WriteEvent("SOCIAL",
             $"Applied {_pendingMorale.Count} campfire morale aura(s)");
         _pendingMorale.Clear();

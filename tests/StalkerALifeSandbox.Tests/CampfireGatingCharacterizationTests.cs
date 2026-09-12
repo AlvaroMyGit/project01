@@ -180,24 +180,9 @@ public class CampfireGatingCharacterizationTests
     public void Sync_SetsIsAtCampfire_WhenStandingNearARealCampfire()
     {
         // Same shared world, but a context whose registry has one campfire at origin.
-        var baseCtx = SharedGoapContext.Value;
-        var fireAtOrigin = CampfireRegistry.Generate(
+        var ctx = TestWorld.Context(CampfireRegistry.Generate(
             new[] { new POIStamp { Id = "b", Name = "b", Type = POIType.MacroBase, Position = Vector3.Zero } },
-            new CampfireOptions { ProximityRadius = 30f });
-
-        var ctx = new GoapContext
-        {
-            WorldGen = baseCtx.WorldGen,
-            Stamper = baseCtx.Stamper,
-            POIRegistry = baseCtx.POIRegistry,
-            Pathfinder = baseCtx.Pathfinder,
-            Emissions = baseCtx.Emissions,
-            Time = baseCtx.Time,
-            Corpses = baseCtx.Corpses,
-            Traders = baseCtx.Traders,
-            Missions = baseCtx.Missions,
-            Campfires = fireAtOrigin
-        };
+            new CampfireOptions { ProximityRadius = 30f }));
 
         // Not idling at base — the flag must now come from position alone.
         var nearFire = new Stalker("s-near", "Near", "Loner")
@@ -221,38 +206,10 @@ public class CampfireGatingCharacterizationTests
     }
 
     /// <summary>
-    /// Full GoapContext is expensive to build (world gen + POI stamping + economy
-    /// bootstrap), so build it once for the whole class.
+    /// Shared generated world (see <see cref="TestWorld"/>). The registry is
+    /// deliberately EMPTY: with no campfires anywhere, IsNear() is always
+    /// false, so these tests isolate the IdleAtBase disjunct and prove it
+    /// still stands on its own after Phase 6A widened the flag.
     /// </summary>
-    private static readonly Lazy<GoapContext> SharedGoapContext = new(() =>
-    {
-        ItemDatabase.EnsureLoaded();
-
-        var worldGen = new StaticWorldGenerator(seed: 42) { Width = 1600, Height = 3200 };
-        var stamper = new POIPrefabStamper(worldGen, seed: 42);
-        stamper.Generate(microPerMacro: 3);
-
-        var macroPois = stamper.Stamps.Where(s => s.Type == POIType.MacroBase).ToList();
-        var poiRegistry = new POIRegistry(stamper.Stamps);
-        var factions = new FactionMatrix();
-        var traders = TraderRegistry.Bootstrap(macroPois, new MarketPrices(), factions);
-        var missions = MissionRegistry.Bootstrap(traders, poiRegistry, worldGen, macroPois);
-
-        return new GoapContext
-        {
-            WorldGen = worldGen,
-            Stamper = stamper,
-            POIRegistry = poiRegistry,
-            Pathfinder = new ZonePathfinder(worldGen, resolution: 40),
-            Emissions = new EmissionSystem(),
-            Time = new TimeManager(),
-            Corpses = new CorpseRegistry(),
-            Traders = traders,
-            Missions = missions,
-            // Deliberately EMPTY: with no campfires anywhere, IsNear() is always
-            // false, so these tests isolate the IdleAtBase disjunct and prove it
-            // still stands on its own after Phase 6A widened the flag.
-            Campfires = new CampfireRegistry(new CampfireOptions())
-        };
-    });
+    private static readonly Lazy<GoapContext> SharedGoapContext = new(() => TestWorld.Context());
 }

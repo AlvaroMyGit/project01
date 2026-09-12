@@ -131,6 +131,7 @@ public sealed class StalkerGoapService
         _planner.RegisterGoal(new GoalAcceptMission());
         _planner.RegisterGoal(new GoalVisitTrader());
         _planner.RegisterGoal(new GoalPatrol());
+        _planner.RegisterGoal(new GoalSocialise());
         _planner.RegisterGoal(new GoalSeekLoot());
         _planner.RegisterGoal(new GoalRest());
         _planner.RegisterGoal(new GoalExploreLab());

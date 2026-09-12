@@ -18,9 +18,13 @@ public sealed class ActionShareDrink : GOAPAction
         [GoapKeys.IsAtCampfire] = true
     };
 
+    // Satisfies GoalSocialise, not GoalPatrol. Drinking at a fire was never a
+    // patrol; declaring HasCompletedPatrol meant socialising could only ever
+    // happen as a side effect of deciding to roam. HasCompletedPatrol is left
+    // to the four actions that genuinely cover ground.
     public override Dictionary<string, bool> GetEffects() => new()
     {
-        [GoapKeys.HasCompletedPatrol] = true
+        [GoapKeys.HasSocialised] = true
     };
 
     public override void Enter(NPCBlackboard bb)
@@ -49,11 +53,13 @@ public sealed class ActionShareDrink : GOAPAction
         {
             stalker.Needs.Drink(30f);
             stalker.Needs.AdjustMorale(5f);
+            bb.LastSocialisedGameSeconds = _ctx?.ElapsedGameSeconds ?? 0f;
             SkillEvaluator.RecordCharismaEvent(stalker, "campfire_guitar");
 
             // Seated at a real fire: share it out — publishes MoraleBoostEvent
             // to everyone in the aura.
             _ctx?.Campfires.FindById(bb.SeatedCampfireId)?.ShareDrink(bb.OwnerId, stalker.Needs);
+            SimulationDebugLog.RecordSharedDrink();
         }
         return true;
     }

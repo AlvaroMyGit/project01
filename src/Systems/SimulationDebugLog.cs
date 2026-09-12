@@ -56,6 +56,11 @@ public static class SimulationDebugLog
     private static long _respawnBatches;
     private static long _emissionStorms;
 
+    // Campfire socialising
+    private static long _sharedDrinks;
+    private static long _guitarSessions;
+    private static long _moraleAurasApplied;
+
     // Cook / repair tracking
     private static long _cookEvents;
     private static long _repairEvents;
@@ -341,6 +346,21 @@ public static class SimulationDebugLog
             $"(travel={travelMeters:F0}m, work={workSeconds:F0}s game)");
     }
 
+    public static void RecordSharedDrink()
+    {
+        if (Enabled) Interlocked.Increment(ref _sharedDrinks);
+    }
+
+    public static void RecordGuitarSession()
+    {
+        if (Enabled) Interlocked.Increment(ref _guitarSessions);
+    }
+
+    public static void RecordMoraleAuras(int count)
+    {
+        if (Enabled) Interlocked.Add(ref _moraleAurasApplied, count);
+    }
+
     public static void RecordGoapReplans(int count)
     {
         if (Enabled) Interlocked.Add(ref _goapReplans, count);
@@ -486,6 +506,16 @@ public static class SimulationDebugLog
         int outCount = gammaAlive.Count(s => s.Equipment.EquippedArmor?.Id.StartsWith("out_", StringComparison.OrdinalIgnoreCase) == true);
         int helmCount = gammaAlive.Count(s => s.Equipment.EquippedHelmet?.Id.StartsWith("helm_", StringComparison.OrdinalIgnoreCase) == true);
         sb.AppendLine($"GAMMA gear (alive): outfits={outCount} helmets={helmCount} avgGold={(gammaAlive.Count > 0 ? gammaAlive.Average(s => s.Needs.GoldAmount) : 0):F0} RU");
+        // Socialising is driven entirely by morale, so a bare "0 drinks" tells
+        // you nothing without knowing whether morale ever got low enough to
+        // want one. Report both together.
+        int atFire = gammaAlive.Count(s =>
+            s.Blackboard.WorldStateBools.GetValueOrDefault(GoapKeys.IsAtCampfire));
+        sb.AppendLine(
+            $"Morale (alive): avg={(gammaAlive.Count > 0 ? gammaAlive.Average(s => s.Needs.Morale) : 0):F0} " +
+            $"min={(gammaAlive.Count > 0 ? gammaAlive.Min(s => s.Needs.Morale) : 0):F0} " +
+            $"under40={gammaAlive.Count(s => s.Needs.Morale < 40f)} | at a campfire={atFire}");
+        sb.AppendLine($"Socialising: drinks={_sharedDrinks} tunes={_guitarSessions} morale auras applied={_moraleAurasApplied}");
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");
         sb.AppendLine($"Emission storms: {_emissionStorms} | Last phase: {_lastEmissionPhase}");
