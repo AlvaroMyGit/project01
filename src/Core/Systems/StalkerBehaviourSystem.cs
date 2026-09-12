@@ -84,9 +84,9 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         {
             if (squadLeaders.TryGetValue(s.SquadId, out var leader))
             {
-                var dir = leader.Position - s.Position;
-                if (dir.LengthSquared() > 100f)
-                    s.Position += Vector3.Normalize(dir) * CombatResolver.MoveStep(gameDelta);
+                var pos = s.Position;
+                CombatResolver.StepToward(ref pos, leader.Position, gameDelta, arriveTolerance: 10f);
+                s.Position = pos;
                 s.Blackboard.OverrideNavigationStatus = $"Following {leader.DisplayName.Split(' ')[0]}";
             }
             else
@@ -119,16 +119,14 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         if (s.Blackboard.MoveTarget.HasValue)
         {
             var target = s.Blackboard.MoveTarget.Value;
-            var dir = target - s.Position;
-            if (dir.LengthSquared() < 25f)
+            var pos = s.Position;
+            bool arrived = CombatResolver.StepToward(ref pos, target, gameDelta);
+            s.Position = pos;
+
+            if (arrived)
             {
-                s.Position = target;
                 ApplyLayerTransition(ctx, s);
                 s.Blackboard.AdvancePathWaypoint();
-            }
-            else
-            {
-                s.Position += Vector3.Normalize(dir) * CombatResolver.MoveStep(gameDelta);
             }
         }
     }

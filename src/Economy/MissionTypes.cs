@@ -22,7 +22,14 @@ public sealed class MissionOffer
     public Vector3 IssuerPosition { get; init; }
     public string TargetPoiId { get; init; } = "";
     public string TargetLabel { get; init; } = "";
-    public Vector3 TargetPosition { get; init; }
+
+    /// <summary>
+    /// Settable within the assembly only so <c>MissionRegistry.Bootstrap</c> can
+    /// snap it onto navigable ground once, right after the pool is built — a POI
+    /// centre is normally inside that POI's own building footprint and no path
+    /// can reach it. Treat it as immutable everywhere else.
+    /// </summary>
+    public Vector3 TargetPosition { get; internal set; }
     public string TargetRegionId { get; init; } = "";
     public float TargetThreat { get; init; }
     public StalkerRank MinRank { get; init; }

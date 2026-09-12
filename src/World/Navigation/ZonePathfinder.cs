@@ -100,6 +100,61 @@ public sealed class ZonePathfinder
         return false;
     }
 
+    /// <summary>True when this surface position falls inside a building footprint.</summary>
+    public bool IsSurfaceBlocked(Vector3 position) =>
+        _blockedSurfaceCells.Contains(SurfaceIdx(position.X, position.Z));
+
+    /// <summary>
+    /// Nearest surface position that is not inside a building footprint,
+    /// searched outward a ring of cells at a time. Returns the input unchanged
+    /// when it is already clear, or when nothing clear is found within
+    /// <paramref name="maxRingsOut"/>.
+    ///
+    /// Needed because building footprints are rasterised from POI stamps, so a
+    /// POI's own centre is usually blocked. Anything that treats a POI centre as
+    /// a destination — mission targets especially — is pointing at a cell no
+    /// path can reach. Macro bases escape this only because RegisterFootprints
+    /// carves a door cell out for them.
+    /// </summary>
+    public Vector3 NearestNavigable(Vector3 position, int maxRingsOut = 4)
+    {
+        if (!IsSurfaceBlocked(position)) return position;
+
+        int gx = Math.Clamp((int)(position.X / _cellSize), 0, _gridW - 1);
+        int gy = Math.Clamp((int)(position.Z / _cellSize), 0, _gridH - 1);
+
+        for (int ring = 1; ring <= maxRingsOut; ring++)
+        {
+            Vector3? best = null;
+            float bestDist = float.MaxValue;
+
+            for (int dx = -ring; dx <= ring; dx++)
+            {
+                for (int dy = -ring; dy <= ring; dy++)
+                {
+                    // Only the perimeter of this ring; inner ones already failed.
+                    if (Math.Abs(dx) != ring && Math.Abs(dy) != ring) continue;
+
+                    int cx = gx + dx, cy = gy + dy;
+                    if (cx < 0 || cy < 0 || cx >= _gridW || cy >= _gridH) continue;
+                    if (_blockedSurfaceCells.Contains(cx + cy * _gridW)) continue;
+
+                    var candidate = new Vector3(
+                        cx * _cellSize + _cellSize / 2f,
+                        position.Y,
+                        cy * _cellSize + _cellSize / 2f);
+
+                    float d = Vector3.Distance(position, candidate);
+                    if (d < bestDist) { bestDist = d; best = candidate; }
+                }
+            }
+
+            if (best.HasValue) return best.Value;
+        }
+
+        return position;
+    }
+
     public List<Vector3>? FindPath(Vector3 start, Vector3 end)
     {
         int startLayer = ResolveLayer(start);

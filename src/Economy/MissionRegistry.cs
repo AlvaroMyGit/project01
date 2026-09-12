@@ -4,6 +4,7 @@ using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.PDA;
 using StalkerALifeSandbox.Systems;
 using StalkerALifeSandbox.World.Generation;
+using StalkerALifeSandbox.World.Navigation;
 using StalkerALifeSandbox.World.POI;
 
 namespace StalkerALifeSandbox.Economy;
@@ -37,7 +38,8 @@ public sealed class MissionRegistry
         TraderRegistry traders,
         POIRegistry poiRegistry,
         StaticWorldGenerator worldGen,
-        IEnumerable<WorldPOIBase> macroBases)
+        IEnumerable<WorldPOIBase> macroBases,
+        ZonePathfinder? pathfinder = null)
     {
         var registry = new MissionRegistry(worldGen);
         var rng = new Random(42);
@@ -98,7 +100,44 @@ public sealed class MissionRegistry
                 registry._offersByIssuer[site.PoiId] = offers;
         }
 
+        registry.SnapTargetsToNavigableGround(pathfinder);
         return registry;
+    }
+
+    /// <summary>
+    /// Pull every target position onto ground a path can actually reach.
+    ///
+    /// Mission targets are POI stamp centres, and building footprints are
+    /// rasterised from those same stamps — so a target normally lands on a
+    /// blocked cell and <c>ZonePathfinder.FindPath</c> returns null for it,
+    /// forever. Measured before this ran: 94 of 168 offers unreachable from
+    /// their own issuer, every one of them sitting on a blocked cell, and
+    /// 93 of the 94 fixed by moving a single cell. EscortConvoy was the sole
+    /// exception at 0 failures because it targets macro bases, which
+    /// RegisterFootprints carves a door out of.
+    ///
+    /// One cell is 40m against an arrival radius of 45m, so a snapped target is
+    /// still "at" the POI as far as ActionFulfillMission is concerned.
+    /// </summary>
+    private void SnapTargetsToNavigableGround(ZonePathfinder? pathfinder)
+    {
+        if (pathfinder == null) return;
+
+        int moved = 0;
+        foreach (var offers in _offersByIssuer.Values)
+        {
+            foreach (var offer in offers)
+            {
+                var snapped = pathfinder.NearestNavigable(offer.TargetPosition);
+                if (snapped == offer.TargetPosition) continue;
+                offer.TargetPosition = snapped;
+                moved++;
+            }
+        }
+
+        // Console, not SimulationDebugLog: bootstrap runs before the debug log
+        // is initialised, so a WriteEvent here is silently dropped.
+        Console.WriteLine($"[Missions] Snapped {moved} target(s) onto navigable ground");
     }
 
     public bool HasEligibleOffer(Stalker stalker, TraderRegistry.TraderSite issuer) =>

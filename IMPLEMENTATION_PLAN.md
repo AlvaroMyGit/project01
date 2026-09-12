@@ -851,7 +851,7 @@ became a local. Only bind-time `_ctx` remains as instance state, which is
 correct. The characterization tests were inverted into regression guards, plus
 one that proves two stalkers keep independent timers on a shared timed action.
 
-#### 🔴 What the fix uncovered — mission targets are mostly unreachable
+#### ✅ What the fix uncovered — three defects under it, all now fixed
 
 Headline mission completions went **5 → 0**, and that is an honest number
 replacing a fake one. `_working` was also shared: once *any* stalker set it,
@@ -875,10 +875,51 @@ targets come from `mission.TargetPosition`, which is never validated against
 navigable terrain. The arrival gate is not implicated: it logged **zero**
 rejections, so travel never completes rather than completing at the wrong spot.
 
-**Next:** validate/snap `MissionRegistry` target positions to reachable
-locations, or have `ActionFulfillMission.ResolveTarget` fall back to the nearest
-navigable point. This is now the top blocker — the mission loop is the sim's
-main activity driver.
+Peeling that back found two more defects stacked underneath. All three are
+fixed; the mission loop now runs end to end.
+
+**1. Mission targets sat on blocked cells.** Targets are POI stamp centres and
+building footprints are rasterised from those same stamps, so a target landed
+inside its own POI's building. 94 of 168 offers were unreachable from their own
+issuer — every one on a blocked cell, 93 fixed by moving a single cell.
+`EscortConvoy` was the lone exception at 0 failures because it targets macro
+bases, which `RegisterFootprints` carves a door out of. Added
+`ZonePathfinder.NearestNavigable` and snap every target at bootstrap (144 of
+them in a typical world). One cell is 40 m against a 45 m arrival radius, so a
+snapped target still counts as "at" the POI.
+→ `ActionFulfillMission` path failures: **82% → 0%**.
+
+**2. Movement overshot its waypoints.** The step scales with TimeFactor, so at
+150× a 10 Hz tick is 15 game seconds — a 60-unit stride against a 5-unit
+arrival tolerance. Stalkers leapt back and forth across every waypoint forever
+and no journey ever ended. Added `CombatResolver.StepToward`, which clamps the
+step to the remaining distance, and used it at both movement sites.
+→ arrivals: **1 → 374**.
+
+**3. `ActionTurnInMission.IsValid` made its own plan unbuildable.** The planner
+filters candidate actions through `IsValid`, and TurnInMission re-checked
+`IsAtMissionGiver` — the very precondition `ReturnToMissionIssuer` exists to
+achieve. So `[Return → TurnIn]` could never be built: the only plan the planner
+ever formed was `[Fulfill → TurnIn]`, made while the stalker still stood at the
+issuer, and once Fulfill carried them away TurnIn went invalid with no
+recovery. Measured 1457 NULL plans in one run at exactly the state that should
+have produced the return chain. Proximity moved to `Exit`, so it still gates
+the payout without blocking planning.
+→ turn-ins: **0 → 178**.
+
+**Mission funnel, before and after** (7- and 5-minute runs at `TimeFactor=150`):
+
+| stage | before | after |
+|---|---|---|
+| accepted | 256 | 407 |
+| arrived | 1 | 374 |
+| objective done | 7 | 237 |
+| turned in | 5 *(fake)* | **178** |
+
+**Lesson worth keeping:** `IsValid` is consulted by the planner as well as the
+runtime. It must only test what the planner cannot reason about — context
+availability, whether the contract still exists. Anything that another action
+can *achieve* belongs in `GetPreconditions`, never in `IsValid`.
 
 ### Deliberately *not* in Phase 6
 

@@ -18,6 +18,33 @@ public static class CombatResolver
     public static float MoveStep(float gameDeltaSeconds) =>
         CombatBalanceConfig.MoveSpeedPerGameSec * (gameDeltaSeconds / 1f);
 
+    /// <summary>
+    /// Move <paramref name="position"/> toward <paramref name="target"/> without
+    /// ever stepping past it, and report whether it landed.
+    ///
+    /// The step scales with TimeFactor, so at high factors it can dwarf the
+    /// arrival tolerance: at TimeFactor 150 a 10 Hz tick is 15 game seconds,
+    /// i.e. a 60-unit stride against a 5-unit tolerance. Unclamped, a stalker
+    /// leaps back and forth over its waypoint forever and never arrives — which
+    /// silently stalled every journey in the sim, mission travel included.
+    /// </summary>
+    public static bool StepToward(
+        ref Vector3 position, Vector3 target, float gameDeltaSeconds, float arriveTolerance = 5f)
+    {
+        var dir = target - position;
+        float dist = dir.Length();
+        float step = MoveStep(gameDeltaSeconds);
+
+        if (dist <= arriveTolerance || dist <= step)
+        {
+            position = target;
+            return true;
+        }
+
+        position += dir / dist * step;
+        return false;
+    }
+
     public static double StalkerVsMutantWinChance(
         Stalker stalker, Mutant mutant, float localThreat, int alliesInRange = 0,
         float engagementDistance = 60f)
