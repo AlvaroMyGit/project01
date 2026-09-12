@@ -18,8 +18,16 @@ public sealed record CampfireOptions
     /// </summary>
     public float ProximityRadius { get; init; } = 30f;
 
-    /// <summary>Radius of the guitar / shared-drink morale aura.</summary>
-    public float MoraleAuraRadius { get; init; } = 5f;
+    /// <summary>
+    /// Radius of the guitar / shared-drink morale aura. Must cover at least
+    /// <see cref="ProximityRadius"/>: nothing moves a stalker to the fire, so
+    /// <c>ActionShareDrink.Enter</c> takes a seat from anywhere inside the
+    /// proximity radius and leaves them standing where they were. At the
+    /// original 5f against a 30f proximity radius, a drinker was usually
+    /// outside their own pulse and the aura reached nobody.
+    /// Pinned by CampfireMoraleIntegrationTests.
+    /// </summary>
+    public float MoraleAuraRadius { get; init; } = 30f;
 
     /// <summary>
     /// How long after socialising a stalker stops wanting to socialise again,

@@ -60,6 +60,7 @@ public static class SimulationDebugLog
     private static long _sharedDrinks;
     private static long _guitarSessions;
     private static long _moraleAurasApplied;
+    private static long _moraleAuraRecipients;
 
     // Cook / repair tracking
     private static long _cookEvents;
@@ -356,9 +357,11 @@ public static class SimulationDebugLog
         if (Enabled) Interlocked.Increment(ref _guitarSessions);
     }
 
-    public static void RecordMoraleAuras(int count)
+    public static void RecordMoraleAuras(int count, int recipients)
     {
-        if (Enabled) Interlocked.Add(ref _moraleAurasApplied, count);
+        if (!Enabled) return;
+        Interlocked.Add(ref _moraleAurasApplied, count);
+        Interlocked.Add(ref _moraleAuraRecipients, recipients);
     }
 
     public static void RecordGoapReplans(int count)
@@ -515,7 +518,7 @@ public static class SimulationDebugLog
             $"Morale (alive): avg={(gammaAlive.Count > 0 ? gammaAlive.Average(s => s.Needs.Morale) : 0):F0} " +
             $"min={(gammaAlive.Count > 0 ? gammaAlive.Min(s => s.Needs.Morale) : 0):F0} " +
             $"under40={gammaAlive.Count(s => s.Needs.Morale < 40f)} | at a campfire={atFire}");
-        sb.AppendLine($"Socialising: drinks={_sharedDrinks} tunes={_guitarSessions} morale auras applied={_moraleAurasApplied}");
+        sb.AppendLine($"Socialising: drinks={_sharedDrinks} tunes={_guitarSessions} morale auras applied={_moraleAurasApplied} (reaching {_moraleAuraRecipients} stalkers)");
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");
         sb.AppendLine($"Emission storms: {_emissionStorms} | Last phase: {_lastEmissionPhase}");

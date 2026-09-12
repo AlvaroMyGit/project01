@@ -19,7 +19,12 @@ public sealed class CampfireSmartObject
     public int     MaxSeats { get; init; } = 6;
 
     // Morale aura radius (metres) from ActionPlayGuitar
-    public float GuitarAuraRadius { get; set; } = 5f;
+    /// <summary>
+    /// Set from <c>CampfireOptions.MoraleAuraRadius</c> at generation; this
+    /// default only applies to fires built directly (tests). See that option
+    /// for why it has to cover the whole proximity radius.
+    /// </summary>
+    public float GuitarAuraRadius { get; set; } = 30f;
 
     private readonly HashSet<string> _seatedNpcs = new();
     public IReadOnlySet<string> SeatedNpcs => _seatedNpcs;

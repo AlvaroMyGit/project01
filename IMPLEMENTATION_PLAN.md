@@ -744,6 +744,19 @@ not about this goal's numbers. Candidates, in rough order of leverage:
 squad followers planning at all; a travel action that produces `IsAtCampfire`
 so socialising is reachable from further than 30 m; emission cadence.
 
+**Aura radius fix (follow-up).** `MoraleAuraRadius` was 5 while
+`ProximityRadius` is 30, and *nothing moves a stalker to the fire* —
+`ActionShareDrink.Enter` takes a seat from anywhere inside 30 m and leaves the
+stalker standing where they were. So the drinker was usually outside their own
+pulse and the aura reached nobody. Raised to 30 so the aura covers the same
+area that counts as "at" this campfire; pinned by a test that failed before the
+change. Measured after: 3 auras reaching 8 stalkers, versus a provable zero for
+the drinker before.
+
+The deeper fix is for sitting to actually move a stalker to a seat position
+around the fire — that is what would make them *visibly* gather, per 6A's
+done-criterion — but it touches navigation and is left for later.
+
 **Telemetry added:** the final report now carries a `Morale (alive)` line
 (avg / min / under-40 / at-a-campfire) and a `Socialising:` line
 (drinks / tunes / auras applied). A bare "0 drinks" is uninterpretable without

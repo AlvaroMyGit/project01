@@ -46,6 +46,7 @@ public sealed class SocialSystem : ISimulationSystem
     {
         if (_pendingMorale.Count == 0) return;
 
+        int recipients = 0;
         foreach (var boost in _pendingMorale)
         {
             foreach (var s in ctx.Stalkers)
@@ -53,12 +54,15 @@ public sealed class SocialSystem : ISimulationSystem
                 if (!s.IsAlive) continue;
                 if (Vector3.Distance(s.Position, boost.SourcePos) > boost.Radius) continue;
                 s.Needs.AdjustMorale(boost.MoraleDelta);
+                recipients++;
             }
         }
 
-        SimulationDebugLog.RecordMoraleAuras(_pendingMorale.Count);
+        // Recipients, not just auras: an aura that reaches nobody is the exact
+        // failure the radius fix addressed, and the aura count alone hid it.
+        SimulationDebugLog.RecordMoraleAuras(_pendingMorale.Count, recipients);
         SimulationDebugLog.WriteEvent("SOCIAL",
-            $"Applied {_pendingMorale.Count} campfire morale aura(s)");
+            $"Applied {_pendingMorale.Count} campfire morale aura(s) to {recipients} stalker(s)");
         _pendingMorale.Clear();
     }
 

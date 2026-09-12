@@ -104,6 +104,51 @@ public class CampfireMoraleIntegrationTests
     }
 
     [Fact]
+    public void EveryoneWhoCountsAsAtTheCampfire_ReceivesTheAura()
+    {
+        // The invariant: nothing moves a stalker to the fire. Enter() takes a
+        // seat from anywhere inside ProximityRadius and leaves the stalker
+        // standing where they were, so the aura has to cover the same area
+        // that counts as "at" this campfire. When MoraleAuraRadius was 5 and
+        // ProximityRadius 30, a drinker was usually outside their own pulse.
+        EventBus.ClearAll();
+
+        var options = new CampfireOptions();
+        float atFireEdge = options.ProximityRadius - 1f;
+
+        var drinker = StalkerAt("drinker", new Vector3(atFireEdge, 0f, 0f));
+        var squadmate = StalkerAt("mate", new Vector3(atFireEdge - 5f, 0f, 0f));
+        var stalkers = new List<Stalker> { drinker, squadmate };
+
+        var social = new SocialSystem(new FactionMatrix(),
+            new World.Environment.EnvironmentManager(new TimeManager()));
+        var ctx = ContextFor(stalkers);
+
+        float drinkerBefore = drinker.Needs.Morale;
+        float mateBefore = squadmate.Needs.Morale;
+
+        var fire = new CampfireSmartObject
+        {
+            Id = "fire-1",
+            Position = Vector3.Zero,
+            MaxSeats = options.SeatsPerCampfire,
+            GuitarAuraRadius = options.MoraleAuraRadius
+        };
+        fire.TrySit("drinker");
+        fire.ShareDrink("drinker", drinker.Needs);
+
+        social.Tick(ctx, gameDelta: 1f);
+
+        Assert.True(drinker.Needs.Morale > drinkerBefore,
+            "A stalker who is close enough to SIT at a fire must be close enough "
+            + "to feel the drink they just shared.");
+        Assert.True(squadmate.Needs.Morale > mateBefore,
+            "So must anyone else standing inside the same campfire's reach.");
+
+        EventBus.ClearAll();
+    }
+
+    [Fact]
     public void DeadStalkersAreSkipped()
     {
         EventBus.ClearAll();
