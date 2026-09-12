@@ -10,7 +10,6 @@ namespace StalkerALifeSandbox.AI.GOAP.Actions;
 public abstract class GoapTravelAction : GOAPAction
 {
     protected GoapContext? Ctx { get; private set; }
-    private bool _pathSet;
 
     protected abstract string ActivityLabel { get; }
     protected abstract NavigationTargetType NavType { get; }
@@ -27,7 +26,10 @@ public abstract class GoapTravelAction : GOAPAction
 
     public override void Enter(NPCBlackboard bb)
     {
-        _pathSet = false;
+        // The service resets the whole scratch bag before every Enter, but this
+        // pairing is the one that caused the outage, so keep it self-contained:
+        // Execute must never see a PathSet this Enter did not set.
+        bb.Action.PathSet = false;
         if (Ctx == null) return;
         var stalker = Ctx.GetStalker(bb.OwnerId);
         if (stalker == null) return;
@@ -42,13 +44,13 @@ public abstract class GoapTravelAction : GOAPAction
                 DestinationLabel(stalker, target.Value));
             stalker.Activity = ActivityLabel;
             stalker.IdleAtBase = false;
-            _pathSet = true;
+            bb.Action.PathSet = true;
         }
     }
 
     public override bool Execute(NPCBlackboard bb, float delta)
     {
-        if (!_pathSet) return false;
+        if (!bb.Action.PathSet) return false;
         return !bb.HasPath && bb.MoveTarget == null;
     }
 

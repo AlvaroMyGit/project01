@@ -6,7 +6,6 @@ namespace StalkerALifeSandbox.AI.GOAP.Actions;
 public sealed class ActionPlayGuitar : GOAPAction
 {
     private GoapContext? _ctx;
-    private float _timer;
 
     public override string Name => "PlayGuitar";
     public override float BaseCost => 2f;
@@ -26,7 +25,7 @@ public sealed class ActionPlayGuitar : GOAPAction
 
     public override void Enter(NPCBlackboard bb)
     {
-        _timer = 20f;
+        bb.Action.Timer = 20f;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker == null) return;
 
@@ -40,8 +39,8 @@ public sealed class ActionPlayGuitar : GOAPAction
 
     public override bool Execute(NPCBlackboard bb, float delta)
     {
-        _timer -= delta;
-        if (_timer > 0f) return false;
+        bb.Action.Timer -= delta;
+        if (bb.Action.Timer > 0f) return false;
 
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker != null)

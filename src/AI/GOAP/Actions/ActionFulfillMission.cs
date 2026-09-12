@@ -14,10 +14,6 @@ public sealed class ActionFulfillMission : GoapTravelAction
     private const float TargetArrivalRadius = 45f;
     private const float MinTravelFromAccept = 240f;
 
-    private float _workTimer;
-    private bool _working;
-    private bool _loggedArrival;
-    private bool _finished;
 
     public override string Name => "FulfillMission";
     public override float BaseCost => 5f;
@@ -53,10 +49,6 @@ public sealed class ActionFulfillMission : GoapTravelAction
 
     public override void Enter(NPCBlackboard bb)
     {
-        _working = false;
-        _workTimer = 0f;
-        _loggedArrival = false;
-        _finished = false;
         base.Enter(bb);
     }
 
@@ -66,7 +58,7 @@ public sealed class ActionFulfillMission : GoapTravelAction
         var mission = stalker?.ActiveMission;
         if (stalker == null || mission == null) return false;
 
-        if (!_working)
+        if (!bb.Action.Working)
         {
             if (!base.Execute(bb, delta)) return false;
 
@@ -79,22 +71,22 @@ public sealed class ActionFulfillMission : GoapTravelAction
             if (distToTarget > TargetArrivalRadius || distFromAccept < requiredTravel)
                 return false;
 
-            _working = true;
+            bb.Action.Working = true;
             stalker.Activity = MissionActivity(mission);
-            _workTimer = ComputeWorkDuration(mission);
+            bb.Action.Timer = ComputeWorkDuration(mission);
 
-            if (!_loggedArrival)
+            if (!bb.Action.LoggedArrival)
             {
-                _loggedArrival = true;
+                bb.Action.LoggedArrival = true;
                 SimulationDebugLog.MissionArrived(
-                    stalker, mission.Type.ToString(), mission.TargetLabel, distFromAccept, _workTimer);
+                    stalker, mission.Type.ToString(), mission.TargetLabel, distFromAccept, bb.Action.Timer);
             }
 
             return false;
         }
 
-        _workTimer -= delta;
-        if (_workTimer > 0f) return false;
+        bb.Action.Timer -= delta;
+        if (bb.Action.Timer > 0f) return false;
 
         if (mission.Type == MissionType.RetrieveStash &&
             Ctx!.POIRegistry.FindById(mission.TargetPoiId) is { } stash &&
@@ -104,7 +96,7 @@ public sealed class ActionFulfillMission : GoapTravelAction
             Ctx.POIRegistry.MarkLooted(stash.Stamp.Id);
         }
 
-        _finished = true;
+        bb.Action.Finished = true;
         return true;
     }
 
@@ -124,7 +116,7 @@ public sealed class ActionFulfillMission : GoapTravelAction
 
     public override void Exit(NPCBlackboard bb)
     {
-        if (!_finished) return;
+        if (!bb.Action.Finished) return;
 
         var stalker = Ctx?.GetStalker(bb.OwnerId);
         if (stalker != null && Ctx != null)

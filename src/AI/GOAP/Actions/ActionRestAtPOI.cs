@@ -8,9 +8,6 @@ namespace StalkerALifeSandbox.AI.GOAP.Actions;
 
 public sealed class ActionRestAtPOI : GoapTravelAction
 {
-    private float _restTimer;
-    private bool _resting;
-    private float _restValue = 0.3f;
 
     public override string Name => "RestAtPOI";
     public override float BaseCost => 3f;
@@ -36,7 +33,7 @@ public sealed class ActionRestAtPOI : GoapTravelAction
         var record = Ctx!.POIRegistry.PickRestTarget(stalker.Position, maxThreat);
         if (record == null) return null;
 
-        _restValue = record.RestValue;
+        stalker.Blackboard.Action.RestValue = record.RestValue;
         stalker.GoapTargetPoiId = record.Stamp.Id;
         return record.Stamp.Position;
     }
@@ -46,30 +43,30 @@ public sealed class ActionRestAtPOI : GoapTravelAction
 
     public override void Enter(NPCBlackboard bb)
     {
-        _resting = false;
-        _restTimer = 0f;
+        // Fallback if ResolveTarget never runs; it overwrites this when it does.
+        bb.Action.RestValue = 0.3f;
         base.Enter(bb);
     }
 
     public override bool Execute(NPCBlackboard bb, float delta)
     {
-        if (!_resting)
+        if (!bb.Action.Working)
         {
             if (!base.Execute(bb, delta)) return false;
-            _resting = true;
-            _restTimer = _restValue * 240f + 90f;
+            bb.Action.Working = true;
+            bb.Action.Timer = bb.Action.RestValue * 240f + 90f;
             var stalker = Ctx?.GetStalker(bb.OwnerId);
             if (stalker != null) stalker.Activity = "😴 Resting";
             return false;
         }
 
-        _restTimer -= delta;
-        if (_restTimer > 0f) return false;
+        bb.Action.Timer -= delta;
+        if (bb.Action.Timer > 0f) return false;
 
         var restStalker = Ctx?.GetStalker(bb.OwnerId);
         if (restStalker != null)
         {
-            float amount = _restValue * 100f;
+            float amount = bb.Action.RestValue * 100f;
             restStalker.Needs.Rest(amount);
             restStalker.Needs.Feed(amount * 0.25f);
             restStalker.Needs.Drink(amount * 0.25f);

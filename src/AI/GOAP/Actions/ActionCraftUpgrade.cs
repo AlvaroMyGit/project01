@@ -20,8 +20,6 @@ public sealed class ActionCraftUpgrade : GOAPAction
     private const int   ScrapCostBeltInsert= 10;
 
     private GoapContext? _ctx;
-    private float _timer;
-    private bool _finished;
 
     public override string Name     => "CraftUpgrade";
     public override float BaseCost  => 3f;
@@ -50,8 +48,7 @@ public sealed class ActionCraftUpgrade : GOAPAction
 
     public override void Enter(NPCBlackboard bb)
     {
-        _timer    = RepairTimeGameSec;
-        _finished = false;
+        bb.Action.Timer = RepairTimeGameSec;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker != null)
         {
@@ -62,8 +59,8 @@ public sealed class ActionCraftUpgrade : GOAPAction
 
     public override bool Execute(NPCBlackboard bb, float delta)
     {
-        _timer -= delta;
-        if (_timer > 0f) return false;
+        bb.Action.Timer -= delta;
+        if (bb.Action.Timer > 0f) return false;
 
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker == null) return true;
@@ -132,13 +129,13 @@ public sealed class ActionCraftUpgrade : GOAPAction
             }
         }
 
-        _finished = true;
+        bb.Action.Finished = true;
         return true;
     }
 
     public override void Exit(NPCBlackboard bb)
     {
-        if (!_finished) return;
+        if (!bb.Action.Finished) return;
         GoapWorldStateSync.ApplyEffects(bb, GetEffects());
     }
 }

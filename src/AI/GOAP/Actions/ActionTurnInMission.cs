@@ -7,7 +7,6 @@ namespace StalkerALifeSandbox.AI.GOAP.Actions;
 public sealed class ActionTurnInMission : GOAPAction
 {
     private GoapContext? _ctx;
-    private bool _finished;
 
     public override string Name => "TurnInMission";
     public override float BaseCost => 1f;
@@ -38,7 +37,6 @@ public sealed class ActionTurnInMission : GOAPAction
 
     public override void Enter(NPCBlackboard bb)
     {
-        _finished = false;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker?.ActiveMission != null)
             stalker.Activity = $"💰 Turning in @ {stalker.ActiveMission.IssuerName}";
@@ -46,13 +44,13 @@ public sealed class ActionTurnInMission : GOAPAction
 
     public override bool Execute(NPCBlackboard bb, float delta)
     {
-        _finished = true;
+        bb.Action.Finished = true;
         return true;
     }
 
     public override void Exit(NPCBlackboard bb)
     {
-        if (!_finished) return;
+        if (!bb.Action.Finished) return;
 
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker?.ActiveMission is not { ObjectiveDone: true }) return;

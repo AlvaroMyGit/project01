@@ -8,7 +8,6 @@ public sealed class ActionInvestigateCorpseGoap : GOAPAction
 {
     private GoapContext? _ctx;
     private readonly StalkerALifeSandbox.AI.Actions.ActionInvestigateCorpse _inner = new();
-    private Corpse? _target;
 
     public override string Name => "InvestigateCorpse";
     public override float BaseCost => 2f;
@@ -28,7 +27,7 @@ public sealed class ActionInvestigateCorpseGoap : GOAPAction
     public override void Enter(NPCBlackboard bb)
     {
         _inner.Reset();
-        _target = _ctx?.Corpses
+        bb.Action.TargetCorpse = _ctx?.Corpses
             .Where(c => !c.IsReported)
             .OrderBy(c => Vector3.Distance(c.Position, bb.CurrentPosition))
             .FirstOrDefault();
@@ -36,10 +35,10 @@ public sealed class ActionInvestigateCorpseGoap : GOAPAction
 
     public override bool Execute(NPCBlackboard bb, float delta)
     {
-        if (_target == null) return true;
+        if (bb.Action.TargetCorpse == null) return true;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker == null) return true;
-        return _inner.Tick(stalker, _target, (float)(_ctx?.Time.ElapsedGameSeconds ?? 0), delta);
+        return _inner.Tick(stalker, bb.Action.TargetCorpse, (float)(_ctx?.Time.ElapsedGameSeconds ?? 0), delta);
     }
 
     public override void Exit(NPCBlackboard bb) =>

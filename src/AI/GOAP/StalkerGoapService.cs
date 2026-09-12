@@ -187,6 +187,10 @@ public sealed class StalkerGoapService
 
         if (!runtime.ActionEntered)
         {
+            // Single choke point: every action starts from a clean scratch bag,
+            // so none can inherit leftovers from the previous action — or, in
+            // the bug this replaced, from a different stalker entirely.
+            stalker.Blackboard.Action.Reset();
             action.Enter(stalker.Blackboard);
             runtime.MarkEntered();
         }

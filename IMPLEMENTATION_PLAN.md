@@ -806,7 +806,7 @@ shrinks hearing radius · NVG ignores light level.
 
 ---
 
-### 🔴 Blocker found 2026-09-12 — shared action state breaks the mission loop
+### ✅ Fixed 2026-09-12 — shared action state (and what it was hiding)
 
 Checking why missions never complete turned up a live, proven bug rather than a
 tuning problem.
@@ -843,9 +843,42 @@ already in the codebase — `NPCBlackboard.SeatedCampfireId` was put there for
 exactly this reason. Options: move the state to `NPCBlackboard`, or give each
 stalker its own action instances.
 
-**This outranks Phase 6A step 6 and Phase 6B.** Nearly every conclusion drawn
-from live runs — goal competition, socialising rates, mission pacing — is
-measured through a broken travel step.
+**Fixed.** Per-execution state moved to `NPCBlackboard.Action`
+(`GoapActionState`), one bag per stalker, reset at a single choke point in
+`StalkerGoapService.Execute` immediately before every `Enter`. Ten actions
+cleaned up; `ActionRestAtBase._timer` turned out never to escape `Enter` and
+became a local. Only bind-time `_ctx` remains as instance state, which is
+correct. The characterization tests were inverted into regression guards, plus
+one that proves two stalkers keep independent timers on a shared timed action.
+
+#### 🔴 What the fix uncovered — mission targets are mostly unreachable
+
+Headline mission completions went **5 → 0**, and that is an honest number
+replacing a fake one. `_working` was also shared: once *any* stalker set it,
+every other stalker's `Execute` skipped both the travel check and the arrival
+gate and went straight to mission work. Those 5–12 "completions" were stalkers
+finishing contracts without ever leaving. With state per-stalker the loop is
+honest, and the honest answer is that nobody arrives.
+
+Instrumented `GoapTravelAction.Enter` over a 4-minute run — **the pathfinder
+cannot reach mission targets**:
+
+| action | `FindPath` returned NULL |
+|---|---|
+| `ActionFulfillMission` | **189 / 231 (82%)** |
+| `ActionGoToShelter` | 45 / 256 (18%) |
+| `ActionTradeRun` | 0 / 104 (0%) |
+
+Failures are not distance-related — median distance was 795 for failures versus
+682 for successes. Shelters and traders resolve to stamped POIs; mission
+targets come from `mission.TargetPosition`, which is never validated against
+navigable terrain. The arrival gate is not implicated: it logged **zero**
+rejections, so travel never completes rather than completing at the wrong spot.
+
+**Next:** validate/snap `MissionRegistry` target positions to reachable
+locations, or have `ActionFulfillMission.ResolveTarget` fall back to the nearest
+navigable point. This is now the top blocker — the mission loop is the sim's
+main activity driver.
 
 ### Deliberately *not* in Phase 6
 

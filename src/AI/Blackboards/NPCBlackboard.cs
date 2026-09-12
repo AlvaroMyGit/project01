@@ -1,6 +1,8 @@
 // NPCBlackboard.cs — Short-Term NPC Memory
 using System.Numerics;
 
+using StalkerALifeSandbox.AI.GOAP;
+
 namespace StalkerALifeSandbox.AI.Blackboards;
 
 public sealed class NPCBlackboard
@@ -62,6 +64,13 @@ public sealed class NPCBlackboard
     /// per-stalker.
     /// </summary>
     public string? SeatedCampfireId { get; set; }
+
+    /// <summary>
+    /// Scratch space for the GOAP action this NPC is currently executing.
+    /// Actions are shared singletons, so their own fields are global — see
+    /// <see cref="StalkerALifeSandbox.AI.GOAP.GoapActionState"/>.
+    /// </summary>
+    public GoapActionState Action { get; } = new();
 
     /// <summary>
     /// Game time of this NPC's last shared drink or guitar session. Negative
@@ -159,6 +168,7 @@ public sealed class NPCBlackboard
         SuspicionLevel = 0f;
         SeatedCampfireId = null;
         LastSocialisedGameSeconds = float.NegativeInfinity;
+        Action.Reset();
         Combat = CombatState.Idle;
         TimeSinceLastThreatSight = 0f;
         KnownEntities.Clear();

@@ -8,7 +8,6 @@ namespace StalkerALifeSandbox.AI.GOAP.Actions;
 public sealed class ActionRestAtBase : GOAPAction
 {
     private GoapContext? _ctx;
-    private float _timer;
 
     public override string Name => "RestAtBase";
     public override float BaseCost => 1f;
@@ -34,12 +33,13 @@ public sealed class ActionRestAtBase : GOAPAction
 
     public override void Enter(NPCBlackboard bb)
     {
-        _timer = Random.Shared.NextSingle() * 300f + 120f;
+        // Local: never read outside Enter, so it needs no per-stalker slot.
+        float restSeconds = Random.Shared.NextSingle() * 300f + 120f;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker == null) return;
 
         stalker.IdleAtBase = true;
-        stalker.ActivityTimer = _timer;
+        stalker.ActivityTimer = restSeconds;
         stalker.Activity = PickBaseActivity(stalker);
         stalker.Blackboard.OverrideNavigationStatus = stalker.Activity;
     }
