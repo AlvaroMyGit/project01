@@ -1288,6 +1288,37 @@ the moment combat became attritional "combat encounters" silently changed
 meaning from *how much fighting* to *how much of it was fatal*. Added an
 exchange counter and the report now states both, with the lethality rate.
 
+**7.4 ✅ — the 1 Hz tick, 2.7x.** 7200 ticks went **254s → 93.4s**, and the
+1 Hz tick from ~145 ms to ~11 ms, comfortably inside budget. Two causes, both
+found by drilling rather than reading:
+
+*`SnapshotBuild` (63 ms/call)* — `InspectorBuilder.FromStalker` recomputed
+`FindNearestIssuerWithOffer` for **every stalker every second**, a value
+`GoapWorldStateSync` had already written to the blackboard on that same tick. It
+now reads the flag. Building 400+ inspector DTOs a second so a human can open
+one panel is still wasteful, but it is no longer expensive. *Also fixed here: the
+DTO reported `Health = 100` as a literal, which became a lie the moment stalkers
+gained real health in 7.3.*
+
+*`GoapWorldStateSync` (0.24 ms/call × 195k)* — 29% of all simulation work sat in
+`FindNearestIssuerWithOffer`, and for the **same reason as the planner in 7.2**:
+it tested eligibility (a walk over every offer a site holds) *before* distance
+(one subtraction and a square root), so it did the expensive work for sites
+already too far to win. Reordered, and `HasEligibleOffer` no longer materialises
+the full eligible list through four LINQ clauses just to test for existence.
+**0.21 → 0.02 ms/call.**
+
+*Caveat recorded honestly:* the selection is logically identical, but the old
+`HasEligibleOffer` reached `PickOfferForStalker`, which drew from
+`Random.Shared`. The new one does not, so the RNG sequence diverges and absolute
+counts shift between builds. That is not a regression, but it does mean this
+change cannot be A/B'd cleanly against a stored baseline — recaptured instead.
+
+*And the tool broke itself:* the exchange-counter telemetry from 7.3 changed the
+report's wording, so `sim_baseline.py`'s `combat_total` pattern stopped matching
+and silently reported `?`. Patterns updated to read exchanges and fatal
+separately.
+
 **Next, now that population is real** — the deferred performance question. At
 423 alive the 1 Hz tick is the problem: `SnapshotBuild` 78.3 ms and
 `Needs+GoapReplan` 77.1 ms per call, so that one tick in ten runs well over the

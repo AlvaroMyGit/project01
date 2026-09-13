@@ -17,8 +17,12 @@ public static class InspectorBuilder
     {
         if (!s.IsAlive) return null;
 
-        bool hasOffer = missions != null && traders != null &&
-                        missions.FindNearestIssuerWithOffer(s, traders) != null;
+        // Read the flag GoapWorldStateSync already computed this second rather
+        // than repeating the search over every trader site and its offers.
+        // Rebuilding it here for every stalker made this the single most
+        // expensive thing in the 1 Hz tick: 63 ms a call at 436 alive.
+        bool hasOffer = s.Blackboard.WorldStateBools
+            .GetValueOrDefault(AI.GOAP.GoapKeys.HasMissionOffer);
 
         return new InspectorDTO
         {
@@ -28,7 +32,7 @@ public static class InspectorBuilder
             ApparentFaction = s.ApparentFaction,
             Type = "stalker",
             IsAlive = true,
-            Health = 100,
+            Health = (int)s.Health,
             LayerIndex = s.Position.Y < -10f ? -1 : 0,
             LevelId = s.CurrentLevelId,
             Rank = s.Rank.CurrentRank.ToString(),

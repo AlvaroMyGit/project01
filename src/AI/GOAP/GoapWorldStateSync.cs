@@ -86,8 +86,7 @@ public static class GoapWorldStateSync
         Set(bb, GoapKeys.HasActiveMission, hasMission);
         Set(bb, GoapKeys.MissionObjectiveDone, objectiveDone);
         Set(bb, GoapKeys.HasCompletedMission, false);
-        Set(bb, GoapKeys.HasMissionOffer,
-            !hasMission && ctx.Missions.FindNearestIssuerWithOffer(stalker, ctx.Traders) != null);
+        Set(bb, GoapKeys.HasMissionOffer, !hasMission && ctx.Missions.FindNearestIssuerWithOffer(stalker, ctx.Traders) != null);
         Set(bb, GoapKeys.IsAtMissionGiver, IsNearMissionGiver(stalker, ctx));
     }
 

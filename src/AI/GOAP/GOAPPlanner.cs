@@ -85,7 +85,7 @@ public sealed class GOAPPlanner
                 }
                 if (!useful) continue;
 
-                if (!Core.TickProfiler.Measure("  plan:IsValid", () => action.IsValid(bb))) continue;
+                if (!action.IsValid(bb)) continue;
 
                 // Build new unsatisfied state
                 var newState = new Dictionary<string, bool>(node.UnsatisfiedState);
