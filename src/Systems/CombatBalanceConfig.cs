@@ -19,6 +19,16 @@ public static class CombatBalanceConfig
     public const float StalkerVsStalkerMinChance = 0.12f;
     public const float StalkerVsStalkerMaxChance = 0.88f;
 
+    /// <summary>
+    /// Morale a stalker loses for surviving a firefight. Morale had seven
+    /// sources and one weak sink — decay that only runs once hunger, thirst or
+    /// fatigue is already past 60 — so it saturated near 100 and stopped
+    /// carrying information. Surviving violence is the sink that fits the
+    /// subject: it scales with how dangerous a stalker's life actually is,
+    /// which is what makes the number mean something again.
+    /// </summary>
+    public const float CombatStressMorale       = 2.5f;
+
     public const float SquadAllyBonus           = 0.07f;
     public const int MaxAllyBonus               = 3;
 

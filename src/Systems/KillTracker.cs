@@ -1,3 +1,4 @@
+using StalkerALifeSandbox.AI.Social;
 namespace StalkerALifeSandbox.Systems;
 using StalkerALifeSandbox.Core;
 using StalkerALifeSandbox.Entities.Characters;
@@ -41,8 +42,30 @@ public static class KillTracker
     /// <summary>Total kills recorded since startup.</summary>
     public static int TotalKills => _killCounter;
 
+    /// <summary>
+    /// Morale the squad loses per member killed. Read once — KillTracker is
+    /// static, matching how MissionRegistry sources its mission share.
+    /// </summary>
+    private static readonly float SquadmateLossPenalty =
+        SquadMoraleOptions.FromEnvironment().SquadmateLossPenalty;
+
     public static void RecordKill(Stalker victim, object killer, string? gameTimeStr = null, string? causeOverride = null)
     {
+        // The one place every stalker death passes through — combat with a
+        // stalker or a mutant, emissions, and betrayal all call here. So this is
+        // where the squad finds out it has lost someone. SocialSystem buffers
+        // the pulse and applies it to the living members on its next tick.
+        if (!string.IsNullOrEmpty(victim.SquadId))
+        {
+            EventBus.Publish(new SquadMoraleEvent
+            {
+                SquadId = victim.SquadId,
+                SourceId = victim.Id,
+                MoraleDelta = -SquadmateLossPenalty,
+                Reason = $"{victim.DisplayName} killed"
+            });
+        }
+
         Stalker? stalkerKiller = null;
 
         var evt = new KillEventDTO

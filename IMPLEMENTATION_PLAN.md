@@ -1144,7 +1144,42 @@ fingerprints the built DLL and aborts if it changes mid-capture. The refactor's
 equivalence was established with `SquadSuccessionTests` instead — the right tool
 for the question, since a stochastic sim run could never have settled it.
 
-**Still open:** Stage 5 (morale sink, then 6A step 6 and 6B).
+**Stage 5.1 ✅ — morale is a signal again.** Two sinks, both tied to events the
+setting already produces: `CombatBalanceConfig.CombatStressMorale` (−2.5 to the
+survivor of any firefight) and `SquadMoraleOptions.SquadmateLossPenalty` (−9 to
+each living squadmate, published from `KillTracker.RecordKill` — the one point
+every stalker death passes through).
+
+Measuring the sinks exposed a bug in the *previous* stage's work. Instrumenting
+`AdjustMorale` showed **+323,800 gained against 270,220 wasted at the 100
+ceiling** — 83% of all morale evaporating — and the culprit was the squad
+coupling rate. `LeaderCouplingPerGameSec = 0.02` is a half-life of 35 game
+*seconds*, but the 1 Hz bucket hands out `1.0 × TimeFactor` game seconds per
+tick — 150 at TimeFactor 150. Followers closed **95% of the gap every tick**, so
+coupling was a snap rather than a drift: it pinned every follower to its leader
+and erased each sink before it could register. Exactly the trap that produced
+the movement and rate-formula bugs — a constant tuned at TimeFactor 3 meaning
+something else entirely at 150. Retuned to a 15-game-minute half-life
+(`ln 2 / 900 ≈ 0.00077`) and pinned by `SquadCouplingRateTests`.
+
+| | before Stage 5 | after |
+|---|---|---|
+| within-squad morale spread | **0** | **9** |
+| follower avg morale | 86 | **80** |
+| planners under 75 | — | 20 of 101 |
+| population avg | 89 | 85 |
+
+Morale now varies by squad and by fortune instead of sitting pinned at the
+ceiling, and the campfire cluster does fire — but rarely (0–1 drinks per
+10 game-hours). The remaining blocker is structural and already documented:
+only planners can select `GoalSocialise`, and planners are the ones earning
+mission rewards, so they stay near the top of the range. **The stalkers who most
+need a drink are the ones who can never ask for one.** Closing that needs the
+`ShouldPlan` work, measured at 1.8× over the 1 Hz tick budget, which remains its
+own phase.
+
+**Still open:** Phase 6A step 6 (`PersonalMemory`), Phase 6B (perception), and
+the `ShouldPlan` / follower-planning question.
 
 ---
 

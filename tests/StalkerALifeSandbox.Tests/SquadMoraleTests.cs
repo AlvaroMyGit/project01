@@ -226,3 +226,50 @@ public class SquadMoraleTests
         EventBus.ClearAll();
     }
 }
+
+/// <summary>
+/// The coupling rate is a half-life, and the tick it is applied over is
+/// <c>1.0 x TimeFactor</c> game seconds — so a rate that feels gentle at
+/// TimeFactor 3 can be a snap at 150. The first value shipped, 0.02, was a
+/// half-life of 35 game seconds against a 150-second tick: followers closed 95%
+/// of the gap every tick, within-squad spread measured 0, and every morale sink
+/// was erased before it could matter.
+/// </summary>
+public class SquadCouplingRateTests
+{
+    private static float BlendAt(float ratePerGameSec, float gameDelta) =>
+        1f - MathF.Exp(-ratePerGameSec * gameDelta);
+
+    [Fact]
+    public void CouplingIsADrift_NotASnap_AtHighTimeFactor()
+    {
+        // One 1 Hz tick at TimeFactor 150 is 150 game seconds.
+        float blend = BlendAt(new SquadMoraleOptions().LeaderCouplingPerGameSec, 150f);
+
+        Assert.True(blend < 0.25f,
+            $"a single tick should move a fraction of the gap, not most of it (was {blend:P0})");
+        Assert.True(blend > 0.01f, "but it must still visibly converge");
+    }
+
+    [Fact]
+    public void TheHalfLifeIsMeasuredInGameMinutes_NotSeconds()
+    {
+        float rate = new SquadMoraleOptions().LeaderCouplingPerGameSec;
+        float halfLifeSeconds = MathF.Log(2f) / rate;
+
+        Assert.InRange(halfLifeSeconds, 300f, 3600f);   // 5 to 60 game minutes
+    }
+
+    [Fact]
+    public void ASinkSurvivesOneCouplingTick()
+    {
+        // The regression that matters: grief must not be undone immediately.
+        // A 9-point loss against a leader 9 points higher should leave most of
+        // the loss standing after one tick.
+        float blend = BlendAt(new SquadMoraleOptions().LeaderCouplingPerGameSec, 150f);
+        float recovered = 9f * blend;
+
+        Assert.True(recovered < 4.5f,
+            $"coupling clawed back {recovered:F1} of a 9-point loss in one tick");
+    }
+}

@@ -17,13 +17,21 @@ namespace StalkerALifeSandbox.AI.Social;
 public sealed record SquadMoraleOptions
 {
     /// <summary>
-    /// How fast a follower's morale converges on its leader's, per game second.
-    /// Applied as exponential smoothing, so it is stable at any TimeFactor and
-    /// can never overshoot — unlike a raw <c>rate * delta</c> step, which is
-    /// what broke movement at 150×. At 0.02 a follower closes roughly half the
-    /// gap every 35 game seconds.
+    /// How fast a follower's morale converges on its leader's, per game second,
+    /// as exponential smoothing — stable at any TimeFactor and unable to
+    /// overshoot.
+    ///
+    /// Expressed as a half-life of 15 game minutes: ln(2)/900. The first value
+    /// tried, 0.02, was a half-life of 35 game SECONDS, which sounds gentle
+    /// until you notice the 1 Hz bucket hands out <c>1.0 x TimeFactor</c> game
+    /// seconds per tick — 150 at TimeFactor 150. The follower closed 95% of the
+    /// gap every single tick, so coupling was a snap rather than a drift: it
+    /// pinned every follower to its leader (within-squad spread measured 0) and
+    /// instantly erased any morale a sink had just removed. Same trap as the
+    /// movement and rate-formula bugs — a constant tuned at TimeFactor 3
+    /// meaning something entirely different at 150.
     /// </summary>
-    public float LeaderCouplingPerGameSec { get; init; } = 0.02f;
+    public float LeaderCouplingPerGameSec { get; init; } = 0.00077f;
 
     /// <summary>
     /// A follower further than this from its leader has lost contact and stops
@@ -40,6 +48,20 @@ public sealed record SquadMoraleOptions
     /// </summary>
     public float MissionShare { get; init; } = 4f;
 
+    /// <summary>
+    /// Morale each surviving squadmate loses when one of them is killed.
+    /// Larger than the +4 a mission turn-in pays, because losing people should
+    /// outweigh a good day's work — this is what makes a squad that is bleeding
+    /// members visibly grimmer than one that is not.
+    ///
+    /// Sized so three losses carry a full-morale stalker below GoalSocialise's
+    /// threshold of 75 (100 - 3x9 = 73). Squads are 2-4 strong, so three deaths
+    /// is a squad effectively wiped out — if that did not make the survivor want
+    /// company, the sink could never reach the goal it exists to unblock.
+    /// Pinned by MoraleSinkTests.RepeatedLossesAccumulate.
+    /// </summary>
+    public float SquadmateLossPenalty { get; init; } = 9f;
+
     public static SquadMoraleOptions FromEnvironment()
     {
         var d = new SquadMoraleOptions();
@@ -48,7 +70,8 @@ public sealed record SquadMoraleOptions
             LeaderCouplingPerGameSec =
                 Env("STALKER_SQUAD_MORALE_COUPLING", d.LeaderCouplingPerGameSec),
             CouplingRadius = Env("STALKER_SQUAD_MORALE_RADIUS", d.CouplingRadius),
-            MissionShare = Env("STALKER_SQUAD_MISSION_SHARE", d.MissionShare)
+            MissionShare = Env("STALKER_SQUAD_MISSION_SHARE", d.MissionShare),
+            SquadmateLossPenalty = Env("STALKER_SQUAD_LOSS_PENALTY", d.SquadmateLossPenalty)
         };
     }
 

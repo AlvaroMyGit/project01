@@ -176,6 +176,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
                 s.DisplayName, s.TrueFaction, culture, isAlert: true,
                 regionId: s.CurrentLevelId, position: s.Position,
                 mutantType: closeMutant.Species);
+            s.Needs.AdjustMorale(-CombatBalanceConfig.CombatStressMorale);
             s.CombatCooldown = 20f + Random.Shared.NextSingle() * 15f;
             return false;
         }
@@ -219,6 +220,8 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             ctx.PDA.BroadcastChatter(
                 s.DisplayName, s.TrueFaction, culture, isAlert: true,
                 regionId: s.CurrentLevelId, position: s.Position);
+            // Winning a firefight is still a firefight.
+            s.Needs.AdjustMorale(-CombatBalanceConfig.CombatStressMorale);
             s.CombatCooldown = 25f + Random.Shared.NextSingle() * 15f;
             other.CombatCooldown = 20f + Random.Shared.NextSingle() * 10f;
             return false;

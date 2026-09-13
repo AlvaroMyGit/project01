@@ -1,52 +1,52 @@
 {
   "stalkers_alive": {
-    "mean": 161.7,
-    "min": 154,
-    "max": 169
+    "mean": 163.5,
+    "min": 162,
+    "max": 165
   },
   "stalkers_peak": {
-    "mean": 152.7,
-    "min": 141,
-    "max": 163
+    "mean": 157.5,
+    "min": 154,
+    "max": 161
   },
   "mutants_alive": {
-    "mean": 156,
-    "min": 151,
-    "max": 163
+    "mean": 157.5,
+    "min": 157,
+    "max": 158
   },
   "combat_total": {
-    "mean": 516.7,
-    "min": 510,
-    "max": 525
+    "mean": 514.5,
+    "min": 512,
+    "max": 517
   },
   "combat_vs_mutant_w": {
-    "mean": 177,
-    "min": 170,
-    "max": 182
+    "mean": 175.5,
+    "min": 175,
+    "max": 176
   },
   "combat_vs_mutant_l": {
-    "mean": 94.7,
-    "min": 85,
+    "mean": 91.5,
+    "min": 81,
     "max": 102
   },
   "mutants_killed": {
-    "mean": 177,
-    "min": 170,
-    "max": 182
+    "mean": 175.5,
+    "min": 175,
+    "max": 176
   },
   "casualties_total": {
-    "mean": 342.3,
-    "min": 335,
-    "max": 350
+    "mean": 340.5,
+    "min": 339,
+    "max": 342
   },
   "death_gunfire": {
-    "mean": 245,
-    "min": 243,
-    "max": 248
+    "mean": 247.5,
+    "min": 239,
+    "max": 256
   },
   "death_mutant": {
-    "mean": 94.7,
-    "min": 85,
+    "mean": 91.5,
+    "min": 81,
     "max": 102
   },
   "death_emission": {
@@ -55,39 +55,39 @@
     "max": 0
   },
   "death_betrayal": {
-    "mean": 2.7,
-    "min": 2,
-    "max": 4
+    "mean": 1.5,
+    "min": 1,
+    "max": 2
   },
   "missions_accepted": {
-    "mean": 598,
-    "min": 580,
-    "max": 623
+    "mean": 568.5,
+    "min": 543,
+    "max": 594
   },
   "missions_completed": {
-    "mean": 532.7,
-    "min": 516,
-    "max": 553
+    "mean": 505.5,
+    "min": 480,
+    "max": 531
   },
   "morale_avg": {
-    "mean": 85.3,
-    "min": 82,
-    "max": 88
+    "mean": 85,
+    "min": 85,
+    "max": 85
   },
   "morale_planners": {
-    "mean": 86,
-    "min": 84,
-    "max": 88
-  },
-  "morale_followers": {
-    "mean": 85.3,
-    "min": 80,
+    "mean": 88.5,
+    "min": 88,
     "max": 89
   },
+  "morale_followers": {
+    "mean": 80,
+    "min": 80,
+    "max": 80
+  },
   "squad_spread": {
-    "mean": 0,
-    "min": 0,
-    "max": 0
+    "mean": 9,
+    "min": 7,
+    "max": 11
   },
   "drinks": {
     "mean": 0,
@@ -100,30 +100,30 @@
     "max": 0
   },
   "goap_tasks": {
-    "mean": 62608,
-    "min": 62585,
-    "max": 62637
+    "mean": 63973,
+    "min": 59859,
+    "max": 68087
   },
   "goap_replans": {
-    "mean": 27264.3,
-    "min": 26908,
-    "max": 27837
+    "mean": 27223,
+    "min": 26284,
+    "max": 28162
   },
   "rank_promotions": {
-    "mean": 114,
-    "min": 110,
-    "max": 121
+    "mean": 117,
+    "min": 114,
+    "max": 120
   },
   "ticks_dropped": {
     "mean": 0,
     "min": 0,
     "max": 0
   },
-  "_binary": "76731dc06695",
+  "_binary": "e6904e1e22c9",
   "_settings": {
     "STALKER_TIME_FACTOR": "150",
     "STALKER_HEADLESS_TICKS": "2400",
     "STALKER_REST_PORT": "8123"
   },
-  "_repeat": 3
+  "_repeat": 2
 }
