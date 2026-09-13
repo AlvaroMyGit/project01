@@ -83,7 +83,7 @@ These aren't new ideas — they're existing classes sitting unused in the sim lo
 
 **Theme:** Infrastructure that isn't a "feature" per se but unlocks everything else.
 
-- **Save/load persistent world** — snapshot full sim state (stalkers, factions, territory, economy) so a campaign can resume across sessions instead of resetting every run. Currently only `data/leaderboard.json` persists.
+- **Save/load persistent world** — snapshot full sim state (stalkers, factions, territory, economy) so a campaign can resume across sessions instead of resetting every run. Nothing persists between runs today: stalker ids are fresh GUIDs each time, so even the end-of-run leaderboard is a per-run artefact rather than a record.
 - **Modding/plugin API** — the sim is already JSON-data-driven (`data/*.json` + `ItemDatabase.cs`); formalize a plugin loader so factions/items/mutants can be added without touching core code.
 - **Scenario scripting** — designer-authored "events" (convoy ambush, faction war trigger, artifact rush) that can be scripted and replayed for balance testing.
 

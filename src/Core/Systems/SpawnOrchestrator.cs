@@ -85,8 +85,6 @@ public sealed class SpawnOrchestrator : ISimulationSystem
         if (!IsInitialSpawnActive)
         {
             Console.WriteLine("[Population] Staggered initial spawn complete.");
-            //SimulationDebugLog.RecordInitialPopulationDistribution(ctx.Stalkers);
-            LeaderboardSerializer.SaveLeaderboard(ctx.Stalkers, DataPaths.Resolve("leaderboard.json"));
         }
     }
 

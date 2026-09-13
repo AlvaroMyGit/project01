@@ -146,7 +146,7 @@ Master tick scheduler distributing elapsed engine time into three accumulator bu
 Thread-safe global publish-subscribe hub keyed by struct event types. Methods: `Subscribe<T>()`, `Unsubscribe<T>()`, `Publish<T>()`, `ClearAll()`. Defined event structs include: `DeathLogEvent`, `BlowoutWarningEvent`, `EmissionPhaseChangedEvent`, `FactionNewsEvent`, `TradeOfferEvent`, `BountyEvent`, `MutantEncounterEvent`.
 
 ### [`DataPaths.cs`](file:///home/alvaromendes/Documents/project01/src/Core/DataPaths.cs)
-Resolves bundled `data/**` files relative to `AppContext.BaseDirectory` (where the build copies them) rather than the current working directory, so data loading is independent of where the process is launched. `Resolve(params string[])` builds a path; `Require(...)` throws a clear `FileNotFoundException` at load time if the file is missing. All JSON loaders route through this. The csproj copies `data/**` to the output directory (`PreserveNewest`), excluding the runtime-generated `leaderboard.json`.
+Resolves bundled `data/**` files relative to `AppContext.BaseDirectory` (where the build copies them) rather than the current working directory, so data loading is independent of where the process is launched. `Resolve(params string[])` builds a path; `Require(...)` throws a clear `FileNotFoundException` at load time if the file is missing. All JSON loaders route through this. The csproj copies `data/**` to the output directory (`PreserveNewest`).
 
 ### [`SimulationSnapshot.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationSnapshot.cs)
 Immutable point-in-time view of simulation state (entity pins, population/mission counts, PDA feed, top-100 leaderboard, and per-entity inspector payloads) consumed by the web layer. **Threading contract:** all simulation ticks run on a single timer thread — the sole writer of entity state — which builds a snapshot once per 1 Hz tick via `SimulationSnapshot.Build(...)`. `SimulationLoop` publishes it through a volatile reference (`CurrentSnapshot`); REST endpoints and the WebSocket inspect handler read it lock-free and never touch live entities, eliminating torn-read races.
@@ -188,7 +188,7 @@ Manages the 12-minute staggered initial population deployment and ongoing trickl
 Executes 10 Hz combat checks (stalker-vs-stalker and stalker-vs-mutant), squad formation following, corpse discovery broadcasting, and active path advancement.
 
 ### [`TelemetrySystem.cs`](file:///home/alvaromendes/Documents/project01/src/Core/Systems/TelemetrySystem.cs)
-Collects all live entities into a `TelemetryFrame` at 10 Hz and broadcasts via WebSocket to connected visualizer clients. Periodically serializes `leaderboard.json`.
+Collects all live entities into a `TelemetryFrame` at 10 Hz and broadcasts via WebSocket to connected visualizer clients.
 
 ---
 
@@ -312,7 +312,7 @@ Located in `src/AI/GOAP/Goals/`:
 | [`KillTracker.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/KillTracker.cs) | `KillTracker` | Thread-safe circular buffer (500 events) recording all casualties by category. Also the single point every stalker death passes through, so it publishes the squad grief pulse |
 | [`KillTrackerOptions.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/KillTrackerOptions.cs) | `KillTrackerOptions` | Immutable config record, installed via `KillTracker.Configure` |
 | [`CorpseCleanupOptions.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/CorpseCleanupOptions.cs) | `CorpseCleanupOptions` | Despawn thresholds in game seconds; `STALKER_CORPSE_*` overrides |
-| [`LeaderboardSerializer.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/LeaderboardSerializer.cs) | `LeaderboardSerializer` | Builds Top 100 by XP/kills and serializes to `data/leaderboard.json` |
+| [`LeaderboardSerializer.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/LeaderboardSerializer.cs) | `LeaderboardSerializer` | Builds the Top 100 by XP/kills for the snapshot and API, and writes the final standings beside the run log at shutdown |
 | [`ProtectionProfile.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/ProtectionProfile.cs) | `ProtectionProfile` | Computes composite 9-channel defense by summing armor + helmet + belt items |
 | [`RankSystem.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/RankSystem.cs) | `RankSystem` | Awards XP on kills with rank-delta multipliers; triggers promotions across 8 tiers |
 | [`ScientistForecaster.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/ScientistForecaster.cs) | `ScientistForecaster` | Multi-stage emission PDA warnings (1-3hr, 30min, 15min before impact) |
@@ -528,7 +528,6 @@ Full S.T.A.L.K.E.R.-themed dashboard with:
 | `names.json` | 1 KB | Cultural first names, surnames, and callsigns |
 | `slang.json` | 0.6 KB | Greeting/alert phrases by cultural background |
 | `pda_chatter_templates.json` | 3.1 KB | 9 template categories for PDA message formatting |
-| `leaderboard.json` | 31 KB | Serialized Top 100 (written at runtime) |
 
 ### `data/gamma/`
 Raw Anomaly G.A.M.M.A. modpack data:

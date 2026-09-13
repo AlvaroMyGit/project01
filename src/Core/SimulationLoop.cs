@@ -289,6 +289,7 @@ public sealed class SimulationLoop : IDisposable
     {
         SimulationDebugLog.RecordTickAccounting(ExecutedTicks, DroppedTicks);
         SimulationDebugLog.WriteFinalReport(_ctx.Time, _ctx.Stalkers, _ctx.Mutants, _ctx.Corpses);
+        LeaderboardSerializer.SaveRunLeaderboard(_ctx.Stalkers);
     }
         
     public void RegisterStalkerListeners(IEnumerable<Stalker> stalkers)

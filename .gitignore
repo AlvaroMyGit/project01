@@ -6,7 +6,6 @@ obj/
 logs/
 
 # Simulation-generated output (rewritten every tick)
-data/leaderboard.json
 
 # Test / coverage output
 TestResults/
@@ -20,3 +19,6 @@ coverage*.json
 .vs/
 .idea/
 .vscode/
+
+# Per-run leaderboard snapshots, written beside the run log
+logs/*_leaderboard.json

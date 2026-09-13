@@ -20,6 +20,29 @@ public static class LeaderboardSerializer
     /// <summary>Cached: this runs periodically, unlike the one-shot data loads.</summary>
     private static readonly JsonSerializerOptions WriteOptions = new() { WriteIndented = true };
 
+    /// <summary>
+    /// Writes the final standings beside this run's log, named after it.
+    ///
+    /// The leaderboard used to be written to data/leaderboard.json every five
+    /// real seconds, from inside the entity lock on the simulation thread — and
+    /// nothing ever read it back. It could not have been useful across runs
+    /// either: stalker ids are fresh GUIDs each time, so yesterday's standings
+    /// name people who do not exist today. The dashboard has always served
+    /// /api/leaderboard from the live snapshot instead.
+    ///
+    /// A per-run artefact is worth keeping, so it now lands in logs/ with the
+    /// rest of the run's output, once, at shutdown.
+    /// </summary>
+    public static void SaveRunLeaderboard(IEnumerable<Stalker> allStalkers)
+    {
+        string? log = DebugLogSink.LogPath;
+        if (string.IsNullOrEmpty(log)) return;
+
+        string path = Path.ChangeExtension(log, null) + "_leaderboard.json";
+        SaveLeaderboard(allStalkers, path);
+        Console.WriteLine($"[Leaderboard] Final standings → {path}");
+    }
+
     public static void SaveLeaderboard(IEnumerable<Stalker> allStalkers, string outputPath)
     {
         var top100 = BuildTop100(allStalkers);

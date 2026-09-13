@@ -11,7 +11,6 @@ namespace StalkerALifeSandbox.Core.Systems;
 public sealed class TelemetrySystem : ISimulationSystem
 {
     private readonly WebVisualizerServer _webVisualizer;
-    private float _leaderboardAccum;
 
     public TelemetrySystem(WebVisualizerServer webVisualizer)
     {
@@ -22,15 +21,6 @@ public sealed class TelemetrySystem : ISimulationSystem
     {
         BroadcastTelemetry(ctx);
 
-        _leaderboardAccum += gameDelta / ctx.Time.TimeFactor;
-        if (_leaderboardAccum >= 5f)
-        {
-            _leaderboardAccum = 0f;
-            lock(ctx.EntityLock)
-            {
-                LeaderboardSerializer.SaveLeaderboard(ctx.Stalkers.ToList(), DataPaths.Resolve("leaderboard.json"));
-            }
-        }
     }
 
     private void BroadcastTelemetry(SimulationContext ctx)

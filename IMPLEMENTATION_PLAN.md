@@ -37,7 +37,6 @@ StalkerALifeSandbox/
 │   ├── faction_loadouts.json      # Faction/tier spawn equipment (+ GAMMA pool merge at runtime)
 │   ├── names.json, slang.json
 │   ├── pda_chatter_templates.json # Loaded; 9 template categories
-│   ├── leaderboard.json           # Written at runtime (Top 100)
 │   └── items/                     # Item DB + generated GAMMA registries
 │       ├── weapons.json, armors.json, helmets.json, artifacts_and_detectors.json
 │       ├── gamma_armors.json, gamma_helmets.json  # from scripts/import_gamma_items.py
@@ -127,7 +126,7 @@ Spec sections below describe the **design target**. See §4 for honest completio
 ### B. Kill Tracking, Scaled XP & Leaderboards
 * Killer categories: Stalker, Mutant, Anomaly, Environment.
 * Rank delta XP formula with tier multiplier.
-* Top 100 leaderboard → `data/leaderboard.json`.
+* Top 100 leaderboard → served live from the snapshot via `/api/leaderboard`; final standings written beside the run log at shutdown.
 
 ### C. Organic RPG Skill Progression
 * Diminishing-returns curve on Marksmanship, Zone Survival, Charisma, Trustworthiness.
@@ -197,7 +196,7 @@ Spec sections below describe the **design target**. See §4 for honest completio
 - [~] Spawn XP — **fixed:** `StalkerSpawnHelper.ConfigureFreshSpawn()` (0 XP rookies); **`RecordMission()` wired on turn-in at issuer**
 - [~] Rank vs zone threat — **`ZoneGateEvaluator` wired** on travel actions; combat odds use gear/threat not rank tier directly
 - [~] `SkillEvaluator.cs` — **combat, cook, guitar, trade, artifact, emission survival hooked**
-- [x] `LeaderboardSerializer.cs` — periodic Top 100 → `data/leaderboard.json`
+- [x] `LeaderboardSerializer.cs` — Top 100 for the snapshot/API; a single end-of-run file beside the log
 - [x] Top 100 REST API + visualizer panel (`GET /api/leaderboard`); click-to-inspect kills; **follow mode** on map
 - [ ] Dynamic leaderboard note tags — **not implemented**
 
