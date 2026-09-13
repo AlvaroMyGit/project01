@@ -258,11 +258,42 @@ public sealed class SimulationHost
     public int? RunDurationSeconds =>
         int.TryParse(Environment.GetEnvironmentVariable("STALKER_RUN_DURATION_SEC"), out int s) && s > 0 ? s : null;
 
+    /// <summary>
+    /// Fixed tick count for a headless measurement run, from
+    /// STALKER_HEADLESS_TICKS; null when unset. Set it to compare two builds:
+    /// the tick count is the input, so both runs cover exactly the same span of
+    /// game time regardless of machine speed. A timed run cannot do that — it
+    /// drops a variable number of ticks under load.
+    /// </summary>
+    public int? HeadlessTicks =>
+        int.TryParse(Environment.GetEnvironmentVariable("STALKER_HEADLESS_TICKS"), out int t) && t > 0 ? t : null;
+
     /// <summary>Starts the simulation loop.</summary>
     public void Start()
     {
         Simulation.Start();
         Console.WriteLine("[Simulation] ZoneDirector loop started (10 Hz / 1 Hz / 0.1 Hz)");
+    }
+
+    /// <summary>
+    /// Runs the simulation synchronously for a fixed number of ticks, then
+    /// flushes the report. No timer, so no dropped ticks and no wall-clock
+    /// dependence — the run is reproducible in the amount of world it covers.
+    /// </summary>
+    public void RunHeadless(int tickCount)
+    {
+        float gameHours = tickCount * SimulationLoop.StepSeconds * Simulation.Time.TimeFactor / 3600f;
+        Console.WriteLine(
+            $"[Headless] running {tickCount} ticks " +
+            $"(= {gameHours:F2} game-hours at TimeFactor {Simulation.Time.TimeFactor:F0}), no timer");
+
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        Simulation.RunHeadless(tickCount);
+        sw.Stop();
+
+        Console.WriteLine(
+            $"[Headless] {tickCount} ticks in {sw.Elapsed.TotalSeconds:F1}s " +
+            $"({sw.Elapsed.TotalMilliseconds / tickCount:F1} ms/tick)");
     }
 
     /// <summary>

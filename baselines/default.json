@@ -1,0 +1,32 @@
+{
+  "stalkers_alive": 148,
+  "stalkers_peak": 144.5,
+  "mutants_alive": 207.5,
+  "combat_total": 478.5,
+  "combat_vs_mutant_w": 125.5,
+  "combat_vs_mutant_l": 59,
+  "mutants_killed": 125.5,
+  "casualties_total": 356,
+  "death_gunfire": 294,
+  "death_mutant": 59,
+  "death_emission": 0,
+  "death_betrayal": 3,
+  "missions_accepted": 568,
+  "missions_completed": 494,
+  "morale_avg": 87,
+  "morale_planners": 86.5,
+  "morale_followers": 89,
+  "squad_spread": 0,
+  "drinks": 0,
+  "emission_storms": 0,
+  "goap_tasks": 62372.5,
+  "goap_replans": 26503,
+  "rank_promotions": 119,
+  "ticks_dropped": 0,
+  "_settings": {
+    "STALKER_TIME_FACTOR": "150",
+    "STALKER_HEADLESS_TICKS": "2400",
+    "STALKER_REST_PORT": "8123"
+  },
+  "_repeat": 2
+}

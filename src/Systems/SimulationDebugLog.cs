@@ -56,6 +56,10 @@ public static class SimulationDebugLog
     private static long _respawnBatches;
     private static long _emissionStorms;
 
+    // Tick accounting — see SimulationLoop.DroppedTicks
+    private static long _executedTicks;
+    private static long _droppedTicks;
+
     // Campfire socialising
     private static long _sharedDrinks;
     private static long _guitarSessions;
@@ -347,6 +351,12 @@ public static class SimulationDebugLog
             $"(travel={travelMeters:F0}m, work={workSeconds:F0}s game)");
     }
 
+    public static void RecordTickAccounting(long executed, long dropped)
+    {
+        _executedTicks = executed;
+        _droppedTicks = dropped;
+    }
+
     public static void RecordSharedDrink()
     {
         if (Enabled) Interlocked.Increment(ref _sharedDrinks);
@@ -545,6 +555,18 @@ public static class SimulationDebugLog
                 $"avg within-squad spread {moraleSquads.Average(g => g.Max(x => x.Needs.Morale) - g.Min(x => x.Needs.Morale)):F0}");
         }
         sb.AppendLine($"Socialising: drinks={_sharedDrinks} tunes={_guitarSessions} morale auras applied={_moraleAurasApplied} (reaching {_moraleAuraRecipients} stalkers)");
+        // Tick accounting: a dropped tick skips the clock advance as well as the
+        // work, so game-time rates above stay valid — what is lost is wall-clock
+        // throughput, i.e. the run simulated less world than TimeFactor implied.
+        long tickTotal = _executedTicks + _droppedTicks;
+        if (tickTotal > 0)
+        {
+            sb.AppendLine(
+                $"Ticks: {_executedTicks} executed, {_droppedTicks} dropped " +
+                $"({(double)_droppedTicks / tickTotal * 100:F1}%) | " +
+                $"effective TimeFactor {time.TimeFactor * _executedTicks / tickTotal:F1} " +
+                $"of {time.TimeFactor:F1} configured");
+        }
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");
         sb.AppendLine($"Emission storms: {_emissionStorms} | Last phase: {_lastEmissionPhase}");

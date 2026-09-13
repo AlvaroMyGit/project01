@@ -154,21 +154,62 @@ public sealed class SimulationLoop : IDisposable
         return null;
     }
 
+    /// <summary>Real seconds of simulated time each tick represents.</summary>
+    public const float StepSeconds = 0.1f;
+
+    /// <summary>
+    /// Ticks the timer wanted to run while the previous one was still going.
+    /// Each one is 100 ms of game time that never happened — the loop stays in
+    /// lockstep (a dropped tick skips the clock advance too, so game-time rates
+    /// are unaffected), but wall-clock throughput is lost and the effective
+    /// TimeFactor drops below the configured one. Reported so that is visible.
+    /// </summary>
+    public long DroppedTicks => Interlocked.Read(ref _droppedTicks);
+    private long _droppedTicks;
+
+    /// <summary>Ticks actually executed, for the same reason.</summary>
+    public long ExecutedTicks => Interlocked.Read(ref _executedTicks);
+    private long _executedTicks;
+
     public void Start()
     {
-        const float stepSec = 0.1f;
         _driver = new Timer(_ =>
         {
-            if (Interlocked.Exchange(ref _tickInProgress, 1) == 1) return;
+            if (Interlocked.Exchange(ref _tickInProgress, 1) == 1)
+            {
+                Interlocked.Increment(ref _droppedTicks);
+                return;
+            }
             try
             {
-                _director.Tick(stepSec);
+                _director.Tick(StepSeconds);
+                Interlocked.Increment(ref _executedTicks);
             }
             finally
             {
                 Interlocked.Exchange(ref _tickInProgress, 0);
             }
-        }, null, 0, (int)(stepSec * 1000));
+        }, null, 0, (int)(StepSeconds * 1000));
+    }
+
+    /// <summary>
+    /// Runs exactly <paramref name="tickCount"/> ticks synchronously, as fast as
+    /// the CPU allows, with no timer involved.
+    ///
+    /// This is the measurement harness. A timed run cannot be compared with
+    /// another: it drops a variable number of ticks depending on machine load
+    /// and population, so two runs of the same wall-clock length simulate
+    /// different amounts of the world. Here the tick count is the input, so two
+    /// runs cover exactly the same span of game time and their counters can be
+    /// diffed directly.
+    /// </summary>
+    public void RunHeadless(int tickCount)
+    {
+        for (int i = 0; i < tickCount; i++)
+        {
+            _director.Tick(StepSeconds);
+            Interlocked.Increment(ref _executedTicks);
+        }
     }
 
     /// <summary>Stops the tick timer. Any in-flight tick completes first.</summary>
@@ -228,8 +269,11 @@ public sealed class SimulationLoop : IDisposable
             sys.Tick(_ctx, gameDelta);
     }
 
-    public void FlushDebugReport() =>
+    public void FlushDebugReport()
+    {
+        SimulationDebugLog.RecordTickAccounting(ExecutedTicks, DroppedTicks);
         SimulationDebugLog.WriteFinalReport(_ctx.Time, _ctx.Stalkers, _ctx.Mutants, _ctx.Corpses);
+    }
         
     public void RegisterStalkerListeners(IEnumerable<Stalker> stalkers)
     {

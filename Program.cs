@@ -14,8 +14,20 @@ public class Program
     {
         var settings = SimulationSettings.FromEnvironment();
 
-        // Build and start the simulation (data load, world gen, entities, loop).
+        // Build the simulation (data load, world gen, entities, loop).
         var host = new SimulationHost(settings);
+
+        // Headless measurement run: fixed tick count, no timer, no web host.
+        // Two runs at the same tick count cover exactly the same span of game
+        // time, so their counters can be diffed directly — which a timed run
+        // cannot offer, since it drops a variable number of ticks under load.
+        if (host.HeadlessTicks is int ticks)
+        {
+            host.RunHeadless(ticks);
+            host.Stop();
+            return;
+        }
+
         host.Start();
 
         // Host the read-only visualizer web API.
