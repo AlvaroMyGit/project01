@@ -29,8 +29,7 @@ public sealed class ActionInvestigateCorpseGoap : GOAPAction
         _inner.Reset();
         bb.Action.TargetCorpse = _ctx?.Corpses
             .Where(c => !c.IsReported)
-            .OrderBy(c => Vector3.Distance(c.Position, bb.CurrentPosition))
-            .FirstOrDefault();
+            .MinBy(c => Vector3.Distance(c.Position, bb.CurrentPosition));
     }
 
     public override bool Execute(NPCBlackboard bb, float delta)
@@ -42,5 +41,5 @@ public sealed class ActionInvestigateCorpseGoap : GOAPAction
     }
 
     public override void Exit(NPCBlackboard bb) =>
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
 }

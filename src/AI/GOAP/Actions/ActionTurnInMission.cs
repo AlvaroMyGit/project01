@@ -79,6 +79,6 @@ public sealed class ActionTurnInMission : GOAPAction
         if (_ctx != null)
             _ctx.Missions.CompleteMission(stalker, _ctx.PDANetwork, _ctx.ElapsedGameSeconds);
 
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 }

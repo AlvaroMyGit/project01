@@ -1232,8 +1232,40 @@ each. Two independent angles:
    every node, up to 500 iterations × 19 actions. Most are discarded
    immediately.
 
-Angle 2 is behaviour-preserving and measurable; angle 1 changes behaviour and
-needs the baseline. **Next: reduce planner allocation, then investigate churn.**
+**7.2 ✅ — the planner asked the expensive question first.** Three fixes, in the
+order I tried them, with what each was actually worth:
+
+| change | 600 headless ticks |
+|---|---|
+| *(start)* | ~24 s |
+| cache `Preconditions`/`Effects` (they allocated a fresh dictionary per probe) | 23 s — **3%** |
+| `GetStalker` linear scan → dictionary; 10× `OrderBy(...).First()` → `MinBy` | 17.5 s — **28%** |
+| **reorder the planner's two filters** | **4.9 s — 5× overall** |
+
+The last one is a single reordering. `GOAPPlanner` tested `action.IsValid(bb)`
+*before* checking whether the action's effects could contribute to the goal at
+all. Both filters are required and neither depends on the other, but usefulness
+is two dictionary probes against a cached set, while `IsValid` on a travel
+action resolves a destination — a scan over every POI in the world. The planner
+was asking the expensive question about every action, including the ~90% that
+could not possibly help.
+
+`goap:BuildPlan` fell from **2.50 ms to 0.04 ms** a call, 29% of the tick budget
+to 2.6%; the whole tick went **40.7 ms → 8.2 ms** against a 100 ms budget.
+
+Behaviour-preserving by construction: the two filters are ANDed, so the set of
+expanded actions is identical. The one side effect in that path —
+`ActionRestAtPOI.ResolveTarget` writing `Action.RestValue` — is overwritten by
+`Enter` before the action ever runs, and `TryEvaluateDestination` already
+saves and restores `GoapTargetPoiId`.
+
+**Note the shape of it.** Allocation, the thing I'd have optimised on instinct,
+was worth 3%. The win was an ordering mistake that no amount of reading found —
+only the profiler pointed at it, and only after two levels of drilling.
+
+**Still open:** plan churn (~15 plans a tick is still high, though now cheap),
+`SnapshotBuild` at 10.4 ms a call, and a POI spatial index if `IsValid` ever
+matters again.
 
 **Note the pattern.** Three times today a confident reading of the code was
 contradicted by measurement — the socialising coefficient, the morale sinks

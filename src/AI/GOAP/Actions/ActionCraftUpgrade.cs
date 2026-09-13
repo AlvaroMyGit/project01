@@ -136,6 +136,6 @@ public sealed class ActionCraftUpgrade : GOAPAction
     public override void Exit(NPCBlackboard bb)
     {
         if (!bb.Action.Finished) return;
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 }

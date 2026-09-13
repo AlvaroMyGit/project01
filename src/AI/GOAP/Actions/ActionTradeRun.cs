@@ -51,8 +51,7 @@ public sealed class ActionTradeRun : GoapTravelAction
 
         return Ctx!.Stamper.Stamps
             .Where(p => p.Type == POIType.MacroBase)
-            .OrderBy(p => Vector3.Distance(p.Position, target))
-            .FirstOrDefault()?.Name;
+            .MinBy(p => Vector3.Distance(p.Position, target))?.Name;
     }
 
     public override void Exit(NPCBlackboard bb)
@@ -70,6 +69,6 @@ public sealed class ActionTradeRun : GoapTravelAction
             stalker.Needs.AdjustMorale(5f);
             SkillEvaluator.RecordCharismaEvent(stalker, "trade");
         }
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 }

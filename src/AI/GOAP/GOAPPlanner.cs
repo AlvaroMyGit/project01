@@ -69,10 +69,14 @@ public sealed class GOAPPlanner
 
             foreach (var action in _availableActions)
             {
-                if (!action.IsValid(bb)) continue;
-
-                var effects = action.GetEffects();
-                // Does this action contribute to any unsatisfied condition?
+                // Usefulness FIRST, validity second. Both filters are required
+                // and neither depends on the other, but they cost wildly
+                // different amounts: usefulness is a couple of dictionary
+                // probes against a cached set, while IsValid on a travel action
+                // resolves a destination — a scan over every POI in the world.
+                // Asking the expensive question about actions that cannot
+                // contribute to this goal was 30% of the entire tick budget.
+                var effects = action.Effects;
                 bool useful = false;
                 foreach (var kvp in node.UnsatisfiedState)
                 {
@@ -81,13 +85,15 @@ public sealed class GOAPPlanner
                 }
                 if (!useful) continue;
 
+                if (!Core.TickProfiler.Measure("  plan:IsValid", () => action.IsValid(bb))) continue;
+
                 // Build new unsatisfied state
                 var newState = new Dictionary<string, bool>(node.UnsatisfiedState);
                 foreach (var eff in effects)
                     newState.Remove(eff.Key);
 
                 // Add preconditions as new requirements
-                foreach (var pre in action.GetPreconditions())
+                foreach (var pre in action.Preconditions)
                 {
                     if (!current.TryGetValue(pre.Key, out var cv) || cv != pre.Value)
                         newState[pre.Key] = pre.Value;

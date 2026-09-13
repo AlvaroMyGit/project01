@@ -56,6 +56,6 @@ public sealed class ActionVisitStash : GoapTravelAction
         }
 
         if (stalker != null) stalker.GoapTargetPoiId = null;
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 }

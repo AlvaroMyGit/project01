@@ -45,8 +45,7 @@ public sealed class ActionExploreLab : GoapTravelAction
         // Path to the surface hatch above the lab; A* will transition layers at the hatch cell.
         var surfaceHatch = Ctx!.Stamper.Hatches
             .Where(h => h.Type == SmartObjectType.Hatch && h.Position.Y >= -5f)
-            .OrderBy(h => Vector3.Distance(h.Position, lab.Position))
-            .FirstOrDefault();
+            .MinBy(h => Vector3.Distance(h.Position, lab.Position));
 
         if (surfaceHatch != null)
             return surfaceHatch.Position;
@@ -58,8 +57,7 @@ public sealed class ActionExploreLab : GoapTravelAction
     {
         var lab = Ctx!.Stamper.Stamps
             .Where(p => p.Type == POIType.UndergroundLab)
-            .OrderBy(p => Vector3.Distance(p.Position, target))
-            .FirstOrDefault();
+            .MinBy(p => Vector3.Distance(p.Position, target));
         return lab != null ? $"Underground: {lab.Name}" : "Underground Lab";
     }
 
@@ -72,8 +70,7 @@ public sealed class ActionExploreLab : GoapTravelAction
             {
                 var lab = Ctx!.Stamper.Stamps
                     .Where(p => p.Type == POIType.UndergroundLab)
-                    .OrderBy(p => Vector3.Distance(p.Position, stalker.Position))
-                    .FirstOrDefault();
+                    .MinBy(p => Vector3.Distance(p.Position, stalker.Position));
                 if (lab != null)
                 {
                     stalker.CurrentLevelId = lab.RegionId;
@@ -84,6 +81,6 @@ public sealed class ActionExploreLab : GoapTravelAction
             SkillEvaluator.RecordZoneSurvivalEvent(stalker, "lab_explored");
         }
 
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 }

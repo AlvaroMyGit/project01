@@ -53,7 +53,7 @@ public sealed class ActionGoToMissionGiver : GoapTravelAction
     {
         var stalker = Ctx?.GetStalker(bb.OwnerId);
         if (stalker != null && Ctx != null && IsNearMissionGiver(stalker, Ctx))
-            GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+            GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 
     private static bool IsNearMissionGiver(Stalker stalker, GoapContext ctx)

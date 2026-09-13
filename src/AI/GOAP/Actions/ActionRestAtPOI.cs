@@ -77,5 +77,5 @@ public sealed class ActionRestAtPOI : GoapTravelAction
     }
 
     public override void Exit(NPCBlackboard bb) =>
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
 }

@@ -29,16 +29,14 @@ public sealed class ActionGoToShelter : GoapTravelAction
     {
         var nearest = Ctx!.Stamper.Stamps
             .Where(p => p.Type == POIType.MacroBase || p.Type == POIType.MicroShelter)
-            .OrderBy(p => Vector3.Distance(p.Position, stalker.Position))
-            .FirstOrDefault();
+            .MinBy(p => Vector3.Distance(p.Position, stalker.Position));
         return nearest?.Position;
     }
 
     protected override string? DestinationLabel(Stalker stalker, Vector3 target) =>
         Ctx!.Stamper.Stamps
-            .OrderBy(p => Vector3.Distance(p.Position, target))
-            .FirstOrDefault()?.Name;
+            .MinBy(p => Vector3.Distance(p.Position, target))?.Name;
 
     public override void Exit(NPCBlackboard bb) =>
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
 }

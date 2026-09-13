@@ -91,7 +91,7 @@ public static class GoapWorldStateSync
         Set(bb, GoapKeys.IsAtMissionGiver, IsNearMissionGiver(stalker, ctx));
     }
 
-    public static void ApplyEffects(NPCBlackboard bb, Dictionary<string, bool> effects)
+    public static void ApplyEffects(NPCBlackboard bb, IReadOnlyDictionary<string, bool> effects)
     {
         foreach (var (key, value) in effects)
             Set(bb, key, value);

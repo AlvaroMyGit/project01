@@ -30,6 +30,30 @@ public abstract class GOAPAction
     /// </summary>
     public abstract Dictionary<string, bool> GetEffects();
 
+    private IReadOnlyDictionary<string, bool>? _preconditions;
+    private IReadOnlyDictionary<string, bool>? _effects;
+
+    /// <summary>
+    /// Cached preconditions. Use this, not <see cref="GetPreconditions"/>.
+    ///
+    /// Every implementation returns a constant literal, but returns a FRESH
+    /// dictionary each call — and the planner asks every registered action at
+    /// every node it expands, up to 500 iterations x 19 actions per plan. With
+    /// roughly 15 plans built per tick that was the single largest allocation
+    /// source in the simulation; A* planning measured 24% of the entire tick
+    /// budget. Building each set once removes the allocation without changing a
+    /// single planning decision.
+    ///
+    /// Exposed read-only so a shared action instance cannot have its cached set
+    /// mutated by one caller on behalf of every stalker.
+    /// </summary>
+    public IReadOnlyDictionary<string, bool> Preconditions =>
+        _preconditions ??= GetPreconditions();
+
+    /// <summary>Cached effects — see <see cref="Preconditions"/>.</summary>
+    public IReadOnlyDictionary<string, bool> Effects =>
+        _effects ??= GetEffects();
+
     /// <summary>
     /// Evaluate contextual cost adjustments at plan time
     /// (e.g., distance to target, danger level).

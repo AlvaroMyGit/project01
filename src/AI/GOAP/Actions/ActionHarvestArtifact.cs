@@ -49,8 +49,7 @@ public sealed class ActionHarvestArtifact : GoapTravelAction
     {
         var den = Ctx!.Stamper.Stamps
             .Where(p => p.Type == POIType.MutantDen)
-            .OrderBy(p => Vector3.Distance(p.Position, target))
-            .FirstOrDefault();
+            .MinBy(p => Vector3.Distance(p.Position, target));
         return den != null ? $"Anomaly Field near {den.Name}" : "Anomaly Field";
     }
 
@@ -62,7 +61,7 @@ public sealed class ActionHarvestArtifact : GoapTravelAction
             SkillEvaluator.RecordZoneSurvivalEvent(stalker, "artifact_found");
             ResolveArtifactLoot(stalker);
         }
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 
     private void ResolveArtifactLoot(Stalker stalker)

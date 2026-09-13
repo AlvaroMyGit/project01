@@ -71,5 +71,5 @@ public sealed class ActionRestAtBase : GOAPAction
     }
 
     public override void Exit(NPCBlackboard bb) =>
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
 }

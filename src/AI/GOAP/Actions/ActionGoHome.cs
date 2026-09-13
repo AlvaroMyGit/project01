@@ -31,16 +31,14 @@ public sealed class ActionGoHome : GoapTravelAction
             .Where(p => stalker.Blackboard.HomeBasePosition.HasValue
                 ? Vector3.Distance(p.Position, stalker.Blackboard.HomeBasePosition.Value) < 200f
                 : true)
-            .OrderBy(p => Vector3.Distance(p.Position, stalker.Position))
-            .FirstOrDefault();
+            .MinBy(p => Vector3.Distance(p.Position, stalker.Position));
         return home?.Position;
     }
 
     protected override string? DestinationLabel(Stalker stalker, Vector3 target) =>
         Ctx!.Stamper.Stamps
-            .OrderBy(p => Vector3.Distance(p.Position, target))
-            .FirstOrDefault()?.Name;
+            .MinBy(p => Vector3.Distance(p.Position, target))?.Name;
 
     public override void Exit(NPCBlackboard bb) =>
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
 }

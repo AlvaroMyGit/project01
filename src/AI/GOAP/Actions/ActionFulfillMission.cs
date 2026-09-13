@@ -122,7 +122,7 @@ public sealed class ActionFulfillMission : GoapTravelAction
         if (stalker != null && Ctx != null)
             Ctx.Missions.MarkObjectiveComplete(stalker, Ctx.PDANetwork, Ctx.ElapsedGameSeconds);
 
-        GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+        GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 
     private static string MissionActivity(StalkerMission mission) => mission.Type switch

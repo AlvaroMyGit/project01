@@ -57,6 +57,6 @@ public sealed class ActionAcceptMission : GOAPAction
     public override void Exit(NPCBlackboard bb)
     {
         if (bb.Action.Accepted)
-            GoapWorldStateSync.ApplyEffects(bb, GetEffects());
+            GoapWorldStateSync.ApplyEffects(bb, Effects);
     }
 }
