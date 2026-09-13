@@ -16,7 +16,11 @@ public static class CombatResolver
     public static bool IsHeavy(WeaponItem? weapon) => weapon?.Class == "heavy";
 
     public static float MoveStep(float gameDeltaSeconds) =>
-        CombatBalanceConfig.MoveSpeedPerGameSec * (gameDeltaSeconds / 1f);
+        MoveStep(gameDeltaSeconds, CombatBalanceConfig.MoveSpeedPerGameSec);
+
+    /// <summary>Distance covered in <paramref name="gameDeltaSeconds"/> at a given speed.</summary>
+    public static float MoveStep(float gameDeltaSeconds, float speedPerGameSec) =>
+        speedPerGameSec * gameDeltaSeconds;
 
     /// <summary>
     /// Move <paramref name="position"/> toward <paramref name="target"/> without
@@ -29,11 +33,13 @@ public static class CombatResolver
     /// silently stalled every journey in the sim, mission travel included.
     /// </summary>
     public static bool StepToward(
-        ref Vector3 position, Vector3 target, float gameDeltaSeconds, float arriveTolerance = 5f)
+        ref Vector3 position, Vector3 target, float gameDeltaSeconds,
+        float arriveTolerance = 5f, float? speedPerGameSec = null)
     {
         var dir = target - position;
         float dist = dir.Length();
-        float step = MoveStep(gameDeltaSeconds);
+        float step = MoveStep(
+            gameDeltaSeconds, speedPerGameSec ?? CombatBalanceConfig.MoveSpeedPerGameSec);
 
         if (dist <= arriveTolerance || dist <= step)
         {

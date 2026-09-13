@@ -32,6 +32,21 @@ public sealed class MutantBehaviourSystem : ISimulationSystem
         }
     }
 
+    /// <summary>Backing off from a base is a scramble, not a patrol.</summary>
+    private const float RetreatSpeedScale = 0.85f;
+
+    /// <summary>Aimless wandering is slower than a hunt.</summary>
+    private const float WanderSpeedScale = 0.5f;
+
+    /// <summary>
+    /// Movement uses <see cref="Mutant.Speed"/> — the per-species value already
+    /// set at spawn from MutantEcologyManager.GetCombatStats and, until now,
+    /// never read. The three sites here used hardcoded per-TICK constants with
+    /// no delta term, so mutant speed tracked tick rate rather than game time:
+    /// 12 / TimeFactor units per game second against a stalker's flat 4. Equal
+    /// at the default TimeFactor of 3, and 2% of stalker speed at 150, which
+    /// left predators as scenery in any accelerated run.
+    /// </summary>
     private void TickMutantHigh(SimulationContext ctx, Mutant m, float gameDelta)
     {
         if (Enum.TryParse<MutantSpecies>(m.Species, out var species) &&
@@ -50,10 +65,12 @@ public sealed class MutantBehaviourSystem : ISimulationSystem
                 .FirstOrDefault();
             if (nearestCorpse != null && Vector3.Distance(m.Position, nearestCorpse.Position) < 300f)
             {
-                var dir = nearestCorpse.Position - m.Position;
-                if (dir.LengthSquared() > 9f)
-                    m.Position += Vector3.Normalize(dir) * 1.2f;
-                else
+                var pos = m.Position;
+                bool reached = CombatResolver.StepToward(
+                    ref pos, nearestCorpse.Position, gameDelta,
+                    arriveTolerance: 3f, speedPerGameSec: m.Speed);
+                m.Position = pos;
+                if (reached)
                 {
                     nearestCorpse.IsEaten = true;
                     if (nearestCorpse.Loot != null)
@@ -71,17 +88,23 @@ public sealed class MutantBehaviourSystem : ISimulationSystem
             var away = m.Position - ctx.MacroPois
                 .OrderBy(p => Vector3.Distance(m.Position, p.Position)).First().Position;
             if (away.LengthSquared() > 0.01f)
-                m.Position += Vector3.Normalize(away) * 0.8f;
+            {
+                // Retreat has no destination, so step a fixed distance along the
+                // away vector rather than toward a point.
+                m.Position += Vector3.Normalize(away)
+                            * CombatResolver.MoveStep(gameDelta, m.Speed * RetreatSpeedScale);
+            }
             return;
         }
 
         if (m.Blackboard.MoveTarget.HasValue)
         {
-            var dir = m.Blackboard.MoveTarget.Value - m.Position;
-            if (dir.LengthSquared() < 100f)
-                m.Blackboard.ClearPath();
-            else
-                m.Position += Vector3.Normalize(dir) * 0.6f;
+            var pos = m.Position;
+            bool arrived = CombatResolver.StepToward(
+                ref pos, m.Blackboard.MoveTarget.Value, gameDelta,
+                arriveTolerance: 10f, speedPerGameSec: m.Speed * WanderSpeedScale);
+            m.Position = pos;
+            if (arrived) m.Blackboard.ClearPath();
         }
         else
         {
