@@ -1,6 +1,6 @@
 # Codebase Documentation — S.T.A.L.K.E.R. A-Life Sandbox
 
-> **Last updated:** 2026-09-10  
+> **Last updated:** 2026-09-13  
 > **Engine:** C# (.NET 8) · **Visualizer:** HTML5 / PixiJS v7  
 > **Entry point:** `Program.cs` → `SimulationLoop.cs` (10 Hz via `ZoneDirector`)
 
@@ -56,7 +56,7 @@ The simulation follows a **modular, event-driven, data-oriented** architecture. 
 |---|---|---|
 | **High (10 Hz)** | Every 100ms | Combat, movement, perception, telemetry broadcast |
 | **Low (1 Hz)** | Every 1s | GOAP replanning, needs decay, social evaluation, betrayal |
-| **Macro (0.1 Hz)** | Every 10s | Economy, emissions, convoys, spawns, field crafting |
+| **Macro (0.1 Hz)** | Every 10s | Corpse cleanup, field crafting |
 
 Communication between decoupled systems is handled by a global `EventBus` using typed struct events. The simulation state is bundled into an immutable `SimulationContext` record passed to every subsystem on each tick.
 
@@ -104,7 +104,7 @@ Communication between decoupled systems is handled by a global `EventBus` using 
 1. **Data Loading** — Loads `NameGenerator`, `DemographicsEngine`, `PDANetwork`, `FactionSpawnTable`, `ItemDatabase` from JSON data files (resolved via [`DataPaths`](file:///home/alvaromendes/Documents/project01/src/Core/DataPaths.cs) relative to the app base directory, not the working directory)
 2. **World Generation** — Creates `StaticWorldGenerator` (1600×3200 world), stamps POIs via `POIPrefabStamper`, builds `RoadNetwork`, initializes `ZonePathfinder` grid, loads `BuildingFootprintLoader`, seeds anomaly fields via `AnomalySeeder`
 3. **Faction Setup** — Spawns macro-base faction leaders, initializes `TraderRegistry` and `MissionRegistry`
-4. **Simulation Init** — Configures `TimeManager`, `EnvironmentManager`, `WeatherManager`, `ZoneDirector`, and instantiates `SimulationLoop` (via a `SimulationDependencies` parameter object) with 12-minute staggered spawn for ~1,500 stalkers and ~1,000 mutants
+4. **Simulation Init** — Configures `TimeManager`, `EnvironmentManager`, `WeatherManager`, `ZoneDirector`, and instantiates `SimulationLoop` (via a `SimulationDependencies` parameter object) with 12-minute staggered spawn toward a target of 750 stalkers and 500 mutants (the design-doc figures; the loop sustains ~410 at equilibrium, set by lethality rather than by the tick budget)
 5. **Web Host** — `Program.Main` builds a `SimulationSettings`, starts a single ASP.NET Core host on the configured REST port (default 5050) with CORS scoped to the local dashboard origins, and serves the visualizer, the REST API, and the `/ws` WebSocket telemetry stream all from that one Kestrel instance (`app.UseWebSockets()` + `WebApiEndpoints.MapSimulationApi`) — there is no separate WebSocket server/port. Shutdown is graceful: `ApplicationStopping` calls `SimulationHost.Stop()` (disposes the tick timer, aborts connected WebSocket clients, flushes the final report), and the optional `STALKER_RUN_DURATION_SEC` auto-stop requests a graceful shutdown rather than calling `Environment.Exit`.
 
 ### REST API Endpoints
@@ -129,7 +129,12 @@ Interface contract for all modular simulation subsystems. Defines `Tick(Simulati
 Lightweight immutable record bundling references to all live simulation state: `Stalkers`, `Mutants`, `EntityLock`, `Corpses`, `Time`, `Factions`, `WorldGen`, `Stamper`, `Pathfinder`, `Emissions`, `PDA`, `Traders`, `Missions`, `MacroPois`, `WildPoiCandidates`, and `RequestReplan`. Passed to every `ISimulationSystem.Tick()` call.
 
 ### [`SimulationLoop.cs`](file:///home/alvaromendes/Documents/project01/src/Core/SimulationLoop.cs) (230 lines)
-Central orchestrator that initializes the simulation context, registers all `ISimulationSystem` implementations into their respective tick buckets, starts the high-resolution timer, and handles shutdown. Key methods: `Start()`, `Tick()`, `ConfigureInitialSpawn()`, `RegisterStalkerListeners()`, `FlushDebugReport()`.
+Central orchestrator that initializes the simulation context, registers all `ISimulationSystem` implementations into their respective tick buckets, starts the high-resolution timer, and handles shutdown. Key methods: `Start()`, `RunHeadless(int)`, `ConfigureInitialSpawn()`, `RegisterStalkerListeners()`, `FlushDebugReport()`.
+
+`RunHeadless(n)` runs exactly *n* ticks synchronously with no timer — the measurement harness. Two timed runs cannot be compared, because the loop drops a variable number of ticks under load; with the tick count as the input, two runs cover exactly the same span of game time. `DroppedTicks`/`ExecutedTicks` are reported alongside the effective TimeFactor they imply.
+
+### [`TickProfiler.cs`](file:///home/alvaromendes/Documents/project01/src/Core/TickProfiler.cs)
+Accumulates wall-clock time per simulation system and prints an attribution table in the final report. Sim-thread only, so the accumulators need no synchronisation. Built before any optimisation work because the loop was at ~89 ms/tick against a 100 ms budget and nobody knew where it went — three separate performance hypotheses turned out to be wrong, and it found the real cost each time.
 
 ### [`TimeManager.cs`](file:///home/alvaromendes/Documents/project01/src/Core/TimeManager.cs)
 Tracks game clock progression. Converts real delta seconds to simulated game time using a configurable `TimeFactor` (default 3.0, overridable via `STALKER_TIME_FACTOR`). Exposes `ElapsedGameSeconds`, `HourOfDay`, `DayNumber`.
@@ -199,7 +204,9 @@ Located in `src/AI/GOAP/`:
 | [`GOAPGoal.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GOAPGoal.cs) | `GOAPGoal` | Abstract base for high-level desires returning 0–100 utility scores |
 | [`GOAPPlanner.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GOAPPlanner.cs) | `GOAPPlanner` | A* backward-chaining planner building executable action sequences from goal state to current state |
 | [`GoapContext.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GoapContext.cs) | `GoapContext` | Service locator holding references to world, navigation, economy, and mission services |
-| [`GoapKeys.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GoapKeys.cs) | `GoapKeys` | Centralized string constants for all world-state booleans (e.g., `EmissionImminent`, `HasActiveMission`) |
+| [`GoapKeys.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GoapKeys.cs) | `GoapKeys`, `GoapTuning` | World-state boolean constants, plus `GoapTuning.MissionGiverRadius` — shared by the world-state sync and the payout gate, which must agree or a stalker plans around a flag the payout then refuses |
+| [`GoapActionState.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GoapActionState.cs) | `GoapActionState` | Per-execution scratch for the action a stalker is currently running, held on `NPCBlackboard`. Actions are registered as single shared instances, so any mutable field on one is global rather than per-stalker — that bug broke the mission loop outright. Reset at one choke point before every `Enter` |
+| [`Goals/GoalSocialise.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/Goals/GoalSocialise.cs) | `GoalSocialise` | Gives socialising a goal of its own. The campfire actions previously declared `HasCompletedPatrol`, so a stalker could only socialise as a cheap way to call a patrol finished |
 | [`GoapRuntime.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GoapRuntime.cs) | `GoapRuntime` | Per-stalker active plan execution state (current action index, entered flag, goal name) |
 | [`GoapWorldStateSync.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/GoapWorldStateSync.cs) | `GoapWorldStateSync` | Translates continuous physical state into discrete boolean flags on the blackboard before planning |
 | [`StalkerGoapService.cs`](file:///home/alvaromendes/Documents/project01/src/AI/GOAP/StalkerGoapService.cs) | `StalkerGoapService` | Top-level GOAP coordinator: world-state sync + replanning at 1 Hz, action execution at 10 Hz |
@@ -272,6 +279,9 @@ Located in `src/AI/GOAP/Goals/`:
 |---|---|---|
 | [`BetrayalEvaluator.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Social/BetrayalEvaluator.cs) | `BetrayalEvaluator` | Evaluates desperate stalkers for squadmate betrayal; executes witness checks |
 | [`CampfireSmartObject.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Social/CampfireSmartObject.cs) | `CampfireSmartObject` | Social gathering node with seats, drink sharing, guitar playing, and combat dispersal |
+| [`CampfireRegistry.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Social/CampfireRegistry.cs) | `CampfireRegistry` | Holds the generated campfires and answers proximity queries. Generated at startup: one per macro base plus a fraction of micro-shelters |
+| [`CampfireOptions.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Social/CampfireOptions.cs) | `CampfireOptions` | Seats, proximity radius, morale-aura radius, social cooldown. `STALKER_CAMPFIRE_*` overrides. The aura radius must cover the proximity radius — nothing moves a stalker to the fire, so a smaller aura reaches nobody |
+| [`SquadMoraleOptions.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Social/SquadMoraleOptions.cs) | `SquadMoraleOptions`, `SquadMoraleEvent` | Leader-coupling half-life, coupling radius, mission share, squadmate-loss penalty. `STALKER_SQUAD_*` overrides |
 
 ### Squads
 
@@ -299,7 +309,9 @@ Located in `src/AI/GOAP/Goals/`:
 | [`CorpseCleanupService.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/CorpseCleanupService.cs) | `CorpseCleanupService` | Configurable despawn timers: 45min idle, 12min post-interact, 5min post-feeding |
 | [`EquipmentUpgradeService.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/EquipmentUpgradeService.cs) | `EquipmentUpgradeService` | Generates corpse gear snapshots, executes loot stripping, and drives trader gear purchases |
 | [`GearEvaluator.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/GearEvaluator.cs) | `GearEvaluator` | Scores weapons (DPS formula) and armor (protection aggregate) for upgrade comparison |
-| [`KillTracker.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/KillTracker.cs) | `KillTracker` | Thread-safe circular buffer (500 events) recording all casualties by category |
+| [`KillTracker.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/KillTracker.cs) | `KillTracker` | Thread-safe circular buffer (500 events) recording all casualties by category. Also the single point every stalker death passes through, so it publishes the squad grief pulse |
+| [`KillTrackerOptions.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/KillTrackerOptions.cs) | `KillTrackerOptions` | Immutable config record, installed via `KillTracker.Configure` |
+| [`CorpseCleanupOptions.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/CorpseCleanupOptions.cs) | `CorpseCleanupOptions` | Despawn thresholds in game seconds; `STALKER_CORPSE_*` overrides |
 | [`LeaderboardSerializer.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/LeaderboardSerializer.cs) | `LeaderboardSerializer` | Builds Top 100 by XP/kills and serializes to `data/leaderboard.json` |
 | [`ProtectionProfile.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/ProtectionProfile.cs) | `ProtectionProfile` | Computes composite 9-channel defense by summing armor + helmet + belt items |
 | [`RankSystem.cs`](file:///home/alvaromendes/Documents/project01/src/Systems/RankSystem.cs) | `RankSystem` | Awards XP on kills with rank-delta multipliers; triggers promotions across 8 tiers |
@@ -492,7 +504,7 @@ Full S.T.A.L.K.E.R.-themed dashboard with:
 - **PDA tab**: Real-time event ticker with category filtering and Missions sub-tab
 - **Leaderboard tab**: Top 100 sortable by Rank, XP, Kills, Faction
 - **Factions tab**: Interactive 12×12 diplomacy matrix
-- **Economy tab**: Trader stock listings and convoy monitors
+- **Economy tab**: Trader stock listings
 
 ### `assets/`
 14 procedural 32×32 PNG sprites for stalker factions, mutant types, corpses, and paperdoll gear overlays.
@@ -562,7 +574,9 @@ Runtime item catalogs loaded by `ItemDatabase.cs`:
 
 ## tests/ — Test Suite
 
-Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 134 tests, ~20% line coverage):
+Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, **279 tests, 41.8% line coverage**, CI floor 38). Test parallelisation is disabled — several suites touch the static `EventBus`. `TestWorld.cs` builds one shared generated world, since world gen plus POI stamping is far too slow to repeat per test.
+
+Several of these are **characterization** tests: they pin behaviour that was found to be wrong, so the fix is provably a fix rather than a hope. Where a comment says a test was inverted, it originally asserted the bug.
 
 | File | Coverage |
 |---|---|
@@ -581,6 +595,20 @@ Located in `tests/StalkerALifeSandbox.Tests/` (xUnit, 134 tests, ~20% line cover
 | `POIRegistryTests.cs` | Name- and field-based POI classification, loot availability, patrol/loot/rest target picking |
 | `RankProgressionTests.cs` | XP thresholds, monotonic rank, XP floor, kill/mission accounting |
 | `SurvivalNeedsTests.cs` | Need decay over time, feeding, critical-state threshold, ammo consumption |
+| `CampfireGatingCharacterizationTests.cs` | Pins the five behaviours gated on `IsAtCampfire` before that flag was widened |
+| `CampfireRegistryTests.cs`, `CampfireSmartObjectTests.cs`, `CampfireMoraleIntegrationTests.cs` | Placement and proximity; seats, drink/guitar, combat snap; the publish → buffer → apply morale chain |
+| `EmissionOptionsTests.cs`, `EmissionTickSystemTests.cs` | Cadence config and env overrides; shelter saves, Zombified/Monolith exemption, dormant zone harmless |
+| `GoalSocialiseTests.cs` | Relevance gates, utility shape, the cooldown end to end, and the crossover decisions against `GoalAcceptMission` |
+| `GoapActionCachingTests.cs` | Cached precondition/effect sets match what each action declares and stay constant |
+| `GoapSharedActionStateTests.cs` | Regression guard: one stalker's `Enter` must not reach into another's travel state |
+| `MissionLoopRegressionTests.cs` | Movement cannot overshoot at any TimeFactor; `TurnInMission` stays plannable at a distance but refuses to pay out there |
+| `MissionTargetReachabilityTests.cs` | Every mission target is reachable from its issuer, and the pool is reproducible |
+| `MoraleSinkTests.cs`, `SquadMoraleTests.cs` | Grief and combat stress; leader coupling, the shared mission pulse, and the coupling half-life |
+| `MutantMovementTests.cs` | Distance per game second is identical at TimeFactor 3 and 150 |
+| `SimulationSettingsTests.cs`, `SimulationSnapshotTests.cs` | Env overrides and scoped CORS; the snapshot carries copied values, not live references |
+| `SquadSuccessionTests.cs` | Promote / merge / disband rules, so the O(n²) fix is provably equivalent |
+| `StalkerHealthTests.cs` | Damage accumulates across exchanges instead of killing outright; armour never grants immunity |
+| `ZoneDirectorTests.cs` | Bucket frequencies, game-delta vs real-delta, and the tick/game-time lockstep the measurement harness depends on |
 | `TelemetryMapperTests.cs` | Mission/corpse DTO mapping and despawn-remaining computation |
 | `TradeServiceTests.cs` | Buy/sell gating on gold, purchased-item effects, trade-visit summaries |
 | `TraderComponentTests.cs` | Dynamic pricing, faction price modifiers, stock/gold mutation on buy/sell |
