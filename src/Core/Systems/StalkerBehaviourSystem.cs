@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using StalkerALifeSandbox.AI.Blackboards;
 using StalkerALifeSandbox.AI.GOAP;
 using StalkerALifeSandbox.AI.Squads;
 using StalkerALifeSandbox.Entities.Characters;
@@ -31,14 +32,48 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             .GroupBy(s => s.SquadId!)
             .ToDictionary(g => g.Key, g => g.First());
 
+        // Indexed once per tick so an ongoing fight can be looked up by id
+        // without scanning the population per stalker.
+        var living = new Dictionary<string, Stalker>(stalkers.Length);
+        foreach (var x in stalkers)
+            if (x.IsAlive) living[x.Id] = x;
+
         foreach (var s in stalkers)
         {
             if (!s.IsAlive) continue;
-            TickStalkerHigh(ctx, s, gameDelta, squadLeaders, stalkers);
+            TickStalkerHigh(ctx, s, gameDelta, squadLeaders, stalkers, living);
         }
     }
 
-    private void TickStalkerHigh(SimulationContext ctx, Stalker s, float gameDelta, Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot)
+    /// <summary>
+    /// The opponent this stalker is fighting: the current one while it is still
+    /// alive, hostile and in reach, otherwise a newly chosen one.
+    /// </summary>
+    private static Stalker? ResolveEngagement(
+        SimulationContext ctx, Stalker s, Dictionary<string, Stalker> living)
+    {
+        if (s.Blackboard.CurrentTargetId is { } id &&
+            living.TryGetValue(id, out var current) &&
+            current.IsAlive &&
+            ctx.Factions.AreHostile(s.TrueFaction, current.TrueFaction) &&
+            Vector3.Distance(s.Position, current.Position) < DisengageRange)
+            return current;
+
+        s.Blackboard.CurrentTargetId = null;
+
+        return ctx.Stalkers.FirstOrDefault(ss =>
+            ss.IsAlive && ss != s && ss.CombatCooldown <= 0f &&
+            ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction) &&
+            Vector3.Distance(s.Position, ss.Position) < EngageRange);
+    }
+
+    /// <summary>How close a hostile must be to start a fight.</summary>
+    private const float EngageRange = 160f;
+
+    /// <summary>A fight in progress persists a little past engagement range.</summary>
+    private const float DisengageRange = 220f;
+
+    private void TickStalkerHigh(SimulationContext ctx, Stalker s, float gameDelta, Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot, Dictionary<string, Stalker> living)
     {
         if (s.CombatCooldown > 0f)
             s.CombatCooldown = Math.Max(0f, s.CombatCooldown - gameDelta);
@@ -57,13 +92,26 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
                 if (ResolveStalkerMutantCombat(ctx, s, closeMutant, squadLeaders)) return;
             }
 
-            var otherStalker = ctx.Stalkers.FirstOrDefault(ss =>
-                ss.IsAlive && ss != s && ss.CombatCooldown <= 0f &&
-                ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction) &&
-                Vector3.Distance(s.Position, ss.Position) < 160f);
+            // Stay on the fight already in progress. Without this, combat has
+            // no memory of who it is fighting: each exchange re-picks an
+            // opponent, damage spreads thin across many of them, and nobody
+            // ever accumulates the several hits a kill now needs. That is
+            // exactly what drove gunfire deaths to zero when combat stopped
+            // being one-roll-one-corpse. CurrentTargetId and CombatState have
+            // been on the blackboard from the start, unused.
+            var otherStalker = ResolveEngagement(ctx, s, living);
+
             if (otherStalker != null && Random.Shared.NextDouble() < CombatResolver.StalkerEncounterRate)
             {
+                s.Blackboard.CurrentTargetId = otherStalker.Id;
+                s.Blackboard.Combat = CombatState.Combat;
+                otherStalker.Blackboard.CurrentTargetId = s.Id;
+                otherStalker.Blackboard.Combat = CombatState.Combat;
+
                 if (ResolveStalkerCombat(ctx, s, otherStalker, squadLeaders, snapshot)) return;
+
+                if (!otherStalker.IsAlive)
+                    s.Blackboard.CurrentTargetId = null;
             }
         }
 

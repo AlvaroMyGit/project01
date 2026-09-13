@@ -104,7 +104,16 @@ def run_once() -> dict:
     if "[Mode] HEADLESS run complete" not in proc.stdout:
         raise RuntimeError("headless run started but did not report completion")
 
-    log = max((ROOT / "logs").glob("sim_*.log"), key=lambda p: p.stat().st_mtime)
+    # Take the log path from the run's own output. Picking the most recently
+    # modified file in logs/ is wrong the moment anything else is writing there:
+    # a runaway simulation from an earlier failed run kept its log alive for
+    # four hours, and every capture silently read THAT file instead.
+    m = re.search(r"Debug logging enabled . (\S+)", proc.stdout)
+    if not m:
+        raise RuntimeError(
+            "the run did not report its log path, so there is no way to know "
+            "which file to read")
+    log = ROOT / m.group(1) if not os.path.isabs(m.group(1)) else pathlib.Path(m.group(1))
     text = log.read_text(errors="replace")
     report = text[text.index("FINAL REPORT"):] if "FINAL REPORT" in text else text
 

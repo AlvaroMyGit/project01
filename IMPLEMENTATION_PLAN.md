@@ -1333,6 +1333,61 @@ The profiler earned its place before a single optimisation was written.
 
 ---
 
+### ⚠️ Wounded behaviour — attempted, measured, and backed out (2026-09-13)
+
+`Stalker.IsWounded` still has no consumer. An attempt to add one was reverted
+because it made the Zone non-lethal, and the measurements are worth keeping so
+the next attempt does not repeat them.
+
+Built: a `GoalRecover` goal keyed on an `IsHealthy` world-state flag, healing
+from `ActionRestAtBase`, and a reduced combat-initiative rate for wounded
+stalkers. Result, against a baseline of 209 gunfire deaths and 337 casualties
+per 7,200-tick run:
+
+| attempt | gunfire deaths | alive |
+|---|---|---|
+| baseline | 209 | 412 |
+| initiative ×0.2, rest heals 45% | **1** | 626 peak |
+| initiative ×0.6, damage ×1.4 | 0 | 716 |
+| rest heals 15% instead of 45% | 2.5 | 711 |
+| + combat target persistence | 9.5 | 700 |
+| + recovery only below 30% health | 20.5 | 673 |
+
+Five tunings, none of which restored lethality. **The diagnosis is that healing
+is free and abundant while damage is slow.** `ActionRestAtBase` is the most
+common action in the sim, and each rest undoes several exchanges' worth of
+damage, so chip damage never accumulates and nothing ever dies. Reducing the
+heal per rest does not help: stalkers simply rest more often.
+
+**What the next attempt needs first: a healing economy.** Recovery has to cost
+something scarce — a medkit bought with gold, or supplies carried and consumed —
+so that a wounded stalker who cannot afford treatment stays wounded. Without
+that counterweight, any withdraw-and-heal behaviour removes death from the
+simulation. That is a real feature, not a tuning pass, and it should land before
+`GoalRecover` is tried again.
+
+**Kept from the attempt:** combat target persistence (below). Everything else
+was reverted.
+
+### ✅ Combat target persistence (2026-09-13)
+
+`NPCBlackboard.CurrentTargetId` and `CombatState` were declared from the start
+and **never set during combat** — the fourth case this phase of data that
+existed with nothing reading it, after `Mutant.Speed`, `Mutant.Health` and
+`WeaponItem.Damage`.
+
+Each exchange re-picked an opponent with `FirstOrDefault`, so damage spread thin
+across many opponents. That was invisible while combat was one-roll-one-corpse,
+and became load-bearing the moment a kill needed several hits. A fight now
+persists on its target until it dies or leaves a wider disengage range, with the
+population indexed once per tick rather than scanned per stalker.
+
+Measured as behaviour-neutral at current scale (everything inside or beside the
+noise band), which is expected: it is a foundation that lets attritional damage
+concentrate, not a behaviour change in itself.
+
+---
+
 ### Deliberately *not* in Phase 6
 
 - **`TaskManager`** (emergent needs-driven contracts) — overlaps the live
