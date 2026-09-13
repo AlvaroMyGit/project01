@@ -201,38 +201,63 @@ StalkerALifeSandbox/
 
 ## 📊 Simulation Metrics
 
-Averaged over three headless runs of 7,200 ticks — 30 game-hours at `TimeFactor=150`, past the 12-minute spawn ramp, so these are steady-state rather than a world still filling up. Captured by `scripts/sim_baseline.py`; the committed baseline carries the min/max spread alongside each mean.
+Averaged over three headless runs of 7,200 ticks — 30 game-hours at `TimeFactor=150`. Captured by `scripts/sim_baseline.py`; the committed baseline carries the min/max spread alongside each mean.
+
+> **Read these as end-of-ramp, not equilibrium.** The initial spawn ramp is 720 simulated-real-seconds, which is *exactly* 7,200 ticks, so a run of this length ends just as `TrickleRespawn` begins. Left running to 14,400 ticks the population settles lower, at **~335** — see [CODEBASE.md → Current equilibrium](CODEBASE.md#current-equilibrium).
 
 | Metric | Value |
 |---|---|
-| Stalkers alive (steady state) | ~412 |
-| Mutants alive | ~188 |
-| Combat exchanges | ~5840 |
-| …of which fatal | ~444 (**8% lethality**) |
-| Stalker casualties | ~337 |
-| Missions accepted / completed | ~732 / ~727 |
-| GOAP tasks completed | ~411178 |
-| Rank promotions | ~109 |
+| Stalkers alive (end of ramp) | ~437 |
+| Mutants alive | ~219 |
+| Combat exchanges | ~6091 |
+| …of which fatal | ~416 (**7% lethality**) |
+| Stalker casualties | ~312 |
+| Missions accepted / completed | ~742 / ~733 |
+| GOAP tasks completed | ~412574 |
+| Rank promotions | ~107 |
 | Average morale | ~88 |
-| Tick cost | ~13 ms against a 100 ms budget |
+| Tick cost | ~12 ms against a 100 ms budget |
 
-Nearly every contract accepted is now seen through to payout, and most firefights end with someone wounded rather than dead. Both took real work: the mission loop previously ran at 260 accepted / 0 completed, and combat was a single roll that killed the loser outright. See [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for how.
+Nearly every contract accepted is now seen through to payout, and most firefights end with someone wounded rather than dead. Both took real work: the mission loop previously ran at 260 accepted / 0 completed, and combat was a single roll that killed the loser outright.
+
+Left to run past the initial spawn ramp (14,400 ticks / 60 game-hours) the population settles at **~335**, and that ceiling is set by lethality rather than by compute — the tick sits about eight times inside its budget. See [CODEBASE.md → Engineering Notes](CODEBASE.md#engineering-notes) for how all of it was measured, and for the failure modes worth knowing before changing any of it.
 
 ---
 
 ## 🗺️ Roadmap
 
-The core simulation is feature-complete per the v4.5 design. Nearest work first:
+The core simulation is feature-complete per the v4.5 design. Nearest work first.
 
-- **Perception driving combat** — the sensors run and are measured, but combat still picks targets by proximity. Flipping it is two steps, each measured on its own: let hearing reach GOAP (`STALKER_PERCEPTION_THREAT_MEMORY`), then move target selection onto `KnownEntities`. Perception currently covers only part of the engagements proximity would offer, so the flip is a lethality change as much as a realism one
-- **Squad followers that plan** — only squad leaders and solos run GOAP. Delegation was the cheaper half of the answer: followers surface their needs to the leader, who plans for them. Letting followers plan outright is still open, and was previously 1.8× over the tick budget
-- **Faction territory warfare** — squads capture and lose POIs, shifting the faction map over time
-- **Legendary stalkers** — notable NPCs earn titles and unique PDA presence
-- **Player agency** — possess a stalker, issue faction-wide orders, or trigger events
-- **Save/load persistence** — resume campaigns across sessions
-- **Replay & analytics** — timelapse scrubber, heatmaps, faction-strength graphs
+### Next up
 
-See [next-phase.md](next-phase.md) for the full feature brainstorm.
+- **Perception driving combat** — the sensors run and are measured, but combat still picks targets by proximity. Two steps, each measured on its own: let hearing reach GOAP (`STALKER_PERCEPTION_THREAT_MEMORY`), then move target selection onto `KnownEntities`. Perception covers ~59% of the engagements proximity offers, so the flip is a lethality change as much as a realism one
+- **Vision cones in the visualizer** — `facingAngle` and `fov` now carry real values on the wire for stalkers and mutants; `visualizer/app.js` reads neither yet
+- **Population target** — the design asks for 750 stalkers and the Zone settles at ~335. Closing that is a spawn-rate-versus-lethality decision, not an optimisation
+- **Follower planning** — squad delegation was the cheaper half of the answer. Letting followers plan outright remains open and was last measured 1.8× over the 1 Hz budget
+- **Personal grudges** — `PersonalMemory.cs` exists unwired; its payoff is stalker-level vendettas rather than faction-level hostility
+
+### Living world
+
+- **Faction territory warfare** — squads capture and lose POIs, shifting the map over time. The 12×12 hostility matrix currently only gates combat; nothing on the map changes as a result
+- **Legendary stalkers** — NPCs crossing kill or emission-survival thresholds earn titles and unique PDA presence, giving the leaderboard emotional weight
+- **Chronicle log** — an auto-generated Zone history narrating emissions survived, faction shifts and notable deaths, read off the `EventBus`
+- **False rumours** — PDA chatter propagates already, but every rumour is true. Stale and false intel would make GOAP plan around misinformation
+
+### Depth
+
+- **Weapon degradation & maintenance** — durability, jamming and repair, with `FieldCraftingSystem` as the natural home
+- **Squad tactics using terrain** — 759 building footprints are loaded and unused by combat; cover, flanking and suppression instead of walking straight at each other
+- **Artifact market speculation** — scarcity-driven pricing based on how many of a type are live in the sim, instead of a fixed `baseValue`
+- **Radiation as a slow burn** — long-term exposure causing mutation or forced retirement rather than an instant-death stat
+
+### Meta
+
+- **Player agency** — possess a stalker, issue faction-wide orders, or trigger events into a running world
+- **Save/load persistence** — nothing survives a run today; stalker ids are fresh GUIDs each time, which is why the leaderboard is a per-run artefact
+- **Replay & analytics** — timelapse scrubber, death-cause heatmaps, faction-strength and RU-circulation graphs
+- **Scenario scripting** — authored events (convoy ambush, faction war, artifact rush) replayable for balance testing. Shares a state-snapshot format with save/load
+
+Some of these reinforce each other and are worth scoping together: legendary stalkers with the chronicle log; stealth with terrain tactics; territory control with the analytics dashboard; save/load with scenario scripting.
 
 ---
 

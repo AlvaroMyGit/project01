@@ -63,9 +63,9 @@ public sealed class GoalSocialise : GOAPGoal
         // Raising this to 1.85 (crossover ~49, i.e. half the population) was
         // measured over 7-minute runs and did NOT raise the observed rate — it
         // lowered it, 0-1 drinks vs 2-5, i.e. pure noise either way. The rate
-        // is bounded by structure, not by this number
-        // (see IMPLEMENTATION_PLAN §9, step 5b results), so the conservative
-        // value stands: at morale 45 a stalker still takes the job.
+        // is bounded by structure, not by this number (see CODEBASE.md,
+        // "Tuning that is load-bearing"), so the conservative value stands:
+        // at morale 45 a stalker still takes the job.
         // Pinned by GoalSocialiseTests.Crossover_*.
         float score = (ContentMorale - mood) * 1.3f;
         if (needs.Thirst > SurvivalNeeds.UrgentThreshold * 0.7f) score += 6f;

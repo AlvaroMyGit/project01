@@ -1,6 +1,6 @@
 # Codebase Documentation — S.T.A.L.K.E.R. A-Life Sandbox
 
-> **Last updated:** 2026-09-13  
+> **Last updated:** 2026-09-14  
 > **Engine:** C# (.NET 8) · **Visualizer:** HTML5 / PixiJS v7  
 > **Entry point:** `Program.cs` → `SimulationLoop.cs` (10 Hz via `ZoneDirector`)
 
@@ -44,6 +44,13 @@ This document provides a detailed reference for every module, class, and data fi
 - [data/ — JSON Data Tables](#data--json-data-tables)
 - [scripts/ — Python Utilities](#scripts--python-utilities)
 - [tests/ — Test Suite](#tests--test-suite)
+- [Engineering Notes](#engineering-notes)
+  - [Two failure modes that keep recurring](#two-failure-modes-that-keep-recurring)
+  - [Invariants worth not breaking](#invariants-worth-not-breaking)
+  - [Measurement](#measurement)
+  - [Current equilibrium](#current-equilibrium)
+  - [Tuning that is load-bearing](#tuning-that-is-load-bearing)
+  - [Unwired code](#unwired-code)
 - [scripts/ — Maintenance Utilities](#scripts--maintenance-utilities)
 
 ---
@@ -650,6 +657,215 @@ dotnet test tests/StalkerALifeSandbox.Tests/
 [`.github/workflows/ci.yml`](file:///home/alvaromendes/Documents/project01/.github/workflows/ci.yml) runs on every push and pull request to `main`: restore, build the solution in Release with warnings treated as errors (`-warnaserror`), then run the test suite under a **coverage gate** (coverlet.msbuild) that fails the job if total line coverage drops below the floor (currently 19%, just under the measured ~20.4%; raise it as coverage grows). Formatting and style conventions live in [`.editorconfig`](file:///home/alvaromendes/Documents/project01/.editorconfig); generated build output and logs are excluded via `.gitignore`.
 
 ---
+---
+
+## Engineering Notes
+
+Consolidated from the former `IMPLEMENTATION_PLAN.md` and `next-phase.md`. This
+section is the part of those documents worth carrying forward: the invariants,
+the recurring failure modes, and the numbers behind the current tuning. Blow-by-blow
+phase checklists were dropped — git history holds them.
+
+### Two failure modes that keep recurring
+
+**1. Data exists and nothing reads it.** Found *six* times, in code that looked
+complete and compiled cleanly:
+
+| What | Symptom until wired |
+|---|---|
+| `Mutant.Speed` | All three movement sites used per-tick constants ignoring `gameDelta`; mutants moved at `12 / TimeFactor` against a stalker's flat 4 — 2% speed at TimeFactor 150 |
+| `Mutant.Health` / `WeaponItem.Damage` | Combat was one roll and the loser died outright; 100% lethality per encounter |
+| `CurrentTargetId` / `CombatState` | Declared from the start, never set; each exchange re-picked an opponent with `FirstOrDefault`, spreading damage thin |
+| `VisionCone` / `AcousticSensor` | Never called once. The missing input was `NPCBlackboard.Facing` — nothing tracked which way anyone pointed |
+| `Stalker.IsWounded` | No consumer until the healing economy |
+| `PersonalMemory`, `TaskManager` | Still unwired — see [Unwired code](#unwired-code) |
+
+When adding a field, check that something *consumes* it in the same change. A
+property with no reader is indistinguishable from a working feature at compile
+time and from a tuning problem at runtime.
+
+**2. A cheap filter sitting behind an expensive one.** Found three times, each
+worth a large multiple:
+
+| Site | The ordering mistake | Gain |
+|---|---|---|
+| `GOAPPlanner.BuildPlan` | Ran `action.IsValid(bb)` (resolves a destination — a scan over every POI) before checking whether the action's effects could serve the goal at all (two dictionary probes) | **5×** overall tick; `BuildPlan` 2.50 → 0.04 ms |
+| `MissionRegistry.FindNearestIssuerWithOffer` | Tested eligibility (a walk over every offer a site holds) before distance (one subtraction and a square root) | 0.21 → 0.02 ms/call |
+| `InspectorBuilder.FromStalker` | Recomputed `FindNearestIssuerWithOffer` per stalker per second — a value `GoapWorldStateSync` had already written to the blackboard that same tick | `SnapshotBuild` 63 ms → negligible |
+
+Both filters are required and neither depends on the other, so reordering is
+behaviour-preserving by construction. Ask the cheap question first.
+
+### Invariants worth not breaking
+
+**GOAP actions are shared singletons.** `StalkerGoapService.RegisterActions`
+creates ONE instance of each action for the whole population. Per-execution
+state on an action's own fields is therefore global. This caused a live bug in
+which one stalker's `Enter` overwrote the flag another stalker's `Execute` was
+reading: a finished traveller reported "not finished" forever, and one that
+never got a path reported "arrived" instantly. Per-execution state belongs on
+`NPCBlackboard.Action` (`GoapActionState`), reset at a single choke point in
+`StalkerGoapService.Execute` before every `Enter`. Only bind-time `_ctx` is
+legitimately instance state.
+
+**`IsValid` is consulted by the planner, not just the runtime.** It must test
+only what the planner cannot reason about — context availability, whether a
+contract still exists. Anything another action can *achieve* belongs in
+`GetPreconditions`. `ActionTurnInMission` once re-checked `IsAtMissionGiver`,
+the very precondition `ActionReturnToMissionIssuer` exists to satisfy, which
+made `[Return → TurnIn]` unbuildable and produced 1,457 NULL plans in one run.
+
+**Rates must be TimeFactor-stable.** `rate × delta` is only a probability while
+the product stays under 1, and the 1 Hz bucket passes `1.0 × TimeFactor` game
+seconds — 150 at TimeFactor 150. Use `CombatResolver.EventChance`
+(`1 − exp(−rate × delta)`). The same trap has bitten three times: mutant
+movement, the betrayal roll, and a squad-morale coupling constant of `0.02`
+(a 35 game-*second* half-life) that made followers close 95% of the morale gap
+per tick, erasing every sink. Movement has the positional equivalent —
+`CombatResolver.StepToward` clamps the step to the remaining distance, without
+which a 60-unit stride oscillated forever across a 5-unit arrival tolerance and
+no journey ever ended.
+
+**A constant tuned at TimeFactor 3 means something else at 150.** All three
+cases above are instances of this. Runs now default to 150.
+
+**Single-writer threading.** The sim runs on one thread; web readers see an
+immutable `SimulationSnapshot` published via `Volatile`. Snapshots must carry
+copied values, never live references — pinned by `SimulationSnapshotTests`.
+
+**Blackboard fields have owners and cadences.** `bb.CurrentPosition` is a 1 Hz
+snapshot written by `Stalker.TickNeeds` and `GoapWorldStateSync`; squad follow
+destinations and corpse selection read it at 10 Hz. Refreshing it from a 10 Hz
+system — even to the same value — tightened squad spread by 36% and cost 5% of
+the population. `LocationThreatMemory` is likewise a behavioural input, not a
+scratch buffer: `GoapWorldStateSync` reads it into `HeardDangerRumor` as
+`Values.Any(v => v >= 45)` across **every** key, so a key that no band lookup
+matches still trips it. Threat tags must be band names (`South`, `MidZone`,
+`DeepWild`, `North`), never level ids.
+
+### Measurement
+
+Reading the code confidently and being wrong has happened often enough to be
+the default assumption. Measurement has contradicted a confident reading at
+least six times: the socialising coefficient, the morale sinks erased by the
+coupling constant, the entire Phase 7 performance hypothesis, and both
+perception leaks. The profiler earned its place before any optimisation was
+written; allocation — the instinctive target — was worth 3%, while an ordering
+mistake no amount of reading found was worth 5×.
+
+**Fixed-tick harness.** A timed run cannot be compared with another: it drops a
+variable number of ticks under load, so two runs of equal wall-clock simulate
+different spans of game time. `STALKER_MODE=headless` +
+`STALKER_HEADLESS_TICKS=n` runs exactly *n* ticks with no timer. Dropped ticks
+do **not** distort game-time-normalised metrics — `ZoneDirector` skips the clock
+advance and the work together — but they do distort the report's real-time
+figures (deaths per real minute, the startup/steady-state windows).
+
+**`scripts/sim_baseline.py`** captures the report's counters and diffs them
+against `baselines/default.json` with noise-band verdicts. `--capture` writes a
+baseline, `--repeat n` widens the band with more runs.
+
+Hygiene rules, each learned the hard way:
+
+- **Never rebuild while a capture runs.** One baseline was captured across two
+  binaries and flagged a phantom 7% morale regression against a
+  behaviour-preserving refactor. The script now fingerprints the built DLL and
+  aborts if it changes mid-capture.
+- **A baseline is only a control if it was taken on the code being compared
+  against.** A stale `default.json` manufactured mutant-population and
+  death SIGNALs that a fresh capture on the same binary showed were simply the
+  current normal. Re-capture after landing anything.
+- **Kill the child, not the launcher.** `pkill -f "dotnet run"` kills the
+  wrapper and leaves `bin/*/net8.0/StalkerALifeSandbox` running; one zombie ran
+  4h11m and its log was picked up as the newest by the baseline script, which
+  now parses the log path out of the run's own stdout.
+- **State the mode.** A profiling run once silently became an unbounded server
+  run for 58 minutes because `STALKER_HEADLESS_TICKS` never reached the process
+  and execution fell through to the timer. `Program.Main` now prints the
+  resolved mode and `STALKER_MODE=headless` without a tick count is fatal.
+- **The harness resolves double-digit effects, not small ones.** Validate small
+  changes with unit tests instead.
+- **Watch for metrics that change meaning.** When combat became attritional the
+  counters — which only fire on a kill — silently went from measuring *how much
+  fighting* to *how much of it was fatal*, and the report's new wording broke
+  `sim_baseline.py`'s regex into printing `?`.
+- **A metric that flips sign between runs is noise.** `death_betrayal` came out
+  +104% and then −47% across two A/Bs of the same change.
+- **Measure past the spawn ramp.** The 720-second initial ramp is *exactly*
+  7,200 ticks, so a 7,200-tick run ends where the ramp ends and
+  `TrickleRespawn` has never executed. Equilibrium runs need 14,400.
+
+### Current equilibrium
+
+Measured at 14,400 ticks (60 game-hours), past the spawn ramp:
+
+| | value |
+|---|---|
+| alive at end | **335** (peak 429) |
+| spawned | 744 ramp + 770 trickle = 1,514 |
+| casualties | 1,185 |
+| combat | 13,484 exchanges, 1,197 fatal (**9% lethality**) |
+| tick cost | **11.9 ms** against a 100 ms budget |
+
+**The ceiling is lethality, not compute.** Respawn delivers steadily and deaths
+consume it. The design's 750 target is unreachable while those two rates sit
+where they are; reaching it is a spawn-versus-lethality decision, not an
+optimisation task. At roughly eight times inside budget, no further performance
+work is warranted at this scale.
+
+Cumulative tick cost went 40.7 ms at 74 alive to ~12 ms at 420+ — about 18×
+per-capita — across the planner reordering, the 1 Hz fixes, and the indexing
+work.
+
+### Tuning that is load-bearing
+
+- **Emissions, 12–24 game hours** (`EmissionOptions`). They were once 600–1500
+  game *seconds* — 78 a day — as a testing accommodation that became the
+  default. `EmissionImminent` hard-gates `GoalCompleteMission`, `GoalSocialise`,
+  `ActionFulfillMission`, `ActionReturnToMissionIssuer` and all wilderness
+  travel, so ~19% of sim time was spent fleeing or forbidden from doing anything
+  purposeful, against journeys of ~3 game minutes. Restoring canon cadence took
+  missions completed 178 → 575 and average morale ~50 → 77.
+- **Healing must cost something scarce.** A first attempt at wounded behaviour
+  made the Zone non-lethal — five successive tunings moved gunfire deaths from
+  209 to between 0 and 20.5, none of them restoring lethality. The diagnosis was
+  that `ActionRestAtBase` is the most common action in the sim, so free healing
+  outran chip damage and reducing the heal per rest just made stalkers rest
+  more. Resting now heals nothing; `ActionTreatWounds` spends a purchased
+  `MedkitCount` dressing. Recovery exists and lethality is unchanged (all
+  metrics inside the noise band except 78 dressings used).
+- **Squad delegation, not follower planning.** Followers do not run GOAP
+  (`ShouldPlan` admits leaders and solos only), which made them unable to gain
+  morale at all — measured at follower avg 43, max exactly 70, the spawn
+  default, meaning *no follower had ever gained a point*. Letting them plan
+  measured 1.8× over the 1 Hz budget and dissolves squads as the coordination
+  unit `SquadSuccession`, betrayal and emission herding depend on. Instead
+  `SquadNeeds.Refresh` walks the population once per 1 Hz tick and writes each
+  squad's worst hunger, worst thirst, lowest morale and dry-rifle count onto the
+  *leader's* blackboard, and three goals answer for the group. One O(population)
+  pass against hundreds of extra A* searches — and a leader visits a trader
+  *because his men are dry*.
+- **Morale needs sinks.** With many sources and one weak decay it saturated at
+  the ceiling — 83% of all morale gained was being discarded at the 100 cap.
+  `CombatStressMorale` (−2.5 to a firefight survivor) and
+  `SquadmateLossPenalty` (−9 to each living squadmate) restored variance.
+
+### Unwired code
+
+Verified against the tree, not inherited from the old docs — several entries
+there were stale (`ConvoyManager` and `src/UI` have since been deleted; field
+crafting, mutant cooking and perception are now wired).
+
+| Item | File | State |
+|---|---|---|
+| Emergent task pool | `src/PDA/TaskManager.cs` | Orphan. Overlaps the live `MissionRegistry`; needs a reconciliation decision, not just wiring |
+| Personal grudges | `src/Factions/PersonalMemory.cs` | Orphan. Natural payoff is stalker-level grudges ("Wolf killed my squadmate") |
+| Hierarchical pathfinding | `src/World/Navigation/HierarchicalNav.cs` | Dead through `ZoneTopology`, which is itself unreferenced. The sim uses grid A* via `ZonePathfinder` |
+| Scientist escort | `src/AI/Squads/ScientistEscortMission.cs` | Orphan; was blocked on `NoiseEvent`, which now exists |
+| Smart terrain | `src/World/POI/SmartTerrainNode.cs` | Orphan |
+| Mutant corpse feeding | `src/AI/Actions/ActionMutantFeedOnCorpse.cs` | Orphan; feeding already works via inline logic, so this only GOAP-ifies it |
+| Squad object model | `src/AI/Squads/Squad.cs` (`SquadBlackboard`) | Orphan. Squads today are `SquadId` flags plus `SquadSuccession`; adopting the object model is its own refactor |
+
 
 ## scripts/ — Maintenance Utilities
 
