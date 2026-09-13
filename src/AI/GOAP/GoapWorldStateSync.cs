@@ -47,9 +47,9 @@ public static class GoapWorldStateSync
             ctx.ElapsedGameSeconds - bb.LastSocialisedGameSeconds
                 < ctx.Campfires.Options.SocialCooldownGameSeconds);
         Set(bb, GoapKeys.CanRest, atShelter || atHome);
-        bool needsLoot = needs.IsOutOfAmmo || needs.GoldAmount < 300f;
+        bool needsLoot = needs.IsOutOfAmmo || needs.Rubles < 300f;
         Set(bb, GoapKeys.NeedsLoot, needsLoot);
-        Set(bb, GoapKeys.IsLootSatisfied, !needs.IsOutOfAmmo && needs.GoldAmount >= 300f);
+        Set(bb, GoapKeys.IsLootSatisfied, !needs.IsOutOfAmmo && needs.Rubles >= 300f);
         Set(bb, GoapKeys.HasCompletedPatrol, false);
         Set(bb, GoapKeys.HasVisitedTrader, false);
         Set(bb, GoapKeys.HasArtifact, false);

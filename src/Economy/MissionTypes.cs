@@ -33,7 +33,7 @@ public sealed class MissionOffer
     public string TargetRegionId { get; init; } = "";
     public float TargetThreat { get; init; }
     public StalkerRank MinRank { get; init; }
-    public float RewardGold { get; init; }
+    public float RewardRubles { get; init; }
     public string Brief { get; init; } = "";
 }
 
@@ -51,7 +51,7 @@ public sealed class StalkerMission
     public Vector3 TargetPosition { get; init; }
     public string TargetRegionId { get; init; } = "";
     public float TargetThreat { get; init; }
-    public float RewardGold { get; init; }
+    public float RewardRubles { get; init; }
     public string Brief { get; init; } = "";
     /// <summary>Objective finished at target — return to issuer for payout.</summary>
     public bool ObjectiveDone { get; set; }
@@ -71,7 +71,7 @@ public sealed class StalkerMission
         TargetPosition = offer.TargetPosition,
         TargetRegionId = offer.TargetRegionId,
         TargetThreat = offer.TargetThreat,
-        RewardGold = offer.RewardGold,
+        RewardRubles = offer.RewardRubles,
         Brief = offer.Brief,
         AcceptPosition = acceptPosition
     };

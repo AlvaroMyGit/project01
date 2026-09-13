@@ -94,7 +94,7 @@ public sealed class MissionRegistry
                     TargetRegionId = dest.RegionId,
                     TargetThreat = dest.ThreatLevel,
                     MinRank = ZoneGateEvaluator.MinRankForThreat(dest.ThreatLevel),
-                    RewardGold = 320f + dest.ThreatLevel * 500f,
+                    RewardRubles = 320f + dest.ThreatLevel * 500f,
                     Brief = $"Escort supplies from {site.PoiName} to {dest.Name}."
                 });
             }
@@ -211,7 +211,7 @@ public sealed class MissionRegistry
     {
         stalker.ActiveMission = StalkerMission.FromOffer(offer, stalker.Position);
         stalker.MissionIssuerPoiId = offer.IssuerPoiId;
-        SimulationDebugLog.MissionAccepted(stalker, offer.Type.ToString(), offer.IssuerName, offer.RewardGold);
+        SimulationDebugLog.MissionAccepted(stalker, offer.Type.ToString(), offer.IssuerName, offer.RewardRubles);
         BroadcastMission(pda, stalker, offer, accepted: true, gameTime);
     }
 
@@ -231,7 +231,7 @@ public sealed class MissionRegistry
         var mission = stalker.ActiveMission;
         if (mission == null) return;
 
-        stalker.Needs.GoldAmount += mission.RewardGold;
+        stalker.Needs.Rubles += mission.RewardRubles;
         stalker.Needs.AdjustMorale(8f);
         stalker.Rank.RecordMission();
 
@@ -264,7 +264,7 @@ public sealed class MissionRegistry
         }
 
         BroadcastMissionComplete(pda, stalker, mission, gameTime);
-        SimulationDebugLog.MissionTurnedIn(stalker, mission.Type.ToString(), mission.IssuerName, mission.RewardGold);
+        SimulationDebugLog.MissionTurnedIn(stalker, mission.Type.ToString(), mission.IssuerName, mission.RewardRubles);
         stalker.ActiveMission = null;
         stalker.MissionIssuerPoiId = null;
     }
@@ -314,7 +314,7 @@ public sealed class MissionRegistry
             TargetRegionId = nearby.Record.Stamp.RegionId,
             TargetThreat = nearby.Record.Stamp.ThreatLevel,
             MinRank = StalkerRank.Rookie,
-            RewardGold = 140f + nearby.Record.Stamp.ThreatLevel * 200f,
+            RewardRubles = 140f + nearby.Record.Stamp.ThreatLevel * 200f,
             Brief = $"Local scout: check {nearby.Record.Stamp.Name} and report back."
         });
     }
@@ -340,7 +340,7 @@ public sealed class MissionRegistry
             TargetRegionId = target.Stamp.RegionId,
             TargetThreat = target.Stamp.ThreatLevel,
             MinRank = ZoneGateEvaluator.MinRankForThreat(target.Stamp.ThreatLevel),
-            RewardGold = reward,
+            RewardRubles = reward,
             Brief = brief
         };
 
@@ -399,12 +399,12 @@ public sealed class MissionRegistry
             ["stalkerName"] = stalker.DisplayName,
             ["missionType"] = typeLabel,
             ["targetName"] = offer.TargetLabel,
-            ["reward"] = $"{offer.RewardGold:F0}",
+            ["reward"] = $"{offer.RewardRubles:F0}",
             ["locationName"] = offer.IssuerName
         });
 
         if (string.IsNullOrWhiteSpace(body))
-            body = $"{stalker.DisplayName} accepted {typeLabel} job: {offer.Brief} ({offer.RewardGold:F0} RU).";
+            body = $"{stalker.DisplayName} accepted {typeLabel} job: {offer.Brief} ({offer.RewardRubles:F0} RU).";
 
         pda.Post(new PDAMessage
         {
@@ -425,12 +425,12 @@ public sealed class MissionRegistry
             ["stalkerName"] = stalker.DisplayName,
             ["targetName"] = mission.TargetLabel,
             ["issuerName"] = mission.IssuerName,
-            ["reward"] = $"{mission.RewardGold:F0}",
+            ["reward"] = $"{mission.RewardRubles:F0}",
             ["locationName"] = mission.TargetLabel
         });
 
         if (string.IsNullOrWhiteSpace(body))
-            body = $"{stalker.DisplayName} completed job at {mission.TargetLabel}. Paid {mission.RewardGold:F0} RU at {mission.IssuerName}.";
+            body = $"{stalker.DisplayName} completed job at {mission.TargetLabel}. Paid {mission.RewardRubles:F0} RU at {mission.IssuerName}.";
 
         pda.Post(new PDAMessage
         {
@@ -446,7 +446,7 @@ public sealed class MissionRegistry
     {
         if (pda == null) return;
 
-        string body = $"{stalker.DisplayName} finished objective at {mission.TargetLabel}. Return to {mission.IssuerName} for {mission.RewardGold:F0} RU.";
+        string body = $"{stalker.DisplayName} finished objective at {mission.TargetLabel}. Return to {mission.IssuerName} for {mission.RewardRubles:F0} RU.";
 
         pda.Post(new PDAMessage
         {

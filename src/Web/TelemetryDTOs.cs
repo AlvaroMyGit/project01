@@ -56,8 +56,8 @@ namespace StalkerALifeSandbox.Web
         [JsonPropertyName("targetThreat")]
         public float TargetThreat { get; set; }
 
-        [JsonPropertyName("rewardGold")]
-        public float RewardGold { get; set; }
+        [JsonPropertyName("rewardRubles")]
+        public float RewardRubles { get; set; }
 
         [JsonPropertyName("brief")]
         public string Brief { get; set; } = "";
@@ -508,6 +508,14 @@ namespace StalkerALifeSandbox.Web
         [JsonPropertyName("rank")]
         public string Rank { get; set; } = "";
 
+        /// <summary>
+        /// Carried so the dashboard's sort-by-rubles actually works. The control
+        /// has existed since the leaderboard was built and sorted on a field
+        /// that was never sent, so it silently did nothing.
+        /// </summary>
+        [JsonPropertyName("rubles")]
+        public float Rubles { get; set; }
+
         [JsonPropertyName("xp")]
         public int Xp { get; set; }
 
@@ -544,8 +552,8 @@ namespace StalkerALifeSandbox.Web
         [JsonPropertyName("morale")]
         public float Morale { get; set; }
 
-        [JsonPropertyName("gold")]
-        public float Gold { get; set; }
+        [JsonPropertyName("rubles")]
+        public float Rubles { get; set; }
 
         [JsonPropertyName("ammo")]
         public int Ammo { get; set; }

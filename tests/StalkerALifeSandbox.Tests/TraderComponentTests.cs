@@ -54,17 +54,17 @@ public class TraderComponentTests
     }
 
     [Fact]
-    public void SellItem_DecreasesStockAndIncreasesGold()
+    public void SellItem_DecreasesStockAndIncreasesRubles()
     {
         var trader = Trader();
         trader.AddStock("con_bread", 100f, 5);
-        float goldBefore = trader.Gold;
+        float rublesBefore = trader.Rubles;
 
         bool sold = trader.SellItem("con_bread", 1f, "Loner");
 
         Assert.True(sold);
         Assert.Equal(4, trader.Stock[0].Quantity);
-        Assert.True(trader.Gold > goldBefore);
+        Assert.True(trader.Rubles > rublesBefore);
     }
 
     [Fact]
@@ -78,15 +78,15 @@ public class TraderComponentTests
     }
 
     [Fact]
-    public void BuyItem_InsufficientGold_Fails()
+    public void BuyItem_InsufficientRubles_Fails()
     {
         // BuyItem's price comes from GetSellPrice, which looks up the trader's
         // EXISTING stock (0 if the item isn't stocked yet) — so the item must
         // already be in stock for a nonzero price, and thus a meaningful
-        // insufficient-gold check.
+        // insufficient-rubles check.
         var trader = Trader();
         trader.AddStock("art_compass", 5000f, 1);
-        trader.Gold = 0f;
+        trader.Rubles = 0f;
 
         Assert.False(trader.BuyItem("art_compass", 5000f, 1f, "Loner", isArtifact: true));
     }
@@ -95,7 +95,7 @@ public class TraderComponentTests
     public void BuyItem_Artifact_AddsToHoard_NotStock()
     {
         var trader = Trader();
-        trader.Gold = 100_000f;
+        trader.Rubles = 100_000f;
 
         bool bought = trader.BuyItem("art_compass", 100f, 1f, "Loner", isArtifact: true);
 
@@ -108,7 +108,7 @@ public class TraderComponentTests
     public void BuyItem_NonArtifact_AddsToStock_NotHoard()
     {
         var trader = Trader();
-        trader.Gold = 100_000f;
+        trader.Rubles = 100_000f;
 
         bool bought = trader.BuyItem("con_bread", 10f, 1f, "Loner", isArtifact: false);
 

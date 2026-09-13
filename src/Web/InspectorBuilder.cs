@@ -48,7 +48,7 @@ public static class InspectorBuilder
                 Radiation = s.Needs.Radiation,
                 Fatigue = s.Needs.Fatigue,
                 Morale = s.Needs.Morale,
-                Gold = s.Needs.GoldAmount,
+                Rubles = s.Needs.Rubles,
                 Ammo = s.Needs.AmmoCount
             },
             Skills = new SkillsDTO

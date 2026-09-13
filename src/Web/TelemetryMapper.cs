@@ -29,7 +29,7 @@ public static class TelemetryMapper
                 Y = mission.IssuerPosition.Z
             },
             TargetThreat = mission.TargetThreat,
-            RewardGold = mission.RewardGold,
+            RewardRubles = mission.RewardRubles,
             Brief = mission.Brief,
             ObjectiveDone = mission.ObjectiveDone
         };

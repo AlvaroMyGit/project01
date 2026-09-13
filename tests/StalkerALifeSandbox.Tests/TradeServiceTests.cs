@@ -13,37 +13,37 @@ public class TradeServiceTests
         var trader = new TraderComponent("t1", "Loner", new MarketPrices(), new FactionMatrix())
         {
             BandName = "South",
-            Gold = 100_000f
+            Rubles = 100_000f
         };
         trader.AddStock("con_bread", ItemDatabase.GetBaseValue("con_bread") is > 0f and var v ? v : 10f, 10);
         return trader;
     }
 
-    private static Stalker Buyer(float gold = 1000f)
+    private static Stalker Buyer(float rubles = 1000f)
     {
         var s = new Stalker("buyer-1", "Buyer", "Loner");
-        s.Needs.GoldAmount = gold;
+        s.Needs.Rubles = rubles;
         return s;
     }
 
     [Fact]
-    public void TryBuy_SufficientGold_SucceedsAndDeductsGold()
+    public void TryBuy_SufficientRubles_SucceedsAndDeductsRubles()
     {
         var trader = Trader();
-        var stalker = Buyer(gold: 1000f);
-        float before = stalker.Needs.GoldAmount;
+        var stalker = Buyer(rubles: 1000f);
+        float before = stalker.Needs.Rubles;
 
         bool bought = TradeService.TryBuy(stalker, trader, "con_bread");
 
         Assert.True(bought);
-        Assert.True(stalker.Needs.GoldAmount < before);
+        Assert.True(stalker.Needs.Rubles < before);
     }
 
     [Fact]
-    public void TryBuy_InsufficientGold_Fails()
+    public void TryBuy_InsufficientRubles_Fails()
     {
         var trader = Trader();
-        var stalker = Buyer(gold: 0f);
+        var stalker = Buyer(rubles: 0f);
 
         Assert.False(TradeService.TryBuy(stalker, trader, "con_bread"));
     }
@@ -82,10 +82,10 @@ public class TradeServiceTests
     }
 
     [Fact]
-    public void ExecuteTradeVisit_HungryStalkerWithGold_BuysFoodAndReturnsSummary()
+    public void ExecuteTradeVisit_HungryStalkerWithRubles_BuysFoodAndReturnsSummary()
     {
         var trader = Trader();
-        var stalker = Buyer(gold: 5000f);
+        var stalker = Buyer(rubles: 5000f);
         for (int i = 0; i < 30; i++) stalker.Needs.Tick(3600f); // becomes hungry
         var site = new TraderRegistry.TraderSite { PoiId = "p1", PoiName = "TestBase", Trader = trader };
 
@@ -98,8 +98,8 @@ public class TradeServiceTests
     public void ExecuteTradeVisit_NothingToBuyOrSell_ReportsBrowsed()
     {
         ItemDatabase.EnsureLoaded();
-        var trader = new TraderComponent("t2", "Loner", new MarketPrices(), new FactionMatrix()) { Gold = 0f };
-        var stalker = Buyer(gold: 0f); // no gold to buy, no gear/artifacts to sell, needs are fresh
+        var trader = new TraderComponent("t2", "Loner", new MarketPrices(), new FactionMatrix()) { Rubles = 0f };
+        var stalker = Buyer(rubles: 0f); // no rubles to buy, no gear/artifacts to sell, needs are fresh
         var site = new TraderRegistry.TraderSite { PoiId = "p2", PoiName = "EmptyBase", Trader = trader };
 
         string summary = TradeService.ExecuteTradeVisit(stalker, site);

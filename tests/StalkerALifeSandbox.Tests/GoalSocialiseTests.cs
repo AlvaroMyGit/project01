@@ -36,9 +36,9 @@ public class GoalSocialiseTests
 
     /// <summary>Needs at a given morale, well funded so GoalAcceptMission's
     /// broke bonus stays out of the comparison unless a test wants it.</summary>
-    private static SurvivalNeeds NeedsWithMorale(float morale, float gold = 1000f)
+    private static SurvivalNeeds NeedsWithMorale(float morale, float rubles = 1000f)
     {
-        var needs = new SurvivalNeeds { GoldAmount = gold };
+        var needs = new SurvivalNeeds { Rubles = rubles };
         needs.AdjustMorale(morale - needs.Morale);
         return needs;
     }
@@ -157,7 +157,7 @@ public class GoalSocialiseTests
     public void Crossover_BrokeAndMiserableStillTakesTheJob()
     {
         var bb = AtCampfireWithOffer();
-        var needs = NeedsWithMorale(25f, gold: 100f);   // +12 broke bonus on AcceptMission
+        var needs = NeedsWithMorale(25f, rubles: 100f);   // +12 broke bonus on AcceptMission
 
         Assert.True(new GoalAcceptMission().EvaluateUtility(bb, needs)
                   > new GoalSocialise().EvaluateUtility(bb, needs),

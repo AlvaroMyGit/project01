@@ -91,7 +91,7 @@ public sealed class ActionHarvestArtifact : GoapTravelAction
                 {
                     break;
                 }
-                stalker.Needs.GoldAmount += ItemDatabase.GetBaseValue(artId) * 0.55f;
+                stalker.Needs.Rubles += ItemDatabase.GetBaseValue(artId) * 0.55f;
                 break;
             case ArtifactDecision.Stash:
                 stalker.Equipment.AddItem(artId, 0.4f);

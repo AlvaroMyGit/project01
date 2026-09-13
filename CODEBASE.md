@@ -235,7 +235,7 @@ Located in `src/AI/GOAP/Actions/`:
 | `ActionReturnToMissionIssuer.cs` | Travel back to mission giver after objective completion |
 | `ActionShareDrink.cs` | Vodka sharing with companions for morale and radiation purge |
 | `ActionTradeRun.cs` | Trader visit for buying/selling supplies and gear |
-| `ActionTurnInMission.cs` | Contract completion — collect gold, XP, and reputation |
+| `ActionTurnInMission.cs` | Contract completion — collect rubles, XP, and reputation |
 | `ActionVisitStash.cs` | Hidden stash retrieval |
 
 ### GOAP Goals
@@ -420,7 +420,7 @@ Located in `src/AI/GOAP/Goals/`:
 
 | File | Class | Description |
 |---|---|---|
-| [`SurvivalNeeds.cs`](file:///home/alvaromendes/Documents/project01/src/Entities/Needs/SurvivalNeeds.cs) | `SurvivalNeeds` | Ticked at 1 Hz — tracks Hunger, Thirst, Radiation, Fatigue, Morale, Ammo, and Gold (0–100) |
+| [`SurvivalNeeds.cs`](file:///home/alvaromendes/Documents/project01/src/Entities/Needs/SurvivalNeeds.cs) | `SurvivalNeeds` | Ticked at 1 Hz — tracks Hunger, Thirst, Radiation, Fatigue, Morale and Ammo (0–100 scales), plus Rubles |
 
 ---
 
@@ -430,7 +430,7 @@ Located in `src/AI/GOAP/Goals/`:
 |---|---|---|
 | [`TraderRegistry.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/TraderRegistry.cs) | `TraderRegistry` | Bootstraps all macro-base trader locations and initial inventories |
 | [`TraderComponent.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/TraderComponent.cs) | `TraderComponent` | Shop inventory management, artifact buying, and faction-discounted pricing |
-| [`TraderEconomyConfig.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/TraderEconomyConfig.cs) | `TraderEconomyConfig` | Tunable params: 850 RU starting gold, 120 RU buy reserve, regional price ceilings |
+| [`TraderEconomyConfig.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/TraderEconomyConfig.cs) | `TraderEconomyConfig` | Tunable params: 850 RU starting balance, 120 RU buy reserve, regional price ceilings |
 | [`TradeService.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/TradeService.cs) | `TradeService` | Full shopping logic — sell artifacts/loot, buy ammo/food/medkits, gear upgrades via `EquipmentUpgradeService` |
 | [`MarketPrices.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/MarketPrices.cs) | `MarketPrices` | Dynamic supply/demand pricing with latitude multipliers |
 | [`MissionRegistry.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/MissionRegistry.cs) | `MissionRegistry` | Generates, stores, and refreshes base contracts (scout, retrieve, escort) |
@@ -610,8 +610,8 @@ Several of these are **characterization** tests: they pin behaviour that was fou
 | `StalkerHealthTests.cs` | Damage accumulates across exchanges instead of killing outright; armour never grants immunity |
 | `ZoneDirectorTests.cs` | Bucket frequencies, game-delta vs real-delta, and the tick/game-time lockstep the measurement harness depends on |
 | `TelemetryMapperTests.cs` | Mission/corpse DTO mapping and despawn-remaining computation |
-| `TradeServiceTests.cs` | Buy/sell gating on gold, purchased-item effects, trade-visit summaries |
-| `TraderComponentTests.cs` | Dynamic pricing, faction price modifiers, stock/gold mutation on buy/sell |
+| `TradeServiceTests.cs` | Buy/sell gating on rubles, purchased-item effects, trade-visit summaries |
+| `TraderComponentTests.cs` | Dynamic pricing, faction price modifiers, stock/rubles mutation on buy/sell |
 | `TraderRegistryTests.cs` | `Bootstrap` stock seeding by base name/faction/band, nearest/by-name lookup |
 | `ZoneGateEvaluatorTests.cs` | Comfort-threat monotonicity, rank-gating, `MinRankForThreat` |
 | `ZonePathfinderTests.cs` | Grid dimensions and A* `FindPath` between open points |

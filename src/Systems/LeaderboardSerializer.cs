@@ -34,6 +34,7 @@ public static class LeaderboardSerializer
         Name = s.DisplayName,
         Faction = s.TrueFaction,
         Rank = s.Rank.CurrentRank.ToString(),
+        Rubles = s.Needs.Rubles,
         Xp = s.Rank.TotalXP,
         Kills = s.Rank.Kills,
         StalkerKills = s.Rank.StalkerKills,

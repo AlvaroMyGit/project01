@@ -34,7 +34,7 @@ public sealed class SurvivalNeeds
     public float Fatigue   { get; private set; }
     public float Morale    { get; private set; } = 70f;
     public int AmmoCount   { get; private set; } = 90;
-    public float GoldAmount { get; set; } = TraderEconomyConfig.StartingGold;
+    public float Rubles { get; set; } = TraderEconomyConfig.StartingRubles;
 
     // ── Tick (called at 1 Hz by ZoneDirector) ───────────────
     public void Tick(float deltaGameSec)
@@ -69,7 +69,7 @@ public sealed class SurvivalNeeds
 
     // ── Queries ──────────────────────────────────────────────
     public bool IsInCriticalState => Hunger >= CriticalThreshold || Thirst >= CriticalThreshold || Radiation >= CriticalThreshold || Fatigue >= CriticalThreshold;
-    public bool IsDesperate => Hunger > 75f && GoldAmount < 500f;
+    public bool IsDesperate => Hunger > 75f && Rubles < 500f;
     public bool IsOutOfAmmo => AmmoCount <= 0;
 
     public string? MostUrgentNeed()

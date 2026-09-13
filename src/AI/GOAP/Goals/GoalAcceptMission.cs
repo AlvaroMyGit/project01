@@ -27,7 +27,7 @@ public sealed class GoalAcceptMission : GOAPGoal
                  bb.WorldStateBools.GetValueOrDefault(GoapKeys.IsAtCampfire))
             score += 8f;
 
-        if (needs.GoldAmount < 500f) score += 12f;
+        if (needs.Rubles < 500f) score += 12f;
         if ((int)needs.Morale < 50) score += 6f;
         return score;
     }

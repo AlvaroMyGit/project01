@@ -23,12 +23,12 @@ public sealed class BetrayalEvaluator
 {
     /// <summary>
     /// Checks if the Stalker is desperate based on survival needs.
-    /// Triggered when Hunger > 85%, Gold < 200 RU, or Ammo < 10 rnds.
+    /// Triggered when Hunger > 85%, Rubles < 200 RU, or Ammo < 10 rnds.
     /// </summary>
     public bool IsDesperate(SurvivalNeeds needs)
     {
         return needs.Hunger > 85f || 
-               needs.GoldAmount < 200 || 
+               needs.Rubles < 200 || 
                needs.AmmoCount < 10;
     }
 

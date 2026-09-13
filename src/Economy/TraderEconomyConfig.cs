@@ -9,7 +9,7 @@ public static class TraderEconomyConfig
     /// <summary>Max gear pieces bought per trader visit (prevents bankrupting on one exo).</summary>
     public const int DefaultMaxGearPurchasesPerVisit = 2;
 
-    public const float DefaultStartingGold = 850f;
+    public const float DefaultStartingRubles = 850f;
 
     public static float GearReserveRu => ReadFloat("STALKER_TRADER_GEAR_RESERVE_RU", DefaultGearReserveRu);
 
@@ -23,7 +23,7 @@ public static class TraderEconomyConfig
         }
     }
 
-    public static float StartingGold => ReadFloat("STALKER_STARTING_GOLD", DefaultStartingGold);
+    public static float StartingRubles => ReadFloat("STALKER_STARTING_RUBLES", DefaultStartingRubles);
 
     public static float MaxItemValueForBand(string band) => band switch
     {

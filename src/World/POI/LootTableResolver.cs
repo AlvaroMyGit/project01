@@ -37,7 +37,7 @@ public static class LootTableResolver
                     stalker.Needs.Drink(25f);
                     break;
                 case "scrap":
-                    stalker.Needs.GoldAmount += Random.Shared.Next(80, 220);
+                    stalker.Needs.Rubles += Random.Shared.Next(80, 220);
                     stalker.Equipment.AddItem("loot_scrap", 1.2f);
                     break;
                 case "artifact":
@@ -70,7 +70,7 @@ public static class LootTableResolver
                 {
                     break;
                 }
-                stalker.Needs.GoldAmount += ItemDatabase.GetBaseValue(artId) * 0.55f;
+                stalker.Needs.Rubles += ItemDatabase.GetBaseValue(artId) * 0.55f;
                 break;
             default:
                 stalker.Equipment.AddItem(artId, 0.4f);

@@ -1,7 +1,7 @@
 // TaskManager.cs — Emergent contracts & bounties
 // Spec §3D: When an NPC has unfulfilled needs (e.g. irradiated
 //           without vodka, or low ammo), they post an automated
-//           PDA contract with gold rewards.
+//           PDA contract with rubles rewards.
 using StalkerALifeSandbox.Core;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Needs;

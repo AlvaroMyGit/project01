@@ -49,7 +49,7 @@ A fully autonomous open-world life simulation inspired by the A-Life system from
 - **PDA feed** with filtered tabs for deaths, missions, emissions, and faction chatter
 - **Top 100 leaderboard** with click-to-follow camera tracking
 - **12×12 faction diplomacy matrix** viewer
-- **Mission map overlays** — gold lines to objectives, green lines for return trips
+- **Mission map overlays** — amber lines to objectives, green lines for return trips
 - **CSS inventory grid** with paperdoll gear slots
 
 ### 📈 RPG Progression
@@ -135,7 +135,7 @@ Open `http://localhost:5050` in your browser to watch the Zone come alive.
 | `STALKER_SQUAD_MISSION_SHARE` | `4` | Morale each squadmate gains when a member turns in a contract |
 | `STALKER_SQUAD_LOSS_PENALTY` | `9` | Morale each squadmate loses when one of them is killed |
 | `STALKER_CORPSE_*` | *(see `CorpseCleanupOptions`)* | Despawn thresholds per corpse state |
-| `STALKER_STARTING_GOLD` | `850` | Gold each stalker spawns with |
+| `STALKER_STARTING_RUBLES` | `850` | Rubles each stalker spawns with |
 
 ### Running Tests
 

@@ -179,6 +179,6 @@ public static class EquipmentUpgradeService
     {
         float price = trader.GetSellPrice(itemId, condition, stalker.TrueFaction);
         float reserve = TraderEconomyConfig.GearReserveRu;
-        return price > 0f && stalker.Needs.GoldAmount >= price + reserve;
+        return price > 0f && stalker.Needs.Rubles >= price + reserve;
     }
 }

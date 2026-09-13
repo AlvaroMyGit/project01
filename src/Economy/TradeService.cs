@@ -82,12 +82,12 @@ public static class TradeService
     {
         float condition = conditionOverride ?? (IsGearItem(itemId) ? 0.88f : 1f);
         float price = trader.GetSellPrice(itemId, condition, stalker.TrueFaction);
-        if (price <= 0f || stalker.Needs.GoldAmount < price)
+        if (price <= 0f || stalker.Needs.Rubles < price)
             return false;
         if (!trader.SellItem(itemId, condition, stalker.TrueFaction))
             return false;
 
-        stalker.Needs.GoldAmount -= price;
+        stalker.Needs.Rubles -= price;
         if (equipGear)
             ApplyPurchasedItem(stalker, itemId);
         return true;
@@ -110,7 +110,7 @@ public static class TradeService
         if (!trader.BuyItem(itemId, def.BaseValue, 1f, stalker.TrueFaction, isArtifact: true))
             return false;
 
-        stalker.Needs.GoldAmount += price;
+        stalker.Needs.Rubles += price;
         return true;
     }
 
@@ -122,7 +122,7 @@ public static class TradeService
             var slot = stalker.Belt.Slots[i];
             if (slot.Type != BeltItemType.Artifact) continue;
 
-            bool shouldSell = stalker.Needs.GoldAmount < 800f || slot.RarityScore < 0.55f;
+            bool shouldSell = stalker.Needs.Rubles < 800f || slot.RarityScore < 0.55f;
             if (!shouldSell) continue;
 
             if (TrySellArtifact(stalker, trader, slot.ItemId, slot.RarityScore))
@@ -136,7 +136,7 @@ public static class TradeService
 
     private static IEnumerable<string> SellBackpackJunk(Stalker stalker, TraderComponent trader)
     {
-        if (stalker.Needs.GoldAmount >= 400f)
+        if (stalker.Needs.Rubles >= 400f)
             return Array.Empty<string>();
 
         var sold = new List<string>();
@@ -150,7 +150,7 @@ public static class TradeService
                 continue;
 
             stalker.Equipment.RemoveItem(item, 0.4f);
-            stalker.Needs.GoldAmount += price;
+            stalker.Needs.Rubles += price;
             sold.Add(item);
         }
         return sold.Select(id => $"sold {id}");

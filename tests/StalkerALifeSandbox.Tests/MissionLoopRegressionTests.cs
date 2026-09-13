@@ -105,16 +105,16 @@ public class MissionLoopRegressionTests
         {
             MissionId = "m1",
             IssuerPosition = new Vector3(5000f, 0f, 5000f),
-            RewardGold = 500f,
+            RewardRubles = 500f,
             ObjectiveDone = true
         };
         ctx.BindStalkers(new[] { stalker });
 
-        float goldBefore = stalker.Needs.GoldAmount;
+        float rublesBefore = stalker.Needs.Rubles;
         action.Execute(stalker.Blackboard, 0.1f);
         action.Exit(stalker.Blackboard);
 
-        Assert.Equal(goldBefore, stalker.Needs.GoldAmount);
+        Assert.Equal(rublesBefore, stalker.Needs.Rubles);
         Assert.NotNull(stalker.ActiveMission);
     }
 
@@ -134,16 +134,16 @@ public class MissionLoopRegressionTests
         {
             MissionId = "m1",
             IssuerPosition = issuer,
-            RewardGold = 500f,
+            RewardRubles = 500f,
             ObjectiveDone = true
         };
         ctx.BindStalkers(new[] { stalker });
 
-        float goldBefore = stalker.Needs.GoldAmount;
+        float rublesBefore = stalker.Needs.Rubles;
         action.Execute(stalker.Blackboard, 0.1f);
         action.Exit(stalker.Blackboard);
 
-        Assert.True(stalker.Needs.GoldAmount > goldBefore, "the contract should pay out");
+        Assert.True(stalker.Needs.Rubles > rublesBefore, "the contract should pay out");
         Assert.Null(stalker.ActiveMission);
     }
 }

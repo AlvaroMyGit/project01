@@ -117,7 +117,7 @@ public class SquadDelegationTests
         var leader = Member("lead", "sq1", leader: true);
         var follower = Member("f", "sq1");
         while (!follower.Needs.IsOutOfAmmo) follower.Needs.ConsumeAmmo(10);
-        leader.Needs.GoldAmount = 200f;   // below every wealth tier
+        leader.Needs.Rubles = 200f;   // below every wealth tier
 
         var goal = new GoalVisitTrader();
         float alone = goal.EvaluateUtility(leader.Blackboard, leader.Needs);

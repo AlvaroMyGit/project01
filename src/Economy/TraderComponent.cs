@@ -15,7 +15,7 @@ public sealed class TraderComponent
     public string TraderId  { get; }
     public string FactionId { get; }
     public string BandName  { get; set; } = "South";
-    public float  Gold      { get; set; } = 10000f;
+    public float  Rubles      { get; set; } = 10000f;
 
     private readonly List<TradeSlot> _stock = new();
     public IReadOnlyList<TradeSlot> Stock => _stock;
@@ -81,7 +81,7 @@ public sealed class TraderComponent
     }
 
     /// <summary>
-    /// Execute a sale: buyer pays, stock decreases, gold increases.
+    /// Execute a sale: buyer pays, stock decreases, rubles increases.
     /// Returns true on success.
     /// </summary>
     public bool SellItem(string itemId, float condition, string buyerFaction)
@@ -91,7 +91,7 @@ public sealed class TraderComponent
 
         float price = GetSellPrice(itemId, condition, buyerFaction);
         slot.Quantity--;
-        Gold += price;
+        Rubles += price;
 
         // Adjust supply (more sold → supply drops → price rises)
         _market.AdjustSupply(itemId, -0.05f);
@@ -106,9 +106,9 @@ public sealed class TraderComponent
                         string sellerFaction, bool isArtifact)
     {
         float price = GetBuyPrice(itemId, condition, sellerFaction);
-        if (Gold < price) return false;
+        if (Rubles < price) return false;
 
-        Gold -= price;
+        Rubles -= price;
 
         if (isArtifact)
         {
@@ -124,11 +124,11 @@ public sealed class TraderComponent
 
     /// <summary>
     /// Receive imported goods from a supply convoy.
-    /// Restores gold and adds stock.
+    /// Restores rubles and adds stock.
     /// </summary>
-    public void ReceiveImport(IReadOnlyList<string> itemIds, float goldRefresh)
+    public void ReceiveImport(IReadOnlyList<string> itemIds, float rublesRefresh)
     {
-        Gold += goldRefresh;
+        Rubles += rublesRefresh;
         foreach (var id in itemIds)
         {
             float baseValue = ItemDatabase.GetBaseValue(id);
@@ -157,7 +157,7 @@ public sealed class TraderComponent
     }
 
     public override string ToString() =>
-        $"[Trader:{TraderId}] Gold={Gold:F0} Stock={_stock.Count} Hoard={_artifactHoard.Count}";
+        $"[Trader:{TraderId}] Rubles={Rubles:F0} Stock={_stock.Count} Hoard={_artifactHoard.Count}";
 }
 
 public sealed class TradeSlot

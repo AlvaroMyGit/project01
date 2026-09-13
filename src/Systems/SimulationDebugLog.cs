@@ -455,7 +455,7 @@ public static class SimulationDebugLog
             s.Equipment.EquippedArmor?.Id.StartsWith("out_", StringComparison.OrdinalIgnoreCase) == true);
         int gammaHelmets = aliveS.Count(s =>
             s.Equipment.EquippedHelmet?.Id.StartsWith("helm_", StringComparison.OrdinalIgnoreCase) == true);
-        float avgGold = aliveS.Count > 0 ? aliveS.Average(s => s.Needs.GoldAmount) : 0f;
+        float avgRubles = aliveS.Count > 0 ? aliveS.Average(s => s.Needs.Rubles) : 0f;
         int tradeGoal = aliveS.Count(s => s.IsSquadLeader &&
             StalkerGoapService.DescribeGoal(s).Contains("Trade", StringComparison.OrdinalIgnoreCase));
         int missionGoal = aliveS.Count(s => s.IsSquadLeader &&
@@ -470,7 +470,7 @@ public static class SimulationDebugLog
         DebugLogSink.WriteLine("SNAPSHOT", new StringBuilder()
             .Append($"real={realElapsed:F1}min game={FormatGameTime(time)} ")
             .Append($"alive S={aliveStalkers} M={aliveMutants} corpses={corpseCount} lootable={lootableCorpses} ")
-            .Append($"gammaGear out={gammaOutfits} helm={gammaHelmets} avgRU={avgGold:F0} ")
+            .Append($"gammaGear out={gammaOutfits} helm={gammaHelmets} avgRU={avgRubles:F0} ")
             .Append($"leaderGoals trade={tradeGoal} mission={missionGoal} ")
             .Append($"emission={emissions.CurrentPhase} nextIn={nextEmissionGameSec / 60f:F0}gmin ")
             .Append($"desperate={desperate} hungry={criticalNeeds} radHigh={radHigh} avgRad={avgRad:F1} ")
@@ -530,7 +530,7 @@ public static class SimulationDebugLog
         var gammaAlive = stalkers.Where(s => s.IsAlive).ToList();
         int outCount = gammaAlive.Count(s => s.Equipment.EquippedArmor?.Id.StartsWith("out_", StringComparison.OrdinalIgnoreCase) == true);
         int helmCount = gammaAlive.Count(s => s.Equipment.EquippedHelmet?.Id.StartsWith("helm_", StringComparison.OrdinalIgnoreCase) == true);
-        sb.AppendLine($"GAMMA gear (alive): outfits={outCount} helmets={helmCount} avgGold={(gammaAlive.Count > 0 ? gammaAlive.Average(s => s.Needs.GoldAmount) : 0):F0} RU");
+        sb.AppendLine($"GAMMA gear (alive): outfits={outCount} helmets={helmCount} avgRubles={(gammaAlive.Count > 0 ? gammaAlive.Average(s => s.Needs.Rubles) : 0):F0} RU");
         // Socialising is driven entirely by morale, so a bare "0 drinks" tells
         // you nothing without knowing whether morale ever got low enough to
         // want one. Report both together.

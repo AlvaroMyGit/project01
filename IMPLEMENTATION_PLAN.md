@@ -230,7 +230,7 @@ Spec sections below describe the **design target**. See §4 for honest completio
 - [x] Roof cutaway — macro bases go hollow when zoomed in near them
 - [x] Paperdoll composite — weapon/armor/helmet at high zoom; **GAMMA protection bars + corpse loot/despawn in inspector**
 - [x] CSS grid inventory on inspect — **`inv-grid` CSS layout** with slot cards for Primary, Secondary, Helmet, Armor; `renderGearSlot` JS helper
-- [x] Mission map overlays — gold target lines; **green return lines** when objective done (`objectiveDone` on `MissionDTO`)
+- [x] Mission map overlays — amber target lines; **green return lines** when objective done (`objectiveDone` on `MissionDTO`)
 - [x] Follow mode — camera tracks selected stalker from leaderboard or map click (`app.js?v=9`)
 - [ ] Squad order vectors / social friend links — **not implemented**
 - [x] Missions PDA tab — **dedicated Missions tab** in PDA feed; filters by `MissionBrief` message type
@@ -242,7 +242,7 @@ Spec sections below describe the **design target**. See §4 for honest completio
   convoy economy never ran, while this line and CODEBASE.md both claimed it did.
 - [x] `TradeService.cs` — consumables/ammo/artifacts + **`EquipmentUpgradeService.TryBuyGearUpgrades`**
 - [x] `TraderEconomyConfig.cs` — env-tunable buy reserve (120 RU), gear-before-consumables, no 1200 RU gate; **`GoalVisitTrader`** + `ActionTradeRun`
-- [~] Starting gold **850 RU**; south-band affordable stock; GAMMA stock capped by band price — **buys fire in debug runs** but still secondary to combat loot
+- [~] Starting balance **850 RU**; south-band affordable stock; GAMMA stock capped by band price — **buys fire in debug runs** but still secondary to combat loot
 - [x] `DisguiseSystem.cs` — **suspicion ticks wired**; infiltrators need mismatched patches
 - [x] Squad leadership — **`SquadSuccession`** on leader death (promote / merge / disband)
 - [x] `FieldCraftingSystem.cs` — runs in the 0.1 Hz tick bucket (`SimulationLoop._systems0_1Hz`)
@@ -472,7 +472,7 @@ Modulated by `ZoneSurvival` skill (+0.05 per 10 points) and desperation (critica
 | Rank-filtered mission difficulty + local errand distance floors (320m+ from stalker) | `MissionRegistry.cs`, `ZoneGateEvaluator` | ✅ |
 | GOAP planner fixes (action order, `IsValid` vs preconditions, interrupt-safe payout) | `GOAPPlanner.cs`, mission actions | ✅ |
 | PDA broadcast on accept / objective done / turn-in | `MissionRegistry.cs`, `PDANetwork.cs` | ✅ |
-| Dashboard mission stats + map overlays (gold out, green return) | `TelemetryMapper.cs`, `visualizer/app.js` | ✅ |
+| Dashboard mission stats + map overlays (amber out, green return) | `TelemetryMapper.cs`, `visualizer/app.js` | ✅ |
 | Debug logging — `[MISSION]` accept / arrived / objective done / turned in | `SimulationDebugLog.cs` | ✅ |
 | **Emergent behavior validated** | 4-min run 2026-08-14 TF=5 | ✅ **174 accepts / 37 turn-ins** |
 
@@ -1360,7 +1360,7 @@ damage, so chip damage never accumulates and nothing ever dies. Reducing the
 heal per rest does not help: stalkers simply rest more often.
 
 **What the next attempt needs first: a healing economy.** Recovery has to cost
-something scarce — a medkit bought with gold, or supplies carried and consumed —
+something scarce — a medkit bought with rubles, or supplies carried and consumed —
 so that a wounded stalker who cannot afford treatment stays wounded. Without
 that counterweight, any withdraw-and-heal behaviour removes death from the
 simulation. That is a real feature, not a tuning pass, and it should land before

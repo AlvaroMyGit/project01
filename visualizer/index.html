@@ -857,7 +857,7 @@
                     <select id="lbSort" style="background:var(--bg); border:1px solid var(--border); color:var(--text);" onchange="App.filterLeaderboard()">
                         <option value="xp">XP</option>
                         <option value="kills">KILLS</option>
-                        <option value="gold">GOLD</option>
+                        <option value="rubles">RUBLES</option>
                     </select>
                 </div>
                 <div id="leaderboardPanel" style="flex:1; overflow-y:auto; border-top:1px solid var(--border)">
@@ -1084,7 +1084,7 @@
                 ${m.objectiveDone ? `<div class="prop-row"><span class="prop-label">Objective</span><span class="prop-val">${m.targetLabel}</span></div>` : ''}
                 <div class="prop-row">
                     <span class="prop-label">Reward</span>
-                    <span class="prop-val" style="color:#fbbf24">${Math.round(m.rewardGold ?? 0)} RU</span>
+                    <span class="prop-val" style="color:#fbbf24">${Math.round(m.rewardRubles ?? 0)} RU</span>
                 </div>
                 <div class="prop-row">
                     <span class="prop-label">Threat</span>
@@ -1203,7 +1203,7 @@
                 ${needBar('Fatigue', ent.needs.fatigue)}
                 ${needBar('Morale', ent.needs.morale)}
                 <div class="prop-row"><span class="prop-label">Radiation</span><span class="prop-val">${ent.needs.radiation?.toFixed(1) ?? 0} Sv</span></div>
-                <div class="prop-row"><span class="prop-label">Gold</span><span class="prop-val">${Math.round(ent.needs.gold ?? 0)} RU</span></div>
+                <div class="prop-row"><span class="prop-label">Rubles</span><span class="prop-val">${Math.round(ent.needs.rubles ?? 0)} RU</span></div>
                 <div class="prop-row"><span class="prop-label">Ammo</span><span class="prop-val">${ent.needs.ammo ?? 0}</span></div>
             </div>`;
         }
@@ -1533,8 +1533,8 @@
         
         if (sortBy === 'kills') {
             filtered.sort((a, b) => (b.kills ?? 0) - (a.kills ?? 0));
-        } else if (sortBy === 'gold') {
-            filtered.sort((a, b) => (b.gold ?? 0) - (a.gold ?? 0));
+        } else if (sortBy === 'rubles') {
+            filtered.sort((a, b) => (b.rubles ?? 0) - (a.rubles ?? 0));
         }
         // xp is default order from backend
         

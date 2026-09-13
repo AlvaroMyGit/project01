@@ -55,7 +55,7 @@ public sealed class GoalSocialise : GOAPGoal
 
         // Crossover against an ordinary GoalAcceptMission at a campfire
         // (32 base +8 campfire +6 low-morale = 46) lands at morale ~37 —
-        // measured, not estimated. A stalker with gold under 500 takes the +12
+        // measured, not estimated. A stalker with rubles under 500 takes the +12
         // broke bonus to 58 and keeps working at any morale, deliberately:
         // everyone spawns on 850 and GoalVisitTrader spends them down, so
         // "broke" is a real state, not the default one.
