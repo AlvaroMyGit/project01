@@ -16,6 +16,29 @@ public sealed class NPCBlackboard
     public Vector3? HomeBasePosition { get; set; }
     public Vector3? MoveTarget { get; set; }
 
+    /// <summary>
+    /// Unit vector this NPC is looking along. Updated wherever they move, and
+    /// held when stationary so a stopped stalker keeps facing where they last
+    /// walked rather than snapping to a default.
+    ///
+    /// The only input VisionCone was missing. It and AcousticSensor have been
+    /// complete since the beginning with nothing calling them, because nothing
+    /// tracked which way anyone was pointing.
+    /// </summary>
+    public Vector3 Facing { get; private set; } = Vector3.UnitZ;
+
+    /// <summary>Points at <paramref name="target"/>; ignores a zero-length move.</summary>
+    public void FaceToward(Vector3 from, Vector3 target)
+    {
+        var dir = target - from;
+        if (dir.LengthSquared() < 0.0001f) return;
+        Facing = Vector3.Normalize(dir);
+    }
+
+    /// <summary>Compass bearing in degrees, for telemetry.</summary>
+    public float FacingDegrees =>
+        MathF.Atan2(Facing.X, Facing.Z) * 180f / MathF.PI;
+
     private readonly List<Vector3> _path = new();
     public int PathWaypointIndex { get; private set; }
     public bool HasPath => _path.Count > 0;

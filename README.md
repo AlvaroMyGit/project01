@@ -31,6 +31,12 @@ A fully autonomous open-world life simulation inspired by the A-Life system from
 - **Corpse looting** — dead stalkers drop gear snapshots that others can loot for upgrades
 - **Faction-specific spawn loadouts** scaled by rank tier
 
+### 👁️ Perception *(shadow mode)*
+- **Directional vision** — an 80 m / 110° cone scaled by daylight, fog and flashlights, so a stalker facing the wrong way genuinely does not see you
+- **Hearing** — gunfire carries further than a scuffle, and rain muffles both
+- **Facing** — every stalker and mutant tracks the direction they last moved, which is the input both sensors were missing since the project began
+- **Runs alongside combat, not in it** — perception fills each NPC's known-entity map and reports how much of the proximity model it covers, while combat still resolves by proximity. Enabling it wholesale is a measured, staged change rather than a flag flip
+
 ### 🌩️ Environmental Hazards
 - **Emissions (Blowouts)** — 4-phase events (Warning → Panic → Peak → Aftermath) with 70% lethality / 30% zombification for unsheltered stalkers, arriving every 12–24 game hours like a GAMMA surge rather than as weather
 - **Anomaly fields** — 39 real-world Chernobyl locations (Kopachi, Red Forest, Duga, Pripyat) plus dynamic wilderness spawns
@@ -134,6 +140,10 @@ Open `http://localhost:5050` in your browser to watch the Zone come alive.
 | `STALKER_SQUAD_MORALE_RADIUS` | `60` | Beyond this a follower has lost contact and stops coupling |
 | `STALKER_SQUAD_MISSION_SHARE` | `4` | Morale each squadmate gains when a member turns in a contract |
 | `STALKER_SQUAD_LOSS_PENALTY` | `9` | Morale each squadmate loses when one of them is killed |
+| `STALKER_PERCEPTION` | `on` | Run the vision/hearing sweep at all. Off saves roughly a quarter of the tick budget |
+| `STALKER_PERCEPTION_THREAT_MEMORY` | `off` | Let what stalkers hear reach GOAP via `LocationThreatMemory`. **This is the switch that ends shadow mode**; it changes behaviour measurably |
+| `STALKER_PERCEPTION_CANDIDATE_RADIUS` | `200` | Broad-phase cut before the cone maths runs |
+| `STALKER_PERCEPTION_MEMORY_SEC` | `120` | How long a sighting is remembered (game seconds) |
 | `STALKER_CORPSE_*` | *(see `CorpseCleanupOptions`)* | Despawn thresholds per corpse state |
 | `STALKER_STARTING_RUBLES` | `850` | Rubles each stalker spawns with |
 
@@ -214,9 +224,8 @@ Nearly every contract accepted is now seen through to payout, and most firefight
 
 The core simulation is feature-complete per the v4.5 design. Nearest work first:
 
-- **Wounded behaviour** — `Stalker.IsWounded` exists and nothing reads it yet; wounded stalkers should break contact and seek shelter or a medkit
-- **Squad followers that plan** — only squad leaders and solos run GOAP, which is why followers can never earn morale and why the campfire cluster rarely fires. Previously unaffordable at 1.8× over the tick budget; the Phase 7 performance work may have changed that
-- **Stealth & perception** — wire `VisionCone` and `AcousticSensor` into detection, replacing the current proximity checks
+- **Perception driving combat** — the sensors run and are measured, but combat still picks targets by proximity. Flipping it is two steps, each measured on its own: let hearing reach GOAP (`STALKER_PERCEPTION_THREAT_MEMORY`), then move target selection onto `KnownEntities`. Perception currently covers only part of the engagements proximity would offer, so the flip is a lethality change as much as a realism one
+- **Squad followers that plan** — only squad leaders and solos run GOAP. Delegation was the cheaper half of the answer: followers surface their needs to the leader, who plans for them. Letting followers plan outright is still open, and was previously 1.8× over the tick budget
 - **Faction territory warfare** — squads capture and lose POIs, shifting the faction map over time
 - **Legendary stalkers** — notable NPCs earn titles and unique PDA presence
 - **Player agency** — possess a stalker, issue faction-wide orders, or trigger events

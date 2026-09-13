@@ -16,30 +16,44 @@ public sealed class AcousticSensor
     /// Process pending noise events for this tick.
     /// Spec D: HearingRadius = BaseSoundRadius * (1.0 - RainIntensity * 0.5)
     /// </summary>
-    public void Process(
+    /// <param name="recordThreat">
+    /// Whether a heard event may raise <c>LocationThreatMemory</c>. That
+    /// dictionary is read by <c>GoapWorldStateSync</c> to derive
+    /// <c>HeardDangerRumor</c>, so writing to it changes behaviour — which is
+    /// exactly what perception must not do while it is in shadow mode.
+    /// </param>
+    /// <returns>How many noise events this NPC actually heard.</returns>
+    public int Process(
         NPCBlackboard bb,
+        Vector3 origin,
         float gameTime,
         float rainIntensity,
-        IEnumerable<NoiseEvent> events)
+        IEnumerable<NoiseEvent> events,
+        bool recordThreat = true)
     {
+        int heard = 0;
+
         // Calculate max hearing radius factoring in rain muffling
         float hearingRadius = BaseSoundRadius * (1.0f - rainIntensity * 0.5f);
 
         foreach (var e in events)
         {
-            float dist = Vector3.Distance(bb.CurrentPosition, e.Origin);
+            float dist = Vector3.Distance(origin, e.Origin);
             float effective = e.Loudness; // louder events heard further
             if (dist > hearingRadius * (effective / 100f)) continue;
 
             bb.RegisterSighting(e.SourceId, e.Origin, gameTime);
+            heard++;
 
             // Bump location threat memory
-            if (e.ThreatTag is not null)
+            if (recordThreat && e.ThreatTag is not null)
             {
                 bb.LocationThreatMemory.TryGetValue(e.ThreatTag, out float old);
                 bb.LocationThreatMemory[e.ThreatTag] = old + e.ThreatDelta;
             }
         }
+
+        return heard;
     }
 }
 

@@ -779,6 +779,11 @@ relationship system has nothing to feed on.
 
 ### Phase 6B — Stalkers that see and hear
 
+> **Status:** steps 1–4 landed 2026-09-13 — see
+> *"✅ Phase 6B — perception runs, in enforced shadow mode"* below for what the
+> measurements actually said. Steps 5 (switch combat) and 6 (visualizer cones)
+> are still open.
+
 **Goal:** replace proximity detection with real line-of-sight and hearing.
 
 1. **Facing (the only missing input).** Add `Facing` to `NPCBlackboard`; set it
@@ -1513,6 +1518,112 @@ periodic snapshot, which is gated on 30 *real* seconds. Any run shorter than
 that printed `peak 0, min 2147483647` — `int.MaxValue` leaking into the report.
 They are now recorded on the 1 Hz tick, and the report falls back to the current
 count rather than a sentinel.
+
+---
+
+### ✅ Phase 6B — perception runs, in enforced shadow mode (2026-09-13)
+
+`VisionCone` and `AcousticSensor` were written at the start of the project and
+**never called once**. This is the fifth instance of the same pattern in this
+codebase: data or logic exists and nothing reads it (`Mutant.Speed`,
+`Mutant.Health`, `WeaponItem.Damage`, `CurrentTargetId`/`CombatState`, and now
+the two sensors). The missing piece was never the sensors — it was that nothing
+tracked which way anyone was pointing.
+
+**Landed:**
+
+1. `NPCBlackboard.Facing` — a unit vector, held when stationary so a stopped
+   stalker keeps looking where they last walked. Set at both stalker movement
+   sites and all three mutant ones, before the `StepToward` call that consumes
+   the same direction.
+2. `NoiseBus` — one tick of noise events. Gunshots emitted at both combat
+   resolution sites; a gunshot (85) carries further than a scuffle (45).
+3. `PerceptionSystem` at 10 Hz, ordered *before* `StalkerBehaviourSystem`.
+4. `PerceptionOptions` (+`FromEnvironment`), following `EmissionOptions`.
+5. `TelemetrySystem` now sends real `facingAngle` for stalkers **and** mutants,
+   and real `health` for both — all three were hardcoded (`0f`, `0f`, `100`).
+
+**Two measurement lessons, both of which cost a rewrite.**
+
+*The first divergence number was meaningless.* It compared `seen` — the growth
+of the `KnownEntities` dictionary, so a re-sighting of someone already known
+counted zero — against `proximityOnly`, a per-tick census of hostile pairs. It
+reported "96% divergence", which read as "perception sees almost nothing" and
+would have killed the feature. The honest metric scores both models over the
+same population: of the hostile pairs within combat's `EngageRange` this tick,
+how many does perception know about? That is **58.5%**, not 4%. The gap is real
+— a 110° cone at light-scaled ~80 m against proximity's 360° at 160 m — but it
+is a design difference, not a failure.
+
+*"Shadow mode" was not shadow.* Nothing outside `PerceptionSystem` reads
+`KnownEntities`, which is what I checked, and it was not enough. Two other
+channels leaked, and **neither was visible by reading the code** — both were
+caught by A/B-ing the system off against on, three runs each, on one frozen
+binary:
+
+| Leak | Mechanism | Measured cost |
+|---|---|---|
+| `LocationThreatMemory` | `AcousticSensor` raises it; `GoapWorldStateSync` reads it into `HeardDangerRumor` — hearing is a live input to goal selection | missions accepted **-12%**, mutant deaths **+51%** |
+| `bb.CurrentPosition` | Perception refreshed it at 10 Hz so its sensors had an accurate origin. It is a **1 Hz** snapshot that squad follow destinations and corpse selection read at 10 Hz | squad spread **-36%**, population **-5%**, casualties **+8%** |
+
+The first is now gated behind `PerceptionOptions.ThreatMemoryFeedsGoap` (off).
+The second is fixed properly: both sensors take an explicit `origin` parameter
+instead of reading the shared field, so the hidden dependency is gone rather
+than worked around. Both are pinned by tests.
+
+**Neutrality confirmed after the fix.** A second A/B, three runs each side on
+one frozen binary, put population, casualties and gunfire deaths all back
+inside the noise band. The single remaining flag was `death_betrayal`, which
+came out **+104% in the first A/B and -47% in the second** — opposite
+directions on the same change, which is noise rather than an effect. It ranges
+21–65 across every capture taken today.
+
+Coverage after the origin fix re-measured at **58.7%**, against 58.5% before —
+unchanged, as expected, since the fix corrects *whose* position the sensors
+use, not how well they sense.
+
+The second leak is worth keeping in mind as its own finding: **refreshing
+`CurrentPosition` at 10 Hz tightens squad spread by a third.** Squad following
+is currently steering toward a leader position up to a second stale. That may
+well be worth doing deliberately — but as a measured change to squad behaviour,
+not as a side effect of a sensor.
+
+**Also corrected:** the stored `baselines/default.json` was stale enough to
+manufacture false alarms — it reported mutant population and death SIGNALs that
+a fresh perception-off capture on the same binary showed were simply the
+current normal. A baseline is only a control if it was taken on the code you
+are comparing against.
+
+**Cost:** ~2.2 ms/tick, about a quarter of the tick budget at 430 stalkers.
+A meaningful slice of that is the coverage instrumentation itself — an O(n²)
+hostile-pair census that exists only to compare the two models and should go
+when the comparison is over. `STALKER_PERCEPTION=off` skips the whole system.
+
+**Still open — the actual switch.** Combat still selects targets by proximity.
+Flipping it is two measured steps, in order:
+
+1. `STALKER_PERCEPTION_THREAT_MEMORY=on` — let hearing reach GOAP. Smallest
+   real change, already measured once at -12% missions, so it needs retuning
+   rather than a flag flip.
+
+   One landmine on that path has been defused in advance. Noises were tagged
+   with `CurrentLevelId` ("surface"), but `GoapWorldStateSync` reads
+   `LocationThreatMemory` two ways: by *band name* (`South`, `MidZone`,
+   `DeepWild`, `North`) and, for `HeardDangerRumor`, as
+   `Values.Any(v => v >= 45)` across **every** key. A "surface" key matches no
+   band lookup but is still seen by the `Any()`, so at +6 per heard shot every
+   stalker in the Zone believed they had heard a danger rumour after eight
+   gunshots — and never stopped. Noises now carry the band name. This is inert
+   while the flag is off, and is most of why step 1 measured as badly as it
+   did.
+2. Move target selection onto `KnownEntities`. At 58.5% coverage this removes
+   roughly two of every five engagements proximity currently offers, so it is a
+   **lethality change as much as a realism one**, and `CombatBalanceConfig`
+   will need to move with it.
+
+Step 6 of the original spec — drawing the cones in the visualizer — is now
+unblocked: `facingAngle` and `fov` carry real values on the wire for both
+entity types, and `visualizer/app.js` does not read either yet.
 
 ---
 

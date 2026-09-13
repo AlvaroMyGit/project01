@@ -16,10 +16,31 @@ namespace StalkerALifeSandbox.Core.Systems;
 public sealed class StalkerBehaviourSystem : ISimulationSystem
 {
     private readonly StalkerGoapService _goap;
+    private readonly AI.Perception.NoiseBus _noise;
 
-    public StalkerBehaviourSystem(StalkerGoapService goap)
+    public StalkerBehaviourSystem(StalkerGoapService goap, AI.Perception.NoiseBus noise)
     {
         _goap = goap;
+        _noise = noise;
+    }
+
+    /// <summary>
+    /// Latitude-band name for a position, used as the threat tag on a noise.
+    ///
+    /// It must be a band name and not a level id. <c>GoapWorldStateSync</c>
+    /// reads <c>LocationThreatMemory</c> two ways: by band, and — for
+    /// <c>HeardDangerRumor</c> — as <c>Values.Any(v =&gt; v >= 45)</c> across
+    /// every key. Tagging shots with <c>CurrentLevelId</c> ("surface") put a
+    /// key in there that no band lookup ever matches but that the Any() check
+    /// still sees, so after eight heard gunshots every stalker in the Zone
+    /// believed they had heard a danger rumour, permanently.
+    /// </summary>
+    private static string ThreatBand(SimulationContext ctx, Vector3 position)
+    {
+        float threat = ctx.WorldGen.GetThreatLevel(
+            position.X / ctx.WorldGen.Width,
+            position.Z / ctx.WorldGen.Height);
+        return World.Generation.ZoneWorldGenerator.GetBandName(threat);
     }
 
     public void Tick(SimulationContext ctx, float gameDelta)
@@ -133,6 +154,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             if (squadLeaders.TryGetValue(s.SquadId, out var leader))
             {
                 var pos = s.Position;
+                s.Blackboard.FaceToward(pos, leader.Position);
                 CombatResolver.StepToward(ref pos, leader.Position, gameDelta, arriveTolerance: 10f);
                 s.Position = pos;
                 s.Blackboard.OverrideNavigationStatus = $"Following {leader.DisplayName.Split(' ')[0]}";
@@ -168,6 +190,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         {
             var target = s.Blackboard.MoveTarget.Value;
             var pos = s.Position;
+            s.Blackboard.FaceToward(pos, target);
             bool arrived = CombatResolver.StepToward(ref pos, target, gameDelta);
             s.Position = pos;
 
@@ -212,6 +235,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         
         string timeStr = $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}";
         SimulationDebugLog.CombatExchange();
+        _noise.EmitGunshot(s.Id, s.Position, ThreatBand(ctx, s.Position));
 
         if (stalkerWins)
         {
@@ -268,6 +292,8 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         
         string timeStr = $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}";
         SimulationDebugLog.CombatExchange();
+        _noise.EmitGunshot(s.Id, s.Position, ThreatBand(ctx, s.Position));
+        _noise.EmitGunshot(other.Id, other.Position, ThreatBand(ctx, other.Position));
 
         if (thisWins)
         {

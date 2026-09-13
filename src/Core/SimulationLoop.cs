@@ -50,6 +50,7 @@ public sealed class SimulationLoop : IDisposable
 
     private int _tickInProgress;
     private Timer? _driver;
+    private readonly AI.Perception.NoiseBus _noise;
 
     // Immutable state published for web readers; swapped atomically each 1 Hz tick.
     private SimulationSnapshot _snapshot = SimulationSnapshot.Empty;
@@ -85,10 +86,17 @@ public sealed class SimulationLoop : IDisposable
 
         _spawnOrchestrator = new SpawnOrchestrator(deps.MutantEcology, s => _goap.RequestReplan(s));
 
+        _noise = new AI.Perception.NoiseBus();
+
         _systems10Hz = new ISimulationSystem[]
         {
             new EmissionTickSystem(),
-            new StalkerBehaviourSystem(_goap),
+            // Perception before behaviour, so what a stalker knows this tick is
+            // gathered before anything acts on it.
+            new PerceptionSystem(
+                deps.Environment, deps.Weather, _noise,
+                AI.Perception.PerceptionOptions.FromEnvironment()),
+            new StalkerBehaviourSystem(_goap, _noise),
             new MutantBehaviourSystem(deps.MutantEcology, deps.Environment, deps.Weather),
             new TelemetrySystem(deps.WebVisualizer)
         };

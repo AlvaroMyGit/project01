@@ -61,6 +61,10 @@ public static class SimulationDebugLog
     // how much fighting happens and started measuring how much of it is lethal.
     private static long _combatExchanges;
 
+    // Perception, running in shadow mode against the proximity model
+    private static long _perceptionObservers, _perceptionSeen, _perceptionHeard;
+    private static long _perceptionContested, _perceptionKnown;
+
     // Tick accounting — see SimulationLoop.DroppedTicks
     private static long _executedTicks;
     private static long _droppedTicks;
@@ -356,6 +360,23 @@ public static class SimulationDebugLog
             $"(travel={travelMeters:F0}m, work={workSeconds:F0}s game)");
     }
 
+    /// <summary>
+    /// Shadow-mode perception telemetry. <paramref name="contested"/> is every
+    /// in-range hostile pair the proximity model would hand to combat this
+    /// tick; <paramref name="known"/> is how many of those perception already
+    /// has on the blackboard. The ratio of the two is what decides whether
+    /// combat can be switched over.
+    /// </summary>
+    public static void RecordPerception(int observers, int seen, int heard, int contested, int known)
+    {
+        if (!Enabled) return;
+        Interlocked.Add(ref _perceptionObservers, observers);
+        Interlocked.Add(ref _perceptionSeen, seen);
+        Interlocked.Add(ref _perceptionHeard, heard);
+        Interlocked.Add(ref _perceptionContested, contested);
+        Interlocked.Add(ref _perceptionKnown, known);
+    }
+
     public static void CombatExchange()
     {
         if (Enabled) Interlocked.Increment(ref _combatExchanges);
@@ -605,6 +626,18 @@ public static class SimulationDebugLog
                     $"  {label,-26} {ms / 1000,7:F1}s  {ms / totalMs * 100,5:F1}%  " +
                     $"{msPerCall,7:F2} ms/call  x{calls}");
             }
+        }
+        if (_perceptionObservers > 0)
+        {
+            double coverage = _perceptionContested > 0
+                ? (double)_perceptionKnown / _perceptionContested * 100
+                : 0;
+            sb.AppendLine(
+                $"Perception (shadow): {_perceptionSeen} sightings, {_perceptionHeard} heard");
+            sb.AppendLine(
+                $"  Coverage of proximity engagements: {_perceptionKnown}/{_perceptionContested} " +
+                $"({coverage:F1}%) — the rest are hostiles in combat range that " +
+                $"nobody has seen or heard.");
         }
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");

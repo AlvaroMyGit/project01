@@ -54,7 +54,7 @@ The simulation follows a **modular, event-driven, data-oriented** architecture. 
 
 | Frequency | Cadence | Systems |
 |---|---|---|
-| **High (10 Hz)** | Every 100ms | Combat, movement, perception, telemetry broadcast |
+| **High (10 Hz)** | Every 100ms | Emissions, perception, combat, movement, telemetry broadcast |
 | **Low (1 Hz)** | Every 1s | GOAP replanning, needs decay, social evaluation, betrayal |
 | **Macro (0.1 Hz)** | Every 10s | Corpse cleanup, field crafting |
 
@@ -178,6 +178,20 @@ Runs at 0.1 Hz. Handles scrap scavenging, passive mutant meat cooking, gear degr
 ### [`MutantBehaviourSystem.cs`](file:///home/alvaromendes/Documents/project01/src/Core/Systems/MutantBehaviourSystem.cs)
 Drives mutant AI at 10 Hz: feeding on nearby corpses, nocturnal den retreat, avoidance of safe bases, and wilderness wandering patterns.
 
+### [`PerceptionSystem.cs`](file:///home/alvaromendes/Documents/project01/src/Core/Systems/PerceptionSystem.cs)
+Runs `VisionCone` and `AcousticSensor` for every living stalker at 10 Hz, ahead
+of `StalkerBehaviourSystem` so what a stalker knows is gathered before anything
+acts on it. Reports shadow-mode coverage: of the hostile pairs the proximity
+model would hand to combat, how many perception already knows about.
+
+Two things make the "shadow" real rather than assumed. Nothing outside this
+system reads `KnownEntities` — but `AcousticSensor` also raises
+`LocationThreatMemory`, which `GoapWorldStateSync` turns into
+`HeardDangerRumor`, so hearing is a live input to goal selection. Unguarded it
+moved missions accepted by **-12%** and mutant deaths by **+51%** against the
+stored baseline while the system was supposedly read-only. It is now gated
+behind `PerceptionOptions.ThreatMemoryFeedsGoap`, off by default.
+
 ### [`SocialSystem.cs`](file:///home/alvaromendes/Documents/project01/src/Core/Systems/SocialSystem.cs)
 Evaluates betrayal contracts for desperate low-trust stalkers at 1 Hz and ticks disguise suspicion accumulation against undercover stalkers.
 
@@ -271,10 +285,17 @@ Located in `src/AI/GOAP/Goals/`:
 
 | File | Class | Description |
 |---|---|---|
-| [`AcousticSensor.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Perception/AcousticSensor.cs) | `AcousticSensor` | Hearing simulation detecting gunfire, footsteps, anomaly pulses within 60m (muffled by rain) |
-| [`VisionCone.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Perception/VisionCone.cs) | `VisionCone` | Directional 80m/110° sight sweep affected by sunlight, fog, NVG, and flashlights |
+| [`AcousticSensor.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Perception/AcousticSensor.cs) | `AcousticSensor` | Hearing simulation detecting gunfire, footsteps, anomaly pulses within 60m (muffled by rain). Returns how many events were heard; `recordThreat: false` keeps it from touching `LocationThreatMemory` |
+| [`VisionCone.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Perception/VisionCone.cs) | `VisionCone` | Directional 80m/110° sight sweep affected by sunlight, fog, NVG, and flashlights. Returns how many candidates were sighted |
+| [`NoiseBus.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Perception/NoiseBus.cs) | `NoiseBus` | One tick's worth of noise events. `StalkerBehaviourSystem` emits gunshots into it; `PerceptionSystem` consumes and drains it |
+| [`PerceptionOptions.cs`](file:///home/alvaromendes/Documents/project01/src/AI/Perception/PerceptionOptions.cs) | `PerceptionOptions` | Immutable settings + `FromEnvironment()`. `Enabled` and `ThreatMemoryFeedsGoap` are the two switches that decide how much of perception is live |
 
-> **Note:** Perception classes exist as library code but are not currently wired into the combat loop, which uses proximity-based resolution.
+> **Note:** Both sensors were complete from the start of the project and never
+> called once. The missing input was `NPCBlackboard.Facing` — nothing tracked
+> which way anyone was pointing. With that in place they run every tick, but
+> **in shadow mode**: they fill `KnownEntities` and report coverage, while combat
+> still selects targets by proximity. See `PerceptionSystem` for why the swap is
+> staged rather than flipped.
 
 ### Social
 

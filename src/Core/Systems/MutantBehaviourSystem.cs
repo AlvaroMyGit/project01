@@ -66,6 +66,7 @@ public sealed class MutantBehaviourSystem : ISimulationSystem
             if (nearestCorpse != null && Vector3.Distance(m.Position, nearestCorpse.Position) < 300f)
             {
                 var pos = m.Position;
+                m.Blackboard.FaceToward(pos, nearestCorpse.Position);
                 bool reached = CombatResolver.StepToward(
                     ref pos, nearestCorpse.Position, gameDelta,
                     arriveTolerance: 3f, speedPerGameSec: m.Speed);
@@ -91,8 +92,9 @@ public sealed class MutantBehaviourSystem : ISimulationSystem
             {
                 // Retreat has no destination, so step a fixed distance along the
                 // away vector rather than toward a point.
-                m.Position += Vector3.Normalize(away)
-                            * CombatResolver.MoveStep(gameDelta, m.Speed * RetreatSpeedScale);
+                var flee = Vector3.Normalize(away);
+                m.Blackboard.FaceToward(m.Position, m.Position + flee);
+                m.Position += flee * CombatResolver.MoveStep(gameDelta, m.Speed * RetreatSpeedScale);
             }
             return;
         }
@@ -100,6 +102,7 @@ public sealed class MutantBehaviourSystem : ISimulationSystem
         if (m.Blackboard.MoveTarget.HasValue)
         {
             var pos = m.Position;
+            m.Blackboard.FaceToward(pos, m.Blackboard.MoveTarget.Value);
             bool arrived = CombatResolver.StepToward(
                 ref pos, m.Blackboard.MoveTarget.Value, gameDelta,
                 arriveTolerance: 10f, speedPerGameSec: m.Speed * WanderSpeedScale);
