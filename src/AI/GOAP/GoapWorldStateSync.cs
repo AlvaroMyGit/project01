@@ -46,6 +46,11 @@ public static class GoapWorldStateSync
         Set(bb, GoapKeys.HasSocialised,
             ctx.ElapsedGameSeconds - bb.LastSocialisedGameSeconds
                 < ctx.Campfires.Options.SocialCooldownGameSeconds);
+        Set(bb, GoapKeys.IsHealthy,
+            stalker.Health >= stalker.MaxHealth * GoapTuning.HealthyFraction);
+        Set(bb, GoapKeys.HasMedkit, stalker.MedkitCount > 0);
+        bb.WorldStateFloats[Goals.GoalRecover.HealthFractionKey] =
+            stalker.MaxHealth > 0f ? stalker.Health / stalker.MaxHealth : 1f;
         Set(bb, GoapKeys.CanRest, atShelter || atHome);
         bool needsLoot = needs.IsOutOfAmmo || needs.Rubles < 300f;
         Set(bb, GoapKeys.NeedsLoot, needsLoot);

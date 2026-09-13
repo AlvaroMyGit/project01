@@ -72,6 +72,15 @@ public sealed class Stalker
     /// <summary>Vodka bottles available to purge meat radiation before eating.</summary>
     public int VodkaCount    { get; set; }
 
+    /// <summary>
+    /// Field dressings carried. Healing costs something scarce on purpose: an
+    /// earlier attempt at wounded behaviour let stalkers recover for free by
+    /// resting, and the Zone stopped killing anyone — gunfire deaths fell from
+    /// 209 a run to under 10 across five tunings. A stalker who cannot afford a
+    /// medkit stays wounded, which is what makes withdrawing a real decision.
+    /// </summary>
+    public int MedkitCount   { get; set; }
+
     /// <summary>Scratch target for POI-driven GOAP travel actions.</summary>
     public string? GoapTargetPoiId { get; set; }
 

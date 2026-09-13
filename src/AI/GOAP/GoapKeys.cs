@@ -10,6 +10,17 @@ public static class GoapTuning
     /// a stalker can plan around a flag the payout then refuses to honour.
     /// </summary>
     public const float MissionGiverRadius = 120f;
+
+    /// <summary>
+    /// Health fraction at or above which a stalker counts as fit, and so the
+    /// line below which GoalRecover takes over.
+    ///
+    /// Set late on purpose. A previous attempt put it at 0.75, which had almost
+    /// the whole population permanently retreating and dropped gunfire deaths
+    /// from 209 a run to under 10. A stalker fights on through a wound and pulls
+    /// out only when close to dying.
+    /// </summary>
+    public const float HealthyFraction = 0.30f;
 }
 
 /// <summary>World-state boolean keys used by the GOAP planner.</summary>
@@ -26,6 +37,8 @@ public static class GoapKeys
     public const string HasUnreportedCorpseNearby = "HasUnreportedCorpseNearby";
     public const string IsAtCampfire          = "IsAtCampfire";
     public const string HasSocialised         = "HasSocialised";
+    public const string IsHealthy             = "IsHealthy";
+    public const string HasMedkit             = "HasMedkit";
     public const string HasRawMeat            = "HasRawMeat";
     public const string HasArtifact           = "HasArtifact";
     public const string HasExploredLab        = "HasExploredLab";

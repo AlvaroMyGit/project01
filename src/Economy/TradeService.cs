@@ -8,6 +8,9 @@ namespace StalkerALifeSandbox.Economy;
 /// <summary>Executes buy/sell transactions between stalkers and macro-base traders.</summary>
 public static class TradeService
 {
+    /// <summary>How many dressings a stalker tries to keep on hand.</summary>
+    private const int MedkitStockTarget = 3;
+
     /// <summary>
     /// Full trade-visit resolution: sell loot, buy supplies based on needs.
     /// Returns a short summary for activity labels / PDA.
@@ -64,8 +67,15 @@ public static class TradeService
         if (stalker.Needs.Fatigue > 45f && TryBuy(stalker, trader, "con_vodka"))
             notes.Add("vodka");
 
-        // Medical — bandage for bumps, medkit when worn down
-        if ((int)stalker.Needs.Morale < 55 && TryBuy(stalker, trader, "con_bandage"))
+        // Medical — restock when hurt or running dry, not when merely glum.
+        // Wounded first: that is the stalker who cannot afford to leave empty.
+        if (stalker.MedkitCount < MedkitStockTarget &&
+            (stalker.IsWounded || stalker.Health < stalker.MaxHealth))
+        {
+            if (TryBuy(stalker, trader, "con_medkit")) notes.Add("medkit");
+            else if (TryBuy(stalker, trader, "con_bandage")) notes.Add("bandage");
+        }
+        else if (stalker.MedkitCount == 0 && TryBuy(stalker, trader, "con_bandage"))
             notes.Add("bandage");
 
         if ((stalker.Needs.Hunger > 50f || (int)stalker.Needs.Morale < 45) &&
@@ -169,14 +179,21 @@ public static class TradeService
                 stalker.Needs.AdjustMorale(8f);
                 stalker.Needs.Rest(10f);
                 break;
-            case "con_bandage": stalker.Needs.AdjustMorale(5f); break;
+            // Medical supplies are STOCKED, not consumed at the counter. That
+            // is what makes healing an economy: a stalker carries what they
+            // paid for and spends it when hurt.
+            case "con_bandage":
+                stalker.MedkitCount += 1;
+                stalker.Needs.AdjustMorale(3f);
+                break;
             case "con_medkit":
-                stalker.Needs.AdjustMorale(12f);
-                stalker.Needs.Feed(10f);
+                stalker.MedkitCount += 2;
+                stalker.Needs.AdjustMorale(6f);
                 break;
             case "con_sci_medkit":
+                stalker.MedkitCount += 4;
                 stalker.Needs.TakeAntiRad(25f);
-                stalker.Needs.AdjustMorale(10f);
+                stalker.Needs.AdjustMorale(8f);
                 break;
             case "con_antirad": stalker.Needs.TakeAntiRad(35f); break;
             case "con_repair_kit": stalker.ScrapCount += 15; break;

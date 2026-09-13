@@ -1332,7 +1332,7 @@ The profiler earned its place before a single optimisation was written.
 
 ---
 
-### ⚠️ Wounded behaviour — attempted, measured, and backed out (2026-09-13)
+### ✅ Wounded behaviour — landed on the second attempt, via a healing economy (2026-09-13)
 
 `Stalker.IsWounded` still has no consumer. An attempt to add one was reverted
 because it made the Zone non-lethal, and the measurements are worth keeping so
@@ -1365,8 +1365,44 @@ that counterweight, any withdraw-and-heal behaviour removes death from the
 simulation. That is a real feature, not a tuning pass, and it should land before
 `GoalRecover` is tried again.
 
-**Kept from the attempt:** combat target persistence (below). Everything else
-was reverted.
+**Resolved.** The diagnosis held: healing had to cost something scarce.
+
+`Stalker.MedkitCount` is now a carried, purchased good. Buying `con_bandage`
+(120 RU), `con_medkit` (800 RU) or `con_sci_medkit` (2,500 RU) **stocks**
+dressings rather than granting an instant effect at the counter, and
+`ActionTreatWounds` spends one to restore 35% health. **Resting no longer heals
+at all** — that was the free supply that made attrition meaningless.
+`GoalRecover` wants treatment, `GoalVisitTrader` treats *hurt with nothing to
+treat it* as its strongest pull, and a stalker who cannot afford a dressing
+stays wounded.
+
+Two bugs the tests caught while building it:
+
+- `GoalRecover`'s utility was scored as `(1 − health)`, which hit its ceiling at
+  0.291 — below the 0.30 relevance line. It was flat across 97% of its own
+  range, so a stalker at 5% felt no more urgency than one at 29%. Now scaled
+  across the band the goal actually applies to.
+- `IsHealthy` defaulted to **false** when unset, so any stalker whose blackboard
+  had not synced yet read as wounded and short-circuited `GoalVisitTrader` into
+  the medical branch. A missing flag now means healthy. Found by an unrelated
+  squad-delegation test failing.
+
+Measured over 7,200-tick runs, against the run that has no wounded behaviour:
+
+| metric | before | after |
+|---|---|---|
+| dressings used | — | **78** |
+| casualties | 332.7 | 335.5 |
+| gunfire deaths | 196.7 | 195.5 |
+| alive | 416 | 414 |
+| missions completed | 752 | 749 |
+
+Everything but the dressings is inside the noise band. That is the point:
+compare with the first attempt, where free healing took gunfire deaths from 209
+to under 10. Recovery now exists **and** the Zone is exactly as dangerous.
+
+**Kept from the first attempt:** combat target persistence (below). Everything
+else was reverted and rebuilt on top of the economy.
 
 ### ✅ Combat target persistence (2026-09-13)
 

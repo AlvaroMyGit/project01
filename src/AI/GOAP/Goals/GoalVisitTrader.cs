@@ -20,6 +20,11 @@ public sealed class GoalVisitTrader : GOAPGoal
 
         // Men out of ammunition are the leader's problem: a squad with dry
         // rifles is in more trouble than a leader with a full one.
+        // Hurt with nothing to treat it is the strongest reason to see a
+        // trader: it is the only route back to fighting shape.
+        if (!bb.WorldStateBools.GetValueOrDefault(GoapKeys.IsHealthy, true) &&
+            !bb.WorldStateBools.GetValueOrDefault(GoapKeys.HasMedkit)) return 58f;
+
         if (needs.IsOutOfAmmo) return 48f;
         if (Squads.SquadNeeds.OutOfAmmo(bb) > 0) return 46f;
         

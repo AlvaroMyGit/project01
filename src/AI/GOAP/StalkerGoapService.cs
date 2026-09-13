@@ -78,6 +78,7 @@ public sealed class StalkerGoapService
         var fulfillMission = new ActionFulfillMission();
         var returnToIssuer = new ActionReturnToMissionIssuer();
         var turnInMission = new ActionTurnInMission();
+        var treatWounds = new ActionTreatWounds();
 
         foreach (var a in new GoapTravelAction[]
         {
@@ -88,6 +89,7 @@ public sealed class StalkerGoapService
 
         acceptMission.BindContext(_ctx);
         turnInMission.BindContext(_ctx);
+        treatWounds.BindContext(_ctx);
 
         foreach (var a in new GOAPAction[] { rest, share, guitar, craft, investigate, cook })
         {
@@ -118,12 +120,14 @@ public sealed class StalkerGoapService
         _planner.RegisterAction(fulfillMission);
         _planner.RegisterAction(returnToIssuer);
         _planner.RegisterAction(turnInMission);
+        _planner.RegisterAction(treatWounds);
     }
 
     private void RegisterGoals()
     {
         _planner.RegisterGoal(new GoalFleeEmission());
         _planner.RegisterGoal(new GoalSeekShelter());
+        _planner.RegisterGoal(new GoalRecover());
         _planner.RegisterGoal(new GoalSatisfyHunger());
         _planner.RegisterGoal(new GoalCookFood());
         _planner.RegisterGoal(new GoalRepairGear());
