@@ -257,7 +257,9 @@ public sealed class SimulationLoop : IDisposable
                 _goap.Replan(s);
             }
         });
-        SimulationDebugLog.RecordGoapReplans(stalkers.Count(x => x.IsAlive));
+        int aliveNow = stalkers.Count(x => x.IsAlive);
+        SimulationDebugLog.RecordGoapReplans(aliveNow);
+        SimulationDebugLog.RecordPopulation(aliveNow);
 
         Mutant[] mutants;
         lock (_ctx.EntityLock) { mutants = _ctx.Mutants.ToArray(); }

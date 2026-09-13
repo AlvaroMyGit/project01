@@ -1429,6 +1429,57 @@ Zone is.
 
 ---
 
+### 🔴 The baseline was never at equilibrium (found 2026-09-13)
+
+`SpawnOrchestrator.TrickleRespawn` runs only once the initial spawn ramp is
+finished. That ramp is 720 simulated-real-seconds — **exactly 7,200 ticks**,
+which is the baseline length. So every run reports
+`Trickle respawn: +0 stalkers, +0 batches`: the top-up toward the population
+target has never executed even once.
+
+The ~412 alive that has been described as steady state is simply *where the ramp
+ended*. Two conclusions were drawn from it that must now be re-checked:
+
+- whether the loop can carry the 750 target at all — the number used to reason
+  about that was a ramp figure, not an equilibrium one;
+- whether the deferred performance work is still needed, since cost scales with
+  population and the population was never allowed to reach its target.
+
+**Measured at 14,400 ticks (60 game-hours), past the ramp:**
+
+| | value |
+|---|---|
+| trickle respawn | **+770 stalkers, +506 mutants, 351 batches** — first time it has ever run |
+| alive at end | **335** (peak 429, min 6) |
+| spawned in total | 744 ramp + 770 trickle = 1,514 |
+| casualties | 1,185 |
+| combat | 13,484 exchanges, 1,197 fatal (9% lethality) |
+| tick cost | **11.9 ms** against a 100 ms budget |
+
+**The equilibrium is ~335, and it is set by the death rate, not the tick
+budget.** Respawn delivers steadily and deaths consume it: 1,514 spawned minus
+1,185 dead leaves the 335 observed. The 750 target is unreachable while those
+two rates sit where they do — raising it means changing lethality or the trickle
+rate, not buying more compute.
+
+**Performance is not the constraint.** 11.9 ms per tick at up to 429 alive is
+roughly eight times inside budget — and *faster* than the 13.1 ms measured at a
+similar population before the runaway process was found, which is consistent
+with those earlier figures having been inflated by CPU contention rather than by
+the simulation.
+
+So the deferred performance question is answered: no further optimisation is
+warranted at this scale. If the population target is to be met, that is a
+spawn-versus-lethality decision.
+
+**Also fixed:** peak and minimum alive population were only updated inside the
+periodic snapshot, which is gated on 30 *real* seconds. Any run shorter than
+that printed `peak 0, min 2147483647` — `int.MaxValue` leaking into the report.
+They are now recorded on the 1 Hz tick, and the report falls back to the current
+count rather than a sentinel.
+
+---
+
 ### Deliberately *not* in Phase 6
 
 - **`TaskManager`** (emergent needs-driven contracts) — overlaps the live

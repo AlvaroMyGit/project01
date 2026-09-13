@@ -361,6 +361,19 @@ public static class SimulationDebugLog
         if (Enabled) Interlocked.Increment(ref _combatExchanges);
     }
 
+    /// <summary>
+    /// Tracks the alive-population envelope. Called every 1 Hz tick rather than
+    /// from the periodic snapshot, which is gated on 30 REAL seconds — so any
+    /// run shorter than that reported "peak 0, min 2147483647", leaking
+    /// int.MaxValue into the report.
+    /// </summary>
+    public static void RecordPopulation(int aliveStalkers)
+    {
+        if (!Enabled) return;
+        if (aliveStalkers > _peakAliveStalkers) _peakAliveStalkers = aliveStalkers;
+        if (aliveStalkers < _minAliveStalkers) _minAliveStalkers = aliveStalkers;
+    }
+
     public static void RecordTickAccounting(long executed, long dropped)
     {
         _executedTicks = executed;
@@ -512,7 +525,9 @@ public static class SimulationDebugLog
         var sb = new StringBuilder();
         sb.AppendLine("========== SIMULATION DEBUG FINAL REPORT ==========");
         sb.AppendLine($"Real runtime: {realMin:F1} min | Game time: {FormatGameTime(time)} | TimeFactor={time.TimeFactor:F1}");
-        sb.AppendLine($"Population: stalkers {aliveS} alive (peak {_peakAliveStalkers}, min {_minAliveStalkers}) | mutants {aliveM} alive");
+        int peak = _peakAliveStalkers > 0 ? _peakAliveStalkers : aliveS;
+        int low = _minAliveStalkers == int.MaxValue ? aliveS : _minAliveStalkers;
+        sb.AppendLine($"Population: stalkers {aliveS} alive (peak {peak}, min {low}) | mutants {aliveM} alive");
         sb.AppendLine($"Initial spawn: {_initialStalkerPop} stalkers, {_initialMutantPop} mutants");
         sb.AppendLine($"Trickle respawn: +{_trickleStalkers} stalkers, +{_trickleMutants} mutants ({_respawnBatches} batches)");
         sb.AppendLine(
