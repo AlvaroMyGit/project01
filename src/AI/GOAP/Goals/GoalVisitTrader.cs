@@ -1,3 +1,4 @@
+using StalkerALifeSandbox.AI;
 using StalkerALifeSandbox.AI.Blackboards;
 using StalkerALifeSandbox.AI.Decision;
 using StalkerALifeSandbox.Economy;
@@ -17,7 +18,10 @@ public sealed class GoalVisitTrader : GOAPGoal
     {
         if (!IsRelevant(bb)) return 0f;
 
+        // Men out of ammunition are the leader's problem: a squad with dry
+        // rifles is in more trouble than a leader with a full one.
         if (needs.IsOutOfAmmo) return 48f;
+        if (Squads.SquadNeeds.OutOfAmmo(bb) > 0) return 46f;
         
         // Scale utility strongly with excess wealth so they prioritize gearing up over new jobs (which max at ~50)
         if (needs.GoldAmount >= 1500f) return 60f;
@@ -25,6 +29,8 @@ public sealed class GoalVisitTrader : GOAPGoal
         if (needs.GoldAmount >= 700f) return 42f;
 
         if (needs.Hunger > 45f || needs.Thirst > 45f) return 44f;
+        if (Squads.SquadNeeds.WorstHunger(bb) > 45f ||
+            Squads.SquadNeeds.WorstThirst(bb) > 45f) return 43f;
         if (needs.Radiation > 35f) return 40f;
         if (needs.AmmoCount < 35) return 38f;
         if (needs.GoldAmount >= 450f) return 36f;

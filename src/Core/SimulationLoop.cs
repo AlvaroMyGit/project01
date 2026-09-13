@@ -244,6 +244,11 @@ public sealed class SimulationLoop : IDisposable
     {
         Stalker[] stalkers;
         lock (_ctx.EntityLock) { stalkers = _ctx.Stalkers.ToArray(); }
+        // Before anyone replans: surface what each squad needs onto its
+        // leader's blackboard, so leaders plan for their men and not just
+        // themselves. Followers cannot plan for themselves — see SquadNeeds.
+        TickProfiler.Measure("SquadNeeds", () => AI.Squads.SquadNeeds.Refresh(stalkers));
+
         TickProfiler.Measure("Needs+GoapReplan", () =>
         {
             foreach (var s in stalkers.Where(s => s.IsAlive))

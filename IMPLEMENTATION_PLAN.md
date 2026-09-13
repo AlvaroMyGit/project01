@@ -1388,6 +1388,48 @@ concentrate, not a behaviour change in itself.
 
 ---
 
+### ✅ Squad delegation — followers ask, leaders act (2026-09-13)
+
+The oldest open problem in the project, closed without the thing that was
+blocking it. Squad followers do not run GOAP at all
+(`StalkerGoapService.ShouldPlan` admits only leaders and solos), so a follower
+who was hungry, out of ammunition or miserable had no way to act on any of it.
+That single fact caused three separate symptoms: followers could never gain
+morale, `GoalSocialise` was selectable only by the group that least needed it,
+and the campfire cluster built across Phase 6A sat inert.
+
+Letting followers plan was the obvious fix and the wrong one — measured at 1.8×
+over the 1 Hz tick budget, and it dissolves squads as a coordination unit that
+`SquadSuccession`, betrayal and emission herding all depend on.
+
+**`SquadNeeds.Refresh`** instead walks the population once per 1 Hz tick and
+writes each squad's worst hunger, worst thirst, lowest morale and dry-rifle
+count onto its *leader's* blackboard. Three goals then answer for the group:
+`GoalSocialise` takes the worse of the leader's mood and their squad's,
+`GoalVisitTrader` treats men out of ammunition as the leader's problem, and
+`GoalSatisfyHunger` takes the worse of the two hungers. Values live as
+blackboard floats so goals stay pure functions of the blackboard and remain
+testable without a world.
+
+One O(population) pass per tick against hundreds of extra A\* searches — and it
+reads better: a leader visits a trader *because his men are dry*.
+
+| metric | before | after |
+|---|---|---|
+| **campfire drinks** | **0** | **2** |
+| follower morale | 83 | 89 |
+| within-squad spread | 8 | 3 |
+| gunfire deaths | 209.5 | 203 |
+| casualties | 337 | 314.5 |
+| missions completed | 727 | 714.5 |
+
+The campfire cluster fires for the first time since it was built. Lethality and
+the mission economy are untouched — the contrast with the wounded-behaviour
+attempt above is the point: this changes who *decides*, not how dangerous the
+Zone is.
+
+---
+
 ### Deliberately *not* in Phase 6
 
 - **`TaskManager`** (emergent needs-driven contracts) — overlaps the live

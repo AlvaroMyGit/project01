@@ -1,3 +1,4 @@
+using StalkerALifeSandbox.AI;
 using StalkerALifeSandbox.AI.Blackboards;
 using StalkerALifeSandbox.AI.Decision;
 using StalkerALifeSandbox.Entities.Needs;
@@ -45,7 +46,12 @@ public sealed class GoalSocialise : GOAPGoal
 
         // Survival first. Drinking with the lads does not fix acute radiation.
         if (needs.IsInCriticalState) return 0f;
-        if (needs.Morale >= ContentMorale) return 0f;
+        // A leader answers for their squad's mood, not only their own. Only
+        // planners can select this goal, and planners are the ones earning the
+        // mission rewards — so before delegation the stalkers who most needed a
+        // drink were exactly the ones who could never ask for one.
+        float mood = MathF.Min(needs.Morale, Squads.SquadNeeds.LowestMorale(bb));
+        if (mood >= ContentMorale) return 0f;
 
         // Crossover against an ordinary GoalAcceptMission at a campfire
         // (32 base +8 campfire +6 low-morale = 46) lands at morale ~37 —
@@ -61,7 +67,7 @@ public sealed class GoalSocialise : GOAPGoal
         // (see IMPLEMENTATION_PLAN §9, step 5b results), so the conservative
         // value stands: at morale 45 a stalker still takes the job.
         // Pinned by GoalSocialiseTests.Crossover_*.
-        float score = (ContentMorale - needs.Morale) * 1.3f;
+        float score = (ContentMorale - mood) * 1.3f;
         if (needs.Thirst > SurvivalNeeds.UrgentThreshold * 0.7f) score += 6f;
 
         return ZoneGateEvaluator.ApplyGoalThreatPenalty(
