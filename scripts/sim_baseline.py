@@ -14,7 +14,7 @@ The sim still uses Random.Shared in places, so counters vary run to run. Treat a
 small diff as noise and a large one as signal; --repeat gives a spread to judge
 against.
 """
-import argparse, json, os, pathlib, re, subprocess, sys, statistics
+import argparse, hashlib, json, os, pathlib, re, subprocess, sys, statistics
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BASELINE_DIR = ROOT / "baselines"
@@ -55,6 +55,21 @@ PATTERNS = {
     "rank_promotions":    r"Rank promotions: (\d+)",
     "ticks_dropped":      r"Ticks: \d+ executed, (\d+) dropped",
 }
+
+
+def build_fingerprint() -> str:
+    """Identity of the binary the runs will load.
+
+    Learned the hard way: a capture left running in the background while the
+    source was still being edited produced three runs across two different
+    builds, and the resulting baseline flagged a phantom regression. Every run
+    in a capture must load the same binary, so the fingerprint is recorded and
+    re-checked between runs.
+    """
+    dll = ROOT / "bin" / "Debug" / "net8.0" / "StalkerALifeSandbox.dll"
+    if not dll.exists():
+        return "missing"
+    return hashlib.sha256(dll.read_bytes()).hexdigest()[:12]
 
 
 def run_once() -> dict:
@@ -110,11 +125,21 @@ def main() -> int:
     BASELINE_DIR.mkdir(exist_ok=True)
     path = BASELINE_DIR / f"{args.name}.json"
 
+    fingerprint = build_fingerprint()
+    print(f"binary {fingerprint}")
+
     runs = []
     for i in range(args.repeat):
         print(f"run {i + 1}/{args.repeat} ...", flush=True)
         runs.append(run_once())
+        if build_fingerprint() != fingerprint:
+            print("\nABORT: the binary changed mid-capture — rebuild finished while "
+                  "runs were in flight, so these runs are not comparable. "
+                  "Re-run with the tree quiet.")
+            return 2
+
     current = summarise(runs)
+    current["_binary"] = fingerprint
     current["_settings"] = ENV
     current["_repeat"] = args.repeat
 

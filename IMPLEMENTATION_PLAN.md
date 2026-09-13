@@ -1105,9 +1105,46 @@ baseline, as expected: emissions are dormant over a 10-game-hour window at the
 rather than by the harness — a useful reminder that the harness resolves
 double-digit effects, not small ones.
 
-**Still open:** Stage 3 (convoy delete, orphan triage, the duplicated `120f`),
-Stage 4 (`src/Core` coverage, floor 26 → 31), Stage 5 (morale sink, then 6A
-step 6 and 6B).
+**Stage 3 ✅ — truth in the repo** (`cc8ab29`). `ConvoyManager` + `SupplyConvoy`
+deleted (208 lines constructed into a discard and never ticked, while two
+documents marked it complete — both corrected). `src/UI` deleted (174 lines;
+`HUDManager` was a 14-line placeholder, the console panels superseded by the
+browser visualizer). The mission-giver radius turned out to be duplicated at
+**five** sites, not four, and now shares `GoapTuning.MissionGiverRadius` — the
+planner and the payout gate must agree or a stalker plans around a flag the
+payout refuses to honour.
+
+**Stage 4 ✅ — test depth where the bugs were.** `src/Core` was 9.9% across
+3,192 lines, and three of the previous session's defects lived there.
+
+| suite | what it pins |
+|---|---|
+| `ZoneDirectorTests` | bucket frequencies, game-delta vs real-delta, and the **lockstep property** the measurement story rests on |
+| `SimulationSnapshotTests` | the threading contract — pins carry copied values, not live references |
+| `EmissionTickSystemTests` | shelter saves, Zombified/Monolith exempt, dormant zone harmless |
+| `SquadSuccessionTests` | the merge rules, so the O(n²) fix below is provably equivalent |
+| `SimulationSettingsTests` | env overrides, CORS scoped rather than `*` |
+
+Coverage **32.4% → 41.3%** overall, `src/Core` **9.9% → 25.2%**; CI floor raised
+26 → 38 and verified to bite (fails at 45, passes at 38).
+
+Targeted analyzer pass on the two findings that were real, leaving
+`AnalysisMode` at Default: `SquadSuccession.FindMergeTarget` called
+`allStalkers.Count(...)` *inside* a loop over `allStalkers` — O(n²) on every
+leader death, and deaths run to several hundred a session — now precomputes
+squad sizes once; `LeaderboardSerializer` caches its `JsonSerializerOptions`.
+The remaining CA1851/CA1869 sites are one-shot startup loads and the
+once-per-run report path, so they stay.
+
+**Method note — a mistake worth recording.** The first baseline was captured by
+a background job while the tree was still being edited and rebuilt, so its three
+runs did not all use the same binary. It then flagged a phantom 7% morale
+regression against a behaviour-preserving refactor. `sim_baseline.py` now
+fingerprints the built DLL and aborts if it changes mid-capture. The refactor's
+equivalence was established with `SquadSuccessionTests` instead — the right tool
+for the question, since a stochastic sim run could never have settled it.
+
+**Still open:** Stage 5 (morale sink, then 6A step 6 and 6B).
 
 ---
 

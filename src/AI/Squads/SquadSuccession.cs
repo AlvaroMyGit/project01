@@ -67,16 +67,25 @@ public static class SquadSuccession
 
     private static Stalker? FindMergeTarget(Stalker lone, IEnumerable<Stalker> allStalkers)
     {
+        // Enumerate once. This used to walk allStalkers in the outer Where and
+        // then call allStalkers.Count(...) again for every candidate leader —
+        // O(n^2) over the whole population, on every leader death, and deaths
+        // run into the hundreds per session.
+        var living = allStalkers.Where(s => s.IsAlive).ToList();
+
+        var squadSizes = living
+            .Where(s => s.SquadId != null)
+            .GroupBy(s => s.SquadId!)
+            .ToDictionary(g => g.Key, g => g.Count());
+
         Stalker? best = null;
         float bestDist = MergeSearchRadius;
 
-        foreach (var leader in allStalkers.Where(s =>
-                     s.IsAlive && s.IsSquadLeader && s.SquadId != null &&
+        foreach (var leader in living.Where(s =>
+                     s.IsSquadLeader && s.SquadId != null &&
                      s.Id != lone.Id && s.TrueFaction == lone.TrueFaction))
         {
-            int squadSize = allStalkers.Count(s =>
-                s.IsAlive && s.SquadId == leader.SquadId);
-            if (squadSize >= MaxSquadSize) continue;
+            if (squadSizes.GetValueOrDefault(leader.SquadId!) >= MaxSquadSize) continue;
 
             float dist = Vector3.Distance(lone.Position, leader.Position);
             if (dist < bestDist)

@@ -17,11 +17,13 @@ public static class LeaderboardSerializer
             .Select((s, index) => ToEntry(s, index + 1))
             .ToList();
 
+    /// <summary>Cached: this runs periodically, unlike the one-shot data loads.</summary>
+    private static readonly JsonSerializerOptions WriteOptions = new() { WriteIndented = true };
+
     public static void SaveLeaderboard(IEnumerable<Stalker> allStalkers, string outputPath)
     {
         var top100 = BuildTop100(allStalkers);
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        string json = JsonSerializer.Serialize(top100, options);
+        string json = JsonSerializer.Serialize(top100, WriteOptions);
         File.WriteAllText(outputPath, json);
     }
 
