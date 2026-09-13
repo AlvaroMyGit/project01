@@ -19,11 +19,22 @@ import argparse, hashlib, json, os, pathlib, re, subprocess, sys, statistics
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BASELINE_DIR = ROOT / "baselines"
 
+# A headless run of the configured length should take single-digit minutes. If
+# it exceeds this it is not slow, it is wrong — kill it rather than let it sit.
+RUN_TIMEOUT_SEC = 900
+
 # Fixed settings — changing these invalidates the baseline, so they live here
 # rather than in the caller's shell.
 ENV = {
+    # Declares intent, so the app refuses to fall through to an unbounded server
+    # run if the tick count fails to arrive. A misconfigured capture once ran for
+    # an hour as a live server without anyone noticing.
+    "STALKER_MODE": "headless",
     "STALKER_TIME_FACTOR": "150",
-    "STALKER_HEADLESS_TICKS": "2400",   # 10.00 game-hours at TF=150
+    # 7200 ticks = 720 simulated-real-seconds, which is the full initial-spawn
+    # window. At 2400 the run ended a third of the way through the ramp, so
+    # every absolute number was taken while the world was still filling up.
+    "STALKER_HEADLESS_TICKS": "2400",  # profiling pass; 7200 for a steady-state baseline
     "STALKER_REST_PORT": "8123",
 }
 
@@ -74,10 +85,23 @@ def build_fingerprint() -> str:
 
 def run_once() -> dict:
     env = {**os.environ, **ENV}
-    subprocess.run(
+
+    # Capture stdout rather than discarding it: the run has to PROVE it went
+    # headless. Silently becoming a server run is the failure this guards.
+    proc = subprocess.run(
         ["dotnet", "run", "--no-build", "-c", "Debug"],
-        cwd=ROOT, env=env, check=True,
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        cwd=ROOT, env=env, capture_output=True, text=True,
+        timeout=RUN_TIMEOUT_SEC)
+
+    if proc.returncode != 0:
+        raise RuntimeError(
+            f"sim exited {proc.returncode}\n{proc.stderr[-2000:]}")
+    if "[Mode] HEADLESS" not in proc.stdout:
+        raise RuntimeError(
+            "the run did not enter headless mode — it would not have terminated "
+            f"on its own.\nstdout head:\n{proc.stdout[:600]}")
+    if "[Mode] HEADLESS run complete" not in proc.stdout:
+        raise RuntimeError("headless run started but did not report completion")
 
     log = max((ROOT / "logs").glob("sim_*.log"), key=lambda p: p.stat().st_mtime)
     text = log.read_text(errors="replace")

@@ -567,6 +567,18 @@ public static class SimulationDebugLog
                 $"effective TimeFactor {time.TimeFactor * _executedTicks / tickTotal:F1} " +
                 $"of {time.TimeFactor:F1} configured");
         }
+        var profile = Core.TickProfiler.Report();
+        if (profile.Count > 0)
+        {
+            double totalMs = Core.TickProfiler.TotalMs;
+            sb.AppendLine($"Tick budget by system (total {totalMs / 1000:F1}s of sim work):");
+            foreach (var (label, ms, calls, msPerCall) in profile)
+            {
+                sb.AppendLine(
+                    $"  {label,-26} {ms / 1000,7:F1}s  {ms / totalMs * 100,5:F1}%  " +
+                    $"{msPerCall,7:F2} ms/call  x{calls}");
+            }
+        }
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");
         sb.AppendLine($"Emission storms: {_emissionStorms} | Last phase: {_lastEmissionPhase}");

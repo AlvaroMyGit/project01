@@ -1183,6 +1183,65 @@ the `ShouldPlan` / follower-planning question.
 
 ---
 
+### Phase 7 — Scale (started 2026-09-13)
+
+Target set to the design doc's **750 stalkers / 500 mutants**, replacing the
+1500/1000 the code carried, which the loop cannot reach.
+
+**7.1 ✅ `TickProfiler`** — per-system wall-clock attribution in the final
+report. Built first because the loop measured ~89 ms/tick against a 100 ms
+budget and nobody knew where it went.
+
+**Guard added after a self-inflicted hour.** A profiling run silently became an
+unbounded server run: `STALKER_HEADLESS_TICKS` failed to reach the process,
+`HeadlessTicks` came back null, and execution fell through to the timer with no
+stop condition. It ran 58 minutes and ~27,000 ticks before anyone noticed,
+because nothing ever stated which mode it was in. Now `Program.Main` prints the
+resolved mode, `STALKER_MODE=headless` without a tick count is a fatal error
+rather than a fall-through, `RunHeadless` rejects a non-positive count, and
+`sim_baseline.py` asserts the headless banner appeared and the run reported
+completion.
+
+#### The profile — every hypothesis was wrong
+
+Predicted, in order of confidence: O(S²) proximity scans in
+`StalkerBehaviourSystem`; `CorpseRegistry.GetEnumerator` copying the whole list
+per query; `GoapWorldStateSync`'s O(all POIs) scans. Measured over 1200 headless
+ticks at ~62 alive:
+
+| | share | per call |
+|---|---|---|
+| **`goap:BuildPlan`** | **23.9%** | 1.31 ms × 18,725 |
+| `goap:SyncOnReplan` | 3.9% | 0.21 ms × 18,725 |
+| `SnapshotBuild` | 1.2% | 10.35 ms × 120 |
+| `Needs+GoapReplan` | 0.8% | 7.12 ms × 120 |
+| `goap:IsValid` | 0.4% | 0.01 ms × 56,033 |
+| scanStalkers / scanMutants / scanCorpses | ~0.2% | **0.00 ms** |
+
+The proximity scans cost nothing. `CorpseRegistry`'s copying is real but shows
+up under `MutantBehaviourSystem` at 0.0%. **A\* planning is the tick budget.**
+
+**Root cause is plan churn, not planner speed alone.** 18,725 plan builds over
+1200 ticks with ~62 stalkers is one new plan per stalker every 4 ticks —
+stalkers complete a goal and immediately replan, roughly 2.5 times a second
+each. Two independent angles:
+1. *Why so much churn* — likely single-action plans that complete on the tick
+   they start, so the runtime falls straight back into `BuildPlan`.
+2. *Why each plan is slow* — `GOAPPlanner.BuildPlan` allocates a fresh
+   `Dictionary<string,bool>` and `List<GOAPAction>` for every action tried at
+   every node, up to 500 iterations × 19 actions. Most are discarded
+   immediately.
+
+Angle 2 is behaviour-preserving and measurable; angle 1 changes behaviour and
+needs the baseline. **Next: reduce planner allocation, then investigate churn.**
+
+**Note the pattern.** Three times today a confident reading of the code was
+contradicted by measurement — the socialising coefficient, the morale sinks
+erased by my own coupling constant, and now the entire performance hypothesis.
+The profiler earned its place before a single optimisation was written.
+
+---
+
 ### Deliberately *not* in Phase 6
 
 - **`TaskManager`** (emergent needs-driven contracts) — overlaps the live

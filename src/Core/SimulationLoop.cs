@@ -205,6 +205,10 @@ public sealed class SimulationLoop : IDisposable
     /// </summary>
     public void RunHeadless(int tickCount)
     {
+        if (tickCount <= 0)
+            throw new ArgumentOutOfRangeException(nameof(tickCount),
+                tickCount, "A headless run needs a positive tick count.");
+
         for (int i = 0; i < tickCount; i++)
         {
             _director.Tick(StepSeconds);
@@ -232,41 +236,48 @@ public sealed class SimulationLoop : IDisposable
 
     private void TickHighFrequency(float gameDelta)
     {
-        foreach (var sys in _systems10Hz) 
-            sys.Tick(_ctx, gameDelta);
+        foreach (var sys in _systems10Hz)
+            TickProfiler.Measure(sys.GetType().Name, () => sys.Tick(_ctx, gameDelta));
     }
 
     private void TickLowFrequency(float gameDelta)
     {
         Stalker[] stalkers;
         lock (_ctx.EntityLock) { stalkers = _ctx.Stalkers.ToArray(); }
-        foreach (var s in stalkers.Where(s => s.IsAlive))
+        TickProfiler.Measure("Needs+GoapReplan", () =>
         {
-            s.Needs.Tick(gameDelta);
-            _goap.Replan(s);
-        }
+            foreach (var s in stalkers.Where(s => s.IsAlive))
+            {
+                s.Needs.Tick(gameDelta);
+                _goap.Replan(s);
+            }
+        });
         SimulationDebugLog.RecordGoapReplans(stalkers.Count(x => x.IsAlive));
 
         Mutant[] mutants;
         lock (_ctx.EntityLock) { mutants = _ctx.Mutants.ToArray(); }
-        foreach (var m in mutants.Where(m => m.IsAlive))
-            m.Tick(gameDelta);
+        TickProfiler.Measure("MutantNeeds", () =>
+        {
+            foreach (var m in mutants.Where(m => m.IsAlive))
+                m.Tick(gameDelta);
+        });
 
         foreach (var sys in _systems1Hz)
-            sys.Tick(_ctx, gameDelta);
+            TickProfiler.Measure(sys.GetType().Name, () => sys.Tick(_ctx, gameDelta));
 
         SimulationDebugLog.MaybeSnapshot(_ctx.Time, _ctx.Stalkers, _ctx.Mutants, _ctx.Corpses, _ctx.Emissions);
 
         // Publish an immutable snapshot for web readers. Built here on the sim
         // thread (the sole writer of entity state) and swapped in atomically.
-        Volatile.Write(ref _snapshot,
-            SimulationSnapshot.Build(_ctx, PopulationTargets.Stalker, PopulationTargets.Mutant));
+        TickProfiler.Measure("SnapshotBuild", () =>
+            Volatile.Write(ref _snapshot,
+                SimulationSnapshot.Build(_ctx, PopulationTargets.Stalker, PopulationTargets.Mutant)));
     }
 
     private void TickMacroFrequency(float gameDelta)
     {
-        foreach (var sys in _systems0_1Hz) 
-            sys.Tick(_ctx, gameDelta);
+        foreach (var sys in _systems0_1Hz)
+            TickProfiler.Measure(sys.GetType().Name, () => sys.Tick(_ctx, gameDelta));
     }
 
     public void FlushDebugReport()

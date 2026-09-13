@@ -10,9 +10,40 @@ namespace StalkerALifeSandbox;
 
 public class Program
 {
+    private static string? host_RunDurationHint()
+    {
+        string? v = Environment.GetEnvironmentVariable("STALKER_RUN_DURATION_SEC");
+        return int.TryParse(v, out int s) && s > 0 ? $"auto-stop after {s}s" : null;
+    }
+
     public static void Main(string[] args)
     {
         var settings = SimulationSettings.FromEnvironment();
+
+        // Resolve the run mode BEFORE building anything, and say so out loud.
+        //
+        // This exists because a headless measurement run once silently became an
+        // unbounded server run: STALKER_HEADLESS_TICKS failed to reach the
+        // process, HeadlessTicks came back null, and execution fell through to
+        // the timer with no stop condition. It ran for an hour before anyone
+        // noticed, because nothing ever stated which mode it was in.
+        string? requestedMode = Environment.GetEnvironmentVariable("STALKER_MODE");
+        int? headlessTicks = SimulationHost.HeadlessTicksFromEnvironment();
+
+        if (string.Equals(requestedMode, "headless", StringComparison.OrdinalIgnoreCase)
+            && headlessTicks is null)
+        {
+            Console.Error.WriteLine(
+                "[FATAL] STALKER_MODE=headless but STALKER_HEADLESS_TICKS is unset or not a " +
+                "positive integer. Refusing to fall through to an unbounded server run.");
+            Environment.ExitCode = 2;
+            return;
+        }
+
+        Console.WriteLine(headlessTicks is int t
+            ? $"[Mode] HEADLESS — {t} ticks, no timer, no web host"
+            : "[Mode] SERVE — timer-driven, web host, runs until stopped" +
+              (host_RunDurationHint() is string h ? $" ({h})" : " (no auto-stop configured)"));
 
         // Build the simulation (data load, world gen, entities, loop).
         var host = new SimulationHost(settings);
@@ -21,10 +52,11 @@ public class Program
         // Two runs at the same tick count cover exactly the same span of game
         // time, so their counters can be diffed directly — which a timed run
         // cannot offer, since it drops a variable number of ticks under load.
-        if (host.HeadlessTicks is int ticks)
+        if (headlessTicks is int ticks)
         {
             host.RunHeadless(ticks);
             host.Stop();
+            Console.WriteLine("[Mode] HEADLESS run complete");
             return;
         }
 

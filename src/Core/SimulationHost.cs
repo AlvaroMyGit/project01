@@ -263,7 +263,14 @@ public sealed class SimulationHost
     /// game time regardless of machine speed. A timed run cannot do that — it
     /// drops a variable number of ticks under load.
     /// </summary>
-    public int? HeadlessTicks =>
+    public int? HeadlessTicks => HeadlessTicksFromEnvironment();
+
+    /// <summary>
+    /// Static so the entry point can resolve the run mode before constructing a
+    /// host — world generation takes seconds, and a misconfigured run should be
+    /// rejected before paying that.
+    /// </summary>
+    public static int? HeadlessTicksFromEnvironment() =>
         int.TryParse(Environment.GetEnvironmentVariable("STALKER_HEADLESS_TICKS"), out int t) && t > 0 ? t : null;
 
     /// <summary>Starts the simulation loop.</summary>

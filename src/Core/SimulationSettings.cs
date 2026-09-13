@@ -16,8 +16,17 @@ public sealed record SimulationSettings
     /// </summary>
     public int RestPort { get; init; } = 5050;
 
-    public int StalkerTarget { get; init; } = 1500;
-    public int MutantTarget { get; init; } = 1000;
+    /// <summary>
+    /// Population the trickle respawn aims to hold. Set to the design doc's
+    /// figures rather than the 1500/1000 the code carried, which the tick loop
+    /// cannot reach: cost measured at ~89 ms/tick against a 100 ms budget with
+    /// only ~160 stalkers alive, so 1500 would be roughly 8x over. 750 is still
+    /// about 4x over and is the target the performance work is aimed at — it is
+    /// an intent, not a claim that the loop currently sustains it.
+    /// </summary>
+    public int StalkerTarget { get; init; } = 750;
+
+    public int MutantTarget { get; init; } = 500;
 
     /// <summary>
     /// Origins allowed to call the REST API. Defaults to the local dashboard

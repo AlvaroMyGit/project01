@@ -209,7 +209,9 @@ public sealed class StalkerGoapService
                 SimulationDebugLog.GoalCompleted(stalker, goalName);
                 runtime.ClearPlan();
                 GoapWorldStateSync.Sync(stalker, _ctx);
-                BuildPlan(stalker);
+                // Kept: A* planning is the tick budget's largest single line —
+                // 24% of all sim work, at 1.31 ms a call, ~15 plans per tick.
+                TickProfiler.Measure("goap:BuildPlan", () => BuildPlan(stalker));
             }
         }
     }
