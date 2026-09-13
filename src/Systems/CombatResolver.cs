@@ -19,6 +19,48 @@ public static class CombatResolver
         MoveStep(gameDeltaSeconds, CombatBalanceConfig.MoveSpeedPerGameSec);
 
     /// <summary>
+    /// Damage one exchange of fire deals, before the target's armour.
+    ///
+    /// Weapons already carry real damage values (18-250, median 40) and armour
+    /// already computes a bullet-mitigation fraction — neither was ever read by
+    /// combat, which just declared a winner and killed the loser outright.
+    /// Spread is deliberate: identical exchanges every time would make fights
+    /// deterministic once loadouts are known.
+    /// </summary>
+    public static float ExchangeDamage(Stalker attacker)
+    {
+        float weapon = attacker.Equipment.PrimaryWeapon?.Damage ?? BareHandsDamage;
+        float condition = attacker.Equipment.PrimaryWeapon?.Condition ?? 1f;
+
+        // A worn weapon hits softer, but never below half.
+        float effective = weapon * (0.5f + 0.5f * Math.Clamp(condition, 0f, 1f));
+        float spread = 0.75f + (float)Random.Shared.NextDouble() * 0.5f;   // 0.75-1.25x
+        return effective * spread * ExchangeDamageScale;
+    }
+
+    /// <summary>Damage after the defender's bullet protection.</summary>
+    public static float MitigatedBullet(Stalker defender, float raw) =>
+        raw * (1f - Math.Clamp(ProtectionProfile.From(defender).Bullet, 0f, MaxMitigation));
+
+    /// <summary>Damage after the defender's slash protection (mutant claws).</summary>
+    public static float MitigatedSlash(Stalker defender, float raw) =>
+        raw * (1f - Math.Clamp(ProtectionProfile.From(defender).Slash, 0f, MaxMitigation));
+
+    /// <summary>Unarmed fallback when a stalker has lost their weapon.</summary>
+    private const float BareHandsDamage = 8f;
+
+    /// <summary>
+    /// Scales raw weapon damage into per-exchange damage. Below 1 so a fight is
+    /// several exchanges rather than one shot: at the median weapon (40) this
+    /// is ~14 before armour, so an unarmoured stalker survives roughly seven
+    /// exchanges and an armoured one considerably more.
+    /// </summary>
+    private const float ExchangeDamageScale = 0.35f;
+
+    /// <summary>Armour caps out short of immunity.</summary>
+    private const float MaxMitigation = 0.80f;
+
+    /// <summary>
     /// Probability that an event with rate <paramref name="ratePerGameSec"/>
     /// occurs at least once over <paramref name="gameDeltaSeconds"/>.
     ///

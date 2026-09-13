@@ -56,6 +56,11 @@ public static class SimulationDebugLog
     private static long _respawnBatches;
     private static long _emissionStorms;
 
+    // Every exchange of fire, fatal or not. The win/loss counters below only
+    // fire on a kill, so once combat became attritional they stopped measuring
+    // how much fighting happens and started measuring how much of it is lethal.
+    private static long _combatExchanges;
+
     // Tick accounting — see SimulationLoop.DroppedTicks
     private static long _executedTicks;
     private static long _droppedTicks;
@@ -351,6 +356,11 @@ public static class SimulationDebugLog
             $"(travel={travelMeters:F0}m, work={workSeconds:F0}s game)");
     }
 
+    public static void CombatExchange()
+    {
+        if (Enabled) Interlocked.Increment(ref _combatExchanges);
+    }
+
     public static void RecordTickAccounting(long executed, long dropped)
     {
         _executedTicks = executed;
@@ -505,7 +515,9 @@ public static class SimulationDebugLog
         sb.AppendLine($"Population: stalkers {aliveS} alive (peak {_peakAliveStalkers}, min {_minAliveStalkers}) | mutants {aliveM} alive");
         sb.AppendLine($"Initial spawn: {_initialStalkerPop} stalkers, {_initialMutantPop} mutants");
         sb.AppendLine($"Trickle respawn: +{_trickleStalkers} stalkers, +{_trickleMutants} mutants ({_respawnBatches} batches)");
-        sb.AppendLine($"Combat encounters: {totalCombats} total");
+        sb.AppendLine(
+            $"Combat: {_combatExchanges} exchanges, {totalCombats} of them fatal " +
+            $"({(_combatExchanges > 0 ? (double)totalCombats / _combatExchanges * 100 : 0):F0}% lethality)");
         sb.AppendLine($"  vs mutant: W={_combatMutantStalkerWins} L={_combatMutantStalkerLosses} | mutants killed={_mutantsKilled}");
         sb.AppendLine($"  vs stalker: W={_combatStalkerWins} L={_combatStalkerLosses}");
         sb.AppendLine($"Stalker casualties: {totalStalkerDeaths} total");

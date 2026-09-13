@@ -34,7 +34,7 @@ ENV = {
     # 7200 ticks = 720 simulated-real-seconds, which is the full initial-spawn
     # window. At 2400 the run ended a third of the way through the ramp, so
     # every absolute number was taken while the world was still filling up.
-    "STALKER_HEADLESS_TICKS": "2400",  # profiling pass; 7200 for a steady-state baseline
+    "STALKER_HEADLESS_TICKS": "7200",  # past the 720s spawn ramp — steady state
     "STALKER_REST_PORT": "8123",
 }
 

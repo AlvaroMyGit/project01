@@ -1263,9 +1263,37 @@ saves and restores `GoapTargetPoiId`.
 was worth 3%. The win was an ordering mistake that no amount of reading found —
 only the profiler pointed at it, and only after two levels of drilling.
 
-**Still open:** plan churn (~15 plans a tick is still high, though now cheap),
-`SnapshotBuild` at 10.4 ms a call, and a POI spatial index if `IsValid` ever
-matters again.
+**7.3 ✅ — the population ceiling was lethality, not performance.** With the
+tick 5x cheaper, a steady-state run (7200 ticks, past the spawn ramp) still
+settled at **74 alive against a 750 target**. The inbound budget of 744 was
+fully delivered; 675 of them died. Cause: **stalkers had no health**. Combat was
+a single roll and the loser died on the spot — 974 encounters, 675 deaths.
+Mutants had carried `Health`/`MaxHealth`/`Damage` since the beginning and combat
+never read those either, exactly like `Mutant.Speed` before Phase 7.2.
+
+Combat is now attritional. The roll decides who lands the hit; damage decides
+who dies. Weapon damage (18-250, median 40) and armour mitigation both already
+existed and are now actually consulted, scaled so a fight is several exchanges.
+
+| | before | after |
+|---|---|---|
+| alive at steady state | 74 | **423** (peak 431) |
+| casualties | 675 | 327 |
+| lethality per exchange | 100% | **8%** (5,907 exchanges, 452 fatal) |
+| missions completed | 581 | 759 |
+| tick cost | 13.1 ms @ 74 | 43.9 ms @ 423 |
+
+**Telemetry corrected alongside.** The combat counters only fire on a kill, so
+the moment combat became attritional "combat encounters" silently changed
+meaning from *how much fighting* to *how much of it was fatal*. Added an
+exchange counter and the report now states both, with the lethality rate.
+
+**Next, now that population is real** — the deferred performance question. At
+423 alive the 1 Hz tick is the problem: `SnapshotBuild` 78.3 ms and
+`Needs+GoapReplan` 77.1 ms per call, so that one tick in ten runs well over the
+100 ms budget while the 10 Hz ticks sit comfortably inside it. Also still open:
+wounded behaviour (`Stalker.IsWounded` exists and nothing reads it yet), healing
+via consumables, and whether follower planning is affordable now.
 
 **Note the pattern.** Three times today a confident reading of the code was
 contradicted by measurement — the socialising coefficient, the morale sinks

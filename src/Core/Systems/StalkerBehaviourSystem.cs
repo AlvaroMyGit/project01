@@ -163,11 +163,21 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             < CombatResolver.StalkerVsMutantWinChance(s, closeMutant, threat, allies, dist);
         
         string timeStr = $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}";
+        SimulationDebugLog.CombatExchange();
 
         if (stalkerWins)
         {
+            // The roll decides who lands the hit; damage decides who dies.
+            // Mutants have carried Health/MaxHealth since the start and combat
+            // never read them.
+            closeMutant.TakeDamage(CombatResolver.ExchangeDamage(s));
+            if (closeMutant.IsAlive)
+            {
+                s.CombatCooldown = 6f + Random.Shared.NextSingle() * 6f;
+                return false;   // the fight goes on
+            }
+
             SimulationDebugLog.CombatMutantWin();
-            closeMutant.IsAlive = false;
             KillTracker.RecordMutantKill(closeMutant, s, timeStr);
             SimulationDebugLog.WriteEvent("COMBAT", $"{s.DisplayName} killed {closeMutant.Species} using {s.Equipment.PrimaryWeapon?.Id ?? "Bare hands"}");
             ctx.Corpses.Add(EquipmentUpgradeService.CreateMutantCorpse(closeMutant, (float)ctx.Time.ElapsedGameSeconds));
@@ -181,8 +191,15 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             return false;
         }
 
+        // The mutant lands a blow. Claws, so slash protection applies.
+        float mutantHit = CombatResolver.MitigatedSlash(s, closeMutant.Damage);
+        if (!s.TakeDamage(mutantHit))
+        {
+            s.CombatCooldown = 6f + Random.Shared.NextSingle() * 6f;
+            return false;
+        }
+
         SimulationDebugLog.CombatMutantLoss();
-        s.IsAlive = false;
         ctx.PDA.UnregisterListener(s.Blackboard);
         SquadSuccession.OnLeaderDeath(s, ctx.Stalkers, ctx.RequestReplan, squadLeaders);
         KillTracker.RecordKill(s, closeMutant, timeStr);
@@ -202,11 +219,21 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             < CombatResolver.StalkerVsStalkerWinChance(s, other, threat, dist, heavySuppression);
         
         string timeStr = $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}";
+        SimulationDebugLog.CombatExchange();
 
         if (thisWins)
         {
+            float hit = CombatResolver.MitigatedBullet(other, CombatResolver.ExchangeDamage(s));
+            if (!other.TakeDamage(hit))
+            {
+                // Both break contact briefly; the loser of the exchange is now
+                // carrying a wound into the next one.
+                s.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
+                other.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
+                return false;
+            }
+
             SimulationDebugLog.CombatStalkerWin();
-            other.IsAlive = false;
             ctx.PDA.UnregisterListener(other.Blackboard);
             SquadSuccession.OnLeaderDeath(other, ctx.Stalkers, ctx.RequestReplan, squadLeaders);
             KillTracker.RecordKill(other, s, timeStr);
@@ -227,8 +254,15 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             return false;
         }
 
+        float incoming = CombatResolver.MitigatedBullet(s, CombatResolver.ExchangeDamage(other));
+        if (!s.TakeDamage(incoming))
+        {
+            s.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
+            other.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
+            return false;
+        }
+
         SimulationDebugLog.CombatStalkerLoss();
-        s.IsAlive = false;
         ctx.PDA.UnregisterListener(s.Blackboard);
         SquadSuccession.OnLeaderDeath(s, ctx.Stalkers, ctx.RequestReplan, squadLeaders);
         KillTracker.RecordKill(s, other, timeStr);

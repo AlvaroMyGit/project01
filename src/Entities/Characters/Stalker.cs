@@ -24,6 +24,35 @@ public sealed class Stalker
     public string CurrentLevelId { get; set; } = "cordon";
 
     public string? SquadId { get; set; }
+    /// <summary>
+    /// Current health. Stalkers had none at all: combat was a single roll and
+    /// the loser died on the spot, so 974 encounters produced 675 deaths in one
+    /// 30-game-hour run and the population settled at 74 against a target of
+    /// 750. Mutants already carried Health/MaxHealth/Damage — combat simply
+    /// never read them either.
+    /// </summary>
+    public float Health { get; set; } = 100f;
+
+    public float MaxHealth { get; set; } = 100f;
+
+    /// <summary>True once wounded enough that fleeing beats fighting.</summary>
+    public bool IsWounded => Health < MaxHealth * 0.35f;
+
+    /// <summary>Applies damage; returns true if this killed them.</summary>
+    public bool TakeDamage(float amount)
+    {
+        if (amount <= 0f) return false;
+        Health -= amount;
+        if (Health > 0f) return false;
+        Health = 0f;
+        IsAlive = false;
+        return true;
+    }
+
+    /// <summary>Restores health, never past the maximum.</summary>
+    public void Heal(float amount) =>
+        Health = Math.Min(MaxHealth, Health + Math.Max(0f, amount));
+
     public bool IsSquadLeader { get; set; }
 
     // Activity system
