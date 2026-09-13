@@ -97,9 +97,8 @@ StalkerALifeSandbox/
     ├── Entities/                  # Stalker, Mutant, Equipment, Needs, …
     ├── Crafting/                  # [x] FieldCraftingSystem runs at 0.1 Hz; MutantCookingSystem used by it
     ├── Factions/                  # [x] Matrix + demographics wired at spawn
-    ├── Economy/                   # [x] TraderRegistry, MissionRegistry, TraderEconomyConfig, ConvoyManager, TradeService
+    ├── Economy/                   # [x] TraderRegistry, MissionRegistry, TraderEconomyConfig, TradeService
     ├── PDA/                       # [x] Chatter + forecaster + templated death reports
-    ├── UI/                        # HUD, InspectorPanel (server-side; Web uses InspectorBuilder)
     └── Web/                       # WebVisualizerServer, TelemetryDTOs, InspectorBuilder, TelemetryMapper
 ```
 
@@ -237,7 +236,10 @@ Spec sections below describe the **design target**. See §4 for honest completio
 - [x] Missions PDA tab — **dedicated Missions tab** in PDA feed; filters by `MissionBrief` message type
 
 ### Phase 10: Economy & Social
-- [x] `TraderComponent.cs`, `MarketPrices.cs`, `SupplyConvoy.cs`, `ConvoyManager.cs` — **in sim loop via TraderRegistry + 0.1 Hz tick**
+- [x] `TraderComponent.cs`, `MarketPrices.cs` — in sim loop via TraderRegistry
+- [~] ~~`SupplyConvoy.cs`, `ConvoyManager.cs`~~ — **deleted 2026-09-13.** The manager was
+  constructed into a discard (`_ = new ConvoyManager(...)`) and never ticked, so the
+  convoy economy never ran, while this line and CODEBASE.md both claimed it did.
 - [x] `TradeService.cs` — consumables/ammo/artifacts + **`EquipmentUpgradeService.TryBuyGearUpgrades`**
 - [x] `TraderEconomyConfig.cs` — env-tunable buy reserve (120 RU), gear-before-consumables, no 1200 RU gate; **`GoalVisitTrader`** + `ActionTradeRun`
 - [~] Starting gold **850 RU**; south-band affordable stock; GAMMA stock capped by band price — **buys fire in debug runs** but still secondary to combat loot
@@ -320,7 +322,7 @@ Goal: migrate from the monolithic `Program.cs` heuristic loop to the subsystem l
 | Task | Files | Effort |
 |---|---|---|
 | Attach `TraderComponent` to macro POI traders | `TraderRegistry.cs`, `Program.cs` | ✅ |
-| Tick `ConvoyManager` at 0.1 Hz; spawn convoys between macro bases | `SimulationLoop.cs`, `ConvoyManager.cs` | ✅ |
+| ~~Tick `ConvoyManager` at 0.1 Hz~~ | *removed* | ❌ never wired; deleted 2026-09-13 |
 | Replace hardcoded "Trade Run" label with actual buy/sell via `MarketPrices` | `ActionTradeRun.cs`, `TradeService.cs` | ✅ |
 
 ### Priority 6 — Emissions & portals (full spec) ✅
@@ -1053,6 +1055,59 @@ Note this also distorts `GoalSocialise`: only planners can select it, and
 planners are exactly the group whose morale is already high (avg 85, versus the
 goal's threshold of 75). The stalkers who most need a drink are the ones who
 can never ask for one.
+
+---
+
+### Audit II remediation — Stage 1 & 2 (2026-09-13)
+
+Full findings and the five-stage plan live in the *Second Zone Audit* artifact.
+Recorded here so the repo carries its own account.
+
+**Stage 1 ✅ — measurement first** (`c460282`). `SimulationLoop.RunHeadless(n)`
+runs exactly *n* ticks with no timer, so two runs cover the same span of game
+time and can be diffed; `STALKER_HEADLESS_TICKS` drives it. Dropped/executed
+tick counters now appear in the final report with the effective TimeFactor they
+imply — a timed run at 150× reports e.g. *"513 executed, 387 dropped (43.0%) |
+effective TimeFactor 85.5"*. `scripts/sim_baseline.py` captures the report's
+counters and diffs them against `baselines/default.json`.
+
+*Correction to the audit as first written:* dropped ticks do **not** distort
+game-time-normalised measurements. `ZoneDirector` skips the clock advance and
+the tick work together, so game time and tick count stay in lockstep. What is
+lost is wall-clock throughput. Only the report's real-time figures — deaths per
+real minute, the startup/steady-state windows — are affected.
+
+**Stage 2 ✅ — time-scale correctness.**
+
+*Mutants* (`d8b165d`). All three movement sites used fixed per-tick constants
+and ignored `gameDelta`, so mutant speed was `12 / TimeFactor` units per game
+second against a stalker's flat 4 — equal at the default 3, and 2% at 150. The
+per-species `Mutant.Speed` was already set at spawn and never read; movement now
+uses it through the clamped `StepToward`. Measured against baseline:
+
+| metric | before | after |
+|---|---|---|
+| mutants killed | 126 | **179** (+42%) |
+| deaths to mutants | 59 | **92** (+56%) |
+| deaths to gunfire | 294 | 258 (−12%) |
+| total casualties | 356 | 353 (−1%) |
+
+Predation restored; the casualty *mix* shifts without changing how deadly the
+Zone is.
+
+*Rate formulas.* `rate × delta` is only a probability while the product stays
+under 1, and the 1 Hz bucket passes `1.0 × TimeFactor` — so at 150 a 0.015 rate
+evaluated to 2.25 and the betrayal roll always passed. Replaced with
+`CombatResolver.EventChance` = `1 − exp(−rate × delta)`, one idiom shared with
+the squad-morale coupling. Effect is **inside the noise band** at the current
+baseline, as expected: emissions are dormant over a 10-game-hour window at the
+12–24 hour cadence, and betrayal is gated narrowly. Validated by unit tests
+rather than by the harness — a useful reminder that the harness resolves
+double-digit effects, not small ones.
+
+**Still open:** Stage 3 (convoy delete, orphan triage, the duplicated `120f`),
+Stage 4 (`src/Core` coverage, floor 26 → 31), Stage 5 (morale sink, then 6A
+step 6 and 6B).
 
 ---
 

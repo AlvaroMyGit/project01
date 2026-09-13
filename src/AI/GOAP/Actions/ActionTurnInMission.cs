@@ -73,7 +73,7 @@ public sealed class ActionTurnInMission : GOAPAction
         // Payout still requires actually standing at the issuer — the check
         // moved here from IsValid so it constrains execution without making the
         // plan unbuildable. Matches GoapWorldStateSync.IsNearMissionGiver.
-        if (Vector3.Distance(stalker.Position, stalker.ActiveMission.IssuerPosition) > 120f)
+        if (Vector3.Distance(stalker.Position, stalker.ActiveMission.IssuerPosition) > GoapTuning.MissionGiverRadius)
             return;
 
         if (_ctx != null)

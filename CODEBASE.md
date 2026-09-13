@@ -39,7 +39,6 @@ This document provides a detailed reference for every module, class, and data fi
 - [src/Factions/ — Faction System](#srcfactions--faction-system)
 - [src/Crafting/ — Field Crafting](#srccrafting--field-crafting)
 - [src/PDA/ — Communication Network](#srcpda--communication-network)
-- [src/UI/ — Server-Side UI](#srcui--server-side-ui)
 - [src/Web/ — WebSocket & Telemetry](#srcweb--websocket--telemetry)
 - [visualizer/ — Browser Dashboard](#visualizer--browser-dashboard)
 - [data/ — JSON Data Tables](#data--json-data-tables)
@@ -104,7 +103,7 @@ Communication between decoupled systems is handled by a global `EventBus` using 
 
 1. **Data Loading** — Loads `NameGenerator`, `DemographicsEngine`, `PDANetwork`, `FactionSpawnTable`, `ItemDatabase` from JSON data files (resolved via [`DataPaths`](file:///home/alvaromendes/Documents/project01/src/Core/DataPaths.cs) relative to the app base directory, not the working directory)
 2. **World Generation** — Creates `StaticWorldGenerator` (1600×3200 world), stamps POIs via `POIPrefabStamper`, builds `RoadNetwork`, initializes `ZonePathfinder` grid, loads `BuildingFootprintLoader`, seeds anomaly fields via `AnomalySeeder`
-3. **Faction Setup** — Spawns macro-base faction leaders, initializes `TraderRegistry`, `MissionRegistry`, and `ConvoyManager`
+3. **Faction Setup** — Spawns macro-base faction leaders, initializes `TraderRegistry` and `MissionRegistry`
 4. **Simulation Init** — Configures `TimeManager`, `EnvironmentManager`, `WeatherManager`, `ZoneDirector`, and instantiates `SimulationLoop` (via a `SimulationDependencies` parameter object) with 12-minute staggered spawn for ~1,500 stalkers and ~1,000 mutants
 5. **Web Host** — `Program.Main` builds a `SimulationSettings`, starts a single ASP.NET Core host on the configured REST port (default 5050) with CORS scoped to the local dashboard origins, and serves the visualizer, the REST API, and the `/ws` WebSocket telemetry stream all from that one Kestrel instance (`app.UseWebSockets()` + `WebApiEndpoints.MapSimulationApi`) — there is no separate WebSocket server/port. Shutdown is graceful: `ApplicationStopping` calls `SimulationHost.Stop()` (disposes the tick timer, aborts connected WebSocket clients, flushes the final report), and the optional `STALKER_RUN_DURATION_SEC` auto-stop requests a graceful shutdown rather than calling `Environment.Exit`.
 
@@ -424,8 +423,6 @@ Located in `src/AI/GOAP/Goals/`:
 | [`MarketPrices.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/MarketPrices.cs) | `MarketPrices` | Dynamic supply/demand pricing with latitude multipliers |
 | [`MissionRegistry.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/MissionRegistry.cs) | `MissionRegistry` | Generates, stores, and refreshes base contracts (scout, retrieve, escort) |
 | [`MissionTypes.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/MissionTypes.cs) | `MissionType` enum, `MissionOffer`, `StalkerMission` | Contract data models |
-| [`ConvoyManager.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/ConvoyManager.cs) | `ConvoyManager` | Spawns import/export supply convoys at 0.1 Hz between southern border and northern bases |
-| [`SupplyConvoy.cs`](file:///home/alvaromendes/Documents/project01/src/Economy/SupplyConvoy.cs) | `SupplyConvoy` | Convoy entity moving along road networks carrying physical cargo |
 
 ---
 
@@ -461,15 +458,6 @@ Located in `src/AI/GOAP/Goals/`:
 
 ---
 
-## src/UI/ — Server-Side UI
-
-| File | Class | Description |
-|---|---|---|
-| [`HUDManager.cs`](file:///home/alvaromendes/Documents/project01/src/UI/HUDManager.cs) | `HUDManager` | Placeholder for client-side HUD overlays |
-| [`InspectorPanel.cs`](file:///home/alvaromendes/Documents/project01/src/UI/InspectorPanel.cs) | `InspectorPanel` | Console text renderer for full stalker diagnostic inspection |
-| [`PDAInterfacePanel.cs`](file:///home/alvaromendes/Documents/project01/src/UI/PDAInterfacePanel.cs) | `PDAInterfacePanel` | Console PDA renderer with Map, Live Feed, Bounties, and Diplomacy tabs |
-
----
 
 ## src/Web/ — WebSocket & Telemetry
 

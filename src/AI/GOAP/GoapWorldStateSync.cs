@@ -120,7 +120,7 @@ public static class GoapWorldStateSync
     {
         if (stalker.ActiveMission != null)
         {
-            if (Vector3.Distance(stalker.Position, stalker.ActiveMission.IssuerPosition) <= 120f)
+            if (Vector3.Distance(stalker.Position, stalker.ActiveMission.IssuerPosition) <= GoapTuning.MissionGiverRadius)
             {
                 stalker.MissionIssuerPoiId = stalker.ActiveMission.IssuerPoiId;
                 return true;
@@ -132,11 +132,11 @@ public static class GoapWorldStateSync
         if (!string.IsNullOrEmpty(stalker.MissionIssuerPoiId))
         {
             var assigned = ctx.Traders.Sites.FirstOrDefault(s => s.PoiId == stalker.MissionIssuerPoiId);
-            if (assigned != null && Vector3.Distance(stalker.Position, assigned.Position) <= 120f)
+            if (assigned != null && Vector3.Distance(stalker.Position, assigned.Position) <= GoapTuning.MissionGiverRadius)
                 return true;
         }
 
-        var nearby = ctx.Missions.FindNearestIssuerWithOffer(stalker, ctx.Traders, maxDist: 120f);
+        var nearby = ctx.Missions.FindNearestIssuerWithOffer(stalker, ctx.Traders, maxDist: GoapTuning.MissionGiverRadius);
         if (nearby == null) return false;
 
         stalker.MissionIssuerPoiId = nearby.PoiId;

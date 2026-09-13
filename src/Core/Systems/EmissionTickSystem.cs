@@ -149,7 +149,7 @@ public sealed class EmissionTickSystem : ISimulationSystem
 
             _stormExposedStalkers.Add(s.Id);
 
-            double hitChance = 0.045 * intensity * phaseRate * gameDelta;
+            double hitChance = CombatResolver.EventChance(0.045 * intensity * phaseRate, gameDelta);
             float radMit = 1f - Math.Clamp(ProtectionProfile.From(s).Rad, 0f, 0.75f);
             hitChance *= radMit;
             if (Random.Shared.NextDouble() >= hitChance) continue;
@@ -164,7 +164,7 @@ public sealed class EmissionTickSystem : ISimulationSystem
         {
             if (IsNearShelter(m.Position, shelters)) continue;
 
-            if (Random.Shared.NextDouble() < 0.06 * intensity * phaseRate * gameDelta)
+            if (Random.Shared.NextDouble() < CombatResolver.EventChance(0.06 * intensity * phaseRate, gameDelta))
             {
                 SimulationDebugLog.MutantEmissionDeath();
                 m.IsAlive = false;

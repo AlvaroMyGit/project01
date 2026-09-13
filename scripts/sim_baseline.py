@@ -76,10 +76,28 @@ def run_once() -> dict:
 
 
 def summarise(runs: list) -> dict:
-    keys = runs[0].keys()
-    return {k: round(statistics.mean([r[k] for r in runs if r[k] is not None]), 1)
-            if any(r[k] is not None for r in runs) else None
-            for k in keys}
+    """Mean plus observed spread.
+
+    The spread is the point. The sim still uses Random.Shared, so counters move
+    run to run by double digits on population metrics — without a recorded
+    noise band a reader cannot tell a real effect from a reroll.
+    """
+    out = {}
+    for k in runs[0].keys():
+        vals = [r[k] for r in runs if r[k] is not None]
+        if not vals:
+            out[k] = None
+            continue
+        out[k] = {
+            "mean": round(statistics.mean(vals), 1),
+            "min": min(vals),
+            "max": max(vals),
+        }
+    return out
+
+
+def mean_of(entry):
+    return entry["mean"] if isinstance(entry, dict) else entry
 
 
 def main() -> int:
@@ -110,16 +128,26 @@ def main() -> int:
         return 1
 
     base = json.loads(path.read_text())
-    print(f"\n{'metric':<22}{'baseline':>10}{'current':>10}{'delta':>12}")
-    print("-" * 54)
+    print(f"\n{'metric':<22}{'baseline':>10}{'current':>10}{'delta':>13}  verdict")
+    print("-" * 68)
     for k in PATTERNS:
-        b, c = base.get(k), current.get(k)
+        be, ce = base.get(k), current.get(k)
+        b, c = mean_of(be), mean_of(ce)
         if b is None or c is None:
-            print(f"{k:<22}{'?':>10}{'?':>10}{'':>12}")
+            print(f"{k:<22}{'?':>10}{'?':>10}")
             continue
         d = c - b
         pct = f"{d / b * 100:+.0f}%" if b else ("--" if d == 0 else "new")
-        print(f"{k:<22}{b:>10}{c:>10}{f'{d:+g} ({pct})':>12}")
+
+        # Signal only if the move clears the noise seen across repeats of BOTH
+        # the baseline and this run. Anything inside that band is a reroll.
+        band = 0.0
+        for e in (be, ce):
+            if isinstance(e, dict):
+                band = max(band, (e["max"] - e["min"]) / 2)
+        verdict = "" if abs(d) <= band else ("SIGNAL" if abs(d) > band * 2 else "maybe")
+        print(f"{k:<22}{b:>10}{c:>10}{f'{d:+g} ({pct})':>13}  {verdict}")
+    print("\n(blank verdict = inside the run-to-run noise band; raise --repeat to tighten it)")
     return 0
 
 

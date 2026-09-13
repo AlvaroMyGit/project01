@@ -193,8 +193,6 @@ public sealed class SimulationHost
         var traderRegistry = TraderRegistry.Bootstrap(macroPois, market, Factions);
         var poiRegistry = new StalkerALifeSandbox.World.POI.POIRegistry(Stamper.Stamps);
         var missionRegistry = MissionRegistry.Bootstrap(traderRegistry, poiRegistry, WorldGen, macroPois, pathfinder);
-        var borderSpawn = new Vector3(WorldGen.Width * 0.5f, 0f, WorldGen.Height * 0.02f);
-        _ = new ConvoyManager(traderRegistry, market, borderSpawn);
         Console.WriteLine($"[Economy] {traderRegistry.Sites.Count} macro traders online; {missionRegistry.OffersByIssuer.Count} bases posting missions");
 
         // 4. ZoneDirector-driven simulation loop

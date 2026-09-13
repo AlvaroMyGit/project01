@@ -18,6 +18,23 @@ public static class CombatResolver
     public static float MoveStep(float gameDeltaSeconds) =>
         MoveStep(gameDeltaSeconds, CombatBalanceConfig.MoveSpeedPerGameSec);
 
+    /// <summary>
+    /// Probability that an event with rate <paramref name="ratePerGameSec"/>
+    /// occurs at least once over <paramref name="gameDeltaSeconds"/>.
+    ///
+    /// Use this instead of <c>rate * delta</c>. That product is only a valid
+    /// probability while it stays well under 1, and the 1 Hz bucket passes
+    /// <c>1.0 * TimeFactor</c> — 150 at TimeFactor 150. A rate of 0.015 then
+    /// evaluates to 2.25, so the roll always passes and the tuning becomes
+    /// meaningless. This form saturates toward 1 instead of exceeding it, and
+    /// matches the linear approximation at small deltas.
+    /// </summary>
+    public static double EventChance(double ratePerGameSec, float gameDeltaSeconds)
+    {
+        if (ratePerGameSec <= 0 || gameDeltaSeconds <= 0f) return 0;
+        return 1.0 - Math.Exp(-ratePerGameSec * gameDeltaSeconds);
+    }
+
     /// <summary>Distance covered in <paramref name="gameDeltaSeconds"/> at a given speed.</summary>
     public static float MoveStep(float gameDeltaSeconds, float speedPerGameSec) =>
         speedPerGameSec * gameDeltaSeconds;

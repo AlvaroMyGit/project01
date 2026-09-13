@@ -145,7 +145,7 @@ public sealed class SocialSystem : ISimulationSystem
         {
             if (!_betrayal.IsDesperate(traitor.Needs)) continue;
             if (!_betrayal.WillAcceptShadyContract(traitor.Needs, traitor.Attributes)) continue;
-            if (Random.Shared.NextDouble() > 0.015 * gameDelta) continue;
+            if (Random.Shared.NextDouble() > CombatResolver.EventChance(0.015, gameDelta)) continue;
 
             var victim = ctx.Stalkers.FirstOrDefault(s =>
                 s.IsAlive && s.SquadId == traitor.SquadId && s != traitor &&

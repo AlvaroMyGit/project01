@@ -47,7 +47,7 @@ public sealed class ActionReturnToMissionIssuer : GoapTravelAction
     {
         var stalker = Ctx?.GetStalker(bb.OwnerId);
         if (stalker?.ActiveMission != null && Ctx != null &&
-            Vector3.Distance(stalker.Position, stalker.ActiveMission.IssuerPosition) <= 120f)
+            Vector3.Distance(stalker.Position, stalker.ActiveMission.IssuerPosition) <= GoapTuning.MissionGiverRadius)
             GoapWorldStateSync.ApplyEffects(bb, GetEffects());
     }
 }

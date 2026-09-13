@@ -1,5 +1,17 @@
 namespace StalkerALifeSandbox.AI.GOAP;
 
+/// <summary>Shared numeric thresholds the GOAP layer agrees on.</summary>
+public static class GoapTuning
+{
+    /// <summary>
+    /// How close counts as "at" the mission giver. Read by
+    /// <c>GoapWorldStateSync</c> to set <c>IsAtMissionGiver</c> and by
+    /// <c>ActionTurnInMission.Exit</c> to gate the payout — they must agree, or
+    /// a stalker can plan around a flag the payout then refuses to honour.
+    /// </summary>
+    public const float MissionGiverRadius = 120f;
+}
+
 /// <summary>World-state boolean keys used by the GOAP planner.</summary>
 public static class GoapKeys
 {

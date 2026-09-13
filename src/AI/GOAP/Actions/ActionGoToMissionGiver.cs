@@ -61,6 +61,6 @@ public sealed class ActionGoToMissionGiver : GoapTravelAction
         if (string.IsNullOrEmpty(stalker.MissionIssuerPoiId)) return false;
         var site = ctx.Traders.Sites.FirstOrDefault(s => s.PoiId == stalker.MissionIssuerPoiId);
         if (site == null) return false;
-        return Vector3.Distance(stalker.Position, site.Position) <= 120f;
+        return Vector3.Distance(stalker.Position, site.Position) <= GoapTuning.MissionGiverRadius;
     }
 }

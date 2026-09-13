@@ -88,3 +88,49 @@ public class MutantMovementTests
         Assert.Equal(CombatBalanceConfig.MoveSpeedPerGameSec, m.Speed);
     }
 }
+
+/// <summary>
+/// Probability-per-delta must saturate, not exceed 1.
+///
+/// Rates were written as <c>rate × delta</c>, valid only while the product stays
+/// well under 1 — but the 1 Hz bucket passes <c>1.0 × TimeFactor</c>, so at 150
+/// a rate of 0.015 evaluated to 2.25 and the roll always passed.
+/// </summary>
+public class EventChanceTests
+{
+    [Fact]
+    public void NeverExceedsOne_AtTheDeltasTheOneHzBucketActuallyPasses()
+    {
+        foreach (float delta in new[] { 3f, 150f, 1500f })
+            Assert.InRange(CombatResolver.EventChance(0.015, delta), 0.0, 1.0);
+    }
+
+    [Fact]
+    public void MatchesTheLinearApproximationAtSmallDeltas()
+    {
+        // At TimeFactor 3 the two forms agree to within a couple of percent, so
+        // switching does not silently retune default-speed behaviour. They are
+        // not identical — the exponential is slightly lower, which is the point:
+        // it is the correct value and the linear form was always an
+        // overestimate that simply did not matter at small deltas.
+        double linear = 0.015 * 3;
+        double actual = CombatResolver.EventChance(0.015, 3f);
+        Assert.True(Math.Abs(actual - linear) / linear < 0.03,
+            $"expected within 3% of the linear form; linear={linear:F5} actual={actual:F5}");
+        Assert.True(actual < linear, "the exponential form must not overestimate");
+    }
+
+    [Fact]
+    public void RisesMonotonicallyWithBothRateAndDelta()
+    {
+        Assert.True(CombatResolver.EventChance(0.03, 10f) > CombatResolver.EventChance(0.015, 10f));
+        Assert.True(CombatResolver.EventChance(0.015, 20f) > CombatResolver.EventChance(0.015, 10f));
+    }
+
+    [Fact]
+    public void ZeroRateOrZeroDeltaNeverFires()
+    {
+        Assert.Equal(0.0, CombatResolver.EventChance(0, 100f));
+        Assert.Equal(0.0, CombatResolver.EventChance(0.5, 0f));
+    }
+}
