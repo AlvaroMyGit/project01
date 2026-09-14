@@ -21,6 +21,24 @@ public static class GoapTuning
     /// out only when close to dying.
     /// </summary>
     public const float HealthyFraction = 0.30f;
+
+    /// <summary>
+    /// Half-life of a location threat rumour, in game seconds. Two game hours.
+    ///
+    /// <c>LocationThreatMemory</c> had no decay at all: every writer used
+    /// <c>+=</c> and the only reset was on respawn. <c>PDANetwork</c> adds
+    /// <c>DeathThreatDelta</c> (15) per death to every listener, so three deaths
+    /// in a band crossed the 45 line that <c>GoapWorldStateSync</c> turns into
+    /// <c>HeardDangerRumor</c> — and it never came back down. Measured against a
+    /// live run: 100% of sampled stalkers had it set, South sitting at 99 and
+    /// still climbing.
+    ///
+    /// That is not a small bias. <c>GoalSeekShelter</c> takes +40 from it,
+    /// <c>GoalPatrol</c> collapses from 25 to 8, and <c>GoalFleeEmission</c>
+    /// treats it as a trigger. Permanently on, for everyone, it stops being
+    /// information.
+    /// </summary>
+    public const float ThreatMemoryHalfLifeGameSeconds = 2f * 3600f;
 }
 
 /// <summary>World-state boolean keys used by the GOAP planner.</summary>

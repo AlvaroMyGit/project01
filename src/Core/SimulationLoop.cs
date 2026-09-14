@@ -262,6 +262,11 @@ public sealed class SimulationLoop : IDisposable
             foreach (var s in stalkers.Where(s => s.IsAlive))
             {
                 s.Needs.Tick(gameDelta);
+                // Rumours fade. Without this LocationThreatMemory only ever
+                // grew, and HeardDangerRumor latched on for the whole
+                // population within the first minute of a run.
+                s.Blackboard.DecayThreatMemory(
+                    gameDelta, AI.GOAP.GoapTuning.ThreatMemoryHalfLifeGameSeconds);
                 _goap.Replan(s);
             }
         });

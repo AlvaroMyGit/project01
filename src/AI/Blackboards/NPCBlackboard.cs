@@ -108,6 +108,39 @@ public sealed class NPCBlackboard
         EntityLastSeenTime[entityId] = gameTime;
     }
 
+    /// <summary>
+    /// Fades location threat rumours toward zero.
+    ///
+    /// Exponential rather than a linear step, for the same reason as the squad
+    /// morale coupling and <c>CombatResolver.EventChance</c>: the 1 Hz bucket
+    /// hands out <c>1.0 x TimeFactor</c> game seconds per tick, so a linear
+    /// decrement tuned at TimeFactor 3 would wipe the dictionary in one tick at
+    /// 150.
+    ///
+    /// Entries below <see cref="ThreatMemoryFloor"/> are dropped so the
+    /// dictionary does not accumulate a long tail of near-zero bands.
+    /// </summary>
+    public void DecayThreatMemory(float gameDeltaSeconds, float halfLifeGameSeconds)
+    {
+        if (LocationThreatMemory.Count == 0) return;
+        if (gameDeltaSeconds <= 0f || halfLifeGameSeconds <= 0f) return;
+
+        float keep = MathF.Exp(-MathF.Log(2f) * gameDeltaSeconds / halfLifeGameSeconds);
+
+        List<string>? spent = null;
+        foreach (var key in LocationThreatMemory.Keys.ToList())
+        {
+            float next = LocationThreatMemory[key] * keep;
+            if (next < ThreatMemoryFloor) (spent ??= new()).Add(key);
+            else LocationThreatMemory[key] = next;
+        }
+        if (spent is not null)
+            foreach (var key in spent) LocationThreatMemory.Remove(key);
+    }
+
+    /// <summary>Below this a rumour is forgotten outright.</summary>
+    public const float ThreatMemoryFloor = 0.5f;
+
     public void PruneStaleEntities(float currentGameTime, float maxAgeSec)
     {
         var stale = new List<string>();
