@@ -999,3 +999,63 @@ export function setLayer(layer) {
 // ─── Coordinate Helpers ───────────────────────────────────────────────────────
 function wX(x) { return x; }
 function wY(y) { return y; }
+
+// ─── Command Channel & Overlay Toggles ────────────────────────────────────────
+// index.html has imported these six since e5171f2 (2026-09-10) and app.js never
+// exported them. A missing named export is a hard module error, so the whole
+// script failed to evaluate and the page sat on "CONNECTING TO SIMULATION..."
+// forever — every control dead, no WebSocket, no data. Restored here.
+
+/** Send a command to the sim if the socket is up. Server: SimulationLoop.HandleCommand. */
+function sendCommand(type, payload = {}) {
+    if (!ws || ws.readyState !== WebSocket.OPEN) return false;
+    ws.send(JSON.stringify({ type, ...payload }));
+    return true;
+}
+
+/** Time controls in the top bar. factor 0 pauses. */
+export function setSpeed(factor) {
+    sendCommand('set_speed', { factor: Number(factor) });
+}
+
+export function forceEmission() { sendCommand('force_emission'); }
+export function forceWeather()  { sendCommand('force_weather'); }
+
+/** Centre the camera on world coordinates — used by the kill feed. */
+export function pingMap(x, y) {
+    if (!viewport) return;
+    viewport.animate({ position: new PIXI.Point(wX(x), wY(y)), scale: 1.2, time: 400 });
+}
+
+/**
+ * Z-level slider. The sim only ever emits three layers (-1 underground,
+ * 0 surface, 1 interior) via EntityDTO.LayerIndex, so the slider's -8..8 range
+ * is clamped to that. See the audit: the control promises more than the data has.
+ */
+export function setZLevel(z) {
+    setLayer(Math.max(-1, Math.min(1, Math.round(Number(z)))));
+}
+
+/** Overlay checkboxes. Only the layers that exist can be toggled. */
+export function toggleOverlay(name) {
+    const on = (c, v) => { if (c) c.visible = v; };
+    switch (name) {
+        case 'squads':
+            if (squadContainer) squadContainer.visible = !squadContainer.visible;
+            break;
+        case 'hazards': {
+            const v = anomalyContainer ? !anomalyContainer.visible : true;
+            on(anomalyContainer, v);
+            on(radZoneContainer, v);
+            break;
+        }
+        case 'goap':
+            if (missionContainer) missionContainer.visible = !missionContainer.visible;
+            break;
+        // 'vision' and 'territory' have no renderer yet. Vision cones need the
+        // facingAngle/fov already on the wire; territory needs a container that
+        // was never built. Both are listed in the audit.
+        default:
+            break;
+    }
+}
