@@ -105,12 +105,22 @@ export async function init(canvasEl, onEntitySelect) {
         .decelerate({ friction: 0.94 })
         .clampZoom({ minScale: 0.08, maxScale: 4.0 });
 
-    window.addEventListener('resize', () => {
-        app.renderer.resize(canvasEl.parentElement.clientWidth, canvasEl.parentElement.clientHeight);
+    const fitToParent = () => {
+        const host = canvasEl.parentElement;
+        if (!host.clientWidth || !host.clientHeight) return;
+        app.renderer.resize(host.clientWidth, host.clientHeight);
         viewport.resize(app.screen.width, app.screen.height);
-        stormOverlay.width  = app.screen.width;
-        stormOverlay.height = app.screen.height;
-    });
+        if (stormOverlay) {
+            stormOverlay.width  = app.screen.width;
+            stormOverlay.height = app.screen.height;
+        }
+    };
+    window.addEventListener('resize', fitToParent);
+
+    // The map also changes size when a side panel is collapsed, which fires no
+    // window resize at all — and PIXI's own `resizeTo` only listens for that.
+    // Observing the host element covers both causes.
+    new ResizeObserver(fitToParent).observe(canvasEl.parentElement);
 
     bgContainer         = new PIXI.Container();
     wildernessContainer = new PIXI.Container();
