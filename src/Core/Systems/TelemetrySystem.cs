@@ -11,10 +11,17 @@ namespace StalkerALifeSandbox.Core.Systems;
 public sealed class TelemetrySystem : ISimulationSystem
 {
     private readonly WebVisualizerServer _webVisualizer;
+    private readonly World.Environment.EnvironmentManager _environment;
+    private readonly World.Environment.WeatherManager _weather;
 
-    public TelemetrySystem(WebVisualizerServer webVisualizer)
+    public TelemetrySystem(
+        WebVisualizerServer webVisualizer,
+        World.Environment.EnvironmentManager environment,
+        World.Environment.WeatherManager weather)
     {
         _webVisualizer = webVisualizer;
+        _environment = environment;
+        _weather = weather;
     }
 
     public void Tick(SimulationContext ctx, float gameDelta)
@@ -55,7 +62,13 @@ public sealed class TelemetrySystem : ISimulationSystem
                     Type = "stalker",
                     Position = new PositionDTO { X = s.Position.X, Y = s.Position.Z },
                     FacingAngle = s.Blackboard.FacingDegrees,
-                    FOV = 90f,
+                    // The cone VisionCone actually sweeps, not a display value:
+                    // 2 x HalfAngle, and the light/weather-adjusted range from
+                    // the same formula the sweep uses.
+                    FOV = AI.Perception.VisionCone.DefaultHalfAngle * 2f,
+                    SightRange = AI.Perception.VisionCone.EffectiveSightRange(
+                        _environment.LightLevel, _weather.VisibilityMod,
+                        hasFlashlightOn: _environment.IsNight, hasNVGOn: false),
                     GoapTargetPosition = s.Blackboard.FinalDestination.HasValue ? new PositionDTO { X = s.Blackboard.FinalDestination.Value.X, Y = s.Blackboard.FinalDestination.Value.Z } : null,
                     LevelId = s.CurrentLevelId,
                     Health = (int)MathF.Round(s.Health),
@@ -75,7 +88,11 @@ public sealed class TelemetrySystem : ISimulationSystem
                     Type = "mutant",
                     Position = new PositionDTO { X = m.Position.X, Y = m.Position.Z },
                     FacingAngle = m.Blackboard.FacingDegrees,
-                    FOV = 120f,
+                    // MutantBehaviourSystem does not consult VisionCone, so
+                    // there is no cone to report. Zero tells the visualizer not
+                    // to draw one rather than inventing a sight model.
+                    FOV = 0f,
+                    SightRange = 0f,
                     GoapTargetPosition = m.Blackboard.FinalDestination.HasValue ? new PositionDTO { X = m.Blackboard.FinalDestination.Value.X, Y = m.Blackboard.FinalDestination.Value.Z } : null,
                     LevelId = "surface",
                     LayerIndex = 0,

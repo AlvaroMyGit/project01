@@ -155,6 +155,15 @@ namespace StalkerALifeSandbox.Web
         [JsonPropertyName("fov")]
         public float FOV { get; set; }
 
+        /// <summary>
+        /// Light- and weather-adjusted sight range, straight from
+        /// <c>VisionCone.EffectiveSightRange</c>. Zero for entities whose
+        /// perception is not modelled, which is how the visualizer knows not to
+        /// draw a cone for them.
+        /// </summary>
+        [JsonPropertyName("sightRange")]
+        public float SightRange { get; set; }
+
         [JsonPropertyName("goapTargetPosition")]
         public PositionDTO? GoapTargetPosition { get; set; }
 

@@ -98,7 +98,7 @@ public sealed class SimulationLoop : IDisposable
                 AI.Perception.PerceptionOptions.FromEnvironment()),
             new StalkerBehaviourSystem(_goap, _noise),
             new MutantBehaviourSystem(deps.MutantEcology, deps.Environment, deps.Weather),
-            new TelemetrySystem(deps.WebVisualizer)
+            new TelemetrySystem(deps.WebVisualizer, deps.Environment, deps.Weather)
         };
 
         _systems1Hz = new ISimulationSystem[]

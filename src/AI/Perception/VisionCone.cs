@@ -10,8 +10,34 @@ namespace StalkerALifeSandbox.AI.Perception;
 /// </summary>
 public sealed class VisionCone
 {
-    public float BaseSight { get; set; } = 80f;
-    public float HalfAngle { get; set; } = 55f;  // degrees
+    /// <summary>Unmodified sight range, before light and weather.</summary>
+    public const float DefaultBaseSight = 80f;
+
+    /// <summary>Half the cone's opening angle, in degrees. The full cone is twice this.</summary>
+    public const float DefaultHalfAngle = 55f;
+
+    /// <summary>Extra range from a lit torch at night.</summary>
+    public const float FlashlightBonus = 20f;
+
+    public float BaseSight { get; set; } = DefaultBaseSight;
+    public float HalfAngle { get; set; } = DefaultHalfAngle;  // degrees
+
+    /// <summary>
+    /// Spec D: SightRange = BaseSight * LightLevel * VisibilityMod + FlashlightBonus.
+    ///
+    /// Exposed as a static so the telemetry layer can report the same number the
+    /// sweep actually uses. The visualizer draws vision cones from it, and a
+    /// drawn cone that disagreed with the one being simulated would be worse
+    /// than drawing none.
+    /// </summary>
+    public static float EffectiveSightRange(
+        float lightLevel, float visibilityMod, bool hasFlashlightOn, bool hasNVGOn,
+        float baseSight = DefaultBaseSight)
+    {
+        float effectiveLight = hasNVGOn ? 1.0f : Math.Clamp(lightLevel, 0.05f, 1.0f);
+        float bonus = (!hasNVGOn && hasFlashlightOn) ? FlashlightBonus : 0f;
+        return (baseSight * effectiveLight * visibilityMod) + bonus;
+    }
 
     /// <summary>
     /// Run a perception sweep. <paramref name="origin"/> is where the NPC is
@@ -41,12 +67,10 @@ public sealed class VisionCone
         int sighted = 0;
         float cosHalf = MathF.Cos(HalfAngle * MathF.PI / 180f);
 
-        // Spec D: Night Vision Goggles grant full night vision with zero light footprint.
-        float effectiveLight = hasNVGOn ? 1.0f : Math.Clamp(lightLevel, 0.05f, 1.0f);
-        
-        // Spec D: SightRange = BaseSight * LightLevel * VisibilityMod + FlashlightBonus
-        float flashlightBonus = (!hasNVGOn && hasFlashlightOn) ? 20f : 0f;
-        float myRange = (BaseSight * effectiveLight * visibilityMod) + flashlightBonus;
+        // Spec D: Night Vision Goggles grant full night vision with zero light
+        // footprint; range is otherwise light- and weather-scaled. Shared with
+        // the telemetry layer so the drawn cone matches the simulated one.
+        float myRange = EffectiveSightRange(lightLevel, visibilityMod, hasFlashlightOn, hasNVGOn, BaseSight);
 
         foreach (var (id, pos, isTargetFlashlightOn) in candidates)
         {

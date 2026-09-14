@@ -259,17 +259,7 @@
             letter-spacing: 0.05em;
         }
 
-        /* Layer Controls */
-        #layerControls {
-            display: flex;
-            gap: 0;
-            padding: var(--s-3) var(--s-4);
-            border-bottom: 1px solid var(--border);
-            background: rgba(255,255,255,0.02);
-        }
-
         .layer-btn {
-            flex: 1;
             min-height: 32px;
             padding: var(--s-2) 0;
             background: transparent;
@@ -945,8 +935,10 @@
             <button onclick="App.forceEmission()" style="color:var(--danger);border-color:var(--danger)">EMISSION</button>
             <button onclick="App.forceWeather()" style="color:var(--accent);border-color:var(--accent)">CLEAR WEATHER</button>
             <div style="width:1px;height:20px;background:var(--border);margin:0 10px;"></div>
-            <span style="color:var(--text-dim);font-weight:700">Z-LEVEL (<span id="zVal">0</span>):</span>
-            <input type="range" id="zSlider" min="-8" max="8" value="0" oninput="App.setZLevel(this.value)" style="width:100px;">
+            <span style="color:var(--text-dim);font-weight:700">LAYER:</span>
+            <button type="button" class="layer-btn" onclick="App.setLayer(1)">Interior</button>
+            <button type="button" class="layer-btn active" onclick="App.setLayer(0)">Surface</button>
+            <button type="button" class="layer-btn" onclick="App.setLayer(-1)">Underground</button>
         </div>
         <div class="controls">
             <button type="button" class="panel-toggle active" id="btnToggleFeed"
@@ -969,12 +961,6 @@
             </div>
 
             <!-- Layer Toggle -->
-            <div id="layerControls" style="display:none;">
-                <button class="layer-btn" id="btnInterior" onclick="App.setLayer(1)">Interior +1</button>
-                <button class="layer-btn active" id="btnSurface" onclick="App.setLayer(0)">Surface 0</button>
-                <button class="layer-btn" id="btnUnderground" onclick="App.setLayer(-1)">Underground -1</button>
-            </div>
-
             <!-- Primary Tabs -->
             <div class="sidebar-tabs">
                 <div class="sidebar-tab active" onclick="switchMainTab('pda')">PDA FEED</div>
@@ -1052,8 +1038,7 @@
                 <label><input type="checkbox" id="chkVisionCones" onchange="App.toggleOverlay('vision')"> Vision Cones</label>
                 <label><input type="checkbox" id="chkGoapPaths" onchange="App.toggleOverlay('goap')"> GOAP Paths</label>
                 <label><input type="checkbox" id="chkSquadVectors" checked onchange="App.toggleOverlay('squads')"> Squad Vectors</label>
-                <label><input type="checkbox" id="chkTerritory" onchange="App.toggleOverlay('territory')"> Faction Territory Map</label>
-                <label><input type="checkbox" id="chkHazards" checked onchange="App.toggleOverlay('hazards')"> Hazard Mesh</label>
+                    <label><input type="checkbox" id="chkHazards" checked onchange="App.toggleOverlay('hazards')"> Hazard Mesh</label>
             </div>
 
             <div id="tooltip"></div>
@@ -1098,10 +1083,10 @@
     </script>
     
     <script type="module">
-    import { pingMap, init, setStatusCallback, setLayer, setInspectorCallback, setStormCallback, setMissionStatsCallback, setFollowCallback, focusEntity, getSelectedEntityId, getFollowEntityId, stopFollow, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay } from './app.js?v=26';
+    import { pingMap, init, setStatusCallback, setLayer, setInspectorCallback, setStormCallback, setMissionStatsCallback, setFollowCallback, focusEntity, getSelectedEntityId, getFollowEntityId, stopFollow, setSpeed, forceEmission, forceWeather, toggleOverlay } from './app.js?v=31';
 
     // ── Layer toggle ──────────────────────────────────────────────────────────
-    window.App = { pingMap, setLayer, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay };
+    window.App = { pingMap, setLayer, setSpeed, forceEmission, forceWeather, toggleOverlay };
 
     document.querySelectorAll('.layer-btn').forEach(b => b.addEventListener('click', () => {
         document.querySelectorAll('.layer-btn').forEach(x => x.classList.remove('active'));

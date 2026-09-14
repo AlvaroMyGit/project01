@@ -61,6 +61,7 @@ let _lastFrame        = null;
 // Pixi containers
 let bgContainer, wildernessContainer, buildingContainer, roadContainer, poiContainer, roofContainer;
 let anomalyContainer, radZoneContainer, corpseContainer, missionContainer, squadContainer, entityContainer, labelContainer;
+let visionContainer;
 let stormOverlay;
 
 // Texture cache
@@ -135,6 +136,8 @@ export async function init(canvasEl, onEntitySelect) {
     squadContainer   = new PIXI.Container();
     entityContainer  = new PIXI.Container();
     labelContainer   = new PIXI.Container();
+    visionContainer  = new PIXI.Container();
+    visionContainer.visible = false;   // off until the toggle asks for it
 
     viewport.addChild(bgContainer);
     viewport.addChild(wildernessContainer);
@@ -146,6 +149,7 @@ export async function init(canvasEl, onEntitySelect) {
     viewport.addChild(anomalyContainer);
     viewport.addChild(corpseContainer);
     viewport.addChild(missionContainer);
+    viewport.addChild(visionContainer);
     viewport.addChild(squadContainer);
     viewport.addChild(entityContainer);
     viewport.addChild(labelContainer);
@@ -957,7 +961,42 @@ function updateEntities(frame) {
         }
     });
 
+    drawVisionCones(frame.entities ?? []);
     declutterLabels();
+}
+
+// ─── Vision Cones ─────────────────────────────────────────────────────────────
+// The "Vision Cones" toggle existed as a working checkbox with nothing behind
+// it. It can be drawn honestly now: facingAngle, fov and sightRange all carry
+// real values on the wire, the range coming from VisionCone.EffectiveSightRange
+// so the drawn cone is the one the simulation actually sweeps.
+//
+// facingAngle is a compass bearing (atan2(x, z)), which is measured from +Z and
+// clockwise; canvas angles are measured from +X and anticlockwise. Hence the
+// conversion below rather than a bare degrees-to-radians.
+let _visionGfx = null;
+
+function drawVisionCones(entities) {
+    if (!visionContainer.visible) return;
+    if (!_visionGfx) { _visionGfx = new PIXI.Graphics(); visionContainer.addChild(_visionGfx); }
+    _visionGfx.clear();
+
+    for (const ent of entities) {
+        if (!ent.fov || !ent.sightRange) continue;      // perception not modelled
+        if (!layerMatches(ent)) continue;
+
+        const x = wX(ent.position.x), y = wY(ent.position.y);
+        const facing = (90 - ent.facingAngle) * Math.PI / 180;
+        const half   = (ent.fov / 2) * Math.PI / 180;
+        const r      = ent.sightRange;
+
+        _visionGfx.beginFill(0x66fcf1, 0.13);
+        _visionGfx.lineStyle(1, 0x66fcf1, 0.5);
+        _visionGfx.moveTo(x, y);
+        _visionGfx.arc(x, y, r, -facing - half, -facing + half);
+        _visionGfx.lineTo(x, y);
+        _visionGfx.endFill();
+    }
 }
 
 // ─── Label Decluttering ───────────────────────────────────────────────────────
@@ -1119,19 +1158,17 @@ export function pingMap(x, y) {
     viewport.animate({ position: new PIXI.Point(wX(x), wY(y)), scale: 1.2, time: 400 });
 }
 
-/**
- * Z-level slider. The sim only ever emits three layers (-1 underground,
- * 0 surface, 1 interior) via EntityDTO.LayerIndex, so the slider's -8..8 range
- * is clamped to that. See the audit: the control promises more than the data has.
- */
-export function setZLevel(z) {
-    setLayer(Math.max(-1, Math.min(1, Math.round(Number(z)))));
-}
-
 /** Overlay checkboxes. Only the layers that exist can be toggled. */
 export function toggleOverlay(name) {
     const on = (c, v) => { if (c) c.visible = v; };
     switch (name) {
+        case 'vision':
+            if (visionContainer) {
+                visionContainer.visible = !visionContainer.visible;
+                if (!visionContainer.visible && _visionGfx) _visionGfx.clear();
+                else if (_lastFrame) drawVisionCones(_lastFrame.entities ?? []);
+            }
+            break;
         case 'squads':
             if (squadContainer) squadContainer.visible = !squadContainer.visible;
             break;
@@ -1144,9 +1181,8 @@ export function toggleOverlay(name) {
         case 'goap':
             if (missionContainer) missionContainer.visible = !missionContainer.visible;
             break;
-        // 'vision' and 'territory' have no renderer yet. Vision cones need the
-        // facingAngle/fov already on the wire; territory needs a container that
-        // was never built. Both are listed in the audit.
+        // 'territory' has no renderer and its checkbox has been removed from
+        // the markup; the case stays so an old cached page cannot throw.
         default:
             break;
     }
