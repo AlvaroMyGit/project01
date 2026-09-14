@@ -319,6 +319,61 @@
             margin-bottom: var(--s-4);
         }
 
+        /* ── Progressive disclosure ──────────────────────────────────────
+           The inspector was 40 flat rows — a list, not a hierarchy — running
+           1,598px in a 784px column. Vitals are always visible; everything
+           else is a <details> that remembers whether you left it open. */
+        details.inspector-section > summary {
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: var(--s-2);
+            user-select: none;
+        }
+        details.inspector-section > summary::-webkit-details-marker { display: none; }
+        details.inspector-section > summary::after {
+            content: '+';
+            margin-left: auto;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--text-dim);
+            transition: color 0.15s;
+        }
+        details.inspector-section[open] > summary::after { content: '\2212'; }
+        details.inspector-section > summary:hover { color: var(--accent); }
+        details.inspector-section > summary:hover::after { color: var(--accent); }
+        details.inspector-section > summary:focus-visible {
+            outline: 2px solid var(--accent); outline-offset: 2px;
+        }
+        .inspector-section-body { padding-top: var(--s-2); }
+
+        /* Vitals — the three things worth seeing before any click. */
+        #inspectorVitals {
+            display: flex; flex-direction: column; gap: var(--s-2);
+            padding: var(--s-3) 0 var(--s-4);
+            border-bottom: 1px solid var(--border-strong);
+            margin-bottom: var(--s-4);
+        }
+        .vital-row { display: flex; align-items: center; gap: var(--s-3); min-height: var(--row-h); }
+        .vital-label {
+            font-family: 'Share Tech Mono', monospace; font-size: var(--fs-1);
+            color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em;
+            width: 74px; flex: none;
+        }
+        .hp-bar-bg {
+            flex: 1; height: 10px; background: rgba(255,255,255,0.07);
+            border-radius: 5px; overflow: hidden;
+        }
+        .hp-bar-fill { height: 100%; border-radius: 5px; background: var(--safe); transition: width 0.4s, background 0.4s; }
+        /* 35% is Stalker.IsWounded — the same threshold the simulation uses. */
+        .hp-bar-fill.wounded { background: var(--danger); }
+        .hp-bar-fill.hurt    { background: #fbbf24; }
+        .hp-val {
+            font-family: 'Share Tech Mono', monospace; font-size: var(--fs-2);
+            color: #fff; width: 62px; text-align: right; flex: none;
+            font-variant-numeric: tabular-nums;
+        }
+
         .inspector-section-title {
             font-size: var(--fs-1);
             font-family: 'Share Tech Mono', monospace;
@@ -1026,7 +1081,7 @@
     </script>
     
     <script type="module">
-    import { pingMap, init, setStatusCallback, setLayer, setInspectorCallback, setStormCallback, setMissionStatsCallback, setFollowCallback, focusEntity, getSelectedEntityId, getFollowEntityId, stopFollow, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay } from './app.js?v=21';
+    import { pingMap, init, setStatusCallback, setLayer, setInspectorCallback, setStormCallback, setMissionStatsCallback, setFollowCallback, focusEntity, getSelectedEntityId, getFollowEntityId, stopFollow, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay } from './app.js?v=23';
 
     // ── Layer toggle ──────────────────────────────────────────────────────────
     window.App = { pingMap, setLayer, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay };
@@ -1255,6 +1310,86 @@
         });
     }
 
+    // ── Inspector: vitals + progressive disclosure ────────────────────────
+    // 35% matches Stalker.IsWounded, so the bar turns red exactly when the
+    // simulation considers the stalker wounded rather than at some UI-only
+    // threshold.
+    const WOUNDED_FRACTION = 0.35;
+
+    function healthVital(hp) {
+        if (hp == null) return '';
+        const pct = Math.max(0, Math.min(100, hp));
+        // Strictly less-than, matching Stalker.IsWounded => Health < MaxHealth * 0.35.
+        // At exactly 35 the simulation does not consider them wounded, so nor does this.
+        const cls = pct < WOUNDED_FRACTION * 100 ? 'wounded' : pct < 70 ? 'hurt' : '';
+        return `<div class="vital-row">
+                    <span class="vital-label">Health</span>
+                    <div class="hp-bar-bg"><div class="hp-bar-fill ${cls}" style="width:${pct}%"></div></div>
+                    <span class="hp-val">${Math.round(hp)} HP</span>
+                </div>`;
+    }
+
+    // Which sections start open. Needs is the one people actually read; the
+    // rest are reference and stay a click away.
+    const SECTIONS_OPEN_BY_DEFAULT = ['needs', 'active-mission'];
+    const SECTIONS_STORAGE_KEY = 'stalker.inspector.openSections';
+    let openSections = null;
+
+    function sectionState() {
+        if (openSections) return openSections;
+        try {
+            const raw = localStorage.getItem(SECTIONS_STORAGE_KEY);
+            openSections = new Set(raw ? JSON.parse(raw) : SECTIONS_OPEN_BY_DEFAULT);
+        } catch {
+            // Private windows and blocked site data both throw here.
+            openSections = new Set(SECTIONS_OPEN_BY_DEFAULT);
+        }
+        return openSections;
+    }
+
+    function rememberSections() {
+        try { localStorage.setItem(SECTIONS_STORAGE_KEY, JSON.stringify([...sectionState()])); }
+        catch { /* nothing to do — the panel still works, it just forgets */ }
+    }
+
+    /**
+     * Rewrites every .inspector-section the templates produced into a <details>
+     * that remembers its own state. Done against the DOM rather than in each
+     * template so the section helpers (kill stats, mission, protection) are
+     * covered without touching any of them.
+     */
+    function collapsifySections(panel) {
+        const open = sectionState();
+        panel.querySelectorAll('div.inspector-section').forEach(sec => {
+            const titleEl = sec.querySelector('.inspector-section-title');
+            if (!titleEl) return;
+            const title = titleEl.textContent.trim();
+            const key = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+            const details = document.createElement('details');
+            details.className = 'inspector-section';
+            details.dataset.section = key;
+            details.open = open.has(key);
+
+            const summary = document.createElement('summary');
+            summary.className = 'inspector-section-title';
+            summary.textContent = title;
+
+            titleEl.remove();
+            const body = document.createElement('div');
+            body.className = 'inspector-section-body';
+            while (sec.firstChild) body.appendChild(sec.firstChild);
+
+            details.append(summary, body);
+            sec.replaceWith(details);
+
+            details.addEventListener('toggle', () => {
+                if (details.open) open.add(key); else open.delete(key);
+                rememberSections();
+            });
+        });
+    }
+
     function renderInspector(ent) {
         const panel = document.getElementById('inspectorContent');
         const isCorpse = ent.type === 'corpse' || ent.type === 'corpse_mutant';
@@ -1294,6 +1429,7 @@
                     <div class="coords-display">X: ${ent.position?.x?.toFixed(1) ?? '?'} &nbsp;·&nbsp; Y: ${ent.position?.y?.toFixed(1) ?? '?'}</div>
                     <div class="prop-row"><span class="prop-label">ID</span><span class="prop-val" style="font-family:monospace;font-size:var(--fs-2);color:var(--text-dim)">${id}</span></div>
                 </div>`;
+            collapsifySections(panel);
             return;
         }
 
@@ -1336,6 +1472,18 @@
             <div class="entity-name">${ent.name}</div>
             <div class="entity-faction" style="color:var(--${factionClass})">${ent.faction} · ${ent.type?.toUpperCase() ?? 'ENTITY'}${ent.rank ? ' · ' + ent.rank : ''}</div>
 
+            <div id="inspectorVitals">
+                ${healthVital(ent.health)}
+                <div class="vital-row">
+                    <span class="vital-label">Goal</span>
+                    <span class="goal-badge ${goalClass}">${ent.currentGoal || 'Idle'}</span>
+                </div>
+                <div class="vital-row">
+                    <span class="vital-label">State</span>
+                    <span class="desperation-pill ${ent.desperation ? 'high' : 'norm'}">${ent.desperation ? 'CRITICAL' : 'Normal'}</span>
+                </div>
+            </div>
+
             <div class="inspector-section">
                 <div class="inspector-section-title">Identity</div>
                 <div class="prop-row">
@@ -1347,26 +1495,10 @@
                     <span class="prop-val">${ent.layerIndex === 0 ? 'Surface' : ent.layerIndex === 1 ? 'Interior' : 'Underground'}</span>
                 </div>
                 <div class="prop-row">
-                    <span class="prop-label">Health</span>
-                    <span class="prop-val">${ent.health ?? '?'} HP</span>
-                </div>
-                ${disguiseHtml}
-            </div>
-
-            <div class="inspector-section">
-                <div class="inspector-section-title">AI State</div>
-                <div class="prop-row">
-                    <span class="prop-label">Current Goal</span>
-                    <span class="goal-badge ${goalClass}">${ent.currentGoal || 'Idle'}</span>
-                </div>
-                <div class="prop-row">
                     <span class="prop-label">Activity</span>
                     <span class="prop-val">${ent.activity || '—'}</span>
                 </div>
-                <div class="prop-row">
-                    <span class="prop-label">Desperation</span>
-                    <span class="desperation-pill ${ent.desperation ? 'high' : 'norm'}">${ent.desperation ? 'CRITICAL' : 'Normal'}</span>
-                </div>
+                ${disguiseHtml}
             </div>
 
             ${needsHtml}
@@ -1396,6 +1528,8 @@
                 <div class="coords-display">X: ${ent.position?.x?.toFixed(1) ?? '?'} &nbsp;·&nbsp; Y: ${ent.position?.y?.toFixed(1) ?? '?'}</div>
             </div>
         `;
+
+        collapsifySections(panel);
 
         if (typeof leaderboardData !== 'undefined' && leaderboardData.length) {
             renderLeaderboard(leaderboardData);
