@@ -85,6 +85,9 @@
             background: var(--bg); border: 1px solid var(--border); color: var(--text);
             padding: var(--s-2) var(--s-3); cursor: pointer; font-family: 'Rajdhani', sans-serif;
             font-weight: 600; text-transform: uppercase;
+            /* 24px is the common minimum for a pointer target; these were 27px
+               tall before the type scale and are now given a real floor. */
+            min-height: 32px;
         }
         #topBar button:hover, .lb-sort-btn:hover { border-color: var(--accent); color: var(--accent); }
         
@@ -120,13 +123,14 @@
             background: transparent; border: 1px solid var(--border);
             color: var(--text-dim); cursor: pointer; line-height: 1;
             font-family: 'Share Tech Mono', monospace; font-size: var(--fs-2);
-            padding: var(--s-1) var(--s-2); border-radius: 3px; flex: none;
+            min-height: 32px; padding: var(--s-1) var(--s-3);
+            border-radius: 3px; flex: none;
         }
         #btnCloseInspector:hover { border-color: var(--accent); color: var(--accent); }
 
         .panel-toggle {
             background: var(--bg); border: 1px solid var(--border); color: var(--text-dim);
-            padding: var(--s-1) var(--s-3); cursor: pointer;
+            min-height: 32px; padding: var(--s-1) var(--s-3); cursor: pointer;
             font-family: 'Rajdhani', sans-serif; font-weight: 600; text-transform: uppercase;
             font-size: var(--fs-2); border-radius: 3px;
         }
@@ -163,11 +167,22 @@
             backdrop-filter: blur(4px);
             z-index: 50;
         }
-        #overlayMenu label { font-size: var(--fs-3); display: flex; align-items: center; gap: var(--s-2); cursor: pointer; }
+        #overlayMenu label {
+            font-size: var(--fs-3); display: flex; align-items: center; gap: var(--s-2);
+            cursor: pointer;
+            /* The whole row is the target, not just the 13px box. */
+            min-height: 32px; padding: 0 var(--s-1);
+        }
+        #overlayMenu input[type="checkbox"] {
+            width: 18px; height: 18px; flex: none; cursor: pointer;
+            accent-color: var(--accent);
+        }
+        #overlayMenu label:hover { color: var(--accent); }
 
         /* Primary Sidebar Tabs */
         .sidebar-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg); }
-        .sidebar-tab { flex: 1; text-align: center; padding: var(--s-3) 0; font-size: var(--fs-3); font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; text-transform: uppercase;}
+        .sidebar-tab { flex: 1; text-align: center; min-height: 40px;
+            display: flex; align-items: center; justify-content: center; padding: var(--s-2) 0; font-size: var(--fs-3); font-weight: 700; cursor: pointer; border-bottom: 2px solid transparent; text-transform: uppercase;}
         .sidebar-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
         .sidebar-pane { display: none; flex: 1; flex-direction: column; overflow: hidden; }
         .sidebar-pane.active { display: flex; }
@@ -255,6 +270,7 @@
 
         .layer-btn {
             flex: 1;
+            min-height: 32px;
             padding: var(--s-2) 0;
             background: transparent;
             border: 1px solid var(--border);
@@ -857,6 +873,7 @@
             color: var(--text-dim);
             cursor: pointer;
             font-size: var(--fs-2);
+            min-height: 28px;
             padding: var(--s-1) var(--s-3);
             border-radius: 3px;
             font-family: 'Share Tech Mono', monospace;
@@ -1081,7 +1098,7 @@
     </script>
     
     <script type="module">
-    import { pingMap, init, setStatusCallback, setLayer, setInspectorCallback, setStormCallback, setMissionStatsCallback, setFollowCallback, focusEntity, getSelectedEntityId, getFollowEntityId, stopFollow, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay } from './app.js?v=23';
+    import { pingMap, init, setStatusCallback, setLayer, setInspectorCallback, setStormCallback, setMissionStatsCallback, setFollowCallback, focusEntity, getSelectedEntityId, getFollowEntityId, stopFollow, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay } from './app.js?v=26';
 
     // ── Layer toggle ──────────────────────────────────────────────────────────
     window.App = { pingMap, setLayer, setSpeed, forceEmission, forceWeather, setZLevel, toggleOverlay };

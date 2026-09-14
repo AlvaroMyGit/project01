@@ -892,6 +892,7 @@ function updateEntities(frame) {
 
             label.text    = ent.name?.split("'")[1] ?? ent.name?.split(' ')[0] ?? '';
             label.visible = true;
+            label.__pri   = followed ? 1 : selected ? 2 : 3;
             label.position.set(x + 7, y - 4);
         } else {
             // Pixel sprite tier
@@ -951,9 +952,90 @@ function updateEntities(frame) {
 
             label.text    = ent.name?.split("'")[1] ?? ent.name?.split(' ')[0] ?? '';
             label.visible = true;
+            label.__pri   = followed ? 1 : selected ? 2 : 3;
             label.position.set(x + 10, y - 6);
         }
     });
+
+    declutterLabels();
+}
+
+// ─── Label Decluttering ───────────────────────────────────────────────────────
+// At icon zoom and above the map draws a name beside every visible entity, and
+// they pile on top of each other — POI names, stalkers and mutants all
+// overlapping into an unreadable smear wherever the Zone is busy. This hides
+// the ones that would collide, keeping the most important label in any spot.
+//
+// Priority order: POI landmarks, then macro building names, then the followed
+// entity, then the selected one, then everyone else. Landmarks claim space first and entity names yield
+// to them, but landmarks compete with each other too — two POI names drawn over
+// one another read worse than one.
+const _placedRects = [];
+
+function overlaps(a, b) {
+    return a.x < b.x + b.w && a.x + a.w > b.x &&
+           a.y < b.y + b.h && a.y + a.h > b.y;
+}
+
+function declutterLabels() {
+    if (!labelContainer.visible) return;
+
+    const s  = viewport.scale.x;
+    const sw = app.screen.width;
+    const sh = app.screen.height;
+    _placedRects.length = 0;
+
+    const candidates = [];
+
+    // Landmarks go in at the highest priority, so they win every contest
+    // against an entity name — but they still compete with each other, because
+    // two POI names drawn over one another are less readable than one.
+    // These are destroyed and rebuilt by drawRoofs, and nothing else touches
+    // their visibility, so resetting here is safe and keeps a label from
+    // staying hidden after the space beside it clears.
+    for (const lbl of _roofLabels) {
+        lbl.visible = true;
+        const p = viewport.toScreen(lbl.x, lbl.y);
+        const w = lbl.width * s, h = lbl.height * s;
+        if (p.x + w < 0 || p.y + h < 0 || p.x > sw || p.y > sh) { lbl.visible = false; continue; }
+        candidates.push({ lbl, rect: { x: p.x, y: p.y, w, h }, pri: -1 });
+    }
+
+    // Macro bases carry a POI label AND a building label for the same place —
+    // one uppercase from roofContainer, one mixed-case from buildingContainer —
+    // so the name was being drawn twice on top of itself. The building label
+    // sits just below the POI label in priority and loses that contest, which
+    // removes the duplicate without deciding which name is the "right" one.
+    // Rebuilt by drawBuildings (which clears the container first), so resetting
+    // visibility here is safe.
+    for (const lbl of buildingContainer.children) {
+        if (!(lbl instanceof PIXI.Text)) continue;
+        lbl.visible = true;
+        const p = viewport.toScreen(lbl.x, lbl.y);
+        const w = lbl.width * s, h = lbl.height * s;
+        if (p.x + w < 0 || p.y + h < 0 || p.x > sw || p.y > sh) { lbl.visible = false; continue; }
+        candidates.push({ lbl, rect: { x: p.x, y: p.y, w, h }, pri: 0 });
+    }
+
+    for (const lbl of labelContainer.children) {
+        if (!lbl.visible || !lbl.text) continue;
+        const p = viewport.toScreen(lbl.x, lbl.y);
+        const w = lbl.width * s, h = lbl.height * s;
+        // Offscreen labels cost nothing to skip and must not reserve space.
+        if (p.x + w < 0 || p.y + h < 0 || p.x > sw || p.y > sh) { lbl.visible = false; continue; }
+        candidates.push({ lbl, rect: { x: p.x, y: p.y, w, h }, pri: lbl.__pri ?? 3 });
+    }
+
+    candidates.sort((a, b) => a.pri - b.pri);
+
+    for (const c of candidates) {
+        let clear = true;
+        for (const r of _placedRects) {
+            if (overlaps(c.rect, r)) { clear = false; break; }
+        }
+        if (clear) _placedRects.push(c.rect);
+        else c.lbl.visible = false;
+    }
 }
 
 // ─── LOD Reconcile ────────────────────────────────────────────────────────────
