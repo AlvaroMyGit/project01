@@ -47,6 +47,7 @@ This document provides a detailed reference for every module, class, and data fi
 - [Engineering Notes](#engineering-notes)
   - [Two failure modes that keep recurring](#two-failure-modes-that-keep-recurring)
   - [Invariants worth not breaking](#invariants-worth-not-breaking)
+  - [An accumulator with no decay is not a signal](#an-accumulator-with-no-decay-is-not-a-signal)
   - [Measurement](#measurement)
   - [Current equilibrium](#current-equilibrium)
   - [Tuning that is load-bearing](#tuning-that-is-load-bearing)
@@ -742,6 +743,44 @@ scratch buffer: `GoapWorldStateSync` reads it into `HeardDangerRumor` as
 `Values.Any(v => v >= 45)` across **every** key, so a key that no band lookup
 matches still trips it. Threat tags must be band names (`South`, `MidZone`,
 `DeepWild`, `North`), never level ids.
+
+### An accumulator with no decay is not a signal
+
+`LocationThreatMemory` was a counter that only ever went up. Every writer used
+`+=`, and the only reset was `NPCBlackboard.Reset()` on respawn. `PDANetwork`
+adds 15 per death to **every** listener, and `GoapWorldStateSync` turned 45 into
+`HeardDangerRumor` — so three deaths latched the flag on for good.
+
+Measured live before the fix: **100% of sampled stalkers had it set**, the Cordon
+band sitting at 99 and climbing. `GoalSeekShelter` takes +40 from that flag and
+`GoalPatrol` collapses from 25 to 8, so the entire population carried a
+permanent bias toward hiding and away from patrolling — with nothing in the
+report to show it.
+
+Two things worth generalising from it:
+
+- **A monotonic counter compared against a fixed threshold is a latch, not a
+  measurement.** Anything accumulating evidence over time needs to forget, and
+  the forgetting has to be exponential to stay TimeFactor-stable
+  (`DecayThreatMemory`, same idiom as the squad coupling and `EventChance`).
+- **Check the scope a signal is read at.** `heardDanger` was
+  `Values.Any(v >= 45)` across every band, so a stalker in the Cordon took cover
+  over deaths in Pripyat. `LocalBandThreat` was already being derived from the
+  local value one line above.
+
+Decay alone measured behaviour-neutral, because the busy bands sit far above the
+threshold either way; what it bought was quiet bands becoming legible (North 6
+and DeepWild 39, against South 907). Scoping the rumour to the local band is
+what actually moved the sim: stalkers in calm regions patrol instead of
+sheltering, which puts them in front of mutants — deaths to mutants +43% and to
+gunfire -6%, mission throughput +2%, population -5%.
+
+**Still open, and a design question rather than a bug:** equilibrium scales with
+the half-life, so at two game hours the Cordon settles near 900 against a
+threshold of 45 and the flag stays on wherever the population actually is. Five
+game minutes would put equilibrium near 38 and make the flag mean "something
+just happened here". `GoapTuning.DangerRumorThreshold` and
+`ThreatMemoryHalfLifeGameSeconds` are the two halves of that one calibration.
 
 ### Measurement
 

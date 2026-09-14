@@ -78,7 +78,14 @@ public static class GoapWorldStateSync
 
         string localBand = ZoneWorldGenerator.GetBandName(localThreat);
         float bandThreatMemory = bb.LocationThreatMemory.GetValueOrDefault(localBand, 0f);
-        bool heardDanger = bb.LocationThreatMemory.Values.Any(v => v >= 45f);
+
+        // The rumour is about the band this stalker is standing in, not the
+        // Zone as a whole. This was Values.Any(v >= 45) across every band, so a
+        // stalker in the Cordon took cover because of deaths in Pripyat — and
+        // since the southern bands carry nearly all the traffic, that made the
+        // flag true for everyone everywhere. LocalBandThreat was already being
+        // derived from exactly this value one line above.
+        bool heardDanger = bandThreatMemory >= GoapTuning.DangerRumorThreshold;
         Set(bb, GoapKeys.HeardDangerRumor, heardDanger);
         bb.WorldStateFloats["LocalBandThreat"] = bandThreatMemory;
 

@@ -39,6 +39,20 @@ public static class GoapTuning
     /// information.
     /// </summary>
     public const float ThreatMemoryHalfLifeGameSeconds = 2f * 3600f;
+
+    /// <summary>
+    /// Accumulated threat at which a band counts as "dangerous" and
+    /// <c>HeardDangerRumor</c> fires. PDANetwork contributes 15 per death, so
+    /// this is three deaths in the same band inside the decay window.
+    ///
+    /// This and <see cref="ThreatMemoryHalfLifeGameSeconds"/> are the two halves
+    /// of one calibration: equilibrium scales with the half-life, so raising the
+    /// memory raises the level the busy bands sit at. At two game hours the
+    /// Cordon settles near 900 against this 45, which means the flag is on
+    /// permanently wherever the population actually is. Shortening the half-life
+    /// is the lever that changes that, not this number.
+    /// </summary>
+    public const float DangerRumorThreshold = 45f;
 }
 
 /// <summary>World-state boolean keys used by the GOAP planner.</summary>
