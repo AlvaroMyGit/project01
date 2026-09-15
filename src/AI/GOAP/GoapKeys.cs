@@ -23,7 +23,7 @@ public static class GoapTuning
     public const float HealthyFraction = 0.30f;
 
     /// <summary>
-    /// Half-life of a location threat rumour, in game seconds. Two game hours.
+    /// Half-life of a location threat rumour, in game seconds. Five game minutes.
     ///
     /// <c>LocationThreatMemory</c> had no decay at all: every writer used
     /// <c>+=</c> and the only reset was on respawn. <c>PDANetwork</c> adds
@@ -38,7 +38,15 @@ public static class GoapTuning
     /// treats it as a trigger. Permanently on, for everyone, it stops being
     /// information.
     /// </summary>
-    public const float ThreatMemoryHalfLifeGameSeconds = 2f * 3600f;
+    /// Set from the measured inflow rather than picked. The Cordon absorbs
+    /// roughly 21 deaths a game-hour at 15 threat each, and equilibrium is
+    /// inflow / decay-rate, so it scales linearly with this number: two game
+    /// hours put the Cordon at ~907 against a threshold of 45 — permanently
+    /// alarmed — while five game minutes puts it at ~38, just under. The flag
+    /// therefore means "something is happening here right now" and clears when
+    /// it stops. Four deaths a game-minute apart no longer trigger it; four
+    /// within half a minute do.
+    public const float ThreatMemoryHalfLifeGameSeconds = 5f * 60f;
 
     /// <summary>
     /// Accumulated threat at which a band counts as "dangerous" and
@@ -46,11 +54,8 @@ public static class GoapTuning
     /// this is three deaths in the same band inside the decay window.
     ///
     /// This and <see cref="ThreatMemoryHalfLifeGameSeconds"/> are the two halves
-    /// of one calibration: equilibrium scales with the half-life, so raising the
-    /// memory raises the level the busy bands sit at. At two game hours the
-    /// Cordon settles near 900 against this 45, which means the flag is on
-    /// permanently wherever the population actually is. Shortening the half-life
-    /// is the lever that changes that, not this number.
+    /// of one calibration: equilibrium scales with the half-life, so the memory
+    /// is the lever that decides whether a band sits above or below this line.
     /// </summary>
     public const float DangerRumorThreshold = 45f;
 }

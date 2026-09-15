@@ -66,21 +66,38 @@ public class ThreatMemoryDecayTests
         Assert.Empty(bb.LocationThreatMemory);
     }
 
-    [Fact]
-    public void FreshRumoursStillOutrunTheDecay()
+    /// <summary>Four deaths in one band, <paramref name="apart"/> game seconds apart.</summary>
+    private static float BurstOfFour(float apart)
     {
-        // Decay must not make the signal unusable: a band that keeps taking
-        // deaths should still cross the line. PDANetwork.DeathThreatDelta is 15.
         var bb = new NPCBlackboard("npc");
         for (int i = 0; i < 4; i++)
         {
             bb.LocationThreatMemory.TryGetValue("South", out float cur);
-            bb.LocationThreatMemory["South"] = cur + 15f;
-            bb.DecayThreatMemory(60f, HalfLife);          // a game minute apart
+            bb.LocationThreatMemory["South"] = cur + 15f;   // PDANetwork.DeathThreatDelta
+            bb.DecayThreatMemory(apart, HalfLife);
         }
+        return bb.LocationThreatMemory.GetValueOrDefault("South");
+    }
 
-        Assert.True(bb.LocationThreatMemory["South"] >= 45f,
-            "four deaths a game-minute apart should still raise the alarm");
+    [Fact]
+    public void ABurstOfDeathsStillRaisesTheAlarm()
+    {
+        // Decay must not make the signal unusable — a band taking casualties in
+        // quick succession has to cross the line.
+        Assert.True(BurstOfFour(15f) >= GoapTuning.DangerRumorThreshold);
+        Assert.True(BurstOfFour(30f) >= GoapTuning.DangerRumorThreshold);
+    }
+
+    [Fact]
+    public void ASlowTrickleOfDeathsDoesNot()
+    {
+        // ...and this is the other half of the calibration. The Zone kills
+        // constantly; if a steady background rate were enough to trip the flag
+        // it would simply be on forever, which is the state this whole change
+        // exists to get out of. At five game minutes the Cordon's measured
+        // ~21 deaths/game-hour settles near 38, just under the line.
+        Assert.True(BurstOfFour(60f) < GoapTuning.DangerRumorThreshold,
+            "a death a game-minute is the Zone's normal background rate, not an alarm");
     }
 
     [Fact]
@@ -102,8 +119,34 @@ public class ThreatMemoryDecayTests
     }
 
     [Fact]
-    public void HalfLifeIsTwoGameHours()
+    public void HalfLifeIsFiveGameMinutes()
     {
-        Assert.Equal(7200f, GoapTuning.ThreatMemoryHalfLifeGameSeconds);
+        // Chosen so the busiest band's equilibrium lands just below the alarm
+        // threshold rather than far above it. See GoapTuning for the arithmetic.
+        Assert.Equal(300f, GoapTuning.ThreatMemoryHalfLifeGameSeconds);
+    }
+
+    [Fact]
+    public void EquilibriumInTheBusiestBandSitsBelowTheThreshold()
+    {
+        // The Cordon absorbs ~21 deaths a game-hour at 15 threat each. Feeding
+        // that rate in and letting it decay must settle under the line, or the
+        // flag latches on again and nothing has been fixed.
+        var bb = new NPCBlackboard("npc");
+        const float perHour = 21f, step = 30f;               // game seconds
+        for (int i = 0; i < 2000; i++)                        // ~16 game hours
+        {
+            if (i % (int)(3600f / perHour / step) == 0)
+            {
+                bb.LocationThreatMemory.TryGetValue("South", out float cur);
+                bb.LocationThreatMemory["South"] = cur + 15f;
+            }
+            bb.DecayThreatMemory(step, HalfLife);
+        }
+
+        float settled = bb.LocationThreatMemory.GetValueOrDefault("South");
+        Assert.True(settled < GoapTuning.DangerRumorThreshold,
+            $"steady background death rate settled at {settled:F1}, which must stay "
+            + $"under {GoapTuning.DangerRumorThreshold} or the flag never clears");
     }
 }

@@ -775,12 +775,40 @@ what actually moved the sim: stalkers in calm regions patrol instead of
 sheltering, which puts them in front of mutants — deaths to mutants +43% and to
 gunfire -6%, mission throughput +2%, population -5%.
 
-**Still open, and a design question rather than a bug:** equilibrium scales with
-the half-life, so at two game hours the Cordon settles near 900 against a
-threshold of 45 and the flag stays on wherever the population actually is. Five
-game minutes would put equilibrium near 38 and make the flag mean "something
-just happened here". `GoapTuning.DangerRumorThreshold` and
-`ThreatMemoryHalfLifeGameSeconds` are the two halves of that one calibration.
+**Calibrated from the measured inflow, not picked.** Equilibrium is
+inflow / decay-rate, so it scales linearly with the half-life. The Cordon
+absorbs roughly 21 deaths a game-hour at 15 threat each, which put it near 907
+at a two game-hour memory — permanently alarmed — and near 38 at five game
+minutes, just under the 45 line. The half-life is five game minutes, so the flag
+means "something is happening here right now" and clears when it stops. Four
+deaths a game-minute apart are the Zone's background rate and no longer trip it;
+four inside half a minute do.
+
+**The two stages measured very differently, and the second is the instructive
+one.** Rank gates which band a stalker can enter, and the population is
+bottom-heavy — Rookie and Trainee (57%) never leave the South, Experienced
+through Veteran (38%) reach MidZone, and only Expert and above (5%) reach the
+quiet northern bands. So scoping the rumour to the local band unlatched 5% of
+the population, and shortening the half-life unlatched the other 95%:
+
+| change | population freed | deaths to mutants | population |
+|---|---|---|---|
+| band-scoped rumour | 5% | +43% | -5% |
+| 5-game-minute memory | 95% | +8% | -2% |
+
+Nineteen times as many stalkers, a fifth of the effect. The northern bands the
+first change freed are the dangerous ones; the southern bands the second freed
+are mild, so the newly-mobile rookies mostly survive their patrols — stalkers
+killed 8% *more* mutants rather than only dying to them. A measured effect from
+a 5% sample does not extrapolate to the other 95%, and reasoning from share of
+population alone would have got the sign of the surprise wrong.
+
+**Adjacent gap, noticed and not fixed:** `GoalSeekShelter` has a base score of
+zero. Radiation over 50 and urgent fatigue are its only other inputs, so for a
+healthy stalker this rumour is the entire reason they ever take cover — nobody
+shelters for night, weather, or being outnumbered. Emissions are unaffected:
+`GoalFleeEmission` scores 95 on its own from `EmissionImminent` and only takes
++15 from the rumour.
 
 ### Measurement
 
