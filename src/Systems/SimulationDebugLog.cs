@@ -389,6 +389,14 @@ public static class SimulationDebugLog
     }
 
     /// <summary>
+    /// Give a goal a zero entry so it is reported even if it never wins. A goal
+    /// absent from the mix reads as "not a factor" when it may mean "never once
+    /// selected", which is a much louder result.
+    /// </summary>
+    public static void RegisterGoalName(string goalName) =>
+        _goalSelected.GetOrAdd(goalName, static _ => new long[1]);
+
+    /// <summary>
     /// A goal won the utility contest. Recorded at the planner's single
     /// selection point so it counts decisions, not the snapshot of what happens
     /// to be running when a periodic report fires.

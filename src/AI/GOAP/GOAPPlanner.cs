@@ -15,7 +15,15 @@ public sealed class GOAPPlanner
     private readonly List<GOAPGoal>   _availableGoals   = new();
 
     public void RegisterAction(GOAPAction action) => _availableActions.Add(action);
-    public void RegisterGoal(GOAPGoal goal)       => _availableGoals.Add(goal);
+    public void RegisterGoal(GOAPGoal goal)
+    {
+        _availableGoals.Add(goal);
+        // Seed the counter so a goal that never wins still appears in the report
+        // at 0.0% rather than vanishing from it. GoalPatrol was selected zero
+        // times in a 477,602-decision run and simply was not listed, which is
+        // precisely the case worth seeing.
+        Systems.SimulationDebugLog.RegisterGoalName(goal.Name);
+    }
 
     /// <summary>
     /// Evaluate all goals by utility, pick the best, then

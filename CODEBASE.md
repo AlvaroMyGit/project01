@@ -48,6 +48,7 @@ This document provides a detailed reference for every module, class, and data fi
   - [Two failure modes that keep recurring](#two-failure-modes-that-keep-recurring)
   - [Invariants worth not breaking](#invariants-worth-not-breaking)
   - [An accumulator with no decay is not a signal](#an-accumulator-with-no-decay-is-not-a-signal)
+  - [A goal can be permanently relevant and almost never succeed](#a-goal-can-be-permanently-relevant-and-almost-never-succeed)
   - [Measurement](#measurement)
   - [Current equilibrium](#current-equilibrium)
   - [Tuning that is load-bearing](#tuning-that-is-load-bearing)
@@ -834,6 +835,45 @@ healthy stalker this rumour is the entire reason they ever take cover — nobody
 shelters for night, weather, or being outnumbered. Emissions are unaffected:
 `GoalFleeEmission` scores 95 on its own from `EmissionImminent` and only takes
 +15 from the rumour.
+
+### A goal can be permanently relevant and almost never succeed
+
+Goal selection went uninstrumented until late, and the first run of the
+histogram found something no downstream metric had shown: **`VisitTrader` takes
+~80% of every decision in the sim, and `GoalPatrol` is selected zero times** in a
+477,602-decision run. Patrol is not rare — it never wins at all.
+
+That matters beyond curiosity. The −4% population from enabling hearing was
+explained twice, wrongly: first as stalkers breaking for shelter (impossible —
+`GoalSeekShelter` returns 0 before the rumour bonus is reached unless radiation
+≥ 50 or fatigue ≥ 60), then as `GoalPatrol` being suppressed from 25 to 8
+(impossible — Patrol never wins anyway). Both explanations were reasoned from
+source and both were wrong. The real mechanism is still unknown.
+
+The same run showed `AcceptMission` selected and then unplannable **50,180
+times**, 11% of all decisions — against 1,457 null plans being alarming enough
+to diagnose the mission-loop stall earlier in the project.
+
+**The obvious fix was tried and made it worse.**
+`ActionAcceptMission.IsValid` re-checks `IsAtMissionGiver`, its own precondition
+and the effect `ActionGoToMissionGiver` produces — textbook the mistake that was
+fixed in `ActionTurnInMission`. Removing it makes the chain buildable and
+measured: GOAP planning work **+116%**, rank promotions **−13%**, missions
+completed **−2%**. `AcceptMission` selections went ~49,000 → ~466,000 against
+~747 acceptances either way, a 0.16% success rate.
+
+The guard was not the disease. `GoalAcceptMission.IsRelevant` keys on
+`HasMissionOffer`, which `GoapWorldStateSync` derives from
+`FindNearestIssuerWithOffer` at its default **3,500**-unit search — while signing
+requires being within `MissionGiverRadius`, **120**. A 29× mismatch, so virtually
+every stalker permanently "has an offer" and the goal sits permanently relevant
+at base score 32. `IsValid` was an accidental brake on a goal that should not
+have been relevant in the first place.
+
+Generalising: **a guard that looks wrong may be load-bearing against a defect
+further up.** Before removing one, check what it is holding back — and narrow the
+relevance, not the validity. Pinned by `MissionAcceptanceChainTests`, which
+deliberately asserts the *current* behaviour and says why.
 
 ### Measurement
 

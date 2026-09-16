@@ -129,7 +129,14 @@ def run_once() -> dict:
     out = {}
     for key, pat in PATTERNS.items():
         m = re.search(pat, report)
-        out[key] = int(m.group(1)) if m else None
+        if m is None:
+            out[key] = None
+            continue
+        raw = m.group(1)
+        # Percentages are fractional; counters are not. Keeping counters as ints
+        # keeps the diff table readable. This parsed everything as int until the
+        # goal-mix percentages arrived and aborted a whole capture on "81.4".
+        out[key] = float(raw) if "." in raw else int(raw)
     return out
 
 
