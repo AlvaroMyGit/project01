@@ -803,6 +803,30 @@ killed 8% *more* mutants rather than only dying to them. A measured effect from
 a 5% sample does not extrapolate to the other 95%, and reasoning from share of
 population alone would have got the sign of the surprise wrong.
 
+**Step 1 of the perception switch, measured.** With
+`STALKER_PERCEPTION_THREAT_MEMORY=on`, hearing writes into the same band memory.
+Sampling 30 stalkers live gave **18 distinct threat profiles** where every
+previous sample had given exactly one — the South band varying 20 to 39 per
+stalker because each hears different gunfire, while MidZone sat at an identical
+15.1 for all of them because only `PDANetwork`'s broadcast reaches it. The
+varying band is the one perception feeds; the constant band is the one it does
+not. That is the first genuinely per-stalker threat signal the project has had.
+
+It costs population: −4% alive, +6% casualties, +5% deaths to gunfire, −6%
+deaths to mutants, −3% missions completed, all against a baseline captured with
+the flag off. The mechanism is legible — stalkers who hear shooting break for
+shelter, shelters concentrate them, and concentration produces more firefights —
+but it is a difficulty change, so the flag stays off by default pending that
+call.
+
+A prediction worth recording as wrong: scaling the shadow-mode figure of 172,532
+heard events over 400 stalkers predicted perception would add ~10 to the average
+band and tip equilibrium from ~38 to ~48, just over the line. Observed median
+was 28.8 with a maximum of 39.5 and nothing over the threshold at sample time.
+The averaging was the error — hearing is spatial, so a few stalkers beside
+firefights hear a great deal and most hear almost nothing. A mean over a
+spatially clustered quantity predicts a population that does not exist.
+
 **Adjacent gap, noticed and not fixed:** `GoalSeekShelter` has a base score of
 zero. Radiation over 50 and urgent fatigue are its only other inputs, so for a
 healthy stalker this rumour is the entire reason they ever take cover — nobody

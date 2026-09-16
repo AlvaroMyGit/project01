@@ -230,8 +230,7 @@ The core simulation is feature-complete per the v4.5 design. Nearest work first.
 
 ### Next up
 
-- **Perception driving combat** — the sensors run and are measured, but combat still picks targets by proximity. Two steps, each measured on its own: let hearing reach GOAP (`STALKER_PERCEPTION_THREAT_MEMORY`), then move target selection onto `KnownEntities`. Perception covers ~59% of the engagements proximity offers, so the flip is a lethality change as much as a realism one
-- **Vision cones in the visualizer** — `facingAngle` and `fov` now carry real values on the wire for stalkers and mutants; `visualizer/app.js` reads neither yet
+- **Perception driving combat** — the sensors run, are drawn on the map, and are measured, but combat still picks targets by proximity. Perception covers ~59% of the engagements proximity offers, so moving target selection onto `KnownEntities` is a lethality change as much as a realism one. Hearing reaching GOAP (`STALKER_PERCEPTION_THREAT_MEMORY`) is the smaller first step
 - **Population target** — the design asks for 750 stalkers and the Zone settles at ~335. Closing that is a spawn-rate-versus-lethality decision, not an optimisation
 - **Follower planning** — squad delegation was the cheaper half of the answer. Letting followers plan outright remains open and was last measured 1.8× over the 1 Hz budget
 - **Personal grudges** — `PersonalMemory.cs` exists unwired; its payoff is stalker-level vendettas rather than faction-level hostility
