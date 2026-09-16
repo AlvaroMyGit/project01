@@ -49,6 +49,7 @@ This document provides a detailed reference for every module, class, and data fi
   - [Invariants worth not breaking](#invariants-worth-not-breaking)
   - [An accumulator with no decay is not a signal](#an-accumulator-with-no-decay-is-not-a-signal)
   - [A goal can be permanently relevant and almost never succeed](#a-goal-can-be-permanently-relevant-and-almost-never-succeed)
+  - [A self-stabilizing feedback loop is not a distribution to calibrate against](#a-self-stabilizing-feedback-loop-is-not-a-distribution-to-calibrate-against)
   - [Measurement](#measurement)
   - [Current equilibrium](#current-equilibrium)
   - [Tuning that is load-bearing](#tuning-that-is-load-bearing)
@@ -874,6 +875,65 @@ Generalising: **a guard that looks wrong may be load-bearing against a defect
 further up.** Before removing one, check what it is holding back — and narrow the
 relevance, not the validity. Pinned by `MissionAcceptanceChainTests`, which
 deliberately asserts the *current* behaviour and says why.
+
+### A self-stabilizing feedback loop is not a distribution to calibrate against
+
+The goal-selection histogram's headline finding was `GoalVisitTrader` winning
+~80% of every decision in the sim while `GoalPatrol` — "roam when nothing
+urgent is happening" — was selected close to never (0.0–0.1% across every run
+measured). Fixing it took two wrong attempts before the actual mechanism
+turned up, and each wrong attempt was informative in a different way.
+
+**Attempt 1.** `GoalVisitTrader` carried a "solvent but otherwise fine"
+fallback, `Rubles >= 450 => 36`, sitting above `GoalPatrol`'s flat 25 with no
+comment justifying the number. It read exactly like the kind of oversight this
+file already records elsewhere — a threshold picked in isolation, never
+checked against a sibling goal. Removed it, measured over **five** runs against
+the stored baseline (this decision was worth the wider repeat count). The goal
+mix did not move at all: VisitTrader still ~80%, Patrol still ~0%. The branch
+was real and was not the problem.
+
+**Attempt 2.** Rather than guess a third time, the goal was instrumented
+directly — `GoalVisitTrader.Tag` records which branch fires, reported as
+"VisitTrader reasons" — mirroring the discipline that built the goal-selection
+histogram itself. One run found the actual driver: the wealth tiers
+(`Rubles >= 700/1000/1500`, scoring 42/52/60) accounted for **92%** of every
+nonzero evaluation, overwhelmingly the middle one. A same-run population
+snapshot (also added as a permanent diagnostic — "RUtiers" in the periodic
+report) explained why: at steady state (422 alive) the population averaged
+**963 RU**, with **93.6%** holding ≥ 700 and **45.5%** holding ≥ 1000. The ladder
+was never detecting rich outliers. It was describing the population.
+
+The obvious next move — raise the thresholds against that measured
+distribution (700/1000/1500 → 1200/1800/2800) — was tried and made things worse
+in a new way. Over the *same* run length, population average climbed from ~963
+to **~1463 and was still rising** when the run ended, while the goal mix barely
+moved (80.5% → 78.8%, inside single-run noise). Raising the threshold did not
+lower the hit rate; it moved the equilibrium.
+
+**The reason is a feedback loop, not a fixed distribution.** Crossing a wealth
+tier is what triggers the trader visit that spends the money back down, so
+population wealth naturally settles near whatever the threshold currently is —
+a thermostat, not a fixed target to measure once and calibrate against. Worse,
+the spending side has its own one-way limit: gear improves monotonically over a
+long run, so once most of the population is decently equipped there is
+increasingly nothing left worth buying, visits stop draining anything, and
+rubles accumulate without bound regardless of where the threshold sits.
+
+Both attempts were reverted. The wealth-tier values are unchanged from before
+this investigation; what stayed is the instrumentation (`GoalVisitTrader.Tag`,
+the "VisitTrader reasons" and "RUtiers" report lines) and the diagnosis. The
+real fix is economy design, not a goal-utility literal — either a genuine
+ongoing ruble sink independent of the visit trigger, or a wealth-relative
+rather than absolute-threshold utility — and is left for its own pass rather
+than bolted onto this one.
+
+Generalising: **when a value you're calibrating against is itself downstream of
+the behaviour you're calibrating, measuring it once and tuning to that snapshot
+will not hold** — the measurement moves as soon as you act on it. Check whether
+a distribution is exogenous (population demographics, a fixed game constant) or
+endogenous (produced by the very decisions being tuned) before treating a
+one-time measurement as a target.
 
 ### Measurement
 

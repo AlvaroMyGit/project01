@@ -72,6 +72,16 @@ public static class SimulationDebugLog
     private static readonly ConcurrentDictionary<string, long[]> _goalSelected = new();
     private static readonly ConcurrentDictionary<string, long[]> _goalUnplannable = new();
 
+    // Which branch inside GoalVisitTrader.EvaluateUtility actually fires.
+    // Added after two guesses from source were both wrong: removing a
+    // suspected fallback branch measured as zero effect, and raising the
+    // wealth thresholds against the measured population distribution turned
+    // out to chase a self-correcting equilibrium rather than fix anything.
+    // This goal wins ~80% of every decision in the sim; reasoning about why
+    // from source alone is exactly what this instrument replaces. See
+    // GoalVisitTrader.cs for the full account.
+    private static readonly ConcurrentDictionary<string, long[]> _visitTraderReason = new();
+
     // Perception, measured against the proximity model combat still uses
     private static long _perceptionObservers, _perceptionSeen, _perceptionHeard;
     private static long _perceptionContested, _perceptionKnown;
@@ -423,6 +433,14 @@ public static class SimulationDebugLog
         Interlocked.Increment(ref _goalUnplannable.GetOrAdd(goalName, static _ => new long[1])[0]);
     }
 
+    /// <summary>Which condition inside GoalVisitTrader.EvaluateUtility returned
+    /// its nonzero score this call. See the field comment above.</summary>
+    public static void RecordVisitTraderReason(string reason)
+    {
+        if (!Enabled) return;
+        Interlocked.Increment(ref _visitTraderReason.GetOrAdd(reason, static _ => new long[1])[0]);
+    }
+
     public static void CombatExchange()
     {
         if (Enabled) Interlocked.Increment(ref _combatExchanges);
@@ -536,6 +554,15 @@ public static class SimulationDebugLog
         int gammaHelmets = aliveS.Count(s =>
             s.Equipment.EquippedHelmet?.Id.StartsWith("helm_", StringComparison.OrdinalIgnoreCase) == true);
         float avgRubles = aliveS.Count > 0 ? aliveS.Average(s => s.Needs.Rubles) : 0f;
+        // How many stalkers sit above each GoalVisitTrader wealth tier, not
+        // just the population mean. This is what showed the tiers describe
+        // the population rather than detecting outliers (93.6% >= 700 at one
+        // measured steady state) — and, when the tiers were raised instead,
+        // that the population's wealth chases the threshold rather than
+        // settling below it. See GoalVisitTrader's class doc.
+        int rubles700 = aliveS.Count(s => s.Needs.Rubles >= 700f);
+        int rubles1000 = aliveS.Count(s => s.Needs.Rubles >= 1000f);
+        int rubles1500 = aliveS.Count(s => s.Needs.Rubles >= 1500f);
         int tradeGoal = aliveS.Count(s => s.IsSquadLeader &&
             StalkerGoapService.DescribeGoal(s).Contains("Trade", StringComparison.OrdinalIgnoreCase));
         int missionGoal = aliveS.Count(s => s.IsSquadLeader &&
@@ -551,6 +578,7 @@ public static class SimulationDebugLog
             .Append($"real={realElapsed:F1}min game={FormatGameTime(time)} ")
             .Append($"alive S={aliveStalkers} M={aliveMutants} corpses={corpseCount} lootable={lootableCorpses} ")
             .Append($"gammaGear out={gammaOutfits} helm={gammaHelmets} avgRU={avgRubles:F0} ")
+            .Append($"RUtiers>=700:{rubles700} >=1000:{rubles1000} >=1500:{rubles1500} of {aliveS.Count} ")
             .Append($"leaderGoals trade={tradeGoal} mission={missionGoal} ")
             .Append($"emission={emissions.CurrentPhase} nextIn={nextEmissionGameSec / 60f:F0}gmin ")
             .Append($"desperate={desperate} hungry={criticalNeeds} radHigh={radHigh} avgRad={avgRad:F1} ")
@@ -707,6 +735,15 @@ public static class SimulationDebugLog
                     $"({(double)unplannable / selectedTotal * 100:F1}% of decisions) — " +
                     string.Join("  ", failed));
             }
+        }
+
+        long visitTraderTotal = _visitTraderReason.Values.Sum(v => v[0]);
+        if (visitTraderTotal > 0)
+        {
+            var reasons = _visitTraderReason
+                .OrderByDescending(kv => kv.Value[0])
+                .Select(kv => $"{kv.Key} {(double)kv.Value[0] / visitTraderTotal * 100:F1}%");
+            sb.AppendLine($"  VisitTrader reasons ({visitTraderTotal} nonzero evals): {string.Join("  ", reasons)}");
         }
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");
         sb.AppendLine($"Emission storms: {_emissionStorms} | Last phase: {_lastEmissionPhase}");
