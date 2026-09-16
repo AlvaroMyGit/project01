@@ -171,15 +171,16 @@ public class PerceptionTests
         Assert.True(bb.LocationThreatMemory.GetValueOrDefault("cordon") > 0f);
     }
 
-    // ── Shadow mode is enforced, not assumed ────────────────────────────────
+    // ── Hearing can be observed without being acted on ──────────────────────
 
     [Fact]
-    public void ShadowMode_HearsTheShot_ButDoesNotRecordThreat()
+    public void ThreatRecordingCanBeSuppressedWithoutSuppressingHearing()
     {
         // LocationThreatMemory is not an observation buffer: GoapWorldStateSync
         // reads it to derive HeardDangerRumor, so a write here steers goal
-        // selection. Unguarded it moved missions accepted -12% against the
-        // stored baseline while the system was supposedly read-only.
+        // selection. That is now deliberate and on by default, but the two must
+        // stay separable — perceiving a shot and acting on it are different
+        // things, and the off switch is what made the effect measurable.
         var bb = At(Vector3.Zero);
         var bus = new NoiseBus();
         bus.EmitGunshot("shooter", new Vector3(0f, 0f, 10f), regionId: "cordon");
@@ -220,12 +221,27 @@ public class PerceptionTests
     }
 
     [Fact]
-    public void ShadowIsTheDefault()
+    public void HearingReachesGoalSelectionByDefault()
     {
+        // Was off while perception ran purely as an observer. Measured on its
+        // own first: it makes threat memory genuinely per-stalker (18 distinct
+        // profiles across 30 sampled, against exactly one from the global
+        // PDANetwork broadcast alone) at a cost of ~4% of the population.
         var options = new PerceptionOptions();
 
         Assert.True(options.Enabled);
-        Assert.False(options.ThreatMemoryFeedsGoap);
+        Assert.True(options.ThreatMemoryFeedsGoap);
+    }
+
+    [Fact]
+    public void HearingCanStillBeTakenOutOfGoalSelection()
+    {
+        // The gate stays so the behaviour can be turned off without turning the
+        // sensors off — they are separate switches on purpose.
+        var quiet = new PerceptionOptions { ThreatMemoryFeedsGoap = false };
+
+        Assert.True(quiet.Enabled);
+        Assert.False(quiet.ThreatMemoryFeedsGoap);
     }
 
     [Fact]

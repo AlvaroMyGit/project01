@@ -189,11 +189,12 @@ Drives mutant AI at 10 Hz: feeding on nearby corpses, nocturnal den retreat, avo
 ### [`PerceptionSystem.cs`](file:///home/alvaromendes/Documents/project01/src/Core/Systems/PerceptionSystem.cs)
 Runs `VisionCone` and `AcousticSensor` for every living stalker at 10 Hz, ahead
 of `StalkerBehaviourSystem` so what a stalker knows is gathered before anything
-acts on it. Reports shadow-mode coverage: of the hostile pairs the proximity
-model would hand to combat, how many perception already knows about.
+acts on it. Reports coverage: of the hostile pairs the proximity model would
+hand to combat, how many perception already knows about.
 
-Two things make the "shadow" real rather than assumed. Nothing outside this
-system reads `KnownEntities` — but `AcousticSensor` also raises
+Adoption is staged: hearing reaches goal selection, combat targeting does not.
+Getting there took two rounds of measurement. While this ran purely as an
+observer, nothing outside it read `KnownEntities` — but `AcousticSensor` also raises
 `LocationThreatMemory`, which `GoapWorldStateSync` turns into
 `HeardDangerRumor`, so hearing is a live input to goal selection. Unguarded it
 moved missions accepted by **-12%** and mutant deaths by **+51%** against the
@@ -301,9 +302,9 @@ Located in `src/AI/GOAP/Goals/`:
 > **Note:** Both sensors were complete from the start of the project and never
 > called once. The missing input was `NPCBlackboard.Facing` — nothing tracked
 > which way anyone was pointing. With that in place they run every tick, but
-> **in shadow mode**: they fill `KnownEntities` and report coverage, while combat
-> still selects targets by proximity. See `PerceptionSystem` for why the swap is
-> staged rather than flipped.
+> **staged**: what stalkers hear reaches their goal selection, while combat
+> still selects targets by proximity. See `PerceptionSystem` for why the second
+> half is measured rather than flipped.
 
 ### Social
 
@@ -815,9 +816,9 @@ not. That is the first genuinely per-stalker threat signal the project has had.
 It costs population: −4% alive, +6% casualties, +5% deaths to gunfire, −6%
 deaths to mutants, −3% missions completed, all against a baseline captured with
 the flag off. The mechanism is legible — stalkers who hear shooting break for
-shelter, shelters concentrate them, and concentration produces more firefights —
-but it is a difficulty change, so the flag stays off by default pending that
-call.
+shelter, shelters concentrate them, and concentration produces more firefights.
+Adopted at that price, since the per-stalker signal is what the phase was for;
+`STALKER_PERCEPTION_THREAT_MEMORY=off` gets the population back.
 
 A prediction worth recording as wrong: scaling the shadow-mode figure of 172,532
 heard events over 400 stalkers predicted perception would add ~10 to the average

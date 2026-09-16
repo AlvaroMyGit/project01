@@ -61,7 +61,7 @@ public static class SimulationDebugLog
     // how much fighting happens and started measuring how much of it is lethal.
     private static long _combatExchanges;
 
-    // Perception, running in shadow mode against the proximity model
+    // Perception, measured against the proximity model combat still uses
     private static long _perceptionObservers, _perceptionSeen, _perceptionHeard;
     private static long _perceptionContested, _perceptionKnown;
 
@@ -633,7 +633,7 @@ public static class SimulationDebugLog
                 ? (double)_perceptionKnown / _perceptionContested * 100
                 : 0;
             sb.AppendLine(
-                $"Perception (shadow): {_perceptionSeen} sightings, {_perceptionHeard} heard");
+                $"Perception: {_perceptionSeen} sightings, {_perceptionHeard} heard");
             sb.AppendLine(
                 $"  Coverage of proximity engagements: {_perceptionKnown}/{_perceptionContested} " +
                 $"({coverage:F1}%) — the rest are hostiles in combat range that " +

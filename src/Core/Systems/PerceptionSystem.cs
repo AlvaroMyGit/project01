@@ -15,23 +15,27 @@ namespace StalkerALifeSandbox.Core.Systems;
 /// was that nothing tracked which way anyone was facing. With
 /// <c>NPCBlackboard.Facing</c> in place they finally have their inputs.
 ///
-/// RUNS IN SHADOW MODE by default. Perception fills <c>KnownEntities</c> and
-/// reports how much of the proximity model's engagement set it covers, but
-/// combat is NOT wired to it. Combat rates are tuned (see CombatBalanceConfig)
-/// and swapping the detection model blind would destabilise them — the same
-/// reason the mutant-speed and healing changes were measured before being
-/// trusted.
+/// ADOPTION IS STAGED. Hearing reaches goal selection
+/// (<see cref="PerceptionOptions.ThreatMemoryFeedsGoap"/>, on by default), but
+/// combat target selection is still proximity-based: perception covers only
+/// ~59% of the engagements proximity offers, combat rates are tuned (see
+/// CombatBalanceConfig), and swapping the detection model would be a lethality
+/// change as much as a realism one. This system reports that coverage so the
+/// second half can be judged rather than guessed.
 ///
-/// "Shadow" is enforced, not assumed, and it took two rounds of measurement to
-/// actually earn the word. Nothing outside this system reads
-/// <c>KnownEntities</c>, but two other channels leaked:
+/// Getting to that point took two rounds of measurement. While this ran purely
+/// as an observer, nothing outside it read <c>KnownEntities</c> — but two other
+/// channels leaked behaviour anyway:
 ///
 /// <list type="number">
 /// <item><description>
 /// <see cref="AcousticSensor"/> raises <c>LocationThreatMemory</c>, which
 /// <c>GoapWorldStateSync</c> turns into <c>HeardDangerRumor</c> — a live input
-/// to goal selection. Unguarded it moved missions accepted -12%. Now gated
-/// behind <see cref="PerceptionOptions.ThreatMemoryFeedsGoap"/>.
+/// to goal selection. Unguarded it moved missions accepted -12%, because noises
+/// were tagged with a level id no band lookup matched and threat memory had no
+/// decay, so the flag latched on for everyone. With both fixed this is now a
+/// deliberate input rather than a leak, and the gate stays only so it can be
+/// turned off.
 /// </description></item>
 /// <item><description>
 /// Refreshing <c>bb.CurrentPosition</c> so the sensors had an accurate origin.

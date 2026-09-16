@@ -8,35 +8,48 @@ namespace StalkerALifeSandbox.AI.Perception;
 ///
 /// <see cref="VisionCone"/> and <see cref="AcousticSensor"/> were written at the
 /// start of the project and never called once, because nothing tracked which way
-/// an NPC was facing. <c>NPCBlackboard.Facing</c> supplied that missing input, so
-/// they now run — but combat still selects targets by proximity, and combat rates
-/// are tuned (see CombatBalanceConfig). Perception therefore starts in shadow
-/// mode: it observes and reports, and does not steer anyone.
+/// an NPC was facing. <c>NPCBlackboard.Facing</c> supplied that missing input.
+///
+/// Adoption is staged. Hearing now reaches goal selection
+/// (<see cref="ThreatMemoryFeedsGoap"/>, on); combat target selection is still
+/// proximity-based, because combat rates are tuned (see CombatBalanceConfig) and
+/// perception covers only ~59% of the engagements proximity offers, so that half
+/// is a lethality change as much as a realism one.
 /// </summary>
 public sealed record PerceptionOptions
 {
     /// <summary>
     /// Run the sensors at all. Off skips the sweep entirely — worth having
-    /// because perception is not free even in shadow mode (~2.2 ms/tick, about
-    /// a quarter of the tick budget at 430 stalkers).
+    /// because perception is not free (~2.2 ms/tick, about a quarter of the tick
+    /// budget at 430 stalkers).
     /// </summary>
     public bool Enabled { get; init; } = true;
 
     /// <summary>
     /// Let what stalkers hear reach their decision-making.
     ///
-    /// This is the flag that makes shadow mode actually a shadow.
     /// <see cref="AcousticSensor"/> raises <c>LocationThreatMemory</c>, and
     /// <c>GoapWorldStateSync</c> reads that dictionary to derive
     /// <c>HeardDangerRumor</c> and <c>LocalBandThreat</c> — so hearing is a
-    /// direct input to goal selection, not an observation. With it left on, a
-    /// supposedly read-only system moved missions accepted by -12% and mutant
-    /// deaths by +51% against the stored baseline.
+    /// direct input to goal selection, not an observation.
     ///
-    /// Turning this on is the first half of adopting perception, and should be
-    /// measured on its own before combat targeting is switched over.
+    /// On, after being measured on its own. It is what makes threat memory
+    /// genuinely per-stalker: sampling 30 stalkers gives 18 distinct profiles
+    /// where the global <c>PDANetwork</c> broadcast alone gives exactly one, the
+    /// band each stalker hears gunfire in varying 20 to 39 while the band only
+    /// the broadcast reaches sits identical for everyone.
+    ///
+    /// It costs roughly 4% of the population and 3% of mission throughput.
+    /// Stalkers who hear shooting break for shelter, shelters concentrate them,
+    /// and concentration produces more firefights — deaths to gunfire +5%,
+    /// deaths to mutants -6%. Turn it off to get that back.
+    ///
+    /// This was measured as -12% missions when first tried, before the fixes
+    /// underneath it: noises were tagged with a level id no band lookup matched,
+    /// and threat memory had no decay, so the flag latched on permanently for
+    /// everyone. Neither is true now.
     /// </summary>
-    public bool ThreatMemoryFeedsGoap { get; init; } = false;
+    public bool ThreatMemoryFeedsGoap { get; init; } = true;
 
     /// <summary>
     /// Broad-phase cut. Nothing beyond this can be seen or heard, so it bounds
@@ -50,8 +63,9 @@ public sealed record PerceptionOptions
 
     /// <summary>
     /// The radius combat currently treats as "can fight this". Mirrors
-    /// <c>StalkerBehaviourSystem.EngageRange</c>; used only to measure the two
-    /// detection models against each other while perception is in shadow mode.
+    /// <c>StalkerBehaviourSystem.EngageRange</c>; used to report how much of the
+    /// proximity model's engagement set perception covers, while target
+    /// selection is still proximity-based.
     /// </summary>
     public float CombatEngageRange { get; init; } = 160f;
 

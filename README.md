@@ -31,11 +31,12 @@ A fully autonomous open-world life simulation inspired by the A-Life system from
 - **Corpse looting** — dead stalkers drop gear snapshots that others can loot for upgrades
 - **Faction-specific spawn loadouts** scaled by rank tier
 
-### 👁️ Perception *(shadow mode)*
+### 👁️ Perception
 - **Directional vision** — an 80 m / 110° cone scaled by daylight, fog and flashlights, so a stalker facing the wrong way genuinely does not see you
 - **Hearing** — gunfire carries further than a scuffle, and rain muffles both
 - **Facing** — every stalker and mutant tracks the direction they last moved, which is the input both sensors were missing since the project began
-- **Runs alongside combat, not in it** — perception fills each NPC's known-entity map and reports how much of the proximity model it covers, while combat still resolves by proximity. Enabling it wholesale is a measured, staged change rather than a flag flip
+- **What a stalker hears reaches their decisions** — gunfire nearby raises the threat they attach to that region, and they act on it. This makes threat memory genuinely per-stalker: 18 distinct profiles across 30 sampled, where the faction rumour network alone gives everyone the same one
+- **Combat still resolves by proximity** — perception covers ~59% of the engagements proximity offers, so moving target selection onto it is a lethality change as much as a realism one, and is staged separately
 
 ### 🌩️ Environmental Hazards
 - **Emissions (Blowouts)** — 4-phase events (Warning → Panic → Peak → Aftermath) with 70% lethality / 30% zombification for unsheltered stalkers, arriving every 12–24 game hours like a GAMMA surge rather than as weather
@@ -141,7 +142,7 @@ Open `http://localhost:5050` in your browser to watch the Zone come alive.
 | `STALKER_SQUAD_MISSION_SHARE` | `4` | Morale each squadmate gains when a member turns in a contract |
 | `STALKER_SQUAD_LOSS_PENALTY` | `9` | Morale each squadmate loses when one of them is killed |
 | `STALKER_PERCEPTION` | `on` | Run the vision/hearing sweep at all. Off saves roughly a quarter of the tick budget |
-| `STALKER_PERCEPTION_THREAT_MEMORY` | `off` | Let what stalkers hear reach GOAP via `LocationThreatMemory`. **This is the switch that ends shadow mode**; it changes behaviour measurably |
+| `STALKER_PERCEPTION_THREAT_MEMORY` | `on` | Let what stalkers hear reach their goal selection. Off keeps the sensors running but stops hearing steering anyone — worth about 4% of the population and 3% of mission throughput |
 | `STALKER_PERCEPTION_CANDIDATE_RADIUS` | `200` | Broad-phase cut before the cone maths runs |
 | `STALKER_PERCEPTION_MEMORY_SEC` | `120` | How long a sighting is remembered (game seconds) |
 | `STALKER_CORPSE_*` | *(see `CorpseCleanupOptions`)* | Despawn thresholds per corpse state |

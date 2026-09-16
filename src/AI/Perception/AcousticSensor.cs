@@ -19,8 +19,9 @@ public sealed class AcousticSensor
     /// <param name="recordThreat">
     /// Whether a heard event may raise <c>LocationThreatMemory</c>. That
     /// dictionary is read by <c>GoapWorldStateSync</c> to derive
-    /// <c>HeardDangerRumor</c>, so writing to it changes behaviour — which is
-    /// exactly what perception must not do while it is in shadow mode.
+    /// <c>HeardDangerRumor</c>, so writing to it changes behaviour. Gated by
+    /// <c>PerceptionOptions.ThreatMemoryFeedsGoap</c> so hearing can be taken
+    /// out of goal selection without taking the sensors out of the loop.
     /// </param>
     /// <returns>How many noise events this NPC actually heard.</returns>
     public int Process(
