@@ -65,6 +65,15 @@ PATTERNS = {
     "goap_tasks":         r"GOAP tasks completed: (\d+)",
     "goap_replans":       r"GOAP replans \(1Hz\): (\d+)",
     "rank_promotions":    r"Rank promotions: (\d+)",
+    # Which goals actually win, and how often a goal wins and then cannot be
+    # planned. Three changes to goal *inputs* landed before any of this was
+    # visible, so the decision layer moved unobserved each time.
+    "goal_decisions":     r"Goal selection \((\d+) decisions\)",
+    "goal_visittrader":   r"VisitTrader ([\d.]+)%",
+    "goal_acceptmission": r"AcceptMission ([\d.]+)%",
+    "goal_satisfyhunger": r"SatisfyHunger ([\d.]+)%",
+    "goal_patrol":        r"\bPatrol ([\d.]+)%",
+    "goal_unplannable":   r"Selected but unplannable: (\d+)",
     "ticks_dropped":      r"Ticks: \d+ executed, (\d+) dropped",
 }
 

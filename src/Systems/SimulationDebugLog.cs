@@ -61,6 +61,17 @@ public static class SimulationDebugLog
     // how much fighting happens and started measuring how much of it is lethal.
     private static long _combatExchanges;
 
+    // Goal selection. Which goal wins is the one thing the decision layer never
+    // reported: "Goals achieved" is a single aggregate across all fourteen. Three
+    // changes to goal *inputs* (threat decay, band-scoped rumours, hearing) were
+    // measured only on population and casualties, never on what stalkers chose.
+    //
+    // long[1] rather than long so the value can be Interlocked without boxing,
+    // and GetOrAdd with a static factory allocates only on a goal's first use —
+    // the planner runs ~210k times a baseline run, so this path must stay free.
+    private static readonly ConcurrentDictionary<string, long[]> _goalSelected = new();
+    private static readonly ConcurrentDictionary<string, long[]> _goalUnplannable = new();
+
     // Perception, measured against the proximity model combat still uses
     private static long _perceptionObservers, _perceptionSeen, _perceptionHeard;
     private static long _perceptionContested, _perceptionKnown;
@@ -377,6 +388,33 @@ public static class SimulationDebugLog
         Interlocked.Add(ref _perceptionKnown, known);
     }
 
+    /// <summary>
+    /// A goal won the utility contest. Recorded at the planner's single
+    /// selection point so it counts decisions, not the snapshot of what happens
+    /// to be running when a periodic report fires.
+    /// </summary>
+    public static void RecordGoalSelected(string goalName)
+    {
+        if (!Enabled) return;
+        Interlocked.Increment(ref _goalSelected.GetOrAdd(goalName, static _ => new long[1])[0]);
+    }
+
+    /// <summary>
+    /// A goal won and then could not be planned — A* found no action chain from
+    /// the current world state to its target state.
+    ///
+    /// This is the signal that exposed the mission loop stalling at 260 accepted
+    /// / 0 completed: <c>ActionTurnInMission.IsValid</c> re-checked a
+    /// precondition another action existed to satisfy, so the return chain was
+    /// unbuildable and the planner produced 1,457 null plans in a single run.
+    /// That was measured by hand at the time and has been uncounted ever since.
+    /// </summary>
+    public static void RecordGoalUnplannable(string goalName)
+    {
+        if (!Enabled) return;
+        Interlocked.Increment(ref _goalUnplannable.GetOrAdd(goalName, static _ => new long[1])[0]);
+    }
+
     public static void CombatExchange()
     {
         if (Enabled) Interlocked.Increment(ref _combatExchanges);
@@ -640,6 +678,28 @@ public static class SimulationDebugLog
                 $"nobody has seen or heard.");
         }
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
+
+        long selectedTotal = _goalSelected.Values.Sum(v => v[0]);
+        if (selectedTotal > 0)
+        {
+            var mix = _goalSelected
+                .OrderByDescending(kv => kv.Value[0])
+                .Select(kv => $"{kv.Key} {(double)kv.Value[0] / selectedTotal * 100:F1}%");
+            sb.AppendLine($"Goal selection ({selectedTotal} decisions): {string.Join("  ", mix)}");
+
+            long unplannable = _goalUnplannable.Values.Sum(v => v[0]);
+            if (unplannable > 0)
+            {
+                var failed = _goalUnplannable
+                    .Where(kv => kv.Value[0] > 0)
+                    .OrderByDescending(kv => kv.Value[0])
+                    .Select(kv => $"{kv.Key} {kv.Value[0]}");
+                sb.AppendLine(
+                    $"  Selected but unplannable: {unplannable} " +
+                    $"({(double)unplannable / selectedTotal * 100:F1}% of decisions) — " +
+                    string.Join("  ", failed));
+            }
+        }
         sb.AppendLine($"GOAP replans (1Hz): {_goapReplans}");
         sb.AppendLine($"Emission storms: {_emissionStorms} | Last phase: {_lastEmissionPhase}");
         sb.AppendLine($"KillTracker total: {KillTracker.TotalKills}");

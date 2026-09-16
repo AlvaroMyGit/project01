@@ -35,12 +35,24 @@ public sealed class GOAPPlanner
         }
         if (best is null) return null;
 
+        // The single point where a goal is chosen, so the single honest place to
+        // count the decision. Anything sampled later reports what happens to be
+        // running, not what was decided.
+        Systems.SimulationDebugLog.RecordGoalSelected(best.Name);
+
         // 2. A* backward search from goal state to current state
         var target = best.GetTargetState();
         var current = new Dictionary<string, bool>(bb.WorldStateBools);
 
         var plan = BuildPlan(current, target, bb);
-        if (plan is null) return null;
+        if (plan is null)
+        {
+            // Won the utility contest and then proved unreachable. Left
+            // uncounted this is invisible: the stalker simply does nothing and
+            // replans next tick.
+            Systems.SimulationDebugLog.RecordGoalUnplannable(best.Name);
+            return null;
+        }
 
         return new PlanResult(best, plan);
     }
