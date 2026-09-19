@@ -192,9 +192,17 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             var otherStalker = ResolveEngagement(
                 ctx, s, living, _perception.CombatUsesPerception);
 
+            // Perception acquires on 74.5% of attempts where proximity acquires
+            // on 88.2%, so it takes 0.845 of the fights. Compensating here
+            // restores the rate of fight starts and leaves the proximity
+            // model's own calibration untouched: the multiplier is 1 whenever
+            // the flag is off.
+            float engageRate = CombatResolver.StalkerEncounterRatePerGameSec;
+            if (_perception.CombatUsesPerception)
+                engageRate *= _perception.CombatRateCompensation;
+
             if (otherStalker != null &&
-                Random.Shared.NextDouble() <
-                    CombatResolver.EventChance(CombatResolver.StalkerEncounterRatePerGameSec, gameDelta))
+                Random.Shared.NextDouble() < CombatResolver.EventChance(engageRate, gameDelta))
             {
                 s.Blackboard.CurrentTargetId = otherStalker.Id;
                 s.Blackboard.Combat = CombatState.Combat;

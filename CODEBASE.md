@@ -1044,6 +1044,62 @@ downstream of kills. The flag stays off until that is done.
 pins the perception path, including the deliberate asymmetry that persistence
 ignores `CombatCooldown` while acquisition respects it.
 
+### Compensating the rate restored everything except progression
+
+A ~15% shortfall in fight starts is what `StalkerEncounterRatePerGameSec` is
+for, and it only became a usable lever once that rate was made per game second.
+`PerceptionOptions.CombatRateCompensation` (1.183, the inverse of 0.845)
+multiplies it while `CombatUsesPerception` is on and is ignored while it is off,
+so the proximity model keeps its own calibration untouched.
+
+Five runs, perception combat on with the compensation, against the stored
+baseline:
+
+| metric | delta | verdict |
+|---|---|---|
+| missions completed | -0% | |
+| missions accepted | +0% | |
+| stalkers alive | -1% | |
+| casualties total | +1% | |
+| combat exchanges | +5% | maybe |
+| deaths to gunfire | **-15%** | maybe (was -27% SIGNAL) |
+| rank promotions | **-31%** | SIGNAL (unchanged) |
+
+Mission throughput and population come back exactly. Gunfire deaths recover
+about half and drop out of SIGNAL. Rank progression does not move at all.
+
+**The first explanation was wrong, and the counter said so.** The obvious story
+was concentration: perception lets the same stalkers — the ones with hostiles in
+their cone — take the fights, so kill credit piles onto fewer hands, and
+promotions are threshold crossings so they fall faster than kills. Counting
+distinct killers refutes it. Kills per killer is **1.56 with perception against
+1.57 with proximity**, and the top decile's share is inside its own run-to-run
+spread. The distribution has the same shape; there is simply less of it.
+
+What actually falls is XP:
+
+| | proximity | perception + comp |
+|---|---|---|
+| rank XP awarded | 29,229 | 21,637 (**-26%**) |
+| kills | 366 | 318 (-13%) |
+| XP per kill | 79.9 | 68.2 (**-15%**) |
+
+Total XP falls twice as fast as kills because XP per kill falls too. Stalker
+kill XP scales with the **victim's** rank — 10 for a rookie, 500 for a legend,
+with a bonus multiplier for killing above your own tier — so a Zone with fewer
+promotions is a Zone of lower-ranked victims, which pays less XP, which produces
+fewer promotions. That is a feedback loop, not a tuning gap.
+
+**Which means the rate is the wrong knob for it, and raising it further is the
+VisitTrader mistake again.** This file already records a case where the fix was
+to raise a threshold the population was itself pushing on, and wealth simply
+climbed to meet it. Encounter rate is exactly that shape here: more fights
+against low-ranked victims still pays 10 XP a kill. The lever that fits a
+threshold-crossing problem is the threshold —
+`RankProgression`'s sandbox multiplier on the GAMMA tiers exists for this — or
+accepting the curve, since "fewer stalkers become legends when combat requires
+seeing your enemy" is a defensible outcome rather than a regression.
+
 ### Coverage was the wrong statistic, and it made the loss look twice as bad
 
 "Perception covers ~39% of the engagements proximity offers" was quoted in four

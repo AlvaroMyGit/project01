@@ -86,6 +86,11 @@ public static class SimulationDebugLog
     private static long _perceptionObservers, _perceptionSeen, _perceptionHeard;
     private static long _perceptionContested, _perceptionKnown;
 
+    // Who is earning the kills. Promotions are XP threshold crossings, so the
+    // same kills spread over more killers produce more promotions than piled
+    // onto a few. This is the test for whether perception concentrates combat.
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, long> _killsByKiller = new();
+
     // Target acquisition, counted per attempt rather than per pair. Coverage is
     // a pair statistic and turned out not to predict the lethality loss at all;
     // this counts the decision combat actually makes.
@@ -294,6 +299,29 @@ public static class SimulationDebugLog
         Interlocked.Increment(ref _hazardHits);
         Interlocked.Increment(ref _intervalHazardHits);
         DebugLogSink.WriteLine("HAZARD", $"{stalkerFirstName} took {hazardType} exposure ({exposure:F2})");
+    }
+
+    private static long _rankXpAwarded, _rankKillsStalker, _rankKillsMutant;
+
+    /// <summary>
+    /// XP from one kill. Promotions are threshold crossings on accumulated XP,
+    /// and XP per stalker kill scales with the VICTIM's rank (10 for a rookie,
+    /// 500 for a legend) while a mutant is a flat 50 — so the same number of
+    /// kills can produce very different promotion counts.
+    /// </summary>
+    public static void RecordRankXp(int xp, bool victimWasStalker)
+    {
+        if (!Enabled) return;
+        Interlocked.Add(ref _rankXpAwarded, xp);
+        if (victimWasStalker) Interlocked.Increment(ref _rankKillsStalker);
+        else Interlocked.Increment(ref _rankKillsMutant);
+    }
+
+    /// <summary>One kill credited to a killer, for the concentration count.</summary>
+    public static void RecordKiller(string killerId)
+    {
+        if (!Enabled) return;
+        _killsByKiller.AddOrUpdate(killerId, 1, static (_, v) => v + 1);
     }
 
     public static void RankPromotion(string name, StalkerRank rank)
@@ -731,6 +759,24 @@ public static class SimulationDebugLog
                 $"  Coverage of proximity engagements: {_perceptionKnown}/{_perceptionContested} " +
                 $"({coverage:F1}%) — the rest are hostiles in combat range that " +
                 $"nobody has seen or heard.");
+        }
+        if (_rankXpAwarded > 0)
+        {
+            long rankKills = _rankKillsStalker + _rankKillsMutant;
+            sb.AppendLine(
+                $"Rank XP: {_rankXpAwarded} awarded over {rankKills} kills " +
+                $"({(double)_rankXpAwarded / rankKills:F1} each) — " +
+                $"{_rankKillsStalker} stalker, {_rankKillsMutant} mutant");
+        }
+        if (!_killsByKiller.IsEmpty)
+        {
+            long totalKills = _killsByKiller.Values.Sum();
+            int killers = _killsByKiller.Count;
+            long top = _killsByKiller.Values.OrderByDescending(v => v).Take(Math.Max(1, killers / 10)).Sum();
+            sb.AppendLine(
+                $"Kill concentration: {totalKills} kills across {killers} killers " +
+                $"({(double)totalKills / killers:F2} each), top decile holds " +
+                $"{(double)top / totalKills * 100:F1}%");
         }
         if (_acqAttempts > 0)
         {

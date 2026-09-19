@@ -146,6 +146,7 @@ public static class KillTracker
         if (stalkerKiller != null)
         {
             RankSystem.ProcessStalkerKill(stalkerKiller, victim);
+            SimulationDebugLog.RecordKiller(stalkerKiller.Id);
             SkillEvaluator.RecordMarksmanshipEvent(stalkerKiller, "kill");
         }
     }
@@ -175,6 +176,7 @@ public static class KillTracker
         SimulationDebugLog.MutantKilled();
 
         RankSystem.ProcessMutantKill(killer, victim);
+        SimulationDebugLog.RecordKiller(killer.Id);
         SkillEvaluator.RecordMarksmanshipEvent(killer, "kill");
     }
 }

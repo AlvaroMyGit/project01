@@ -25,6 +25,7 @@ public static class RankSystem
         var oldRank = killer.Rank.CurrentRank;
         killer.Rank.AddXP(finalXp);
         killer.Rank.RecordStalkerKill();
+        SimulationDebugLog.RecordRankXp(finalXp, victimWasStalker: true);
 
         if (killer.Rank.CurrentRank > oldRank)
             BroadcastPromotion(killer);
@@ -35,6 +36,7 @@ public static class RankSystem
         var oldRank = killer.Rank.CurrentRank;
         killer.Rank.AddXP(BaseMutantKillXp);
         killer.Rank.RecordMutantKill();
+        SimulationDebugLog.RecordRankXp(BaseMutantKillXp, victimWasStalker: false);
 
         if (killer.Rank.CurrentRank > oldRank)
             BroadcastPromotion(killer);

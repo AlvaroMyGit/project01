@@ -158,6 +158,24 @@ public sealed record PerceptionOptions
     public bool CombatUsesPerception { get; init; } = false;
 
     /// <summary>
+    /// Multiplier applied to <c>StalkerEncounterRatePerGameSec</c> while
+    /// <see cref="CombatUsesPerception"/> is on, and ignored while it is off.
+    ///
+    /// Perception engages on 74.5% of acquisition attempts where proximity
+    /// engages on 88.2%, so it takes 0.845 of the fights. This is the inverse
+    /// of that ratio: it restores the rate of fight STARTS without touching the
+    /// calibration of the proximity model, which stays exactly as measured.
+    ///
+    /// Scoped to the flag rather than folded into
+    /// <c>CombatBalanceConfig</c> deliberately. The constant there is derived
+    /// from a measured per-tick probability and round-trips to it; editing it
+    /// would destroy that provenance to compensate for something unrelated to
+    /// it. This is a correction for a known detection shortfall and belongs
+    /// with the detection model.
+    /// </summary>
+    public float CombatRateCompensation { get; init; } = 1.183f;
+
+    /// <summary>
     /// The radius combat currently treats as "can fight this". Mirrors
     /// <c>StalkerBehaviourSystem.EngageRange</c>; used to report how much of the
     /// proximity model's engagement set perception covers, while target
@@ -176,6 +194,7 @@ public sealed record PerceptionOptions
             BaseSightRange        = Num("STALKER_PERCEPTION_SIGHT", o.BaseSightRange),
             BaseHearingRadius     = Num("STALKER_PERCEPTION_HEARING", o.BaseHearingRadius),
             SightHalfAngleDegrees = Num("STALKER_PERCEPTION_HALF_ANGLE", o.SightHalfAngleDegrees),
+            CombatRateCompensation = Num("STALKER_PERCEPTION_RATE_COMP", o.CombatRateCompensation),
             CandidateRadius       = Num("STALKER_PERCEPTION_CANDIDATE_RADIUS", o.CandidateRadius),
             MemoryGameSeconds     = Num("STALKER_PERCEPTION_MEMORY_SEC", o.MemoryGameSeconds)
         };

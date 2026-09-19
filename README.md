@@ -146,7 +146,8 @@ Open `http://localhost:5050` in your browser to watch the Zone come alive.
 | `STALKER_PERCEPTION_COMBAT` | `off` | Pick combat targets from what a stalker has actually seen or heard, instead of anything hostile within 160 m. On costs 27% of deaths to gunfire and 32% of rank promotions — adopt only with compensation |
 | `STALKER_PERCEPTION_SIGHT` | `80` | Base sight range in metres, before light and weather scale it. Raising it barely moves coverage — the cone angle is what binds |
 | `STALKER_PERCEPTION_HEARING` | `60` | Base hearing radius in metres, before rain and loudness scale it |
-| `STALKER_PERCEPTION_HALF_ANGLE` | `55` | Half the vision cone, in degrees. The one lever that moves coverage: 55 gives 39%, 110 gives 68%, 180 (omnidirectional) gives 93% |
+| `STALKER_PERCEPTION_HALF_ANGLE` | `55` | Half the vision cone, in degrees. The one lever that moves coverage: 55 gives 39%, 110 gives 68%, 180 (omnidirectional) gives 93% — though coverage turns out not to drive lethality |
+| `STALKER_PERCEPTION_RATE_COMP` | `1.183` | Multiplier on the stalker encounter rate while perception combat is on, compensating the 15% shortfall in fight starts. Ignored when the flag is off |
 | `STALKER_PERCEPTION_CANDIDATE_RADIUS` | `200` | Broad-phase cut before the cone maths runs. Never applied tighter than the sensors it filters for |
 | `STALKER_PERCEPTION_MEMORY_SEC` | `120` | How long a sighting is remembered (game seconds) |
 | `STALKER_CORPSE_*` | *(see `CorpseCleanupOptions`)* | Despawn thresholds per corpse state |
@@ -235,7 +236,7 @@ The core simulation is feature-complete per the v4.5 design. Nearest work first.
 
 ### Next up
 
-- **Adopting perception-driven combat** — implemented and measured behind `STALKER_PERCEPTION_COMBAT`, off by default. It costs −27% deaths to gunfire and −32% rank promotions, from a ~15% shortfall in fight starts. Sensor range does not compensate (tripling it moves coverage 0.5 points) and widening the cone recovers only 3 points, so the lever that fits is `StalkerEncounterRatePerGameSec`, roughly +16% — measured, then progression re-checked
+- **Adopting perception-driven combat** — implemented and measured behind `STALKER_PERCEPTION_COMBAT`, off by default. With `CombatRateCompensation` at 1.183 it costs nothing in missions (−0%), population (−1%) or casualties (+1%), and deaths to gunfire recover from −27% to −15%. What does not come back is rank progression, −31%: total rank XP falls 26% because kills fall 13% and XP per kill falls 15% as well, victims being lower-ranked. That is a feedback loop, so the remaining decision is whether to re-tune `RankProgression`'s tier multiplier or accept a Zone where fewer stalkers become legends
 - **Population target** — the design asks for 750 stalkers and the Zone settles at ~335. Closing that is a spawn-rate-versus-lethality decision, not an optimisation
 - **Follower planning** — squad delegation was the cheaper half of the answer. Letting followers plan outright remains open and was last measured 1.8× over the 1 Hz budget
 - **Personal grudges** — `PersonalMemory.cs` exists unwired; its payoff is stalker-level vendettas rather than faction-level hostility
