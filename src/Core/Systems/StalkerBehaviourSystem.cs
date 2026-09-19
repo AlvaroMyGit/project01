@@ -92,13 +92,31 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
 
         s.Blackboard.CurrentTargetId = null;
 
-        return usePerception
-            ? AcquireFromPerception(ctx, s, living)
-            : ctx.Stalkers.FirstOrDefault(ss =>
-                ss.IsAlive && ss != s && ss.CombatCooldown <= 0f &&
-                ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction) &&
-                Vector3.Distance(s.Position, ss.Position) < EngageRange);
+        if (!usePerception)
+            return AcquireByProximity(ctx, s);
+
+        var acquired = AcquireFromPerception(ctx, s, living);
+
+        // Shadow the old model alongside the new one so the two can be counted
+        // against each other per DECISION rather than per pair. The coverage
+        // figure is a pair statistic, and it turned out not to predict the
+        // lethality loss: widening the cone moved coverage 39% to 63% and moved
+        // deaths to gunfire by three points. This counts what combat actually
+        // asks — "is there anyone to fight" — which is a different question,
+        // because one known hostile out of five in range is enough.
+        if (SimulationDebugLog.Enabled)
+            SimulationDebugLog.RecordAcquisition(
+                proximityWould: AcquireByProximity(ctx, s) is not null,
+                perceptionDid: acquired is not null);
+
+        return acquired;
     }
+
+    private static Stalker? AcquireByProximity(SimulationContext ctx, Stalker s) =>
+        ctx.Stalkers.FirstOrDefault(ss =>
+            ss.IsAlive && ss != s && ss.CombatCooldown <= 0f &&
+            ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction) &&
+            Vector3.Distance(s.Position, ss.Position) < EngageRange);
 
     /// <summary>
     /// The same filter as the proximity scan, but drawn from what this stalker

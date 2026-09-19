@@ -1044,6 +1044,101 @@ downstream of kills. The flag stays off until that is done.
 pins the perception path, including the deliberate asymmetry that persistence
 ignores `CombatCooldown` while acquisition respects it.
 
+### Coverage was the wrong statistic, and it made the loss look twice as bad
+
+"Perception covers ~39% of the engagements proximity offers" was quoted in four
+files as the reason adopting perception-driven combat costs lethality. It is a
+real measurement and it does not mean what it was used to mean.
+
+Coverage is a **pair** statistic: over every hostile pair within engage range,
+how many does the observer know about. Acquisition is a **per-decision**
+question: does this stalker know about *anyone* they could fight. One known
+hostile out of five in range is enough, so the two numbers are far apart.
+Counted directly, with the proximity scan shadowed alongside the perception one:
+
+| cone | coverage (per pair) | proximity would engage | perception did |
+|---|---|---|---|
+| 110 deg | 41.2% | 88.2% | 74.5% |
+| 210 deg | 63.8% | 84.8% | 76.2% |
+
+So perception takes **84.5%** of the fights proximity would, not 41% of them.
+Widening the cone takes that to 89.9%. The lethality cost — deaths to gunfire
+-27%, and -24% with the wider cone — comes from a shortfall of roughly 15% in
+fight *starts*, not from a 60% shortfall in anything.
+
+The cost is superlinear in that shortfall because fights persist: an engagement
+that starts runs over several exchanges through `CurrentTargetId`, so a missing
+start costs more than one exchange. That is also why total exchanges stay flat
+while gunfire deaths fall a quarter — the mutant side absorbs the freed budget.
+
+Three lessons, and the first two are about method rather than about the Zone.
+
+**A statistic that is easy to compute is not necessarily the one that answers
+the question.** Coverage was cheap to add to `PerceptionSystem` because the
+sweep already had both sets in hand. It got quoted for months as though it were
+the acquisition rate. Nobody asked what its denominator was.
+
+**Two measurements agreeing that something is wrong does not mean they agree on
+why.** Coverage and lethality both said perception costs fights. They implied
+wildly different magnitudes, and that disagreement was visible the whole time in
+the gap between "39% coverage" and "-27% deaths" — a 61% shortfall cannot
+produce a 27% effect on a system this linear. The inconsistency was there to be
+noticed before any of this was measured.
+
+**The compensation lever that fits is the encounter rate, not the sensors.**
+A ~15% shortfall in fight starts is exactly what `StalkerEncounterRatePerGameSec`
+is for, and it only became a meaningful lever once that rate was made per game
+second rather than per tick. Sensor range does nothing (see below) and the cone
+is worth widening on its own merits rather than as compensation.
+
+### The compensation lever was on the wrong axis
+
+Perception covers ~39% of the engagements proximity hands to combat, and the
+stated reason — repeated in several files here — was a range mismatch: engage
+radius 160 m against 80 m of sight and 60 m of hearing. The obvious
+compensation was to raise the sensor ranges, which is at least physically
+motivated rather than a fudge.
+
+It does almost nothing. Single runs at TimeFactor 150, coverage read from the
+final report:
+
+| sight | hearing | cone | coverage |
+|---|---|---|---|
+| 80 | 60 | 110 deg | 39.1% |
+| 160 | 120 | 110 deg | 39.4% |
+| 240 | 180 | 110 deg | 39.6% |
+| 80 | 60 | 220 deg | 68.3% |
+| 80 | 60 | 360 deg | 93.3% |
+| 160 | 120 | 360 deg | 96.2% |
+
+**Tripling both ranges buys half a point. Widening the cone buys fifty-four.**
+
+Coverage was never range-bound. `VisionCone.DefaultHalfAngle` is 55 degrees, so
+the cone spans 110 of the 360 degrees a proximity scan covers — 30.6%, which is
+within a few points of the measured 39% once hearing (omnidirectional) and the
+120-second memory window are added. The geometry was determining the answer and
+the range term was nearly irrelevant, because a hostile close enough to matter
+is usually already inside sensor range and simply behind the observer.
+
+Two things worth taking from this beyond the numbers.
+
+The stated cause was never measured. "Engage radius is 160 m while sight is
+80 m" is true, reads like an explanation, and is not one. It survived because
+it was written into four files as the reason and then cited from there rather
+than tested — the same way the stale ~59% coverage figure survived.
+
+And 110 degrees was the wrong number on its own terms. Human horizontal vision
+spans roughly 200-220 degrees including peripheral, so the cone was narrower
+than a person's, not wider. Opening it toward ~210 degrees is a correction
+rather than a concession, and it is the one lever that moves coverage.
+
+`BaseSightRange`, `BaseHearingRadius` and `SightHalfAngleDegrees` are on
+`PerceptionOptions` with env overrides so this kind of question can be answered
+by sweeping rather than by rebuilding. `CandidateRadius` is read through
+`EffectiveCandidateRadius`, which never sits tighter than the sensors it
+filters for — the 200 m broad-phase would otherwise have silently capped the
+240 m sweep above and made that row a lie.
+
 ### Measurement
 
 Reading the code confidently and being wrong has happened often enough to be

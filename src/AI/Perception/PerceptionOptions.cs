@@ -66,6 +66,14 @@ public sealed record PerceptionOptions
     public float BaseHearingRadius { get; init; } = AcousticSensor.DefaultBaseSoundRadius;
 
     /// <summary>
+    /// Half the vision cone's opening angle, in degrees; the full cone is twice
+    /// this. Swept alongside the ranges because it, not range, turned out to be
+    /// what bounds perception coverage — 55 degrees is a 110 degree cone, which
+    /// is under a third of the directions a proximity scan covers.
+    /// </summary>
+    public float SightHalfAngleDegrees { get; init; } = VisionCone.DefaultHalfAngle;
+
+    /// <summary>
     /// Broad-phase cut. Bounds the candidate list before the cone maths runs.
     ///
     /// Read through <see cref="EffectiveCandidateRadius"/>, never directly: a
@@ -91,30 +99,56 @@ public sealed record PerceptionOptions
     /// (<c>NPCBlackboard.KnownEntities</c>) instead of from bare proximity.
     ///
     /// Off. This is the second and larger half of adopting perception, and it
-    /// is a lethality change as much as a realism one: perception covers only
-    /// ~37% of the hostile pairs proximity hands to combat at steady state, so
-    /// most engagements disappear. Combat rates are tuned (see
-    /// <c>CombatBalanceConfig</c>) against the proximity model.
+    /// is a lethality change as much as a realism one. Combat rates are tuned
+    /// (see <c>CombatBalanceConfig</c>) against the proximity model.
     ///
-    /// That figure is not a constant and should be re-read rather than quoted:
-    /// it is the ratio of pairs-within-sensor-range to pairs-within-160 m, so
-    /// it rises with population density and with daylight. Measured at 35-40%
-    /// across steady-state runs of ~410-460 alive, and 64.5% in a run that
-    /// reached 744 alive. An earlier figure of ~59%, taken in shadow mode under
-    /// different conditions, was quoted as though it were fixed for some time.
+    /// The size of the change is smaller than the coverage figure suggests, and
+    /// coverage was misused here for some time. Coverage is a PAIR statistic —
+    /// of the hostile pairs inside engage range, how many does the observer
+    /// know about — and it reads ~39%. Acquisition is a PER-DECISION question,
+    /// and one known hostile among several in range is enough, so measured
+    /// against a shadowed proximity scan perception engages on 74.5% of
+    /// attempts where proximity engages on 88.2%: it takes **84.5% of the
+    /// fights**, not 39% of them.
+    ///
+    /// Neither figure is a constant. Coverage rises with population density and
+    /// with daylight — 35-40% at ~410-460 alive, 64.5% in a run that reached
+    /// 744. Re-read it rather than quoting it; an earlier ~59%, taken in shadow
+    /// mode under different conditions, was cited as fixed for months.
     ///
     /// Measured cost of turning this on, five runs: deaths to gunfire -27% and
     /// rank promotions -32% (both SIGNAL), deaths to mutants +34%, population
     /// +5%. Total combat exchanges barely move, because only stalker-vs-stalker
     /// acquisition changes and the mutant side takes up the slack.
     ///
-    /// Two asymmetries make the shortfall structural rather than a tuning gap:
-    /// the engage radius is 160 m while <see cref="VisionCone"/> is 80 m scaled
-    /// by light — collapsing toward ~4 m unlit at night — and
-    /// <see cref="AcousticSensor"/> is 60 m scaled by loudness, ~51 m for a dry
-    /// gunshot. And hearing only fires on noises, which are only emitted during
-    /// combat, so hearing can acquire someone already fighting but can never
-    /// start the first fight. Vision is the sole cold-start path.
+    /// The cost is superlinear in the acquisition shortfall — ~15% fewer fight
+    /// starts producing a 27% fall in deaths — because an engagement persists
+    /// over several exchanges through <c>CurrentTargetId</c>, so a start that
+    /// never happens costs more than one exchange.
+    ///
+    /// Widening the cone to 210 degrees (see
+    /// <see cref="SightHalfAngleDegrees"/>) lifts coverage 39% to 63% but
+    /// recovers only three points of lethality, -27% to -24%: coverage is not
+    /// the mechanism. The lever that fits a shortfall in fight starts is
+    /// <c>CombatBalanceConfig.StalkerEncounterRatePerGameSec</c>, roughly +16%,
+    /// which is only meaningful now that rate is per game second.
+    ///
+    /// The shortfall is angular, not a range gap, and this file said otherwise
+    /// for some time. "Engage radius is 160 m while sight is 80 m" reads like
+    /// an explanation and is not one: tripling both sensor ranges moves
+    /// coverage 39.1% to 39.6%, while widening the cone from 110 to 220
+    /// degrees moves it to 68.3% and to 360 degrees moves it to 93.3%.
+    /// <see cref="VisionCone.DefaultHalfAngle"/> is 55 degrees, so the cone
+    /// spans 110 of the 360 degrees a proximity scan covers; the missing
+    /// hostiles are mostly in range and behind the observer. Note that 110
+    /// degrees is also narrower than human vision, which spans roughly 200-220
+    /// including peripheral — so opening it is a correction rather than a
+    /// concession. See <see cref="SightHalfAngleDegrees"/>.
+    ///
+    /// One limit no angle fixes: hearing only fires on noises, which are only
+    /// emitted during combat, so hearing can acquire someone already fighting
+    /// but can never start the first fight. Vision is the sole cold-start
+    /// path.
     ///
     /// Acquisition only. An engagement already under way still persists on
     /// distance alone, and mutant combat stays on proximity — mutants have no
@@ -141,6 +175,7 @@ public sealed record PerceptionOptions
             CombatUsesPerception  = Flag("STALKER_PERCEPTION_COMBAT", o.CombatUsesPerception),
             BaseSightRange        = Num("STALKER_PERCEPTION_SIGHT", o.BaseSightRange),
             BaseHearingRadius     = Num("STALKER_PERCEPTION_HEARING", o.BaseHearingRadius),
+            SightHalfAngleDegrees = Num("STALKER_PERCEPTION_HALF_ANGLE", o.SightHalfAngleDegrees),
             CandidateRadius       = Num("STALKER_PERCEPTION_CANDIDATE_RADIUS", o.CandidateRadius),
             MemoryGameSeconds     = Num("STALKER_PERCEPTION_MEMORY_SEC", o.MemoryGameSeconds)
         };

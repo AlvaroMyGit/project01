@@ -17,11 +17,14 @@ namespace StalkerALifeSandbox.Core.Systems;
 ///
 /// ADOPTION IS STAGED. Hearing reaches goal selection
 /// (<see cref="PerceptionOptions.ThreatMemoryFeedsGoap"/>, on by default), but
-/// combat target selection is still proximity-based: perception covers only
-/// ~37% of the engagements proximity offers, combat rates are tuned (see
+/// combat target selection is still proximity-based by default
+/// (<see cref="PerceptionOptions.CombatUsesPerception"/>): perception covers
+/// only ~39% of the engagements proximity offers, combat rates are tuned (see
 /// CombatBalanceConfig), and swapping the detection model would be a lethality
 /// change as much as a realism one. This system reports that coverage so the
-/// second half can be judged rather than guessed.
+/// second half can be judged rather than guessed — and the reporting earned
+/// its place, because the shortfall turned out to be the cone's 110-degree
+/// span rather than the range mismatch stated here for months.
 ///
 /// Getting to that point took two rounds of measurement. While this ran purely
 /// as an observer, nothing outside it read <c>KnownEntities</c> — but two other
@@ -69,7 +72,11 @@ public sealed class PerceptionSystem : ISimulationSystem
         _weather = weather;
         _noise = noise;
         _options = options ?? new PerceptionOptions();
-        _vision = new VisionCone { BaseSight = _options.BaseSightRange };
+        _vision = new VisionCone
+        {
+            BaseSight = _options.BaseSightRange,
+            HalfAngle = _options.SightHalfAngleDegrees
+        };
         _hearing = new AcousticSensor { BaseSoundRadius = _options.BaseHearingRadius };
     }
 

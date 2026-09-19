@@ -73,7 +73,7 @@ public sealed class TelemetrySystem : ISimulationSystem
                     // The cone VisionCone actually sweeps, not a display value:
                     // 2 x HalfAngle, and the light/weather-adjusted range from
                     // the same formula the sweep uses.
-                    FOV = AI.Perception.VisionCone.DefaultHalfAngle * 2f,
+                    FOV = _perception.SightHalfAngleDegrees * 2f,
                     SightRange = AI.Perception.VisionCone.EffectiveSightRange(
                         _environment.LightLevel, _weather.VisibilityMod,
                         hasFlashlightOn: AI.Perception.VisionCone.TorchWouldBeLit(_environment.LightLevel),

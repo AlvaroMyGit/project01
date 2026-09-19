@@ -86,6 +86,11 @@ public static class SimulationDebugLog
     private static long _perceptionObservers, _perceptionSeen, _perceptionHeard;
     private static long _perceptionContested, _perceptionKnown;
 
+    // Target acquisition, counted per attempt rather than per pair. Coverage is
+    // a pair statistic and turned out not to predict the lethality loss at all;
+    // this counts the decision combat actually makes.
+    private static long _acqAttempts, _acqProximityWould, _acqPerceptionDid;
+
     // Tick accounting — see SimulationLoop.DroppedTicks
     private static long _executedTicks;
     private static long _droppedTicks;
@@ -388,6 +393,20 @@ public static class SimulationDebugLog
     /// has on the blackboard. The ratio of the two is what decides whether
     /// combat can be switched over.
     /// </summary>
+    /// <summary>
+    /// One acquisition attempt: a stalker with no current target, eligible to
+    /// start a fight. <paramref name="proximityWould"/> is whether the old
+    /// model would have handed it an opponent, <paramref name="perceptionDid"/>
+    /// whether the perception model did.
+    /// </summary>
+    public static void RecordAcquisition(bool proximityWould, bool perceptionDid)
+    {
+        if (!Enabled) return;
+        Interlocked.Increment(ref _acqAttempts);
+        if (proximityWould) Interlocked.Increment(ref _acqProximityWould);
+        if (perceptionDid) Interlocked.Increment(ref _acqPerceptionDid);
+    }
+
     public static void RecordPerception(int observers, int seen, int heard, int contested, int known)
     {
         if (!Enabled) return;
@@ -712,6 +731,15 @@ public static class SimulationDebugLog
                 $"  Coverage of proximity engagements: {_perceptionKnown}/{_perceptionContested} " +
                 $"({coverage:F1}%) — the rest are hostiles in combat range that " +
                 $"nobody has seen or heard.");
+        }
+        if (_acqAttempts > 0)
+        {
+            sb.AppendLine(
+                $"Target acquisition ({_acqAttempts} attempts): " +
+                $"proximity would engage {_acqProximityWould} " +
+                $"({(double)_acqProximityWould / _acqAttempts * 100:F1}%), " +
+                $"perception engaged {_acqPerceptionDid} " +
+                $"({(double)_acqPerceptionDid / _acqAttempts * 100:F1}%)");
         }
         sb.AppendLine($"GOAP tasks completed: {_tasksCompleted} | Goals achieved: {_goalsCompleted}");
 
