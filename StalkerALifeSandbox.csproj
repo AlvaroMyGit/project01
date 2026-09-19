@@ -30,6 +30,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Combat target selection (StalkerBehaviourSystem.ResolveEngagement) is
+         17 lines that decide every fight in the sim, and had no test coverage
+         at all — CombatResolverTests only covers the win-chance maths. It is
+         also what the perception switch replaces, so it needs pinning before
+         it moves. Reaching it means internal rather than private; it is not
+         public API. -->
+    <InternalsVisibleTo Include="StalkerALifeSandbox.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="8.0.6" />
   </ItemGroup>
 

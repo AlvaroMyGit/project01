@@ -70,7 +70,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
     /// The opponent this stalker is fighting: the current one while it is still
     /// alive, hostile and in reach, otherwise a newly chosen one.
     /// </summary>
-    private static Stalker? ResolveEngagement(
+    internal static Stalker? ResolveEngagement(
         SimulationContext ctx, Stalker s, Dictionary<string, Stalker> living)
     {
         if (s.Blackboard.CurrentTargetId is { } id &&
@@ -88,11 +88,18 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             Vector3.Distance(s.Position, ss.Position) < EngageRange);
     }
 
-    /// <summary>How close a hostile must be to start a fight.</summary>
-    private const float EngageRange = 160f;
+    /// <summary>
+    /// How close a hostile must be to start a fight.
+    ///
+    /// Mirrored — not shared — by <c>PerceptionOptions.CombatEngageRange</c>,
+    /// which exists to report how much of this radius perception covers. Two
+    /// independent literals that have to stay in step; unify them when combat
+    /// target selection moves onto perception.
+    /// </summary>
+    internal const float EngageRange = 160f;
 
     /// <summary>A fight in progress persists a little past engagement range.</summary>
-    private const float DisengageRange = 220f;
+    internal const float DisengageRange = 220f;
 
     private void TickStalkerHigh(SimulationContext ctx, Stalker s, float gameDelta, Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot, Dictionary<string, Stalker> living)
     {
