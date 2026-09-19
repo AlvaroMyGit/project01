@@ -88,15 +88,17 @@ public sealed class SimulationLoop : IDisposable
 
         _noise = new AI.Perception.NoiseBus();
 
+        // One instance, shared: the sensors fill KnownEntities and combat reads
+        // it, so they must agree about whether perception is driving anything.
+        var perception = AI.Perception.PerceptionOptions.FromEnvironment();
+
         _systems10Hz = new ISimulationSystem[]
         {
             new EmissionTickSystem(),
             // Perception before behaviour, so what a stalker knows this tick is
             // gathered before anything acts on it.
-            new PerceptionSystem(
-                deps.Environment, deps.Weather, _noise,
-                AI.Perception.PerceptionOptions.FromEnvironment()),
-            new StalkerBehaviourSystem(_goap, _noise),
+            new PerceptionSystem(deps.Environment, deps.Weather, _noise, perception),
+            new StalkerBehaviourSystem(_goap, _noise, perception),
             new MutantBehaviourSystem(deps.MutantEcology, deps.Environment, deps.Weather),
             new TelemetrySystem(deps.WebVisualizer, deps.Environment, deps.Weather)
         };

@@ -985,6 +985,65 @@ Worth noting on its own — it is a clean demonstration of the finding recorded
 under *Current equilibrium*, that population is bounded by lethality rather
 than by the spawn target.
 
+### Perception-driven combat costs a third of the sim's lethality
+
+`ResolveEngagement` can now acquire targets from `NPCBlackboard.KnownEntities`
+instead of scanning every stalker within `EngageRange`, behind
+`PerceptionOptions.CombatUsesPerception` (`STALKER_PERCEPTION_COMBAT`),
+**default off**. Persistence is untouched: an existing target is kept by the
+same distance and hostility rules whether or not the flag is on, so the flag
+changes *acquisition only*.
+
+Five runs with it on, against the stored baseline:
+
+| metric | off | on | |
+|---|---|---|---|
+| deaths to gunfire | 177.7 | 129 | **−27% SIGNAL** |
+| rank promotions | 98 | 66.6 | **−32% SIGNAL** |
+| deaths to mutants | 116.3 | 155.6 | +34% maybe |
+| combat exchanges | 6016 | 5992.8 | −0% |
+| stalkers alive | 412 | 434.2 | +5% |
+| missions completed | 759 | 730 | −4% |
+
+Exchanges barely move while gunfire deaths fall by a quarter, which is the
+mechanism visible in one line: only stalker-vs-stalker acquisition changed —
+mutants have no perception path, `PerceptionSystem` sweeps only
+`ctx.Stalkers`, so no stalker's `KnownEntities` ever holds a mutant id — and
+the freed tick budget goes into mutant fights instead. Two detection models
+now coexist deliberately.
+
+**The reason is a scale mismatch, and it is larger than the docs claimed.**
+Engage radius is 160 m; `VisionCone` is 80 m scaled by light, collapsing
+toward ~4 m unlit at night, and `AcousticSensor` is 60 m scaled by
+loudness/100. The perception coverage line in the final report reads
+**35–40%** of the pairs proximity would hand to combat, not the ~59% quoted in
+several places in this repo for some time. The stale figure came from a
+shadow-mode run under different conditions and was repeated as though it were
+a constant. It is not: it is a ratio of two radii-bounded pair counts, so it
+rises with population density — the one run that read 64.5% is the
+TimeFactor-15 run that reached 744 alive.
+
+Two qualitative limits a rate knob cannot fix, both worth knowing before any
+adoption:
+
+- **Hearing cannot start a fight.** Noise is only emitted *during* combat, so
+  hearing can only acquire someone already fighting. Vision is the sole
+  cold-start path, and at night it is ~4 m.
+- **`SniperRangeThresholdM` is 130 m**, inside the engage radius but outside
+  every sensor range after dark, so the sniper bonus becomes largely
+  unreachable at night.
+
+Adopting this is therefore not a flag flip: it needs compensation through
+sensor ranges (preferred — physically motivated) or
+`StalkerEncounterRatePerGameSec` (now meaningful, since the previous change
+made it per game second), plus a re-tune of rank progression, which is
+downstream of kills. The flag stays off until that is done.
+
+`ResolveEngagement` was untested when this started; `ResolveEngagementTests`
+(13) pinned proximity behaviour first and `PerceptionDrivenCombatTests` (10)
+pins the perception path, including the deliberate asymmetry that persistence
+ignores `CombatCooldown` while acquisition respects it.
+
 ### Measurement
 
 Reading the code confidently and being wrong has happened often enough to be

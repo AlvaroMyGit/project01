@@ -13,7 +13,7 @@ namespace StalkerALifeSandbox.AI.Perception;
 /// Adoption is staged. Hearing now reaches goal selection
 /// (<see cref="ThreatMemoryFeedsGoap"/>, on); combat target selection is still
 /// proximity-based, because combat rates are tuned (see CombatBalanceConfig) and
-/// perception covers only ~59% of the engagements proximity offers, so that half
+/// perception covers only ~37% of the engagements proximity offers, so that half
 /// is a lethality change as much as a realism one.
 /// </summary>
 public sealed record PerceptionOptions
@@ -62,6 +62,43 @@ public sealed record PerceptionOptions
     public float MemoryGameSeconds { get; init; } = 120f;
 
     /// <summary>
+    /// Let combat pick targets from what a stalker has actually seen or heard
+    /// (<c>NPCBlackboard.KnownEntities</c>) instead of from bare proximity.
+    ///
+    /// Off. This is the second and larger half of adopting perception, and it
+    /// is a lethality change as much as a realism one: perception covers only
+    /// ~37% of the hostile pairs proximity hands to combat at steady state, so
+    /// most engagements disappear. Combat rates are tuned (see
+    /// <c>CombatBalanceConfig</c>) against the proximity model.
+    ///
+    /// That figure is not a constant and should be re-read rather than quoted:
+    /// it is the ratio of pairs-within-sensor-range to pairs-within-160 m, so
+    /// it rises with population density and with daylight. Measured at 35-40%
+    /// across steady-state runs of ~410-460 alive, and 64.5% in a run that
+    /// reached 744 alive. An earlier figure of ~59%, taken in shadow mode under
+    /// different conditions, was quoted as though it were fixed for some time.
+    ///
+    /// Measured cost of turning this on, five runs: deaths to gunfire -27% and
+    /// rank promotions -32% (both SIGNAL), deaths to mutants +34%, population
+    /// +5%. Total combat exchanges barely move, because only stalker-vs-stalker
+    /// acquisition changes and the mutant side takes up the slack.
+    ///
+    /// Two asymmetries make the shortfall structural rather than a tuning gap:
+    /// the engage radius is 160 m while <see cref="VisionCone"/> is 80 m scaled
+    /// by light — collapsing toward ~4 m unlit at night — and
+    /// <see cref="AcousticSensor"/> is 60 m scaled by loudness, ~51 m for a dry
+    /// gunshot. And hearing only fires on noises, which are only emitted during
+    /// combat, so hearing can acquire someone already fighting but can never
+    /// start the first fight. Vision is the sole cold-start path.
+    ///
+    /// Acquisition only. An engagement already under way still persists on
+    /// distance alone, and mutant combat stays on proximity — mutants have no
+    /// perception model at all and never appear in any stalker's
+    /// <c>KnownEntities</c>.
+    /// </summary>
+    public bool CombatUsesPerception { get; init; } = false;
+
+    /// <summary>
     /// The radius combat currently treats as "can fight this". Mirrors
     /// <c>StalkerBehaviourSystem.EngageRange</c>; used to report how much of the
     /// proximity model's engagement set perception covers, while target
@@ -76,6 +113,7 @@ public sealed record PerceptionOptions
         {
             Enabled               = Flag("STALKER_PERCEPTION", o.Enabled),
             ThreatMemoryFeedsGoap = Flag("STALKER_PERCEPTION_THREAT_MEMORY", o.ThreatMemoryFeedsGoap),
+            CombatUsesPerception  = Flag("STALKER_PERCEPTION_COMBAT", o.CombatUsesPerception),
             CandidateRadius       = Num("STALKER_PERCEPTION_CANDIDATE_RADIUS", o.CandidateRadius),
             MemoryGameSeconds     = Num("STALKER_PERCEPTION_MEMORY_SEC", o.MemoryGameSeconds)
         };

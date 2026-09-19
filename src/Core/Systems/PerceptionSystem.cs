@@ -18,7 +18,7 @@ namespace StalkerALifeSandbox.Core.Systems;
 /// ADOPTION IS STAGED. Hearing reaches goal selection
 /// (<see cref="PerceptionOptions.ThreatMemoryFeedsGoap"/>, on by default), but
 /// combat target selection is still proximity-based: perception covers only
-/// ~59% of the engagements proximity offers, combat rates are tuned (see
+/// ~37% of the engagements proximity offers, combat rates are tuned (see
 /// CombatBalanceConfig), and swapping the detection model would be a lethality
 /// change as much as a realism one. This system reports that coverage so the
 /// second half can be judged rather than guessed.

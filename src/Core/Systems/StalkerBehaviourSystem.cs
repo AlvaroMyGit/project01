@@ -17,11 +17,16 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
 {
     private readonly StalkerGoapService _goap;
     private readonly AI.Perception.NoiseBus _noise;
+    private readonly AI.Perception.PerceptionOptions _perception;
 
-    public StalkerBehaviourSystem(StalkerGoapService goap, AI.Perception.NoiseBus noise)
+    public StalkerBehaviourSystem(
+        StalkerGoapService goap,
+        AI.Perception.NoiseBus noise,
+        AI.Perception.PerceptionOptions? perception = null)
     {
         _goap = goap;
         _noise = noise;
+        _perception = perception ?? new AI.Perception.PerceptionOptions();
     }
 
     /// <summary>
@@ -71,8 +76,13 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
     /// alive, hostile and in reach, otherwise a newly chosen one.
     /// </summary>
     internal static Stalker? ResolveEngagement(
-        SimulationContext ctx, Stalker s, Dictionary<string, Stalker> living)
+        SimulationContext ctx, Stalker s, Dictionary<string, Stalker> living,
+        bool usePerception = false)
     {
+        // Persistence is deliberately untouched by perception: a fight already
+        // under way continues on distance alone. Only ACQUISITION changes, so
+        // the flag moves one variable. Requiring a stalker to keep perceiving
+        // the man shooting at them is a second, separate question.
         if (s.Blackboard.CurrentTargetId is { } id &&
             living.TryGetValue(id, out var current) &&
             current.IsAlive &&
@@ -82,10 +92,42 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
 
         s.Blackboard.CurrentTargetId = null;
 
-        return ctx.Stalkers.FirstOrDefault(ss =>
-            ss.IsAlive && ss != s && ss.CombatCooldown <= 0f &&
-            ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction) &&
-            Vector3.Distance(s.Position, ss.Position) < EngageRange);
+        return usePerception
+            ? AcquireFromPerception(ctx, s, living)
+            : ctx.Stalkers.FirstOrDefault(ss =>
+                ss.IsAlive && ss != s && ss.CombatCooldown <= 0f &&
+                ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction) &&
+                Vector3.Distance(s.Position, ss.Position) < EngageRange);
+    }
+
+    /// <summary>
+    /// The same filter as the proximity scan, but drawn from what this stalker
+    /// has actually seen or heard rather than from the whole population.
+    ///
+    /// The range check stays: <c>KnownEntities</c> remembers a sighting for
+    /// <c>PerceptionOptions.MemoryGameSeconds</c> (120 game seconds), so
+    /// knowing about someone is not the same as being able to fight them.
+    /// Perception is a filter on top of proximity, not a replacement for it —
+    /// which is exactly the relationship the coverage figure measures.
+    ///
+    /// Distances use the LIVE position from <paramref name="living"/>, never
+    /// the remembered <c>Vector3</c>. Hearing files a noise under the shooter's
+    /// id at the noise's origin, so a remembered position can be two game
+    /// minutes stale — aiming at it would be aiming at ghosts.
+    /// </summary>
+    private static Stalker? AcquireFromPerception(
+        SimulationContext ctx, Stalker s, Dictionary<string, Stalker> living)
+    {
+        foreach (var id in s.Blackboard.KnownEntities.Keys)
+        {
+            if (!living.TryGetValue(id, out var other)) continue;
+            if (ReferenceEquals(other, s) || other.CombatCooldown > 0f) continue;
+            if (!ctx.Factions.AreHostile(s.TrueFaction, other.TrueFaction)) continue;
+            if (Vector3.Distance(s.Position, other.Position) >= EngageRange) continue;
+            return other;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -129,7 +171,8 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             // exactly what drove gunfire deaths to zero when combat stopped
             // being one-roll-one-corpse. CurrentTargetId and CombatState have
             // been on the blackboard from the start, unused.
-            var otherStalker = ResolveEngagement(ctx, s, living);
+            var otherStalker = ResolveEngagement(
+                ctx, s, living, _perception.CombatUsesPerception);
 
             if (otherStalker != null &&
                 Random.Shared.NextDouble() <
