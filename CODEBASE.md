@@ -50,6 +50,7 @@ This document provides a detailed reference for every module, class, and data fi
   - [An accumulator with no decay is not a signal](#an-accumulator-with-no-decay-is-not-a-signal)
   - [A goal can be permanently relevant and almost never succeed](#a-goal-can-be-permanently-relevant-and-almost-never-succeed)
   - [A self-stabilizing feedback loop is not a distribution to calibrate against](#a-self-stabilizing-feedback-loop-is-not-a-distribution-to-calibrate-against)
+  - [Combat frequency tracked the tick rate, not game time](#combat-frequency-tracked-the-tick-rate-not-game-time)
   - [Measurement](#measurement)
   - [Current equilibrium](#current-equilibrium)
   - [Tuning that is load-bearing](#tuning-that-is-load-bearing)
@@ -934,6 +935,55 @@ will not hold** — the measurement moves as soon as you act on it. Check whethe
 a distribution is exogenous (population demographics, a fixed game constant) or
 endogenous (produced by the very decisions being tuned) before treating a
 one-time measurement as a target.
+
+### Combat frequency tracked the tick rate, not game time
+
+Both encounter rolls were a flat per-tick probability with no `gameDelta`
+term:
+
+```csharp
+Random.Shared.NextDouble() < CombatResolver.StalkerEncounterRate
+```
+
+The 10 Hz bucket hands out `0.1 * TimeFactor` game seconds per tick
+(`ZoneDirector`), so one roll covered 15 game seconds at TimeFactor 150 and
+0.3 at the shipped default of **3** (`TimeManager`, overridden only by
+`STALKER_TIME_FACTOR`). Every measurement and every tuning pass in this
+project pinned 150, which is why nobody saw that running the sim as shipped
+fought **50× more per game-hour** than the numbers were tuned for.
+
+Betrayal (`SocialSystem`) and both emission rolls (`EmissionTickSystem`)
+already used `CombatResolver.EventChance`. Combat was the last rate in the sim
+that did not — the fourth instance of the defect class this file already
+records for mutant movement, the betrayal roll and the squad-coupling
+constant.
+
+The constants are now per game second and re-derived so the calibrated point
+does not move: `rate = -ln(1 - p_old) / 15`, round-tripping to the old
+per-tick probability within 5e-17. Measured over five runs at TimeFactor 150:
+**no SIGNAL on any metric**, missions within 0%, combat exchanges +1%.
+
+**Two things worth keeping from verifying it.**
+
+The invariance is exact for *probability of at least one encounter across a
+span* — 0.302512021 at both TimeFactor 3 and 150 — but **"ticks that fired"
+keeps a 0.07% residual**, because a tick can only fire once however much game
+time it covers, so coarse ticks lose the rare second event within one. That is
+correct behaviour rather than leftover error, and the two properties are pinned
+separately in `CombatEncounterRateTests` so nobody later "fixes" the residual.
+
+The unit tests pin the pure function; they cannot prove the *call sites* were
+wired up. A live run at TimeFactor 15 gave 890 exchanges against 6,070 at
+TimeFactor 150 — the old code would have given ~6,070 at both, since it
+depended only on tick count, and tick count is identical at any TimeFactor
+(the spawn ramp is 720 simulated-real-seconds = 7,200 ticks regardless). Per
+game-hour that is 297 against 202, and the residual is population, not rate:
+the TimeFactor 15 run had **744 alive and 5 casualties** against 412 and 337,
+because at three game-hours lethality has barely acted and the spawn ramp
+delivers its full budget. Normalised per stalker the two agree within ~20%.
+Worth noting on its own — it is a clean demonstration of the finding recorded
+under *Current equilibrium*, that population is bounded by lethality rather
+than by the spawn target.
 
 ### Measurement
 

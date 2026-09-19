@@ -9,8 +9,11 @@ namespace StalkerALifeSandbox.Systems;
 /// <summary>Rank/skill/threat-aware combat odds — replaces coin-flip resolution.</summary>
 public static class CombatResolver
 {
-    public static readonly float MutantEncounterRate = CombatBalanceConfig.MutantEncounterRate;
-    public static readonly float StalkerEncounterRate = CombatBalanceConfig.StalkerEncounterRate;
+    /// <summary>Per game second — pass through <see cref="EventChance"/>, never compare directly.</summary>
+    public static readonly float MutantEncounterRatePerGameSec = CombatBalanceConfig.MutantEncounterRatePerGameSec;
+
+    /// <inheritdoc cref="MutantEncounterRatePerGameSec"/>
+    public static readonly float StalkerEncounterRatePerGameSec = CombatBalanceConfig.StalkerEncounterRatePerGameSec;
 
     public static bool IsSniper(WeaponItem? weapon) => weapon?.Class == "sniper";
     public static bool IsHeavy(WeaponItem? weapon) => weapon?.Class == "heavy";

@@ -6,9 +6,27 @@ namespace StalkerALifeSandbox.Systems;
 /// </summary>
 public static class CombatBalanceConfig
 {
-    // Engagement
-    public const float StalkerEncounterRate     = 0.0015f;
-    public const float MutantEncounterRate      = 0.002f;
+    // Engagement.
+    //
+    // Per GAME SECOND, consumed through CombatResolver.EventChance. They were
+    // flat per-TICK probabilities, which made combat frequency track the tick
+    // rate instead of game time: the 10 Hz bucket hands out 0.1 * TimeFactor
+    // game seconds per tick, so the same roll covered 15 game seconds at
+    // TimeFactor 150 and 0.3 at the shipped default of 3. Every measurement and
+    // every tuning pass in this project ran at 150, which is why nobody saw
+    // that the default configuration was fighting 50x more per game-hour than
+    // the numbers were tuned for.
+    //
+    // Betrayal (SocialSystem) and both emission rolls (EmissionTickSystem)
+    // already used EventChance; combat was the last rate in the sim that did
+    // not. Same defect class as the mutant-movement, betrayal-roll and
+    // squad-coupling bugs recorded in CODEBASE.md.
+    //
+    // Derived so behaviour at TimeFactor 150 is unchanged:
+    //   rate = -ln(1 - p_old) / 15,  p_old = 0.0015 and 0.002
+    // Round-trips to the old per-tick probability to within 5e-17.
+    public const float StalkerEncounterRatePerGameSec = 0.000100075f;
+    public const float MutantEncounterRatePerGameSec  = 0.000133467f;
 
     // Movement
     public const float MoveSpeedPerGameSec      = 4.0f;

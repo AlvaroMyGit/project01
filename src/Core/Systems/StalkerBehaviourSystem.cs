@@ -106,7 +106,9 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         {
             var closeMutant = ctx.Mutants.FirstOrDefault(m =>
                 m.IsAlive && Vector3.Distance(m.Position, s.Position) < 120f);
-            if (closeMutant != null && Random.Shared.NextDouble() < CombatResolver.MutantEncounterRate)
+            if (closeMutant != null &&
+                Random.Shared.NextDouble() <
+                    CombatResolver.EventChance(CombatResolver.MutantEncounterRatePerGameSec, gameDelta))
             {
                 if (Random.Shared.NextDouble() < 0.45)
                     PublishMutantEncounter(ctx, s, closeMutant);
@@ -122,7 +124,9 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             // been on the blackboard from the start, unused.
             var otherStalker = ResolveEngagement(ctx, s, living);
 
-            if (otherStalker != null && Random.Shared.NextDouble() < CombatResolver.StalkerEncounterRate)
+            if (otherStalker != null &&
+                Random.Shared.NextDouble() <
+                    CombatResolver.EventChance(CombatResolver.StalkerEncounterRatePerGameSec, gameDelta))
             {
                 s.Blackboard.CurrentTargetId = otherStalker.Id;
                 s.Blackboard.Combat = CombatState.Combat;
