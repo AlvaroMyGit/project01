@@ -100,7 +100,7 @@ public sealed class SimulationLoop : IDisposable
             new PerceptionSystem(deps.Environment, deps.Weather, _noise, perception),
             new StalkerBehaviourSystem(_goap, _noise, perception),
             new MutantBehaviourSystem(deps.MutantEcology, deps.Environment, deps.Weather),
-            new TelemetrySystem(deps.WebVisualizer, deps.Environment, deps.Weather)
+            new TelemetrySystem(deps.WebVisualizer, deps.Environment, deps.Weather, perception)
         };
 
         _systems1Hz = new ISimulationSystem[]

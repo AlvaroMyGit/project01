@@ -51,8 +51,8 @@ namespace StalkerALifeSandbox.Core.Systems;
 /// </summary>
 public sealed class PerceptionSystem : ISimulationSystem
 {
-    private readonly VisionCone _vision = new();
-    private readonly AcousticSensor _hearing = new();
+    private readonly VisionCone _vision;
+    private readonly AcousticSensor _hearing;
     private readonly EnvironmentManager _environment;
     private readonly WeatherManager _weather;
     private readonly NoiseBus _noise;
@@ -69,6 +69,8 @@ public sealed class PerceptionSystem : ISimulationSystem
         _weather = weather;
         _noise = noise;
         _options = options ?? new PerceptionOptions();
+        _vision = new VisionCone { BaseSight = _options.BaseSightRange };
+        _hearing = new AcousticSensor { BaseSoundRadius = _options.BaseHearingRadius };
     }
 
     public void Tick(SimulationContext ctx, float gameDelta)
@@ -105,10 +107,10 @@ public sealed class PerceptionSystem : ISimulationSystem
             // while this system was supposedly read-only.
             seen += _vision.Sweep(
                 bb, s.Position, bb.Facing, light, visibility,
-                hasFlashlightOn: _environment.IsNight,   // no equipment flag yet; night implies a light
+                hasFlashlightOn: VisionCone.TorchWouldBeLit(light),  // no equipment flag yet; darkness implies a light
                 hasNVGOn: false,
                 gameTime,
-                Candidates(stalkers, s, _options.CandidateRadius));
+                Candidates(stalkers, s, _options.EffectiveCandidateRadius));
 
             heard += _hearing.Process(
                 bb, s.Position, gameTime, rain, noises, _options.ThreatMemoryFeedsGoap);

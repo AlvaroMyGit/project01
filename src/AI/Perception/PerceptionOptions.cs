@@ -52,11 +52,36 @@ public sealed record PerceptionOptions
     public bool ThreatMemoryFeedsGoap { get; init; } = true;
 
     /// <summary>
-    /// Broad-phase cut. Nothing beyond this can be seen or heard, so it bounds
-    /// the candidate list before the cone maths runs. Comfortably past both the
-    /// 80 m base sight and the 60 m base hearing radius.
+    /// Unmodified sight range before light and weather scale it — the
+    /// <c>BaseSight</c> the sweep runs with. Exposed so it can be swept without
+    /// a rebuild, since it is the first compensation lever for
+    /// <see cref="CombatUsesPerception"/>.
+    /// </summary>
+    public float BaseSightRange { get; init; } = VisionCone.DefaultBaseSight;
+
+    /// <summary>
+    /// Unmodified hearing radius before rain and loudness scale it. A dry
+    /// gunshot carries <c>GunshotLoudness/100</c> of this.
+    /// </summary>
+    public float BaseHearingRadius { get; init; } = AcousticSensor.DefaultBaseSoundRadius;
+
+    /// <summary>
+    /// Broad-phase cut. Bounds the candidate list before the cone maths runs.
+    ///
+    /// Read through <see cref="EffectiveCandidateRadius"/>, never directly: a
+    /// broad-phase tighter than the sensor it feeds silently caps that sensor,
+    /// which is the "cheap filter behind an expensive one" failure this
+    /// codebase has hit three times. Raising sight past this value without
+    /// raising it too would have looked like a sensor that stopped responding.
     /// </summary>
     public float CandidateRadius { get; init; } = 200f;
+
+    /// <summary>
+    /// The broad-phase radius actually used: never tighter than the sensors it
+    /// is filtering for.
+    /// </summary>
+    public float EffectiveCandidateRadius =>
+        MathF.Max(CandidateRadius, MathF.Max(BaseSightRange, BaseHearingRadius));
 
     /// <summary>Sightings older than this are forgotten.</summary>
     public float MemoryGameSeconds { get; init; } = 120f;
@@ -114,6 +139,8 @@ public sealed record PerceptionOptions
             Enabled               = Flag("STALKER_PERCEPTION", o.Enabled),
             ThreatMemoryFeedsGoap = Flag("STALKER_PERCEPTION_THREAT_MEMORY", o.ThreatMemoryFeedsGoap),
             CombatUsesPerception  = Flag("STALKER_PERCEPTION_COMBAT", o.CombatUsesPerception),
+            BaseSightRange        = Num("STALKER_PERCEPTION_SIGHT", o.BaseSightRange),
+            BaseHearingRadius     = Num("STALKER_PERCEPTION_HEARING", o.BaseHearingRadius),
             CandidateRadius       = Num("STALKER_PERCEPTION_CANDIDATE_RADIUS", o.CandidateRadius),
             MemoryGameSeconds     = Num("STALKER_PERCEPTION_MEMORY_SEC", o.MemoryGameSeconds)
         };

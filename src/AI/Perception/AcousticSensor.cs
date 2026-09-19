@@ -10,7 +10,10 @@ namespace StalkerALifeSandbox.AI.Perception;
 /// </summary>
 public sealed class AcousticSensor
 {
-    public float BaseSoundRadius { get; set; } = 60f;
+    /// <summary>Unmodified hearing radius, before rain and loudness scale it.</summary>
+    public const float DefaultBaseSoundRadius = 60f;
+
+    public float BaseSoundRadius { get; set; } = DefaultBaseSoundRadius;
 
     /// <summary>
     /// Process pending noise events for this tick.

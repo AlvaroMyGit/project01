@@ -19,6 +19,26 @@ public sealed class VisionCone
     /// <summary>Extra range from a lit torch at night.</summary>
     public const float FlashlightBonus = 20f;
 
+    /// <summary>
+    /// Light level at or below which a stalker lights a torch. Set to the
+    /// horizon value, so the torch comes on as the sun goes down rather than
+    /// on the clock.
+    /// </summary>
+    public const float TorchLightThreshold = 0.35f;
+
+    /// <summary>
+    /// Whether a stalker would have a torch lit at this light level.
+    ///
+    /// Callers used to pass <c>EnvironmentManager.IsNight</c>, which is a clock
+    /// predicate (21:00-06:00) and disagreed with the light for three hours
+    /// either side: at 20:59 a stalker stood in near-darkness with the torch
+    /// still in their pocket, seeing 4 m, then lit it on the stroke of 21:00
+    /// and saw 24 m. Dusk was darker than midnight. Keyed to light instead,
+    /// the torch switches when it is actually needed. The 20 m step at the
+    /// threshold stays, because a torch really does switch on all at once.
+    /// </summary>
+    public static bool TorchWouldBeLit(float lightLevel) => lightLevel <= TorchLightThreshold;
+
     public float BaseSight { get; set; } = DefaultBaseSight;
     public float HalfAngle { get; set; } = DefaultHalfAngle;  // degrees
 

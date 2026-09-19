@@ -17,12 +17,20 @@ public sealed class TelemetrySystem : ISimulationSystem
     public TelemetrySystem(
         WebVisualizerServer webVisualizer,
         World.Environment.EnvironmentManager environment,
-        World.Environment.WeatherManager weather)
+        World.Environment.WeatherManager weather,
+        AI.Perception.PerceptionOptions? perception = null)
     {
         _webVisualizer = webVisualizer;
         _environment = environment;
         _weather = weather;
+        // The same options instance PerceptionSystem runs with. Taking the
+        // default here instead would draw an 80 m cone over a sweep configured
+        // for some other range, and a drawn cone that disagrees with the
+        // simulated one is worse than drawing none.
+        _perception = perception ?? new AI.Perception.PerceptionOptions();
     }
+
+    private readonly AI.Perception.PerceptionOptions _perception;
 
     public void Tick(SimulationContext ctx, float gameDelta)
     {
@@ -68,7 +76,9 @@ public sealed class TelemetrySystem : ISimulationSystem
                     FOV = AI.Perception.VisionCone.DefaultHalfAngle * 2f,
                     SightRange = AI.Perception.VisionCone.EffectiveSightRange(
                         _environment.LightLevel, _weather.VisibilityMod,
-                        hasFlashlightOn: _environment.IsNight, hasNVGOn: false),
+                        hasFlashlightOn: AI.Perception.VisionCone.TorchWouldBeLit(_environment.LightLevel),
+                        hasNVGOn: false,
+                        baseSight: _perception.BaseSightRange),
                     GoapTargetPosition = s.Blackboard.FinalDestination.HasValue ? new PositionDTO { X = s.Blackboard.FinalDestination.Value.X, Y = s.Blackboard.FinalDestination.Value.Z } : null,
                     LevelId = s.CurrentLevelId,
                     Health = (int)MathF.Round(s.Health),
