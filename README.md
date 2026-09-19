@@ -36,7 +36,7 @@ A fully autonomous open-world life simulation inspired by the A-Life system from
 - **Hearing** — gunfire carries further than a scuffle, and rain muffles both
 - **Facing** — every stalker and mutant tracks the direction they last moved, which is the input both sensors were missing since the project began
 - **What a stalker hears reaches their decisions** — gunfire nearby raises the threat they attach to that region, and they act on it. This makes threat memory genuinely per-stalker: 18 distinct profiles across 30 sampled, where the faction rumour network alone gives everyone the same one
-- **Combat can resolve by perception** — behind `STALKER_PERCEPTION_COMBAT`, off by default. It takes ~85% of the fights proximity would, which costs −27% deaths to gunfire and −32% rank promotions: fights persist over several exchanges, so a start that never happens costs more than one exchange
+- **Combat resolves by perception** — a stalker fights what they have seen or heard, not whatever hostile is within 160 m, so facing, darkness and flanking reach combat for the first time. Adopted with `CombatRateCompensation` covering the ~15% shortfall in fight starts; rank progression sits 31% lower and that was accepted rather than tuned away
 
 ### 🌩️ Environmental Hazards
 - **Emissions (Blowouts)** — 4-phase events (Warning → Panic → Peak → Aftermath) with 70% lethality / 30% zombification for unsheltered stalkers, arriving every 12–24 game hours like a GAMMA surge rather than as weather
@@ -143,7 +143,7 @@ Open `http://localhost:5050` in your browser to watch the Zone come alive.
 | `STALKER_SQUAD_LOSS_PENALTY` | `9` | Morale each squadmate loses when one of them is killed |
 | `STALKER_PERCEPTION` | `on` | Run the vision/hearing sweep at all. Off saves roughly a quarter of the tick budget |
 | `STALKER_PERCEPTION_THREAT_MEMORY` | `on` | Let what stalkers hear reach their goal selection. Off keeps the sensors running but stops hearing steering anyone — worth about 4% of the population and 3% of mission throughput |
-| `STALKER_PERCEPTION_COMBAT` | `off` | Pick combat targets from what a stalker has actually seen or heard, instead of anything hostile within 160 m. On costs 27% of deaths to gunfire and 32% of rank promotions — adopt only with compensation |
+| `STALKER_PERCEPTION_COMBAT` | `on` | Pick combat targets from what a stalker has actually seen or heard, instead of anything hostile within 160 m. Off reverts to proximity, and also disables the rate compensation that goes with it |
 | `STALKER_PERCEPTION_SIGHT` | `80` | Base sight range in metres, before light and weather scale it. Raising it barely moves coverage — the cone angle is what binds |
 | `STALKER_PERCEPTION_HEARING` | `60` | Base hearing radius in metres, before rain and loudness scale it |
 | `STALKER_PERCEPTION_HALF_ANGLE` | `55` | Half the vision cone, in degrees. The one lever that moves coverage: 55 gives 39%, 110 gives 68%, 180 (omnidirectional) gives 93% — though coverage turns out not to drive lethality |
@@ -236,7 +236,8 @@ The core simulation is feature-complete per the v4.5 design. Nearest work first.
 
 ### Next up
 
-- **Adopting perception-driven combat** — implemented and measured behind `STALKER_PERCEPTION_COMBAT`, off by default. With `CombatRateCompensation` at 1.183 it costs nothing in missions (−0%), population (−1%) or casualties (+1%), and deaths to gunfire recover from −27% to −15%. What does not come back is rank progression, −31%: total rank XP falls 26% because kills fall 13% and XP per kill falls 15% as well, victims being lower-ranked. That is a feedback loop, so the remaining decision is whether to re-tune `RankProgression`'s tier multiplier or accept a Zone where fewer stalkers become legends
+- **Mutant perception** — mutants have no detection model at all. `PerceptionSystem` sweeps only `ctx.Stalkers`, so no stalker's `KnownEntities` ever holds a mutant id and all stalker/mutant combat stays on proximity. Two detection models now coexist deliberately, and giving mutants the first one is its own phase
+- **The vision cone is narrower than human vision** — 110° against roughly 200–220° including peripheral. Widening it is a correction on its own merits, measured at coverage 39% → 63%, but it is not a lethality lever and should not be adopted as one
 - **Population target** — the design asks for 750 stalkers and the Zone settles at ~335. Closing that is a spawn-rate-versus-lethality decision, not an optimisation
 - **Follower planning** — squad delegation was the cheaper half of the answer. Letting followers plan outright remains open and was last measured 1.8× over the 1 Hz budget
 - **Personal grudges** — `PersonalMemory.cs` exists unwired; its payoff is stalker-level vendettas rather than faction-level hostility

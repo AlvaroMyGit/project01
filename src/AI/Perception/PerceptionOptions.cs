@@ -98,9 +98,11 @@ public sealed record PerceptionOptions
     /// Let combat pick targets from what a stalker has actually seen or heard
     /// (<c>NPCBlackboard.KnownEntities</c>) instead of from bare proximity.
     ///
-    /// Off. This is the second and larger half of adopting perception, and it
-    /// is a lethality change as much as a realism one. Combat rates are tuned
-    /// (see <c>CombatBalanceConfig</c>) against the proximity model.
+    /// On, after being measured on its own and compensated. This is the second
+    /// and larger half of adopting perception: a stalker now fights what they
+    /// have detected rather than whatever hostile happens to be within 160 m,
+    /// which means flanking, darkness and facing all matter to combat for the
+    /// first time.
     ///
     /// The size of the change is smaller than the coverage figure suggests, and
     /// coverage was misused here for some time. Coverage is a PAIR statistic —
@@ -116,22 +118,31 @@ public sealed record PerceptionOptions
     /// 744. Re-read it rather than quoting it; an earlier ~59%, taken in shadow
     /// mode under different conditions, was cited as fixed for months.
     ///
-    /// Measured cost of turning this on, five runs: deaths to gunfire -27% and
-    /// rank promotions -32% (both SIGNAL), deaths to mutants +34%, population
-    /// +5%. Total combat exchanges barely move, because only stalker-vs-stalker
-    /// acquisition changes and the mutant side takes up the slack.
+    /// Uncompensated it cost deaths to gunfire -27% and rank promotions -32%,
+    /// both SIGNAL, from a ~15% shortfall in fight STARTS. The cost is
+    /// superlinear in that shortfall because an engagement persists over
+    /// several exchanges through <c>CurrentTargetId</c>, so a start that never
+    /// happens costs more than one exchange.
     ///
-    /// The cost is superlinear in the acquisition shortfall — ~15% fewer fight
-    /// starts producing a 27% fall in deaths — because an engagement persists
-    /// over several exchanges through <c>CurrentTargetId</c>, so a start that
-    /// never happens costs more than one exchange.
+    /// With <see cref="CombatRateCompensation"/> the simulation-health metrics
+    /// come back: missions -0%, population -1%, casualties +1%, exchanges +5%,
+    /// and deaths to gunfire recover to -15% and out of SIGNAL.
     ///
-    /// Widening the cone to 210 degrees (see
-    /// <see cref="SightHalfAngleDegrees"/>) lifts coverage 39% to 63% but
-    /// recovers only three points of lethality, -27% to -24%: coverage is not
-    /// the mechanism. The lever that fits a shortfall in fight starts is
-    /// <c>CombatBalanceConfig.StalkerEncounterRatePerGameSec</c>, roughly +16%,
-    /// which is only meaningful now that rate is per game second.
+    /// What does not come back is rank progression, -31%, and that was ADOPTED
+    /// rather than fixed. Total rank XP falls 26% against kills -13%, because
+    /// XP per kill falls 15% as well: stalker kill XP scales with the VICTIM's
+    /// rank, so fewer promotions means lower-ranked victims means less XP per
+    /// kill. Chasing it with encounter rate would be pushing on a threshold the
+    /// population is itself moving to meet — the shape of the VisitTrader
+    /// calibration failure recorded in CODEBASE.md. Fewer stalkers becoming
+    /// legends when combat requires seeing your enemy is a defensible outcome,
+    /// and <c>RankProgression</c>'s tier multiplier is the lever if that
+    /// judgement is ever revisited.
+    ///
+    /// Two levers that do NOT work, both measured rather than reasoned about:
+    /// tripling the sensor ranges moves coverage 39.1% to 39.6%, and widening
+    /// the cone to 210 degrees lifts coverage to 63% while recovering only
+    /// three points of lethality. Coverage is not the mechanism.
     ///
     /// The shortfall is angular, not a range gap, and this file said otherwise
     /// for some time. "Engage radius is 160 m while sight is 80 m" reads like
@@ -155,7 +166,7 @@ public sealed record PerceptionOptions
     /// perception model at all and never appear in any stalker's
     /// <c>KnownEntities</c>.
     /// </summary>
-    public bool CombatUsesPerception { get; init; } = false;
+    public bool CombatUsesPerception { get; init; } = true;
 
     /// <summary>
     /// Multiplier applied to <c>StalkerEncounterRatePerGameSec</c> while
@@ -181,7 +192,7 @@ public sealed record PerceptionOptions
     /// proximity model's engagement set perception covers, while target
     /// selection is still proximity-based.
     /// </summary>
-    public float CombatEngageRange { get; init; } = 160f;
+    public float CombatEngageRange { get; init; } = Systems.CombatBalanceConfig.EngageRangeM;
 
     public static PerceptionOptions FromEnvironment()
     {

@@ -59,13 +59,35 @@ public class PerceptionDrivenCombatTests
     // ── The flag ────────────────────────────────────────────────────────────
 
     [Fact]
-    public void CombatStaysOnProximityByDefault()
+    public void PerceptionIsFullyAdopted()
     {
         var options = new PerceptionOptions();
 
         Assert.True(options.Enabled);
-        Assert.True(options.ThreatMemoryFeedsGoap);   // adopted earlier
-        Assert.False(options.CombatUsesPerception);   // this one is not
+        Assert.True(options.ThreatMemoryFeedsGoap);   // hearing reaches goals
+        Assert.True(options.CombatUsesPerception);    // and combat picks targets
+    }
+
+    [Fact]
+    public void AdoptionCarriesItsCompensation()
+    {
+        // Turning the flag on without the rate compensation costs 27% of deaths
+        // to gunfire. The two were measured together and belong together; a
+        // default of 1 here would silently ship the uncompensated world.
+        var options = new PerceptionOptions();
+
+        Assert.True(options.CombatUsesPerception);
+        Assert.True(options.CombatRateCompensation > 1.1f);
+    }
+
+    [Fact]
+    public void TheEngageRadiusIsOneConstant()
+    {
+        // These were two independent literals with a comment asking for them to
+        // be unified once combat moved onto perception. It has.
+        Assert.Equal(
+            StalkerBehaviourSystem.EngageRange,
+            new PerceptionOptions().CombatEngageRange);
     }
 
     // ── What changes ────────────────────────────────────────────────────────

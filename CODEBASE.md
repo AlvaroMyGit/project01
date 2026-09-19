@@ -1044,6 +1044,46 @@ downstream of kills. The flag stays off until that is done.
 pins the perception path, including the deliberate asymmetry that persistence
 ignores `CombatCooldown` while acquisition respects it.
 
+### Perception-driven combat is on
+
+`CombatUsesPerception` defaults to true. A stalker fights what they have seen
+or heard rather than whatever hostile is within 160 m, so facing, darkness and
+flanking reach combat for the first time in this project.
+
+The baseline was re-captured on the adopted defaults. Against the proximity
+baseline it replaces:
+
+| metric | proximity | perception | |
+|---|---|---|---|
+| stalkers alive | 412.0 | 410.2 | -0.4% |
+| casualties total | 337.3 | 339.0 | +0.5% |
+| missions completed | 759.0 | 780.2 | +2.8% |
+| combat exchanges | 6016 | 6612.8 | +9.9% |
+| deaths to gunfire | 177.7 | 150.8 | -15.1% |
+| deaths to mutants | 116.3 | 167.2 | +43.8% |
+| rank promotions | 98.0 | 69.6 | **-29.0%** |
+| perception coverage | — | 40.1% | new |
+
+Population, casualties and mission throughput are where they were. The shift is
+in *what kills stalkers*: a quarter of the deaths move from gunfire to mutants,
+because stalker-vs-stalker acquisition is now gated on detection while mutant
+combat is not — mutants have no perception model at all, and
+`PerceptionSystem` sweeps only `ctx.Stalkers`, so no stalker's `KnownEntities`
+ever holds a mutant id. **Two detection models now coexist deliberately.** That
+asymmetry is the most likely thing to be mistaken for a bug later.
+
+Rank progression at -29% was **adopted, not fixed**. The mechanism is a feedback
+loop (above), and the knob that looks like it should fix it is the one that
+would chase a moving threshold. Fewer stalkers becoming legends when combat
+requires seeing your enemy is the intended reading;
+`RankProgression`'s tier multiplier is the lever if that judgement changes.
+
+Two constants that were mirrored are now shared: `EngageRange` and
+`DisengageRange` live in `CombatBalanceConfig` and both
+`StalkerBehaviourSystem` and `PerceptionOptions.CombatEngageRange` take them
+from there. They had been independent literals with a comment asking for
+exactly this once combat moved onto perception.
+
 ### Compensating the rate restored everything except progression
 
 A ~15% shortfall in fight starts is what `StalkerEncounterRatePerGameSec` is

@@ -151,15 +151,16 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
     /// <summary>
     /// How close a hostile must be to start a fight.
     ///
-    /// Mirrored — not shared — by <c>PerceptionOptions.CombatEngageRange</c>,
-    /// which exists to report how much of this radius perception covers. Two
-    /// independent literals that have to stay in step; unify them when combat
-    /// target selection moves onto perception.
+    /// Now shared with <c>PerceptionOptions.CombatEngageRange</c> through
+    /// <c>CombatBalanceConfig</c> rather than mirrored by a second literal.
+    /// They were independent constants kept in step by hand while combat and
+    /// perception disagreed about which radius was authoritative; combat target
+    /// selection running on perception is what made that untenable.
     /// </summary>
-    internal const float EngageRange = 160f;
+    internal const float EngageRange = CombatBalanceConfig.EngageRangeM;
 
     /// <summary>A fight in progress persists a little past engagement range.</summary>
-    internal const float DisengageRange = 220f;
+    internal const float DisengageRange = CombatBalanceConfig.DisengageRangeM;
 
     private void TickStalkerHigh(SimulationContext ctx, Stalker s, float gameDelta, Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot, Dictionary<string, Stalker> living)
     {

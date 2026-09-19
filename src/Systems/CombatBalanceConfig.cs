@@ -28,6 +28,13 @@ public static class CombatBalanceConfig
     public const float StalkerEncounterRatePerGameSec = 0.000100075f;
     public const float MutantEncounterRatePerGameSec  = 0.000133467f;
 
+    // Engagement radii. Single source: StalkerBehaviourSystem aliases these and
+    // PerceptionOptions.CombatEngageRange defaults from them. They used to be
+    // two independent literals that had to be kept in step by hand, with a
+    // comment saying so and a test pinning the coincidence.
+    public const float EngageRangeM             = 160f;
+    public const float DisengageRangeM          = 220f;
+
     // Movement
     public const float MoveSpeedPerGameSec      = 4.0f;
 
