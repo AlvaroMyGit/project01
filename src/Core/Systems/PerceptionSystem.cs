@@ -128,14 +128,21 @@ public sealed class PerceptionSystem : ISimulationSystem
             // pair, every tick — so the ratio is meaningful. Counting raw
             // sightings against this instead would compare a sensor's output
             // to a pair census and report a number that means nothing.
-            foreach (var other in stalkers)
+            // Instrumentation only, and O(n) per observer on top of the sweep
+            // above — the single largest block of pair work in the tick. Gated
+            // the way the acquisition shadow in StalkerBehaviourSystem already
+            // is, so it costs nothing in a run that is not being measured.
+            if (SimulationDebugLog.Enabled)
             {
-                if (!other.IsAlive || ReferenceEquals(other, s)) continue;
-                if (Vector3.Distance(s.Position, other.Position) > _options.CombatEngageRange) continue;
-                if (!ctx.Factions.AreHostile(s.TrueFaction, other.TrueFaction)) continue;
+                foreach (var other in stalkers)
+                {
+                    if (!other.IsAlive || ReferenceEquals(other, s)) continue;
+                    if (Vector3.Distance(s.Position, other.Position) > _options.CombatEngageRange) continue;
+                    if (!ctx.Factions.AreHostile(s.TrueFaction, other.TrueFaction)) continue;
 
-                contested++;
-                if (bb.KnownEntities.ContainsKey(other.Id)) known++;
+                    contested++;
+                    if (bb.KnownEntities.ContainsKey(other.Id)) known++;
+                }
             }
         }
 

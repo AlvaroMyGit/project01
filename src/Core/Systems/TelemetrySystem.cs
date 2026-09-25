@@ -49,7 +49,11 @@ public sealed class TelemetrySystem : ISimulationSystem
             {
                 Tick = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
                 TimeOfDay = $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}",
-                Weather = "Clear", // We don't have weather in ctx, so we'll just hardcode for now or skip.
+                // Was hardcoded to "Clear" with a note saying weather was not
+                // reachable here. It is: WeatherManager is injected and drives
+                // RainIntensity and VisibilityMod into PerceptionSystem, so the
+                // sim modelled weather while this frame reported none of it.
+                Weather = _weather.CurrentWeather.ToString(),
                 StormActive = ctx.Emissions.IsStormActive,
                 EmissionCountdown = Math.Max(0, ctx.Emissions.NextEmissionAt - gameTime),
                 EmissionPhase = ctx.Emissions.CurrentPhase.ToString(),
