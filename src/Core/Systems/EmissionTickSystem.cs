@@ -155,7 +155,7 @@ public sealed class EmissionTickSystem : ISimulationSystem
             if (SimRandom.NextDouble() >= hitChance) continue;
 
             if (SimRandom.NextDouble() < 0.70)
-                KillStalkerFromEmission(ctx, s, squadLeaders);
+                KillStalkerFromEmission(ctx, s, squadLeaders, stalkers);
             else
                 ZombifyStalkerFromEmission(s);
         }
@@ -192,11 +192,14 @@ public sealed class EmissionTickSystem : ISimulationSystem
         return horizontal + vertical * 0.5f;
     }
 
-    private void KillStalkerFromEmission(SimulationContext ctx, Stalker s, Dictionary<string, Stalker> squadLeaders)
+    private void KillStalkerFromEmission(
+        SimulationContext ctx, Stalker s, Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot)
     {
         s.IsAlive = false;
         ctx.PDA.UnregisterListener(s.Blackboard);
-        SquadSuccession.OnLeaderDeath(s, ctx.Stalkers, ctx.RequestReplan, squadLeaders);
+        // The snapshot Tick took under EntityLock, not the live list — the rest
+        // of this system already reads it that way.
+        SquadSuccession.OnLeaderDeath(s, snapshot, ctx.RequestReplan, squadLeaders);
         KillTracker.RecordKill(s, "Emission", $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}");
         ctx.Corpses.Add(EquipmentUpgradeService.CreateStalkerCorpse(s, CauseOfDeath.Emission, (float)ctx.Time.ElapsedGameSeconds, "corpse_em"));
     }

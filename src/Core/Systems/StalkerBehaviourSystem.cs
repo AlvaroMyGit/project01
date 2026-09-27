@@ -51,7 +51,12 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
     public void Tick(SimulationContext ctx, float gameDelta)
     {
         Stalker[] stalkers;
-        lock (ctx.EntityLock) { stalkers = ctx.Stalkers.ToArray(); }
+        Mutant[] mutants;
+        lock (ctx.EntityLock)
+        {
+            stalkers = ctx.Stalkers.ToArray();
+            mutants = ctx.Mutants.ToArray();
+        }
 
         var squadLeaders = stalkers
             .Where(s => s.IsAlive && s.IsSquadLeader && s.SquadId != null)
@@ -67,7 +72,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         foreach (var s in stalkers)
         {
             if (!s.IsAlive) continue;
-            TickStalkerHigh(ctx, s, gameDelta, squadLeaders, stalkers, living);
+            TickStalkerHigh(ctx, s, gameDelta, squadLeaders, stalkers, mutants, living);
         }
     }
 
@@ -93,7 +98,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         s.Blackboard.CurrentTargetId = null;
 
         if (!usePerception)
-            return AcquireByProximity(ctx, s);
+            return AcquireByProximity(ctx, s, living);
 
         var acquired = AcquireFromPerception(ctx, s, living);
 
@@ -106,17 +111,42 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         // because one known hostile out of five in range is enough.
         if (SimulationDebugLog.Enabled)
             SimulationDebugLog.RecordAcquisition(
-                proximityWould: AcquireByProximity(ctx, s) is not null,
+                proximityWould: AcquireByProximity(ctx, s, living) is not null,
                 perceptionDid: acquired is not null);
 
         return acquired;
     }
 
-    private static Stalker? AcquireByProximity(SimulationContext ctx, Stalker s) =>
-        ctx.Stalkers.FirstOrDefault(ss =>
-            ss.IsAlive && ss != s && ss.CombatCooldown <= 0f &&
-            ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction) &&
-            Vector3.Distance(s.Position, ss.Position) < EngageRange);
+    /// <summary>
+    /// Reads <paramref name="living"/>, the per-tick index, and never
+    /// <c>ctx.Stalkers</c>.
+    ///
+    /// This enumerated the live list while every other reader in the system
+    /// snapshots it under EntityLock first. It happens to be safe today only
+    /// because ZoneDirector runs every frequency bucket on one thread, so the
+    /// 1 Hz spawn cannot interleave with this 10 Hz tick — which means the lock
+    /// was guarding the future rather than the present, and this was exactly
+    /// where that guard was missing. Splitting the behaviour tick across
+    /// stalkers, the natural follow-on from a spatial index, would have turned
+    /// it into an intermittent "Collection was modified" that reproduces once a
+    /// week and never under a debugger.
+    ///
+    /// The index was already built and already in scope; it is also cheaper,
+    /// since it skips the dead rather than filtering them per candidate.
+    /// </summary>
+    private static Stalker? AcquireByProximity(
+        SimulationContext ctx, Stalker s, Dictionary<string, Stalker> living)
+    {
+        foreach (var ss in living.Values)
+        {
+            if (!ss.IsAlive || ReferenceEquals(ss, s) || ss.CombatCooldown > 0f) continue;
+            if (!ctx.Factions.AreHostile(s.TrueFaction, ss.TrueFaction)) continue;
+            if (Vector3.Distance(s.Position, ss.Position) >= EngageRange) continue;
+            return ss;
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// The same filter as the proximity scan, but drawn from what this stalker
@@ -162,7 +192,10 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
     /// <summary>A fight in progress persists a little past engagement range.</summary>
     internal const float DisengageRange = CombatBalanceConfig.DisengageRangeM;
 
-    private void TickStalkerHigh(SimulationContext ctx, Stalker s, float gameDelta, Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot, Dictionary<string, Stalker> living)
+    private void TickStalkerHigh(
+        SimulationContext ctx, Stalker s, float gameDelta,
+        Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot, Mutant[] mutants,
+        Dictionary<string, Stalker> living)
     {
         if (s.CombatCooldown > 0f)
             s.CombatCooldown = Math.Max(0f, s.CombatCooldown - gameDelta);
@@ -172,7 +205,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
 
         if (s.CombatCooldown <= 0f && s.SpawnGraceRemaining <= 0f)
         {
-            var closeMutant = ctx.Mutants.FirstOrDefault(m =>
+            var closeMutant = Array.Find(mutants, m =>
                 m.IsAlive && Vector3.Distance(m.Position, s.Position) < 120f);
             if (closeMutant != null &&
                 SimRandom.NextDouble() <
@@ -180,7 +213,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             {
                 if (SimRandom.NextDouble() < 0.45)
                     PublishMutantEncounter(ctx, s, closeMutant);
-                if (ResolveStalkerMutantCombat(ctx, s, closeMutant, squadLeaders)) return;
+                if (ResolveStalkerMutantCombat(ctx, s, closeMutant, squadLeaders, snapshot)) return;
             }
 
             // Stay on the fight already in progress. Without this, combat has
@@ -304,11 +337,13 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         }
     }
 
-    private bool ResolveStalkerMutantCombat(SimulationContext ctx, Stalker s, Mutant closeMutant, Dictionary<string, Stalker> squadLeaders)
+    private bool ResolveStalkerMutantCombat(
+        SimulationContext ctx, Stalker s, Mutant closeMutant,
+        Dictionary<string, Stalker> squadLeaders, Stalker[] snapshot)
     {
         float threat = ctx.WorldGen.GetThreatLevel(
             s.Position.X / ctx.WorldGen.Width, s.Position.Z / ctx.WorldGen.Height);
-        int allies = CountSquadAlliesInRange(ctx, s, 120f);
+        int allies = CountSquadAlliesInRange(snapshot, s, 120f);
         float dist = Vector3.Distance(s.Position, closeMutant.Position);
         s.Equipment.PrimaryWeapon?.WearPerShot(0.015f);
         bool stalkerWins = SimRandom.NextDouble()
@@ -354,7 +389,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
 
         SimulationDebugLog.CombatMutantLoss();
         ctx.PDA.UnregisterListener(s.Blackboard);
-        SquadSuccession.OnLeaderDeath(s, ctx.Stalkers, ctx.RequestReplan, squadLeaders);
+        SquadSuccession.OnLeaderDeath(s, snapshot, ctx.RequestReplan, squadLeaders);
         KillTracker.RecordKill(s, closeMutant, timeStr);
         ctx.Corpses.Add(EquipmentUpgradeService.CreateStalkerCorpse(s, CauseOfDeath.Mutant, (float)ctx.Time.ElapsedGameSeconds));
         return true;
@@ -390,7 +425,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
 
             SimulationDebugLog.CombatStalkerWin();
             ctx.PDA.UnregisterListener(other.Blackboard);
-            SquadSuccession.OnLeaderDeath(other, ctx.Stalkers, ctx.RequestReplan, squadLeaders);
+            SquadSuccession.OnLeaderDeath(other, snapshot, ctx.RequestReplan, squadLeaders);
             KillTracker.RecordKill(other, s, timeStr);
             SimulationDebugLog.WriteEvent("COMBAT", $"{s.DisplayName} killed {other.DisplayName} using {s.Equipment.PrimaryWeapon?.Id ?? "Bare hands"}");
             var corpse = EquipmentUpgradeService.CreateStalkerCorpse(other, CauseOfDeath.Gunfire, (float)ctx.Time.ElapsedGameSeconds);
@@ -419,16 +454,16 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
 
         SimulationDebugLog.CombatStalkerLoss();
         ctx.PDA.UnregisterListener(s.Blackboard);
-        SquadSuccession.OnLeaderDeath(s, ctx.Stalkers, ctx.RequestReplan, squadLeaders);
+        SquadSuccession.OnLeaderDeath(s, snapshot, ctx.RequestReplan, squadLeaders);
         KillTracker.RecordKill(s, other, timeStr);
         ctx.Corpses.Add(EquipmentUpgradeService.CreateStalkerCorpse(s, CauseOfDeath.Gunfire, (float)ctx.Time.ElapsedGameSeconds));
         return true;
     }
 
-    private static int CountSquadAlliesInRange(SimulationContext ctx, Stalker s, float range)
+    private static int CountSquadAlliesInRange(Stalker[] snapshot, Stalker s, float range)
     {
         if (s.SquadId == null) return 0;
-        return ctx.Stalkers.Count(ss =>
+        return snapshot.Count(ss =>
             ss.IsAlive && ss != s && ss.SquadId == s.SquadId &&
             Vector3.Distance(ss.Position, s.Position) < range);
     }
