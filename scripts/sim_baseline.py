@@ -13,6 +13,9 @@ so every run covers exactly the same span of game time.
 The sim still uses Random.Shared in places, so counters vary run to run. Treat a
 small diff as noise and a large one as signal; --repeat gives a spread to judge
 against.
+
+Provenance is recorded as well as measured: a baseline that cannot say WHICH
+source it describes is not a baseline, it is a number. See source_provenance.
 """
 import argparse, hashlib, json, os, pathlib, re, subprocess, sys, statistics
 
@@ -96,6 +99,60 @@ def build_fingerprint() -> str:
     return hashlib.sha256(dll.read_bytes()).hexdigest()[:12]
 
 
+DLL = ROOT / "bin" / "Debug" / "net8.0" / "StalkerALifeSandbox.dll"
+
+
+def _git(*args) -> str:
+    """Read-only git query. Returns "" if git is unavailable."""
+    try:
+        return subprocess.run(["git", *args], cwd=ROOT, capture_output=True,
+                              text=True, check=True).stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return ""
+
+
+def source_provenance() -> dict:
+    """WHICH source the binary was built from, alongside WHAT the binary is.
+
+    build_fingerprint proves every run in one capture loaded the same binary.
+    It cannot prove that binary matches the commit the baseline gets stored
+    with, and that gap has already cost one baseline: the file committed in
+    10509a5 ("perception-driven combat is on by default") was captured against
+    a dll built 22 minutes BEFORE that commit's own source change existed, so
+    the numbers shipped in it described the pre-flip world. The fingerprint
+    guard could not see it — it only re-checks between runs, on the one axis
+    that was never in question.
+
+    So record the commit, whether the tree was dirty, and whether the binary
+    is older than the newest tracked source file. Any of the three going wrong
+    makes the SHA a decoration rather than an identity.
+    """
+    return {
+        "sha": _git("rev-parse", "--short", "HEAD") or "unknown",
+        "subject": _git("log", "-1", "--format=%s") or "unknown",
+        "dirty": bool(_git("status", "--porcelain", "--untracked-files=no")),
+        "stale_binary": _binary_older_than_source(),
+    }
+
+
+def _binary_older_than_source() -> bool:
+    """True when a tracked .cs file is newer than the dll the runs will load.
+
+    This is the "you forgot to rebuild" trap, and it is easy to fall into
+    because the runs use --no-build by design: a stale dll produces a capture
+    that succeeds, terminates, reports plausible numbers, and measures code you
+    are no longer looking at.
+    """
+    if not DLL.exists():
+        return True
+    built = DLL.stat().st_mtime
+    for rel in _git("ls-files", "*.cs").splitlines():
+        f = ROOT / rel
+        if f.exists() and f.stat().st_mtime > built:
+            return True
+    return False
+
+
 def run_once() -> dict:
     env = {**os.environ, **ENV}
 
@@ -173,13 +230,37 @@ def main() -> int:
     ap.add_argument("--capture", action="store_true", help="write the result as the new baseline")
     ap.add_argument("--repeat", type=int, default=1, help="runs to average (the sim is not fully deterministic)")
     ap.add_argument("--name", default="default")
+    ap.add_argument("--allow-dirty", action="store_true",
+                    help="capture anyway from a dirty tree or a stale binary "
+                         "(records the fact in the baseline)")
     args = ap.parse_args()
 
     BASELINE_DIR.mkdir(exist_ok=True)
     path = BASELINE_DIR / f"{args.name}.json"
 
     fingerprint = build_fingerprint()
-    print(f"binary {fingerprint}")
+    prov = source_provenance()
+    print(f"binary {fingerprint}  ·  {prov['sha']}"
+          f"{' DIRTY' if prov['dirty'] else ''}"
+          f"{' STALE-BINARY' if prov['stale_binary'] else ''}")
+
+    # Refuse rather than warn, and only when the result is about to be STORED.
+    # A comparison run from a dirty tree is a normal thing to want; a baseline
+    # whose recorded SHA does not identify the code it measured is not.
+    if args.capture and (prov["dirty"] or prov["stale_binary"]) and not args.allow_dirty:
+        reasons = []
+        if prov["dirty"]:
+            reasons.append("the tree has uncommitted changes to tracked files, so "
+                           f"{prov['sha']} does not identify what ran")
+        if prov["stale_binary"]:
+            reasons.append("a tracked .cs file is newer than the dll, and the runs "
+                           "use --no-build — this would measure the previous build")
+        print("\nREFUSING to write a baseline:")
+        for r in reasons:
+            print(f"  - {r}")
+        print("\nCommit (and rebuild Debug) first, or pass --allow-dirty to record "
+              "the baseline with these flags set.")
+        return 2
 
     runs = []
     for i in range(args.repeat):
@@ -193,6 +274,7 @@ def main() -> int:
 
     current = summarise(runs)
     current["_binary"] = fingerprint
+    current["_source"] = prov
     current["_settings"] = ENV
     current["_repeat"] = args.repeat
 
@@ -206,6 +288,19 @@ def main() -> int:
         return 1
 
     base = json.loads(path.read_text())
+
+    # Say what is being compared. Without this the table reads as "this run vs
+    # the truth", when it may be "this commit vs a different commit" — which is
+    # a different question and needs a different reading.
+    bsrc = base.get("_source")
+    if bsrc and bsrc.get("sha") != prov["sha"]:
+        print(f"\nNOTE: baseline was captured at {bsrc.get('sha')} "
+              f"({bsrc.get('subject', '?')[:48]}), this run is {prov['sha']}. "
+              "Differences below include every change between them.")
+    elif not bsrc:
+        print("\nNOTE: this baseline predates provenance recording, so which "
+              "source it describes is unverifiable. Re-capture to fix.")
+
     print(f"\n{'metric':<22}{'baseline':>10}{'current':>10}{'delta':>13}  verdict")
     print("-" * 68)
     for k in PATTERNS:

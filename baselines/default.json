@@ -1,58 +1,58 @@
 {
   "stalkers_alive": {
-    "mean": 410.2,
-    "min": 394,
-    "max": 431
+    "mean": 406.4,
+    "min": 375,
+    "max": 428
   },
   "stalkers_peak": {
-    "mean": 441.2,
-    "min": 405,
-    "max": 453
+    "mean": 422,
+    "min": 410,
+    "max": 430
   },
   "mutants_alive": {
-    "mean": 228,
-    "min": 195,
-    "max": 253
+    "mean": 213.8,
+    "min": 137,
+    "max": 255
   },
   "combat_exchanges": {
-    "mean": 6612.8,
-    "min": 6458,
-    "max": 6745
+    "mean": 6318.4,
+    "min": 5914,
+    "max": 6516
   },
   "combat_fatal": {
-    "mean": 452.6,
-    "min": 426,
-    "max": 476
+    "mean": 428.4,
+    "min": 411,
+    "max": 463
   },
   "combat_vs_mutant_w": {
-    "mean": 134.6,
-    "min": 123,
-    "max": 152
+    "mean": 135.6,
+    "min": 114,
+    "max": 148
   },
   "combat_vs_mutant_l": {
-    "mean": 167.2,
-    "min": 158,
-    "max": 178
+    "mean": 150.4,
+    "min": 116,
+    "max": 180
   },
   "mutants_killed": {
-    "mean": 134.6,
-    "min": 123,
-    "max": 152
+    "mean": 135.6,
+    "min": 114,
+    "max": 148
   },
   "casualties_total": {
-    "mean": 339,
-    "min": 318,
-    "max": 355
+    "mean": 343,
+    "min": 321,
+    "max": 375
   },
   "death_gunfire": {
-    "mean": 150.8,
-    "min": 138,
-    "max": 166
+    "mean": 142.4,
+    "min": 129,
+    "max": 176
   },
   "death_mutant": {
-    "mean": 167.2,
-    "min": 158,
-    "max": 178
+    "mean": 150.4,
+    "min": 116,
+    "max": 180
   },
   "death_emission": {
     "mean": 0.4,
@@ -60,99 +60,99 @@
     "max": 1
   },
   "death_betrayal": {
-    "mean": 20.4,
-    "min": 11,
-    "max": 27
+    "mean": 49.4,
+    "min": 25,
+    "max": 71
   },
   "perception_coverage": {
-    "mean": 40.1,
-    "min": 39.1,
-    "max": 40.7
+    "mean": 39.5,
+    "min": 38.8,
+    "max": 40.1
   },
   "perception_sightings": {
-    "mean": 11535380.2,
-    "min": 10815932,
-    "max": 12300892
+    "mean": 10519080.6,
+    "min": 9998246,
+    "max": 11133949
   },
   "perception_heard": {
-    "mean": 358459,
-    "min": 333130,
-    "max": 378907
+    "mean": 329037.2,
+    "min": 312780,
+    "max": 349666
   },
   "missions_accepted": {
-    "mean": 787.6,
-    "min": 713,
-    "max": 875
+    "mean": 743.6,
+    "min": 672,
+    "max": 794
   },
   "missions_completed": {
-    "mean": 780.2,
-    "min": 707,
-    "max": 868
+    "mean": 736.4,
+    "min": 662,
+    "max": 786
   },
   "morale_avg": {
-    "mean": 87.6,
-    "min": 86,
-    "max": 89
+    "mean": 87.8,
+    "min": 85,
+    "max": 90
   },
   "morale_planners": {
-    "mean": 87.6,
-    "min": 86,
-    "max": 89
+    "mean": 88,
+    "min": 85,
+    "max": 90
   },
   "morale_followers": {
-    "mean": 75.8,
-    "min": 71,
-    "max": 83
+    "mean": 79.4,
+    "min": 66,
+    "max": 92
   },
   "squad_spread": {
-    "mean": 4.2,
-    "min": 1,
-    "max": 9
+    "mean": 4.4,
+    "min": 3,
+    "max": 7
   },
   "drinks": {
-    "mean": 0.4,
+    "mean": 0.2,
     "min": 0,
     "max": 1
   },
   "emission_storms": {
-    "mean": 1,
+    "mean": 1.2,
     "min": 1,
-    "max": 1
+    "max": 2
   },
   "goap_tasks": {
-    "mean": 433895.4,
-    "min": 397444,
-    "max": 450260
+    "mean": 412355.4,
+    "min": 383374,
+    "max": 431513
   },
   "goap_replans": {
-    "mean": 214061.6,
-    "min": 205351,
-    "max": 218427
+    "mean": 206044.8,
+    "min": 203425,
+    "max": 209739
   },
   "rank_promotions": {
-    "mean": 69.6,
-    "min": 59,
-    "max": 86
+    "mean": 80.6,
+    "min": 65,
+    "max": 92
   },
   "goal_decisions": {
-    "mean": 482444,
-    "min": 448496,
-    "max": 497926
+    "mean": 462055,
+    "min": 434567,
+    "max": 478589
   },
   "goal_visittrader": {
-    "mean": 80.8,
-    "min": 79.3,
-    "max": 81.5
+    "mean": 80.3,
+    "min": 78.7,
+    "max": 81.8
   },
   "goal_acceptmission": {
-    "mean": 10.1,
-    "min": 9.6,
-    "max": 11.3
+    "mean": 10.7,
+    "min": 9.9,
+    "max": 11.7
   },
   "goal_satisfyhunger": {
-    "mean": 8.4,
-    "min": 8.2,
-    "max": 8.6
+    "mean": 8.3,
+    "min": 7.4,
+    "max": 8.9
   },
   "goal_patrol": {
     "mean": 0.0,
@@ -160,16 +160,23 @@
     "max": 0.1
   },
   "goal_unplannable": {
-    "mean": 49211.8,
-    "min": 48075,
-    "max": 51758
+    "mean": 50238.4,
+    "min": 47679,
+    "max": 53516
   },
   "ticks_dropped": {
     "mean": 0,
     "min": 0,
     "max": 0
   },
-  "_binary": "4b8ee489ac6b",
+  "_binary": "387e8b758dda",
+  "_source": {
+    "sha": "7d0717d",
+    "subject": "fix: report the weather the sim is actually running, and gate the coverage loop",
+    "dirty": false,
+    "stale_binary": false,
+    "backfilled": true
+  },
   "_settings": {
     "STALKER_MODE": "headless",
     "STALKER_TIME_FACTOR": "150",
