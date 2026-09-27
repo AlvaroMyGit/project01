@@ -142,9 +142,28 @@ def source_provenance() -> dict:
     return {
         "sha": _git("rev-parse", "--short", "HEAD") or "unknown",
         "subject": _git("log", "-1", "--format=%s") or "unknown",
-        "dirty": bool(_git("status", "--porcelain", "--untracked-files=no")),
+        "dirty": _tree_is_dirty(),
         "stale_binary": _binary_older_than_source(),
     }
+
+
+def _tree_is_dirty() -> bool:
+    """Modified tracked files, EXCLUDING this script's own output.
+
+    baselines/ is where a capture writes, so counting it made the guard refuse
+    the second capture in a row: run one wrote default.json, and the file it had
+    just written was then read as evidence that the source could not be
+    identified. The baseline is an output, not an input — it says nothing about
+    which code ran.
+    """
+    for line in _git("status", "--porcelain", "--untracked-files=no").splitlines():
+        path = line[3:].strip().strip('"')
+        # A rename reads "old -> new"; judge the destination.
+        if " -> " in path:
+            path = path.split(" -> ", 1)[1]
+        if not path.startswith("baselines/"):
+            return True
+    return False
 
 
 def _binary_older_than_source() -> bool:
