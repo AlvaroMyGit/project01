@@ -1,6 +1,7 @@
 // Mutant.cs — Mutant creature entity
 using System.Numerics;
 using StalkerALifeSandbox.AI.Blackboards;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Entities.Mutants;
 
@@ -48,7 +49,7 @@ public sealed class Mutant
             "Flesh" => new[] { "Cowardly", "Scavenger", "Slow" },
             _ => new[] { "Neutral", "Aggressive", "Cowardly" }
         };
-        return possible[Random.Shared.Next(possible.Length)];
+        return possible[SimRandom.Next(possible.Length)];
     }
 
     public void TakeDamage(float amount)

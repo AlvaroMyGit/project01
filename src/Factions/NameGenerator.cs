@@ -1,6 +1,7 @@
 // NameGenerator.cs — Cultural & callsign naming generator
 using System.Text.Json;
 using System.IO;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Factions;
 
@@ -59,7 +60,7 @@ public sealed class NameGenerator
     {
         EnsureLoaded();
         bool useUnderworld = (factionId is "Bandit" or "Mercenary" or "Sin") &&
-                             Random.Shared.NextSingle() < 0.40f;
+                             SimRandom.NextSingle() < 0.40f;
 
         var source = useUnderworld && _data.UnderworldAliases.Length > 0 
             ? _data.UnderworldAliases 
@@ -69,5 +70,5 @@ public sealed class NameGenerator
     }
 
     private static string Pick(string[] arr) =>
-        arr[Random.Shared.Next(arr.Length)];
+        arr[SimRandom.Next(arr.Length)];
 }

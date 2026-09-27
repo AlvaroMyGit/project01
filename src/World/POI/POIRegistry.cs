@@ -1,5 +1,6 @@
 using System.Numerics;
 using StalkerALifeSandbox.World.Generation;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.World.POI;
 
@@ -61,7 +62,7 @@ public sealed class POIRegistry
             .ToList();
 
         if (candidates.Count == 0) return null;
-        return candidates[Random.Shared.Next(candidates.Count)].Record;
+        return candidates[SimRandom.Next(candidates.Count)].Record;
     }
 
     public POIRecord? PickLootTarget(Vector3 from, float maxThreat = 1f, float maxDist = 1600f)
@@ -80,7 +81,7 @@ public sealed class POIRegistry
             .ToList();
 
         if (candidates.Count == 0) return null;
-        return candidates[Random.Shared.Next(candidates.Count)].Record;
+        return candidates[SimRandom.Next(candidates.Count)].Record;
     }
 
     public POIRecord? PickRestTarget(
@@ -102,7 +103,7 @@ public sealed class POIRegistry
             .ToList();
 
         if (candidates.Count == 0) return null;
-        return candidates[Random.Shared.Next(candidates.Count)].Record;
+        return candidates[SimRandom.Next(candidates.Count)].Record;
     }
 
     public static GameplayPOIType ParseGameplayType(string? value)

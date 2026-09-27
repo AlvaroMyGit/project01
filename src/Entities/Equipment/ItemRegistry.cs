@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Linq;
 
 namespace StalkerALifeSandbox.Entities.Equipment;
 
@@ -27,7 +28,10 @@ public sealed class ItemRegistry
         string itemsDir = StalkerALifeSandbox.Core.DataPaths.Resolve("items");
         if (Directory.Exists(itemsDir))
         {
-            foreach (string file in Directory.GetFiles(itemsDir, "*.json"))
+            // Sorted: enumeration order is filesystem-defined, and later files
+            // overwrite earlier ones by item id, so the order is part of what
+            // gets loaded. Unsorted, the item set was machine-dependent.
+            foreach (string file in Directory.GetFiles(itemsDir, "*.json").OrderBy(f => f, StringComparer.Ordinal))
                 LoadItemFile(file);
         }
 

@@ -2,6 +2,7 @@ using StalkerALifeSandbox.Economy;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Equipment;
 using StalkerALifeSandbox.Entities.Mutants;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Systems;
 
@@ -132,7 +133,7 @@ public static class EquipmentUpgradeService
 
             if (!ItemDatabase.TryGet(slot.ItemId, out var def)) continue;
 
-            float condition = 0.82f + Random.Shared.NextSingle() * 0.12f;
+            float condition = 0.82f + SimRandom.NextSingle() * 0.12f;
             if (!CanAfford(stalker, trader, slot.ItemId, condition)) continue;
 
             switch (def.Category)

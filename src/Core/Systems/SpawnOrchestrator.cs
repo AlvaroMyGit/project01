@@ -121,19 +121,19 @@ public sealed class SpawnOrchestrator : ISimulationSystem
         if (sDeficit > 0)
         {
             float sDeficitRatio = (float)sDeficit / targetStalkerPop;
-            if (Random.Shared.NextDouble() < (sDeficitRatio * 0.5f))
-                toSpawnS = Random.Shared.Next(2, Math.Max(4, (int)(sDeficitRatio * 15)));
-            else if (Random.Shared.NextDouble() < 0.1f)
-                toSpawnS = Random.Shared.Next(1, 3);
+            if (SimRandom.NextDouble() < (sDeficitRatio * 0.5f))
+                toSpawnS = SimRandom.Next(2, Math.Max(4, (int)(sDeficitRatio * 15)));
+            else if (SimRandom.NextDouble() < 0.1f)
+                toSpawnS = SimRandom.Next(1, 3);
         }
 
         if (mDeficit > 0)
         {
             float mDeficitRatio = (float)mDeficit / targetMutantPop;
-            if (Random.Shared.NextDouble() < (mDeficitRatio * 0.4f))
-                toSpawnM = Random.Shared.Next(2, Math.Max(4, (int)(mDeficitRatio * 10)));
-            else if (Random.Shared.NextDouble() < 0.08f)
-                toSpawnM = Random.Shared.Next(1, 3);
+            if (SimRandom.NextDouble() < (mDeficitRatio * 0.4f))
+                toSpawnM = SimRandom.Next(2, Math.Max(4, (int)(mDeficitRatio * 10)));
+            else if (SimRandom.NextDouble() < 0.08f)
+                toSpawnM = SimRandom.Next(1, 3);
         }
 
         toSpawnS = Math.Min(toSpawnS, sDeficit);
@@ -143,7 +143,7 @@ public sealed class SpawnOrchestrator : ISimulationSystem
 
         DispatchSpawnBatch(ctx, toSpawnS, toSpawnM, isInitial: false);
 
-        if (toSpawnS + toSpawnM >= 8 && Random.Shared.NextDouble() < 0.25)
+        if (toSpawnS + toSpawnM >= 8 && SimRandom.NextDouble() < 0.25)
         {
             Console.WriteLine(
                 $"[Population] Inbound +{toSpawnS} ctx.Stalkers, +{toSpawnM} mutants " +
@@ -199,23 +199,23 @@ public sealed class SpawnOrchestrator : ISimulationSystem
             while (spawned < stalkerCount)
             {
                 int remaining = stalkerCount - spawned;
-                int squadSize = remaining == 1 || Random.Shared.NextDouble() < 0.12
+                int squadSize = remaining == 1 || SimRandom.NextDouble() < 0.12
                     ? 1
-                    : Math.Min(Random.Shared.Next(2, 5), remaining);
+                    : Math.Min(SimRandom.Next(2, 5), remaining);
 
                 // Initial random POI to seed faction
-                var tempPoi = ctx.MacroPois[Random.Shared.Next(ctx.MacroPois.Count)];
+                var tempPoi = ctx.MacroPois[SimRandom.Next(ctx.MacroPois.Count)];
                 string faction = FactionSpawnTable.RollSpawnFaction(tempPoi.RegionId);
                 if (string.IsNullOrEmpty(faction) || faction == "Mutants") faction = "Loner";
 
                 StalkerRank rank = isInitial 
                     ? DemographicsEngine.RollInitialRank(faction)
-                    : (Random.Shared.NextDouble() < 0.85 ? StalkerRank.Rookie : StalkerRank.Trainee);
+                    : (SimRandom.NextDouble() < 0.85 ? StalkerRank.Rookie : StalkerRank.Trainee);
                 
                 var validPois = StalkerALifeSandbox.AI.Decision.ZoneGateEvaluator.GetValidSpawnRegions(rank, faction, ctx.MacroPois, ctx.WorldGen);
-                var spawnPoi = validPois[Random.Shared.Next(validPois.Count)];
+                var spawnPoi = validPois[SimRandom.Next(validPois.Count)];
 
-                string squadId = Guid.NewGuid().ToString()[..8];
+                string squadId = SimRandom.NextId();
                 Vector3 squadPos = PickHomeSpawnPosition(ctx, spawnPoi.Position);
 
                 for (int m = 0; m < squadSize; m++, spawned++)
@@ -224,11 +224,11 @@ public sealed class SpawnOrchestrator : ISimulationSystem
                     string name = NameGenerator.GenerateName(culture, faction);
                     string callsign = NameGenerator.GenerateCallsign(faction);
 
-                    var rs = new Stalker(Guid.NewGuid().ToString()[..8], $"{name} '{callsign}'", faction)
+                    var rs = new Stalker(SimRandom.NextId(), $"{name} '{callsign}'", faction)
                     {
                         Position = squadPos + new Vector3(
-                            (float)(Random.Shared.NextDouble() - 0.5) * 10f, 0,
-                            (float)(Random.Shared.NextDouble() - 0.5) * 10f),
+                            (float)(SimRandom.NextDouble() - 0.5) * 10f, 0,
+                            (float)(SimRandom.NextDouble() - 0.5) * 10f),
                         CurrentLevelId = spawnPoi.RegionId,
                         SquadId = squadId,
                         IsSquadLeader = (m == 0)
@@ -251,11 +251,11 @@ public sealed class SpawnOrchestrator : ISimulationSystem
                     pos.X / ctx.WorldGen.Width, pos.Z / ctx.WorldGen.Height);
                 var species = _mutantEcology.RollSpecies(threat);
                 var spec = _mutantEcology.GetSpec(species);
-                if (spec.IsSubterranean && Random.Shared.NextDouble() < 0.55f)
+                if (spec.IsSubterranean && SimRandom.NextDouble() < 0.55f)
                     pos.Y = -10f;
 
                 var (hp, dmg, spd) = _mutantEcology.GetCombatStats(species);
-                ctx.Mutants.Add(new Mutant(Guid.NewGuid().ToString()[..8], species.ToString(), DietType.Carnivore)
+                ctx.Mutants.Add(new Mutant(SimRandom.NextId(), species.ToString(), DietType.Carnivore)
                 {
                     Position = pos,
                     MaxHealth = hp,
@@ -272,8 +272,8 @@ public sealed class SpawnOrchestrator : ISimulationSystem
 
     private Vector3 PickHomeSpawnPosition(SimulationContext ctx, Vector3 basePos)
     {
-        float dx = (float)(Random.Shared.NextDouble() - 0.5) * 120f;
-        float dz = (float)(Random.Shared.NextDouble() - 0.5) * 120f;
+        float dx = (float)(SimRandom.NextDouble() - 0.5) * 120f;
+        float dz = (float)(SimRandom.NextDouble() - 0.5) * 120f;
         var pos = basePos + new Vector3(dx, 0, dz);
         pos.X = Math.Clamp(pos.X, 0, ctx.WorldGen.Width);
         pos.Z = Math.Clamp(pos.Z, 0, ctx.WorldGen.Height);
@@ -282,18 +282,18 @@ public sealed class SpawnOrchestrator : ISimulationSystem
 
     private Vector3 PickMutantSpawnPosition(SimulationContext ctx)
     {
-        if (Random.Shared.NextDouble() < 0.75)
+        if (SimRandom.NextDouble() < 0.75)
         {
             return new Vector3(
-                (float)Random.Shared.NextDouble() * ctx.WorldGen.Width, 0,
-                (float)Random.Shared.NextDouble() * ctx.WorldGen.Height);
+                (float)SimRandom.NextDouble() * ctx.WorldGen.Width, 0,
+                (float)SimRandom.NextDouble() * ctx.WorldGen.Height);
         }
 
         if (ctx.WildPoiCandidates.Count > 0)
         {
-            var site = ctx.WildPoiCandidates[Random.Shared.Next(ctx.WildPoiCandidates.Count)];
-            float dx = (float)(Random.Shared.NextDouble() - 0.5) * 300f;
-            float dz = (float)(Random.Shared.NextDouble() - 0.5) * 300f;
+            var site = ctx.WildPoiCandidates[SimRandom.Next(ctx.WildPoiCandidates.Count)];
+            float dx = (float)(SimRandom.NextDouble() - 0.5) * 300f;
+            float dz = (float)(SimRandom.NextDouble() - 0.5) * 300f;
             var pos = site.Position + new Vector3(dx, 0, dz);
             pos.X = Math.Clamp(pos.X, 0, ctx.WorldGen.Width);
             pos.Z = Math.Clamp(pos.Z, 0, ctx.WorldGen.Height);
@@ -301,7 +301,7 @@ public sealed class SpawnOrchestrator : ISimulationSystem
         }
 
         return new Vector3(
-            (float)Random.Shared.NextDouble() * ctx.WorldGen.Width, 0,
-            (float)Random.Shared.NextDouble() * ctx.WorldGen.Height);
+            (float)SimRandom.NextDouble() * ctx.WorldGen.Width, 0,
+            (float)SimRandom.NextDouble() * ctx.WorldGen.Height);
     }
 }

@@ -4,6 +4,7 @@ using StalkerALifeSandbox.AI.Decision;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.World.Generation;
 using StalkerALifeSandbox.World.POI;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.AI.GOAP.Actions;
 
@@ -34,8 +35,8 @@ public sealed class ActionVisitStash : GoapTravelAction
 
         stalker.GoapTargetPoiId = record.Stamp.Id;
         return record.Stamp.Position + new Vector3(
-            (float)(Random.Shared.NextDouble() - 0.5) * 6f, 0,
-            (float)(Random.Shared.NextDouble() - 0.5) * 6f);
+            (float)(SimRandom.NextDouble() - 0.5) * 6f, 0,
+            (float)(SimRandom.NextDouble() - 0.5) * 6f);
     }
 
     protected override string? DestinationLabel(Stalker stalker, Vector3 target)

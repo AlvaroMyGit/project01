@@ -1,3 +1,4 @@
+using StalkerALifeSandbox.Core;
 // StalkerAttributes.cs — 4-Skill Matrix (Combat, Survival, Charisma, Trust)
 namespace StalkerALifeSandbox.Entities.Characters;
 
@@ -35,11 +36,10 @@ public sealed class StalkerAttributes
     public void RollForRank(StalkerRank rank = StalkerRank.Rookie)
     {
         int mult = Math.Clamp((int)rank, 0, RankProgression.MaxTier);
-        var rng = Random.Shared;
-        _marksmanship = Math.Clamp(rng.Next(10, 40) + mult * 10, 0, 100);
-        _zoneSurvival = Math.Clamp(rng.Next(10, 40) + mult * 10, 0, 100);
-        _charisma = Math.Clamp(rng.Next(10, 80), 0, 100);
-        _trustworthiness = Math.Clamp(rng.Next(10, 90), 0, 100);
+        _marksmanship = Math.Clamp(SimRandom.Next(10, 40) + mult * 10, 0, 100);
+        _zoneSurvival = Math.Clamp(SimRandom.Next(10, 40) + mult * 10, 0, 100);
+        _charisma = Math.Clamp(SimRandom.Next(10, 80), 0, 100);
+        _trustworthiness = Math.Clamp(SimRandom.Next(10, 90), 0, 100);
     }
 
     /// <summary>

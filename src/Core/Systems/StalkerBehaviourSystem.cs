@@ -175,10 +175,10 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             var closeMutant = ctx.Mutants.FirstOrDefault(m =>
                 m.IsAlive && Vector3.Distance(m.Position, s.Position) < 120f);
             if (closeMutant != null &&
-                Random.Shared.NextDouble() <
+                SimRandom.NextDouble() <
                     CombatResolver.EventChance(CombatResolver.MutantEncounterRatePerGameSec, gameDelta))
             {
-                if (Random.Shared.NextDouble() < 0.45)
+                if (SimRandom.NextDouble() < 0.45)
                     PublishMutantEncounter(ctx, s, closeMutant);
                 if (ResolveStalkerMutantCombat(ctx, s, closeMutant, squadLeaders)) return;
             }
@@ -203,7 +203,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
                 engageRate *= _perception.CombatRateCompensation;
 
             if (otherStalker != null &&
-                Random.Shared.NextDouble() < CombatResolver.EventChance(engageRate, gameDelta))
+                SimRandom.NextDouble() < CombatResolver.EventChance(engageRate, gameDelta))
             {
                 s.Blackboard.CurrentTargetId = otherStalker.Id;
                 s.Blackboard.Combat = CombatState.Combat;
@@ -253,12 +253,12 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             _goap.Execute(s, gameDelta);
         }
 
-        if (Random.Shared.NextDouble() < 0.005)
+        if (SimRandom.NextDouble() < 0.005)
         {
             var culture = DemographicsEngine.RollBackground(s.TrueFaction);
             ctx.PDA.BroadcastChatter(
                 s.DisplayName, s.TrueFaction, culture,
-                isAlert: Random.Shared.NextDouble() < 0.1,
+                isAlert: SimRandom.NextDouble() < 0.1,
                 regionId: s.CurrentLevelId, position: s.Position);
         }
     }
@@ -311,7 +311,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         int allies = CountSquadAlliesInRange(ctx, s, 120f);
         float dist = Vector3.Distance(s.Position, closeMutant.Position);
         s.Equipment.PrimaryWeapon?.WearPerShot(0.015f);
-        bool stalkerWins = Random.Shared.NextDouble()
+        bool stalkerWins = SimRandom.NextDouble()
             < CombatResolver.StalkerVsMutantWinChance(s, closeMutant, threat, allies, dist);
         
         string timeStr = $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}";
@@ -326,7 +326,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             closeMutant.TakeDamage(CombatResolver.ExchangeDamage(s));
             if (closeMutant.IsAlive)
             {
-                s.CombatCooldown = 6f + Random.Shared.NextSingle() * 6f;
+                s.CombatCooldown = 6f + SimRandom.NextSingle() * 6f;
                 return false;   // the fight goes on
             }
 
@@ -340,7 +340,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
                 regionId: s.CurrentLevelId, position: s.Position,
                 mutantType: closeMutant.Species);
             s.Needs.AdjustMorale(-CombatBalanceConfig.CombatStressMorale);
-            s.CombatCooldown = 20f + Random.Shared.NextSingle() * 15f;
+            s.CombatCooldown = 20f + SimRandom.NextSingle() * 15f;
             return false;
         }
 
@@ -348,7 +348,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         float mutantHit = CombatResolver.MitigatedSlash(s, closeMutant.Damage);
         if (!s.TakeDamage(mutantHit))
         {
-            s.CombatCooldown = 6f + Random.Shared.NextSingle() * 6f;
+            s.CombatCooldown = 6f + SimRandom.NextSingle() * 6f;
             return false;
         }
 
@@ -368,7 +368,7 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
         float heavySuppression = CombatResolver.HeavyWeaponSuppression(s, snapshot);
         s.Equipment.PrimaryWeapon?.WearPerShot(0.015f);
         other.Equipment.PrimaryWeapon?.WearPerShot(0.015f);
-        bool thisWins = Random.Shared.NextDouble()
+        bool thisWins = SimRandom.NextDouble()
             < CombatResolver.StalkerVsStalkerWinChance(s, other, threat, dist, heavySuppression);
         
         string timeStr = $"{(int)ctx.Time.HourOfDay:D2}:{(int)((ctx.Time.HourOfDay % 1) * 60):D2}";
@@ -383,8 +383,8 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
             {
                 // Both break contact briefly; the loser of the exchange is now
                 // carrying a wound into the next one.
-                s.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
-                other.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
+                s.CombatCooldown = 5f + SimRandom.NextSingle() * 5f;
+                other.CombatCooldown = 5f + SimRandom.NextSingle() * 5f;
                 return false;
             }
 
@@ -404,16 +404,16 @@ public sealed class StalkerBehaviourSystem : ISimulationSystem
                 regionId: s.CurrentLevelId, position: s.Position);
             // Winning a firefight is still a firefight.
             s.Needs.AdjustMorale(-CombatBalanceConfig.CombatStressMorale);
-            s.CombatCooldown = 25f + Random.Shared.NextSingle() * 15f;
-            other.CombatCooldown = 20f + Random.Shared.NextSingle() * 10f;
+            s.CombatCooldown = 25f + SimRandom.NextSingle() * 15f;
+            other.CombatCooldown = 20f + SimRandom.NextSingle() * 10f;
             return false;
         }
 
         float incoming = CombatResolver.MitigatedBullet(s, CombatResolver.ExchangeDamage(other));
         if (!s.TakeDamage(incoming))
         {
-            s.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
-            other.CombatCooldown = 5f + Random.Shared.NextSingle() * 5f;
+            s.CombatCooldown = 5f + SimRandom.NextSingle() * 5f;
+            other.CombatCooldown = 5f + SimRandom.NextSingle() * 5f;
             return false;
         }
 

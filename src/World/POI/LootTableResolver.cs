@@ -4,6 +4,7 @@ using StalkerALifeSandbox.Economy;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Equipment;
 using StalkerALifeSandbox.World.Hazards;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.World.POI;
 
@@ -21,7 +22,7 @@ public static class LootTableResolver
             switch (entry.ToLowerInvariant())
             {
                 case "ammo":
-                    stalker.Needs.AddAmmo(Random.Shared.Next(12, 40));
+                    stalker.Needs.AddAmmo(SimRandom.Next(12, 40));
                     break;
                 case "bread":
                     stalker.Needs.Feed(35f);
@@ -37,7 +38,7 @@ public static class LootTableResolver
                     stalker.Needs.Drink(25f);
                     break;
                 case "scrap":
-                    stalker.Needs.Rubles += Random.Shared.Next(80, 220);
+                    stalker.Needs.Rubles += SimRandom.Next(80, 220);
                     stalker.Equipment.AddItem("loot_scrap", 1.2f);
                     break;
                 case "artifact":
@@ -52,7 +53,7 @@ public static class LootTableResolver
         float nx = stalker.Position.X / ctx.WorldGen.Width;
         float ny = stalker.Position.Z / ctx.WorldGen.Height;
         float latitude = ctx.WorldGen.GetThreatLevel(nx, ny);
-        float noise = (Random.Shared.NextSingle() * 0.4f) - 0.2f;
+        float noise = (SimRandom.NextSingle() * 0.4f) - 0.2f;
         float rarity = Math.Clamp(latitude * 0.65f + noise + 0.05f, 0f, 1f);
 
         string artId = ItemDatabase.PickArtifactId(rarity);

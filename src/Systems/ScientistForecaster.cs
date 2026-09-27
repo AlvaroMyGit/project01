@@ -2,6 +2,7 @@
 using System;
 using StalkerALifeSandbox.PDA;
 using StalkerALifeSandbox.World.Hazards;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Systems;
 
@@ -46,7 +47,7 @@ public sealed class ScientistForecaster
             _shortRangeFired = true;
             _pda.Post(new PDAMessage
             {
-                Id = $"forecast_short_{Guid.NewGuid().ToString()[..6]}",
+                Id = $"forecast_short_{SimRandom.NextId(6)}",
                 Type = PDAMessageType.FactionNews,
                 FactionId = "Ecologist",
                 Headline = "Prof. Sakharov (Ecologist)",
@@ -61,7 +62,7 @@ public sealed class ScientistForecaster
             _midRangeFired = true;
             _pda.Post(new PDAMessage
             {
-                Id = $"forecast_mid_{Guid.NewGuid().ToString()[..6]}",
+                Id = $"forecast_mid_{SimRandom.NextId(6)}",
                 Type = PDAMessageType.FactionNews,
                 FactionId = "Ecologist",
                 Headline = "Prof. Sakharov (Ecologist)",
@@ -76,7 +77,7 @@ public sealed class ScientistForecaster
             _longRangeFired = true;
             _pda.Post(new PDAMessage
             {
-                Id = $"forecast_long_{Guid.NewGuid().ToString()[..6]}",
+                Id = $"forecast_long_{SimRandom.NextId(6)}",
                 Type = PDAMessageType.FactionNews,
                 FactionId = "Ecologist",
                 Headline = "Ecologist Automated Network",

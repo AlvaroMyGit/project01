@@ -5,6 +5,7 @@ using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Systems;
 using StalkerALifeSandbox.World.Generation;
 using StalkerALifeSandbox.World.POI;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.AI.GOAP.Actions;
 
@@ -104,7 +105,7 @@ public sealed class ActionFulfillMission : GoapTravelAction
     {
         float legDistance = Vector3.Distance(mission.IssuerPosition, mission.TargetPosition);
         float travelBonus = legDistance * 0.18f;
-        float variance = Random.Shared.Next(-30, 90);
+        float variance = SimRandom.Next(-30, 90);
 
         return mission.Type switch
         {

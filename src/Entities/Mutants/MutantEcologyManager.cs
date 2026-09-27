@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using StalkerALifeSandbox.World.Environment;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Entities.Mutants;
 
@@ -95,7 +96,7 @@ public sealed class MutantEcologyManager
     {
         var pool = BuildSpawnPool(threatLevel);
         float total = pool.Sum(p => p.Weight);
-        float roll = Random.Shared.NextSingle() * total;
+        float roll = SimRandom.NextSingle() * total;
         float cumulative = 0f;
         foreach (var (species, weight) in pool)
         {

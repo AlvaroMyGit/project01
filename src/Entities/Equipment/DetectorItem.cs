@@ -2,6 +2,7 @@
 using System.Numerics;
 using StalkerALifeSandbox.World.Hazards;
 using StalkerALifeSandbox.Entities.Characters;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Entities.Equipment;
 
@@ -59,7 +60,7 @@ public sealed class DetectorItem
         float survivalMod = 1.0f - (survivalSkill / 200f); 
         float actualRisk = DeathRisk * survivalMod;
 
-        if (Random.Shared.NextSingle() < actualRisk)
+        if (SimRandom.NextSingle() < actualRisk)
         {
             died = true;
             return false;

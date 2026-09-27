@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using StalkerALifeSandbox.World.Generation;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.World.Hazards;
 
@@ -243,7 +244,7 @@ public sealed class AnomalySeeder
 
                     yield return new AnomalyField
                     {
-                        Id             = $"dyn_{Guid.NewGuid().ToString()[..6]}",
+                        Id             = $"dyn_{SimRandom.NextId(6)}",
                         Type           = finalType,
                         Center         = new Vector3(nx * worldGen.Width, 0, ny * worldGen.Height),
                         Radius         = radius,

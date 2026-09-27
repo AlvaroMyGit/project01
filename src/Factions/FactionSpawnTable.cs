@@ -1,4 +1,5 @@
 using System.Text.Json;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Factions;
 
@@ -93,7 +94,7 @@ public static class FactionSpawnTable
         if (entry.Mix.Count == 0)
             return NormalizeFaction(entry.PrimaryFaction);
 
-        float roll = Random.Shared.NextSingle();
+        float roll = SimRandom.NextSingle();
         float cumulative = 0f;
 
         foreach (var mix in entry.Mix)

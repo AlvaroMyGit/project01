@@ -29,6 +29,15 @@ public sealed record SimulationSettings
     public int MutantTarget { get; init; } = 500;
 
     /// <summary>
+    /// Master seed for the whole run — world generation and the live simulation
+    /// both derive from it. Previously the world was seeded 42 in four places
+    /// while the simulation drew from Random.Shared, so half the run was fixed
+    /// and half was not. Defaults to <see cref="SimRandom.DefaultSeed"/> so the
+    /// default world is byte-for-byte the one those literals produced.
+    /// </summary>
+    public int Seed { get; init; } = SimRandom.DefaultSeed;
+
+    /// <summary>
     /// Origins allowed to call the REST API. Defaults to the local dashboard
     /// origins rather than "any origin".
     /// </summary>
@@ -43,7 +52,8 @@ public sealed record SimulationSettings
         var defaults = new SimulationSettings();
         return defaults with
         {
-            RestPort = EnvInt("STALKER_REST_PORT", defaults.RestPort)
+            RestPort = EnvInt("STALKER_REST_PORT", defaults.RestPort),
+            Seed = SimRandom.SeedFromEnvironment()
         };
     }
 

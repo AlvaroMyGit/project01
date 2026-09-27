@@ -22,7 +22,9 @@ public sealed class WeatherManager
     public float VisibilityMod { get; private set; } = 1.0f;
 
     private float _nextShiftTime;
-    private readonly Random _rng = new();
+    // Seeded from STALKER_SEED, on its own stream: weather must be reproducible
+    // without being perturbed by what the behaviour systems happen to draw.
+    private readonly Random _rng = StalkerALifeSandbox.Core.SimRandom.Stream("weather");
 
     public void Tick(float gameTime)
     {

@@ -74,7 +74,7 @@ public sealed class EmissionTickSystem : ISimulationSystem
             float radMit = 1f - Math.Clamp(profile.Rad, 0f, 0.90f);
             s.Needs.RadiationGainRate = totalRad * radMit / 3600f;
 
-            if (Random.Shared.NextDouble() < 0.005) // ~1 log per 20 secs per irradiated stalker
+            if (SimRandom.NextDouble() < 0.005) // ~1 log per 20 secs per irradiated stalker
             {
                 SimulationDebugLog.HazardHit(
                     s.DisplayName.Split(' ')[0], "RadZone", totalRad * radMit);
@@ -114,7 +114,7 @@ public sealed class EmissionTickSystem : ISimulationSystem
                     break;
             }
 
-            if (Random.Shared.NextDouble() < 0.01) // ~1 log per 10 secs per stalker in field
+            if (SimRandom.NextDouble() < 0.01) // ~1 log per 10 secs per stalker in field
             {
                 SimulationDebugLog.HazardHit(
                     s.DisplayName.Split(' ')[0], field.Type.ToString(), exposure);
@@ -152,9 +152,9 @@ public sealed class EmissionTickSystem : ISimulationSystem
             double hitChance = CombatResolver.EventChance(0.045 * intensity * phaseRate, gameDelta);
             float radMit = 1f - Math.Clamp(ProtectionProfile.From(s).Rad, 0f, 0.75f);
             hitChance *= radMit;
-            if (Random.Shared.NextDouble() >= hitChance) continue;
+            if (SimRandom.NextDouble() >= hitChance) continue;
 
-            if (Random.Shared.NextDouble() < 0.70)
+            if (SimRandom.NextDouble() < 0.70)
                 KillStalkerFromEmission(ctx, s, squadLeaders);
             else
                 ZombifyStalkerFromEmission(s);
@@ -164,7 +164,7 @@ public sealed class EmissionTickSystem : ISimulationSystem
         {
             if (IsNearShelter(m.Position, shelters)) continue;
 
-            if (Random.Shared.NextDouble() < CombatResolver.EventChance(0.06 * intensity * phaseRate, gameDelta))
+            if (SimRandom.NextDouble() < CombatResolver.EventChance(0.06 * intensity * phaseRate, gameDelta))
             {
                 SimulationDebugLog.MutantEmissionDeath();
                 m.IsAlive = false;

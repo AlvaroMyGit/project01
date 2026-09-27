@@ -45,6 +45,12 @@ public class Program
             : "[Mode] SERVE — timer-driven, web host, runs until stopped" +
               (host_RunDurationHint() is string h ? $" ({h})" : " (no auto-stop configured)"));
 
+        // Say the seed out loud, for the same reason the mode is said out loud:
+        // a run whose seed is not recorded cannot be replayed, and the whole
+        // point of having one is being able to.
+        Console.WriteLine($"[Seed] {settings.Seed} (STALKER_SEED"
+            + (Environment.GetEnvironmentVariable("STALKER_SEED") is null ? " unset, default)" : ")"));
+
         // Build the simulation (data load, world gen, entities, loop).
         var host = new SimulationHost(settings);
 

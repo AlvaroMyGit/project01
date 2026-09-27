@@ -105,24 +105,57 @@ public class MissionTargetReachabilityTests
         Assert.Equal(Fingerprint(), Fingerprint());
     }
 
+    /// <summary>
+    /// Checks every blocked target, not the first one.
+    ///
+    /// This asserted three things about <c>.First(IsSurfaceBlocked)</c>, and the
+    /// middle one was wrong: that a snap moves the target less than 45m, "so a
+    /// snapped target still counts as being at the POI". It does not follow.
+    /// Bootstrap OVERWRITES <c>offer.TargetPosition</c> with the snapped point
+    /// (MissionRegistry, "offer.TargetPosition = snapped"), and
+    /// ActionFulfillMission measures <c>distToTarget</c> against that same
+    /// overwritten value — so the stalker walks to the snapped point and arrives
+    /// at distance ~0 no matter how far the snap moved it. The arrival radius is
+    /// never in play.
+    ///
+    /// The claim was also false for the pool: of 138 blocked targets, 38 snap by
+    /// 45m or more (median 36.1m, max 92.3m). It passed only because the element
+    /// .First() returned happened to be one of the 100 that snap less than 45m.
+    /// Reseeding the mission pool reshuffled that order and the worst case, 92.3m,
+    /// came up first.
+    ///
+    /// What IS invariant is asserted below, over the whole pool. The remaining
+    /// question — whether a target 2+ cells from its POI centre is still sensibly
+    /// "at" that POI — is about content placement, not pathfinding, and wants a
+    /// decision rather than an assertion.
+    /// </summary>
     [Fact]
-    public void NearestNavigable_LeavesClearGroundAlone_AndEscapesBlockedGround()
+    public void NearestNavigable_FreesEveryBlockedTarget_AndIsIdempotent()
     {
         var (pathfinder, missions, _) = BuildWorldWithFootprints(snapTargets: false);
 
         var blocked = missions.OffersByIssuer.SelectMany(kv => kv.Value)
             .Select(o => o.TargetPosition)
-            .First(pathfinder.IsSurfaceBlocked);
+            .Where(pathfinder.IsSurfaceBlocked)
+            .ToList();
 
-        var freed = pathfinder.NearestNavigable(blocked);
-        Assert.False(pathfinder.IsSurfaceBlocked(freed));
+        Assert.NotEmpty(blocked);
 
-        // One cell is 40m; the arrival radius is 45m, so a snapped target still
-        // counts as being "at" the POI.
-        Assert.True(Vector3.Distance(blocked, freed) < 45f,
-            "a snapped target must stay inside ActionFulfillMission's arrival radius");
+        foreach (var b in blocked)
+        {
+            var freed = pathfinder.NearestNavigable(b);
 
-        // Idempotent on ground that was already clear.
-        Assert.Equal(freed, pathfinder.NearestNavigable(freed));
+            Assert.False(pathfinder.IsSurfaceBlocked(freed),
+                $"NearestNavigable returned blocked ground for {b}");
+
+            // Idempotent on ground that is already clear.
+            Assert.Equal(freed, pathfinder.NearestNavigable(freed));
+
+            // The search is bounded, so a snap cannot wander across the map.
+            // Three cells at resolution 40 is the bound the outward search can
+            // reach before it gives up; the observed maximum is 92.3m.
+            Assert.True(Vector3.Distance(b, freed) <= 120f,
+                $"snap of {Vector3.Distance(b, freed):F1}m from {b} exceeds the bounded search");
+        }
     }
 }

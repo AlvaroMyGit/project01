@@ -1,5 +1,6 @@
 // DemographicsEngine.cs — Ukrainian/Russian/CIS/Western Outsider weights
 using System.Numerics;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Factions;
 
@@ -95,7 +96,7 @@ public sealed class DemographicsEngine
         if (!FactionWeights.TryGetValue(factionId, out var weights))
             weights = new[] { 0.50f, 0.30f, 0.15f, 0.05f };
 
-        float roll = Random.Shared.NextSingle();
+        float roll = SimRandom.NextSingle();
         float cumulative = 0f;
         var backgrounds = (CulturalBackground[])Enum.GetValues(typeof(CulturalBackground));
 
@@ -116,15 +117,15 @@ public sealed class DemographicsEngine
         if (!RankWeights.TryGetValue(factionId, out var weights))
             weights = new RankDistribution();
 
-        float roll = Random.Shared.NextSingle();
+        float roll = SimRandom.NextSingle();
         if (roll < weights.Rookie) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Rookie;
         roll -= weights.Rookie;
         if (roll < weights.Trainee) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Trainee;
         roll -= weights.Trainee;
-        if (roll < weights.Experienced) return Random.Shared.NextDouble() < 0.6 ? StalkerALifeSandbox.Entities.Characters.StalkerRank.Experienced : StalkerALifeSandbox.Entities.Characters.StalkerRank.Professional;
+        if (roll < weights.Experienced) return SimRandom.NextDouble() < 0.6 ? StalkerALifeSandbox.Entities.Characters.StalkerRank.Experienced : StalkerALifeSandbox.Entities.Characters.StalkerRank.Professional;
         
         // Split the remaining into Veteran, Expert, Master, Legend
-        double rand = Random.Shared.NextDouble();
+        double rand = SimRandom.NextDouble();
         if (rand < 0.4) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Veteran;
         if (rand < 0.7) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Expert;
         if (rand < 0.9) return StalkerALifeSandbox.Entities.Characters.StalkerRank.Master;

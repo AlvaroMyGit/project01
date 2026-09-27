@@ -2,6 +2,7 @@ using StalkerALifeSandbox.AI.Blackboards;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Entities.Needs;
 using StalkerALifeSandbox.Systems;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.AI.GOAP.Actions;
 
@@ -34,7 +35,7 @@ public sealed class ActionRestAtBase : GOAPAction
     public override void Enter(NPCBlackboard bb)
     {
         // Local: never read outside Enter, so it needs no per-stalker slot.
-        float restSeconds = Random.Shared.NextSingle() * 300f + 120f;
+        float restSeconds = SimRandom.NextSingle() * 300f + 120f;
         var stalker = _ctx?.GetStalker(bb.OwnerId);
         if (stalker == null) return;
 
@@ -51,7 +52,7 @@ public sealed class ActionRestAtBase : GOAPAction
             : new[] { "🔥 Campfire", "🎸 Guitar", "🍺 Drinking", "🔧 Repairing Gear",
                       "😴 Sleeping", "🗣️ Chatting", "🎲 Cards", "🚬 Smoking",
                       "🍖 Eating", "🔫 Cleaning Weapon", "🎒 Sorting Stash", "💬 Bartering" };
-        return activities[Random.Shared.Next(activities.Length)];
+        return activities[SimRandom.Next(activities.Length)];
     }
 
     public override bool Execute(NPCBlackboard bb, float delta)

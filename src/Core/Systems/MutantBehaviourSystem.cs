@@ -112,18 +112,18 @@ public sealed class MutantBehaviourSystem : ISimulationSystem
         else
         {
             Vector3 wanderTarget;
-            if (Random.Shared.NextDouble() < 0.4 && ctx.WildPoiCandidates.Count > 0)
+            if (SimRandom.NextDouble() < 0.4 && ctx.WildPoiCandidates.Count > 0)
             {
-                var dest = ctx.WildPoiCandidates[Random.Shared.Next(ctx.WildPoiCandidates.Count)];
+                var dest = ctx.WildPoiCandidates[SimRandom.Next(ctx.WildPoiCandidates.Count)];
                 wanderTarget = dest.Position + new Vector3(
-                    (float)(Random.Shared.NextDouble() - 0.5) * 200f, 0,
-                    (float)(Random.Shared.NextDouble() - 0.5) * 200f);
+                    (float)(SimRandom.NextDouble() - 0.5) * 200f, 0,
+                    (float)(SimRandom.NextDouble() - 0.5) * 200f);
             }
             else
             {
                 wanderTarget = new Vector3(
-                    (float)Random.Shared.NextDouble() * ctx.WorldGen.Width, 0,
-                    (float)Random.Shared.NextDouble() * ctx.WorldGen.Height);
+                    (float)SimRandom.NextDouble() * ctx.WorldGen.Width, 0,
+                    (float)SimRandom.NextDouble() * ctx.WorldGen.Height);
             }
             wanderTarget.X = Math.Clamp(wanderTarget.X, 0, ctx.WorldGen.Width);
             wanderTarget.Z = Math.Clamp(wanderTarget.Z, 0, ctx.WorldGen.Height);

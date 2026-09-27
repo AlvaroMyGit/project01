@@ -48,7 +48,10 @@ public sealed class MissionRegistry
         ZonePathfinder? pathfinder = null)
     {
         var registry = new MissionRegistry(worldGen);
-        var rng = new Random(42);
+        // Was new Random(42) — deterministic, but deaf to STALKER_SEED. Now
+        // derived from the seed while staying off the shared stream, so the
+        // mission pool still does not shift when something upstream draws.
+        var rng = SimRandom.Stream("missions");
         var macros = macroBases.Where(p => p.Type == POIType.MacroBase).ToList();
         int missionIdx = 0;
 
@@ -181,7 +184,7 @@ public sealed class MissionRegistry
         float comfort = ZoneGateEvaluator.EffectiveComfort(stalker, stalker.Needs);
         var eligible = offers.Where(o => IsEligible(stalker, o, comfort)).ToList();
 
-        return eligible.Count == 0 ? null : eligible[Random.Shared.Next(eligible.Count)];
+        return eligible.Count == 0 ? null : eligible[SimRandom.Next(eligible.Count)];
     }
 
     public TraderRegistry.TraderSite? FindNearestIssuerWithOffer(Stalker stalker, TraderRegistry traders, float maxDist = 3500f)
@@ -256,7 +259,7 @@ public sealed class MissionRegistry
                 break;
             case MissionType.RetrieveStash:
                 SkillEvaluator.RecordZoneSurvivalEvent(stalker, "mission_stash");
-                stalker.Needs.AddAmmo(Random.Shared.Next(8, 24));
+                stalker.Needs.AddAmmo(SimRandom.Next(8, 24));
                 break;
             case MissionType.EscortConvoy:
                 SkillEvaluator.RecordCharismaEvent(stalker, "mission_escort");

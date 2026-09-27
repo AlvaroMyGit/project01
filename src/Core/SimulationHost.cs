@@ -47,6 +47,12 @@ public sealed class SimulationHost
     {
         _settings = settings ?? new SimulationSettings();
 
+        // Seed BEFORE anything else is constructed. WeatherManager and
+        // EmissionSystem derive their streams via SimRandom.Stream() in field
+        // initialisers, so a subsystem built before this line would silently
+        // take the default seed and ignore STALKER_SEED.
+        SimRandom.Initialize(_settings.Seed);
+
         // 1. Initialize data-driven systems
         NameGenerator.EnsureLoaded();
         DemographicsEngine.EnsureLoaded();
@@ -66,19 +72,19 @@ public sealed class SimulationHost
         WebVisualizer = new WebVisualizerServer();
 
         // 2. Generate the Zone World & POIs
-        WorldGen = new StaticWorldGenerator(seed: 42) { Width = 1600, Height = 3200 };
+        WorldGen = new StaticWorldGenerator(seed: _settings.Seed) { Width = 1600, Height = 3200 };
         pdaNetwork.BindWorld(WorldGen);
         KillTracker.Configure(new KillTrackerOptions { MapHeight = WorldGen.Height });
-        Stamper = new POIPrefabStamper(WorldGen, seed: 42);
+        Stamper = new POIPrefabStamper(WorldGen, seed: _settings.Seed);
         Stamper.Generate(microPerMacro: 3);
 
         RoadNetwork = new RoadNetwork();
-        RoadNetwork.Build(WorldGen, seed: 42);
+        RoadNetwork.Build(WorldGen, seed: _settings.Seed);
 
         var pathfinder = new ZonePathfinder(WorldGen, resolution: 40);
         pathfinder.RegisterRoads(RoadNetwork.Segments);
         pathfinder.RegisterPortals(Stamper.Hatches);
-        BuildingFootprints = BuildingFootprintLoader.LoadOrGenerate(Stamper.Stamps, WorldGen, seed: 42);
+        BuildingFootprints = BuildingFootprintLoader.LoadOrGenerate(Stamper.Stamps, WorldGen, seed: _settings.Seed);
         pathfinder.RegisterFootprints(BuildingFootprints);
         Console.WriteLine($"[World] {BuildingFootprints.Count} building footprints registered (pathfinding blockers + interiors)");
 
@@ -138,7 +144,7 @@ public sealed class SimulationHost
 
             if (!string.IsNullOrEmpty(leaderName))
             {
-                var leader = new Stalker(Guid.NewGuid().ToString()[..8], leaderName, primaryFaction)
+                var leader = new Stalker(SimRandom.NextId(), leaderName, primaryFaction)
                 {
                     Position = poi.Position,
                     CurrentLevelId = poi.RegionId
@@ -154,8 +160,8 @@ public sealed class SimulationHost
         // Place starter demo corpses in the wilderness and at a couple POIs
         for (int cc = 0; cc < 7; cc++)
         {
-            float nx = (float)Random.Shared.NextDouble();
-            float ny = (float)Random.Shared.NextDouble();
+            float nx = (float)SimRandom.NextDouble();
+            float ny = (float)SimRandom.NextDouble();
             corpses.Add(new Corpse
             {
                 CorpseId = $"corpse_{cc}",
@@ -167,7 +173,7 @@ public sealed class SimulationHost
             });
         }
         // Place corpses at ~10% of micro POIs (for more dynamic mutant feeding)
-        foreach (var minor in Stamper.Stamps.Where(p => p.Type == POIType.MicroShelter && Random.Shared.NextDouble() < 0.10))
+        foreach (var minor in Stamper.Stamps.Where(p => p.Type == POIType.MicroShelter && SimRandom.NextDouble() < 0.10))
         {
             corpses.Add(new Corpse
             {

@@ -69,7 +69,9 @@ public sealed class EmissionSystem
     private float _nextEmissionAt;
     private float _phaseStartedAt;
     private bool  _warningFired;
-    private readonly Random _rng = new();
+    // Seeded from STALKER_SEED, on its own stream — emission timing drives a
+    // death category the baselines track, so it has to be replayable.
+    private readonly Random _rng = StalkerALifeSandbox.Core.SimRandom.Stream("emissions");
 
     private readonly List<AnomalyField> _allFields = new();
     public IReadOnlyList<AnomalyField> Fields => _allFields;
@@ -228,7 +230,7 @@ public sealed class EmissionSystem
             {
                 _allFields.Add(new AnomalyField
                 {
-                    Id = $"dyn_fallback_{Guid.NewGuid().ToString()[..6]}",
+                    Id = $"dyn_fallback_{SimRandom.NextId(6)}",
                     Type = (AnomalyType)_rng.Next(0, 5),
                     Center = new Vector3(_rng.Next(0, 800), 0, _rng.Next(0, 1600)),
                     IsStatic = false,

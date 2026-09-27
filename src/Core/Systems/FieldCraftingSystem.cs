@@ -79,15 +79,15 @@ public sealed class FieldCraftingSystem : ISimulationSystem
         if (!inField) return;
 
         // Scrap from environment
-        if (s.ScrapCount < ScrapCap && Random.Shared.NextSingle() < ScavengeChance)
-            s.ScrapCount += Random.Shared.Next(ScrapMin, ScrapMax + 1);
+        if (s.ScrapCount < ScrapCap && SimRandom.NextSingle() < ScavengeChance)
+            s.ScrapCount += SimRandom.Next(ScrapMin, ScrapMax + 1);
 
         // Raw meat from kills / wilderness foraging
-        if (s.RawMeatCount < MeatCap && Random.Shared.NextSingle() < MeatScavengeChance)
+        if (s.RawMeatCount < MeatCap && SimRandom.NextSingle() < MeatScavengeChance)
             s.RawMeatCount++;
 
         // Vodka occasional find
-        if (s.VodkaCount < 3 && Random.Shared.NextSingle() < VodkaFindChance)
+        if (s.VodkaCount < 3 && SimRandom.NextSingle() < VodkaFindChance)
             s.VodkaCount++;
     }
 
@@ -124,7 +124,7 @@ public sealed class FieldCraftingSystem : ISimulationSystem
     {
         if (s.RawMeatCount <= 0) return;
         if (s.Needs.Hunger < 5.0f) return;  // was 0.35f — hunger drains ~7 pts/30 real-min, threshold was never reached
-        if (Random.Shared.NextSingle() >= PassiveCookChance) return;
+        if (SimRandom.NextSingle() >= PassiveCookChance) return;
 
         var meal = _cooking.Cook(MutantMeatType.Boar);
         _cooking.Eat(meal, s.Needs, s.VodkaCount, out int vodkaConsumed);
@@ -148,7 +148,7 @@ public sealed class FieldCraftingSystem : ISimulationSystem
     private void TickPassiveRepair(Stalker s)
     {
         if (s.ScrapCount < 5) return;
-        if (Random.Shared.NextSingle() >= PassiveRepairChance) return;
+        if (SimRandom.NextSingle() >= PassiveRepairChance) return;
 
         bool repaired = false;
 

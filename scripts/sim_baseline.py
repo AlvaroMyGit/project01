@@ -10,9 +10,11 @@ so every run covers exactly the same span of game time.
   capture:  scripts/sim_baseline.py --capture            # writes baselines/default.json
   compare:  scripts/sim_baseline.py                      # runs and diffs against it
 
-The sim still uses Random.Shared in places, so counters vary run to run. Treat a
-small diff as noise and a large one as signal; --repeat gives a spread to judge
-against.
+Runs are seeded (SimRandom / STALKER_SEED) and replay exactly, so a single seed
+re-run gives byte-identical counters. --repeat therefore sweeps seeds BASE_SEED..
+BASE_SEED+n-1 rather than re-rolling the same one: the spread it reports is the
+spread ACROSS WORLDS, and re-capturing with the same base reproduces it. Treat a
+small diff as cross-world variation and a large one as signal.
 
 Provenance is recorded as well as measured: a baseline that cannot say WHICH
 source it describes is not a baseline, it is a number. See source_provenance.
@@ -40,6 +42,16 @@ ENV = {
     "STALKER_HEADLESS_TICKS": "7200",  # past the 720s spawn ramp — steady state
     "STALKER_REST_PORT": "8123",
 }
+
+# Run i of a capture uses BASE_SEED + i.
+#
+# The simulation is now seeded (SimRandom), so --repeat with one fixed seed would
+# produce N byte-identical runs: min == max, the noise band collapses to zero, and
+# every subsequent comparison reads as SIGNAL. Varying the seed per run keeps the
+# spread meaningful AND makes it reproducible — the same base re-runs the same N
+# worlds, so the noise band is now a property of the seed set rather than of
+# whatever the process RNG happened to do that afternoon.
+BASE_SEED = 1000
 
 # label -> (regex, group count). Every metric is game-time normalised or a raw
 # count over a fixed tick span, so all of them are comparable between runs.
@@ -153,8 +165,8 @@ def _binary_older_than_source() -> bool:
     return False
 
 
-def run_once() -> dict:
-    env = {**os.environ, **ENV}
+def run_once(seed: int) -> dict:
+    env = {**os.environ, **ENV, "STALKER_SEED": str(seed)}
 
     # Capture stdout rather than discarding it: the run has to PROVE it went
     # headless. Silently becoming a server run is the failure this guards.
@@ -264,8 +276,9 @@ def main() -> int:
 
     runs = []
     for i in range(args.repeat):
-        print(f"run {i + 1}/{args.repeat} ...", flush=True)
-        runs.append(run_once())
+        seed = BASE_SEED + i
+        print(f"run {i + 1}/{args.repeat} (seed {seed}) ...", flush=True)
+        runs.append(run_once(seed))
         if build_fingerprint() != fingerprint:
             print("\nABORT: the binary changed mid-capture — rebuild finished while "
                   "runs were in flight, so these runs are not comparable. "
@@ -277,6 +290,7 @@ def main() -> int:
     current["_source"] = prov
     current["_settings"] = ENV
     current["_repeat"] = args.repeat
+    current["_seeds"] = [BASE_SEED + i for i in range(args.repeat)]
 
     if args.capture:
         path.write_text(json.dumps(current, indent=2) + "\n")
@@ -297,7 +311,16 @@ def main() -> int:
         print(f"\nNOTE: baseline was captured at {bsrc.get('sha')} "
               f"({bsrc.get('subject', '?')[:48]}), this run is {prov['sha']}. "
               "Differences below include every change between them.")
-    elif not bsrc:
+    bseeds = base.get("_seeds")
+    cseeds = [BASE_SEED + i for i in range(args.repeat)]
+    if bseeds and bseeds != cseeds:
+        print(f"NOTE: baseline swept seeds {bseeds}, this run swept {cseeds}. "
+              "Differences include the change of world, not just of code.")
+    elif bsrc and not bseeds:
+        print("NOTE: this baseline predates seeding, so its numbers came from "
+              "unseeded runs and its spread is not reproducible.")
+
+    if not bsrc:
         print("\nNOTE: this baseline predates provenance recording, so which "
               "source it describes is unverifiable. Re-capture to fix.")
 

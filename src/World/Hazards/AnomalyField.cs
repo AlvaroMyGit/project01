@@ -1,5 +1,6 @@
 // AnomalyField.cs — Static vs Dynamic anomaly fields & artifact drops
 using System.Numerics;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.World.Hazards;
 
@@ -42,9 +43,9 @@ public sealed class AnomalyField
     public void TrySpawnArtifact(float emissionIntensity, float latitude)
     {
         float chance = emissionIntensity * 0.5f; // 50% base chance modified by emission
-        if (Random.Shared.NextSingle() < chance)
+        if (SimRandom.NextSingle() < chance)
         {
-            float noise = (Random.Shared.NextSingle() * 0.4f) - 0.2f; // -0.2 to 0.2
+            float noise = (SimRandom.NextSingle() * 0.4f) - 0.2f; // -0.2 to 0.2
             float rarity = Math.Clamp(latitude * FieldIntensity + noise, 0.0f, 1.0f);
 
             string artId = $"art_{Id}_{_spawnedArtifacts.Count}";

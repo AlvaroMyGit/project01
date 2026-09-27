@@ -736,6 +736,15 @@ public static class SimulationDebugLog
                 $"effective TimeFactor {time.TimeFactor * _executedTicks / tickTotal:F1} " +
                 $"of {time.TimeFactor:F1} configured");
         }
+        // Determinism canary. Two runs at the same seed over the same tick span
+        // must report the same seed AND the same draw count. A matching seed with
+        // a differing count means something outside the stream steered the run —
+        // a stray Random, a Guid, filesystem ordering, or a parallel draw — and
+        // the seed is not actually pinning it. Cheap to print, and it is the only
+        // line that makes "this run is reproducible" a checked claim.
+        sb.AppendLine($"Determinism: seed {Core.SimRandom.Seed}, "
+                      + $"{Core.SimRandom.DrawCount} draws");
+
         var profile = Core.TickProfiler.Report();
         if (profile.Count > 0)
         {

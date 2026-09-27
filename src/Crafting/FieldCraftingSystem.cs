@@ -1,5 +1,6 @@
 // FieldCraftingSystem.cs — Modular junk & campfire crafting solver
 using StalkerALifeSandbox.Entities.Characters;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Crafting;
 
@@ -43,7 +44,7 @@ public sealed class FieldCraftingSystem
         // ZoneSurvival determines base success chance (50% at 0 skill, 100% at 100 skill)
         float successChance = 0.5f + (attributes.ZoneSurvival / 200f);
 
-        if (Random.Shared.NextSingle() <= successChance)
+        if (SimRandom.NextSingle() <= successChance)
         {
             return true;
         }

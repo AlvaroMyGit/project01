@@ -3,6 +3,7 @@ using StalkerALifeSandbox.Entities.Equipment;
 using StalkerALifeSandbox.Entities.Mutants;
 using StalkerALifeSandbox.World.Hazards;
 using System.Numerics;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Systems;
 
@@ -37,7 +38,7 @@ public static class CombatResolver
 
         // A worn weapon hits softer, but never below half.
         float effective = weapon * (0.5f + 0.5f * Math.Clamp(condition, 0f, 1f));
-        float spread = 0.75f + (float)Random.Shared.NextDouble() * 0.5f;   // 0.75-1.25x
+        float spread = 0.75f + (float)SimRandom.NextDouble() * 0.5f;   // 0.75-1.25x
         return effective * spread * ExchangeDamageScale;
     }
 
@@ -127,7 +128,7 @@ public static class CombatResolver
             chance += (weapon.Damage - 25) * 0.003;
             chance += (weapon.Accuracy - 0.7) * 0.10;
             
-            bool isJammed = weapon.Condition < 0.3f && Random.Shared.NextDouble() < (0.3f - weapon.Condition);
+            bool isJammed = weapon.Condition < 0.3f && SimRandom.NextDouble() < (0.3f - weapon.Condition);
             if (isJammed)
             {
                 chance -= 0.25; // Massive penalty for jamming
@@ -174,7 +175,7 @@ public static class CombatResolver
         var atkWeapon = attacker.Equipment.PrimaryWeapon;
         if (atkWeapon != null)
         {
-            bool isJammed = atkWeapon.Condition < 0.3f && Random.Shared.NextDouble() < (0.3f - atkWeapon.Condition);
+            bool isJammed = atkWeapon.Condition < 0.3f && SimRandom.NextDouble() < (0.3f - atkWeapon.Condition);
             if (isJammed)
             {
                 chance -= 0.25;
@@ -196,7 +197,7 @@ public static class CombatResolver
         var defWeapon = defender.Equipment.PrimaryWeapon;
         if (defWeapon != null)
         {
-            bool defJammed = defWeapon.Condition < 0.3f && Random.Shared.NextDouble() < (0.3f - defWeapon.Condition);
+            bool defJammed = defWeapon.Condition < 0.3f && SimRandom.NextDouble() < (0.3f - defWeapon.Condition);
             if (defJammed)
             {
                 chance += 0.25; // Defender weapon jammed, attacker gets bonus

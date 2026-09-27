@@ -1,5 +1,6 @@
 using System.Text.Json;
 using StalkerALifeSandbox.Entities.Characters;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.Entities.Equipment;
 
@@ -92,22 +93,22 @@ public sealed class SpawnLoadoutResolver
 
         string primaryId = PickRandom(table.PrimaryWeapons);
         if (_config.RareWeapons.Count > 0 &&
-            Random.Shared.NextDouble() < _config.RareWeaponSpawnChance)
+            SimRandom.NextDouble() < _config.RareWeaponSpawnChance)
             primaryId = PickRandom(_config.RareWeapons);
 
         string? secondaryId = table.SecondaryWeapons.Count > 0 &&
-            Random.Shared.NextDouble() < 0.35
+            SimRandom.NextDouble() < 0.35
                 ? PickRandom(table.SecondaryWeapons)
                 : null;
 
         string  armorId    = PickFactionArmor(faction, table.Armors, isLeader);
-        string? helmetId   = table.Helmets.Count > 0 && Random.Shared.NextDouble() < 0.85
+        string? helmetId   = table.Helmets.Count > 0 && SimRandom.NextDouble() < 0.85
             ? PickRandom(table.Helmets) : null;
-        string? detectorId = table.Detectors.Count > 0 && Random.Shared.NextDouble() < 0.55
+        string? detectorId = table.Detectors.Count > 0 && SimRandom.NextDouble() < 0.55
             ? PickRandom(table.Detectors) : null;
 
-        float wpnCond = 0.65f + Random.Shared.NextSingle() * 0.30f;
-        float armCond = 0.70f + Random.Shared.NextSingle() * 0.25f;
+        float wpnCond = 0.65f + SimRandom.NextSingle() * 0.30f;
+        float armCond = 0.70f + SimRandom.NextSingle() * 0.25f;
 
         stalker.Equipment.PrimaryWeapon   = _factory.CreateWeapon(primaryId, wpnCond);
         stalker.Equipment.SecondaryWeapon = secondaryId != null
@@ -251,7 +252,7 @@ public sealed class SpawnLoadoutResolver
     private void MaybeApplyDisguise(Stalker stalker)
     {
         if (_config.DisguiseChance <= 0 || stalker.Equipment.EquippedArmor == null) return;
-        if (Random.Shared.NextDouble() >= _config.DisguiseChance) return;
+        if (SimRandom.NextDouble() >= _config.DisguiseChance) return;
 
         var candidates = _config.DisguisePatchFactions
             .Where(f => !string.Equals(f, stalker.TrueFaction, StringComparison.OrdinalIgnoreCase))
@@ -259,11 +260,11 @@ public sealed class SpawnLoadoutResolver
         if (candidates.Count == 0) return;
 
         stalker.Equipment.EquippedArmor.FactionPatchId =
-            candidates[Random.Shared.Next(candidates.Count)];
+            candidates[SimRandom.Next(candidates.Count)];
     }
 
     private static string PickRandom(List<string> list) =>
-        list[Random.Shared.Next(list.Count)];
+        list[SimRandom.Next(list.Count)];
 
     private static string NormalizeFactionKey(string faction) =>
         faction switch { "Clear Sky" => "ClearSky", _ => faction };

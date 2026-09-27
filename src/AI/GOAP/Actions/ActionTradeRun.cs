@@ -4,6 +4,7 @@ using StalkerALifeSandbox.Economy;
 using StalkerALifeSandbox.Entities.Characters;
 using StalkerALifeSandbox.Systems;
 using StalkerALifeSandbox.World.Generation;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.AI.GOAP.Actions;
 
@@ -32,7 +33,7 @@ public sealed class ActionTradeRun : GoapTravelAction
         if (site != null)
         {
             stalker.MissionIssuerPoiId = site.PoiId;
-            return site.Position + new Vector3(Random.Shared.Next(-15, 15), 0, Random.Shared.Next(-15, 15));
+            return site.Position + new Vector3(SimRandom.Next(-15, 15), 0, SimRandom.Next(-15, 15));
         }
 
         var bases = Ctx.Stamper.Stamps.Where(p => p.Type == POIType.MacroBase).ToList();

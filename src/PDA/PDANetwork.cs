@@ -101,7 +101,7 @@ public sealed class PDANetwork
         if (!ChatterTemplates.TryGetValue(category, out var lines) || lines.Length == 0)
             return "";
 
-        string template = lines[Random.Shared.Next(lines.Length)];
+        string template = lines[SimRandom.Next(lines.Length)];
         foreach (var (key, val) in values)
             template = template.Replace($"{{{key}}}", val, StringComparison.Ordinal);
         return template;
@@ -196,9 +196,9 @@ public sealed class PDANetwork
         if (string.IsNullOrWhiteSpace(body))
         {
             if (SlangAlerts.TryGetValue(culture, out var alerts) && isAlert && alerts.Length > 0)
-                body = alerts[Random.Shared.Next(alerts.Length)];
+                body = alerts[SimRandom.Next(alerts.Length)];
             else if (SlangGreetings.TryGetValue(culture, out var greetings) && greetings.Length > 0)
-                body = greetings[Random.Shared.Next(greetings.Length)];
+                body = greetings[SimRandom.Next(greetings.Length)];
             else
                 body = isAlert ? "Contact! Something's moving!" : "Yeah, copy that.";
         }
@@ -227,7 +227,7 @@ public sealed class PDANetwork
         var type = msg.MessageType != default ? msg.MessageType : msg.Type;
         string id = !string.IsNullOrEmpty(msg.MessageId) ? msg.MessageId : msg.Id;
         if (string.IsNullOrEmpty(id))
-            id = Guid.NewGuid().ToString()[..8];
+            id = SimRandom.NextId();
 
         return new PDAMessage
         {

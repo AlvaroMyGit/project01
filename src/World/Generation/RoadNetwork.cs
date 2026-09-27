@@ -127,7 +127,10 @@ public sealed class RoadNetwork
         var forward = Vector3.Normalize(delta);
         var lateral = new Vector3(-forward.Z, 0, forward.X);
         int midCount = len > 500f ? 3 : len > 250f ? 2 : 1;
-        int hash = edgeKey.GetHashCode(StringComparison.Ordinal);
+        // NOT edgeKey.GetHashCode(...): randomised per process, so the bend
+        // direction of every road changed on each run and took the whole
+        // world with it. See SimRandom.StableHash.
+        int hash = StalkerALifeSandbox.Core.SimRandom.StableHash(edgeKey);
 
         for (int i = 1; i <= midCount; i++)
         {

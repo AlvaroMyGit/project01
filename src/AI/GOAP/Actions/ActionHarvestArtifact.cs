@@ -7,6 +7,7 @@ using StalkerALifeSandbox.Entities.Equipment;
 using StalkerALifeSandbox.Systems;
 using StalkerALifeSandbox.World.Generation;
 using StalkerALifeSandbox.World.Hazards;
+using StalkerALifeSandbox.Core;
 
 namespace StalkerALifeSandbox.AI.GOAP.Actions;
 
@@ -39,10 +40,10 @@ public sealed class ActionHarvestArtifact : GoapTravelAction
             .Where(p => p.ThreatLevel <= maxThreat + 0.08f)
             .ToList();
         if (dens.Count == 0) return null;
-        var dest = dens[Random.Shared.Next(dens.Count)];
+        var dest = dens[SimRandom.Next(dens.Count)];
         return dest.Position + new Vector3(
-            (float)(Random.Shared.NextDouble() - 0.5) * 80f, 0,
-            (float)(Random.Shared.NextDouble() - 0.5) * 80f);
+            (float)(SimRandom.NextDouble() - 0.5) * 80f, 0,
+            (float)(SimRandom.NextDouble() - 0.5) * 80f);
     }
 
     protected override string? DestinationLabel(Stalker stalker, Vector3 target)
@@ -73,7 +74,7 @@ public sealed class ActionHarvestArtifact : GoapTravelAction
         float nx = stalker.Position.X / Ctx.WorldGen.Width;
         float ny = stalker.Position.Z / Ctx.WorldGen.Height;
         float latitude = Ctx.WorldGen.GetThreatLevel(nx, ny);
-        float noise = (Random.Shared.NextSingle() * 0.4f) - 0.2f;
+        float noise = (SimRandom.NextSingle() * 0.4f) - 0.2f;
         float rarity = Math.Clamp(latitude * 0.65f + noise + 0.05f, 0f, 1f);
 
         string artId = ItemDatabase.PickArtifactId(rarity);
