@@ -22,3 +22,7 @@ coverage*.json
 
 # Per-run leaderboard snapshots, written beside the run log
 logs/*_leaderboard.json
+
+# Python bytecode from scripts/
+__pycache__/
+*.pyc
