@@ -27,7 +27,8 @@ jobs:
 
       # Rebuilds the test project so coverlet.msbuild can instrument it, then
       # fails the job if total line coverage drops below the floor. Raise the
-      # Threshold as coverage grows (ratchet).
+      # Threshold as coverage grows (ratchet) — it sat at 38 while actual
+      # coverage was 43.8, which is slack a ratchet is not supposed to carry.
       - name: Test (with coverage gate)
         run: >
           dotnet test tests/StalkerALifeSandbox.Tests/StalkerALifeSandbox.Tests.csproj
@@ -37,7 +38,7 @@ jobs:
           /p:CollectCoverage=true
           /p:CoverletOutputFormat=cobertura
           /p:CoverletOutput=./TestResults/coverage.cobertura.xml
-          /p:Threshold=38
+          /p:Threshold=53
           /p:ThresholdType=line
           /p:ThresholdStat=total
 
